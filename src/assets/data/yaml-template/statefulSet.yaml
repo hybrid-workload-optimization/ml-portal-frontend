@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: new-stateful-set
+spec:
+  serviceName: "new-stateful-set"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: new-stateful-set
+  template:
+    metadata:
+      labels:
+        app: new-stateful-set
+    spec:
+      containers:
+      - name: new-stateful-set
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web

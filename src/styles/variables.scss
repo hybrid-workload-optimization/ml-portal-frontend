@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700&display=swap');
+$body-font-family:'Montserrat',
+'Noto Sans KR',
+sans-serif;
+$basic-font: 'Montserrat',
+'Noto Sans KR',
+sans-serif;
+$sub-font: 'Noto Sans KR',
+'Montserrat',
+sans-serif;
+$material-light: ('background': #F5F7F8);
+$info-color: 'blue-grey darken-4';
+$normal-color: 'cyan lighten-2';
+$warning-color: 'yellow';
+$major-color: 'orange darken-2';
+$critical-color: 'red darken-1';
+
+
+
+$lnb-left: #344A63;
+$lnb-right: #2A4058;
+$color-info: #4E4B66;
+$color-normal: #00B8D5;
+$color-warning: #F4B740;
+$color-major: #F49440;
+$color-critical: #ED2E7E;
+$color-azure: #ff8787;
+$color-private: #ba61cf;
+$color-violet: #920783;
+$basic-green: #29AA54;
+$basic-red: #EA1606;
+$table-grid: #FBFBFB;
+$basic-blue: #0078FF;
+$basic-lemon: #FEFEFC;
+$basic-purple: #4E4B66;
+$basic-yellow: #FFCD56;
+$basic-button: #5B6C82;
+$basic-dark-button: #8C8E9B;
+$input-border: #CFD2D8;
+$input-bgcolor: #fafbfd;
+$box-border: #DBDFE1;
+$secondary: #00B8D5;
+$primary: #036EB8;
+$dark-navy: #125A90;
+$nav-primary: #004CA2;
+$title-color: #1A3350;
+$sub-title: #4B5566;
+$box-bgcolor: #F5F8FB;
+$basic-bgcolor: #F5F7F8;
+$basic-sky-blue: #06ABEA;
+$secondary-opacity: rgb(0,
+184,
+213,
+0.4);
+$admin-dashbord: #181D36;
+$admin-dashbord-card: #1f2841;
+$admin-unit: #A5A9B3;
+$menu-text-color: #AEB6C0;
+$dot-text:#747A8A;
+$admin-resource-usage: #3B3B3B;
+$admin-resource-usage-layout: #272727;
+
+/* Fonts */
+
+// $basic-font: 'Noto Sans KR',
+// sans-serif;
+// $sub-font: 'Montserrat',
+// sans-serif;
+
+/* Data table variable change */
+
+$data-table-regular-header-font-size: 1rem;
+$data-table-regular-row-font-size: 1rem;
+
+/* Textfield Border Change */
+
+$text-field-outlined-fieldset-border: thin solid rgb(128,
+128,
+128,
+0.3);
+$card-border-radius: 15px;
+$scroll-width: 4px;
+$scroll-height: 17%;
+$scroll-background-color: #C4C4C4;
+$scroll-border-color: #707070;
+$scroll-border-radius: 10px;
+$higher-resolution: 981px;
+
+
+
+// PasS
+
+/* font-standard-size: */
+$font-standard-size: 16px;
+
+/* Screen-size: */
+$breakpoint-small :580px;
+$breakpoint-medium : 1350px;
+$breakpoint-large :1920px;
+
+/* Color */
+$sp-body-bg-color: #F5F7F8;
+$sp-primary: #344A63;
+$sp-secondary: #125A90;
+$sp-teriary: #036EB8;
+$sp-quaternary: #2A4058;
+$sp-title: #1A3350;
+$sp-success: #29AA54;
+$sp-warning: #FFCD56;
+$sp-danger: #DE0655;
+$sp-grey-900: #5D5D5D;
+$sp-grey-800: #1A3350;
+$sp-grey-700: #4E4B66;
+$sp-grey-600: #5B6C82;
+$sp-grey-400: #8C98A7;
+$sp-grey-300: #A4A9B2;
+$sp-grey-200: #F7F9FB;
+$sp-grey-100: #FBFCFD;
+$sp-blue-500: #0078FF;
+$sp-blue-400: #06ABEA;
+$sp-sky-blue-500: #4B5566;
+$sp-box-border: #DBDFE1;
+$sp-orange: #FF8000;
+$sp-pink: #FC00C5;
+$sp-cerise: #FF005F;
+$sp-red: #EA1606;
+$sp-green: #00BA88;
+$sp-black-500: #2F3E4E;
+$sp-black-700: #14142b;
+$sp-border-color: #E5E9EB;

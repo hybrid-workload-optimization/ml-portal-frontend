@@ -1,0 +1,107 @@
+@import "./variables";
+
+
+// convert to px to rem
+@function toRem($value) {
+    $remValue: ($value / 16) + rem;
+    @return $remValue;
+}
+
+// get the value of a text
+@mixin set-text($fontWeight, $fontSize, $fontColor, $fontShadowColor:false, $subFont:false ) {
+   font-weight: $fontWeight;
+   font-size: toRem($fontSize);
+   color: $fontColor;
+   @if $fontShadowColor {
+     text-shadow: 0 0 1px $fontShadowColor;
+  }
+  @if $subFont {
+    font-family: $sub-font;
+  }
+}
+
+@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
+    @if $inset {
+        -webkit-box-shadow:inset $top $left $blur $size $color;
+        -moz-box-shadow:inset $top $left $blur $size $color;
+        box-shadow:inset $top $left $blur $size $color;
+    } @else {
+        -webkit-box-shadow: $top $left $blur $size $color;
+        -moz-box-shadow: $top $left $blur $size $color;
+        box-shadow: $top $left $blur $size $color;
+    }
+}
+
+@mixin rounded($radius: 0.5em) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin scroll() {
+    &::-webkit-scrollbar {
+      width: $scroll-width;
+    }
+    &::-webkit-scrollbar-thumb {
+      height: $scroll-height;
+      background-color: $scroll-background-color;
+      border-radius: $scroll-border-radius;
+    }
+}
+
+@mixin one-line-ellipsis($width: 100%) {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  width: $width;
+}
+
+
+@mixin popup-buttons($className:'', $addClass:false) {
+  .#{$className}__button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .#{$className}--button {
+      border-radius: 5px;
+      width: 114px;
+      margin-top: 40px;
+      margin-bottom: 25px;
+      background-color: #fff !important;
+      &.cancel {
+        height: 44px;
+        margin-right: 15px;
+        @include set-text(bold, 13, rgba($color: $sp-sky-blue-500, $alpha: 1));
+        border: thin solid rgba($color: $sp-sky-blue-500, $alpha: 1);
+      }
+    @if $addClass {
+        &.#{$addClass} {
+          height: 44px;
+          @include set-text(bold, 13, rgba($color: $sp-teriary, $alpha: 1));
+          border: thin solid rgba($color: $sp-teriary, $alpha: 1);
+        }
+      }
+    }
+  }
+}
+
+
+
+
+@mixin desktop-small($small:$breakpoint-small, $medium:$breakpoint-medium) {
+  @media (min-width: #{$small}) and (max-width: #{$medium}) {
+    @content;
+  }
+}
+
+@mixin desktop-medium {
+  @media (min-width: #{$breakpoint-medium + 1px }) and (max-width: #{$breakpoint-large }) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media (min-width: #{$breakpoint-large + 1px}) {
+    @content;
+  }
+}

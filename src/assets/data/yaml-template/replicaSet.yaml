@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: new-replica-set
+  labels:
+    app: new-replica-set
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: new-replica-set
+  template:
+    metadata:
+      labels:
+        tier: new-replica-set
+    spec:
+      containers:
+      - name: new-replica-set
+        image: tomcat:8.5.53

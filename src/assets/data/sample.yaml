@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: default
+  uid: ef120a22-2a73-4976-9ee5-28851d7242de
+  resourceVersion: '1764552'
+  generation: 2
+  creationTimestamp: '2021-09-16T04:26:44Z'
+  labels:
+    app: nginx
+  annotations:
+    deployment.kubernet.es.io/revision: '1'
+  managedFields:
+      manager: okhttp
+      operation: Update
+      apiVersion: apps/v1
+      time: '2021-09-16T04:26:44Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .:{}
+            'f:app': {}
+        'f:spec':

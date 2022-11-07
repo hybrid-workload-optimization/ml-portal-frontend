@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="9" height="17" viewBox="0 0 9 17">
+  <g id="그룹_1221" data-name="그룹 1221" transform="translate(-1880 -166)" opacity="0.5">
+    <g id="btn_more" transform="translate(1880 166)">
+      <circle id="타원_26" data-name="타원 26" cx="1.5" cy="1.5" r="1.5" fill="#fff"/>
+      <circle id="타원_27" data-name="타원 27" cx="1.5" cy="1.5" r="1.5" transform="translate(0 7)" fill="#fff"/>
+      <circle id="타원_28" data-name="타원 28" cx="1.5" cy="1.5" r="1.5" transform="translate(0 14)" fill="#fff"/>
+    </g>
+    <g id="btn_more-2" data-name="btn_more" transform="translate(1886 166)">
+      <circle id="타원_26-2" data-name="타원 26" cx="1.5" cy="1.5" r="1.5" fill="#fff"/>
+      <circle id="타원_27-2" data-name="타원 27" cx="1.5" cy="1.5" r="1.5" transform="translate(0 7)" fill="#fff"/>
+      <circle id="타원_28-2" data-name="타원 28" cx="1.5" cy="1.5" r="1.5" transform="translate(0 14)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

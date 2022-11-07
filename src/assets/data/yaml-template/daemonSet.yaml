@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: new-daemon-set
+  labels:
+    app: new-daemon-set
+spec:
+  selector:
+    matchLabels:
+      name: new-daemon-set
+  template:
+    metadata:
+      labels:
+        name: new-daemon-set
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: new-daemon-set
+        image: tomcat:8.5.53
+        volumeMounts:
+        - name: webroot
+          mountPath: /usr/local/tomcat/webapps
+          readOnly: false
+      volumes:
+      - name : webroot
+        persistentVolumeClaim:
+          claimName: new-pv

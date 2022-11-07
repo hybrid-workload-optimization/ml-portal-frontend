@@ -1,0 +1,139 @@
+import axios from '@/common/request'
+/**
+ * {{&description}}
+ * @class {{&className}}
+ * @param {(string|object)} [domainOrOptions] - The project domain or options object. If object, see the object's optional properties.
+ * @param {string} [domainOrOptions.domain] - The project domain
+ * @param {object} [domainOrOptions.token] - auth token - object with value property and optional headerOrQueryName and isQuery properties
+ */
+const {{&className}} = (() =>{
+    'use strict';
+    // eslint-disable-next-line no-shadow
+    const {{&className}} = {};
+
+    function serializeQueryParams(parameters) {
+        let str = [];
+        for (let p in parameters) {
+            if (parameters.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p]));
+            }
+        }
+        return str.join('&');
+     }
+
+     function mergeQueryParams(parameters, queryParameters) {
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                  .forEach((parameterName) => {
+                      {{#isES6}}let{{/isES6}}{{^isES6}}var{{/isES6}} parameter = parameters.$queryParameters[parameterName];
+                      queryParameters[parameterName] = parameter;
+            });
+        }
+        return queryParameters;
+     }
+
+     /**
+      * HTTP Request
+      * @method
+      * @name {{&className}}#request
+      * @param {string} method - http method
+      * @param {string} url - url to do request
+      * @param {object} body - body parameters / object
+      * @param {object} headers - header parameters
+      * @param {object} queryParameters - querystring parameters
+      * @param {object} form - form data object
+      */
+    {{&className}}.request = (method, url, body, headers, queryParameters, form) => {
+        const queryParams = queryParameters && Object.keys(queryParameters).length ? serializeQueryParams(queryParameters) : null ;
+        const urlWithParams = url + (queryParams ? '?' + queryParams : '');
+
+        return axios(urlWithParams, {
+            method,
+            headers,
+            body: body ? body : form
+        })
+    };
+
+    {{#isSecure}}
+        {{#isSecureToken}}
+            /**
+            * Set Token
+            * @method
+            * @name {{&className}}#setToken
+            * @param {string} value - token's value
+            * @param {string} headerOrQueryName - the header or query name to send the token at
+            * @param {boolean} isQuery - true if send the token as query param, otherwise, send as header param
+            */
+            {{&className}}.setToken = function (value, headerOrQueryName, isQuery) {
+                this.token.value = value;
+                this.token.headerOrQueryName = headerOrQueryName;
+                this.token.isQuery = isQuery;
+            };
+        {{/isSecureToken}}
+        {{#isSecureApiKey}}
+            /**
+            * Set Api Key
+            * @method
+            * @name {{&className}}#setApiKey
+            * @param {string} value - apiKey's value
+            * @param {string} headerOrQueryName - the header or query name to send the apiKey at
+            * @param {boolean} isQuery - true if send the apiKey as query param, otherwise, send as header param
+            */
+            {{&className}}.setApiKey = function (value, headerOrQueryName, isQuery) {
+                this.apiKey.value = value;
+                this.apiKey.headerOrQueryName = headerOrQueryName;
+                this.apiKey.isQuery = isQuery;
+            };
+        {{/isSecureApiKey}}
+        {{#isSecureBasic}}
+            /**
+            * Set Basic Auth
+            * @method
+            * @name {{&className}}#setBasicAuth
+            * @param {string} username
+            * @param {string} password
+            */
+            {{&className}}.setBasicAuth = function (username, password) {
+                this.basic.username = value;
+                this.basic.password = password;
+            };
+        {{/isSecureBasic}}
+        /**
+        * Set Auth headers
+        * @method
+        * @name {{&className}}#setAuthHeaders
+        * @param {object} headerParams - headers object
+        */
+        {{&className}}.setAuthHeaders = function (headerParams) {
+            let headers = headerParams ? headerParams : {};
+        {{#isSecureToken}}
+            if (!this.token.isQuery) {
+                if (this.token.headerOrQueryName) {
+                    headers[this.token.headerOrQueryName] = this.token.value;
+                } else if (this.token.value) {
+                    headers['Authorization'] = 'Bearer ' + this.token.value;
+                }
+            }
+        {{/isSecureToken}}
+        {{#isSecureApiKey}}
+            if (!this.apiKey.isQuery && this.apiKey.headerOrQueryName) {
+                headers[this.apiKey.headerOrQueryName] = this.apiKey.value;
+            }
+        {{/isSecureApiKey}}
+        {{#isSecureBasic}}
+            if (this.basic.username && this.basic.password) {
+                headers['Authorization'] = 'Basic ' + btoa(this.basic.username + ':' + this.basic.password);
+            }
+        {{/isSecureBasic}}
+            return headers;
+        };
+    {{/isSecure}}
+
+    {{#methods}}
+        {{> method}}
+    {{/methods}}
+
+    return {{&className}};
+})();
+
+export default {{&className}}

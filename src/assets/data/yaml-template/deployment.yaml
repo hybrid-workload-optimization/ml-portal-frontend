@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: new-deployment
+  labels:
+    app: new-res
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: new-res
+  template:
+    metadata:
+      labels:
+        app: new-res
+    spec:
+      containers:
+      - name: new-deployment
+        image: tomcat:8.5.53
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        ports:
+        - containerPort: 8080

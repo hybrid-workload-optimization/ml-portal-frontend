@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: new-config-map
+data:
+  data01: "new-data-01"
+  data02: "new-data-02"
+  config.properties: |
+    types=type01,type02
+    maximum-lives=5
