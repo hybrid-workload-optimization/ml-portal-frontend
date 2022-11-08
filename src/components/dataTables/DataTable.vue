@@ -35,11 +35,11 @@
               @mouseover="onMouseOverText"
               @mouseleave="onMouseLeaveText"
             >
-              {{ item[el.value] }}
+              {{ item[el.value] || '-' }}
             </span>
           </template>
           <span v-if="isOpenTooltipId" :data-id="item.id">
-            {{ item[el.value] }}
+            {{ item[el.value] || '-' }}
           </span>
         </v-tooltip>
       </template>
