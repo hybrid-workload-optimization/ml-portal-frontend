@@ -1,13 +1,11 @@
 <template>
+  <!-- Detail 화면 상단 -->
   <div class="sp-project-layout">
     <div class="project-layout__detail-wrapper">
-      <detail-title
-        :showButton="isProjectAuth"
-        :titleData="titleData"
-        @click-edit="onClickEditProject"
-        @click-delete="onClickDeleteProject"
-      />
+      <detail-title :titleData="titleData" />
     </div>
+
+    <!-- workload / cluster -->
     <v-tabs class="project-layout__tabs" v-model="tab" color="#000">
       <v-tabs-slider color="#000"></v-tabs-slider>
       <v-tab class="detail-tab-item" v-for="item in tabNames" :key="item">
@@ -16,26 +14,17 @@
     </v-tabs>
     <v-tabs-items class="project-layout__tab-item" v-model="tab">
       <v-tab-item v-for="item in tabNames" :key="item">
-        <project-list
-          v-if="item === 'Workload'"
-          searchTitle="Workload"
-          :totalCount="userSize.toString()"
-          :data="getListMember"
-          :search="memberSearch"
-          :isAuth="isProjectAuth"
-          @input="onChangeMemberSearch"
-          @click="onClickDeleteMember"
-          class="project-layout__member-list"
-        />
-        <project-list
+        <!-- workload일 경우 -->
+        <ml-workload v-if="item === 'Workload'"></ml-workload>
+        <!-- cluster일 경우 -->
+        <cluster-list
           v-if="item === 'Cluster'"
           searchTitle="Cluster"
-          :totalCount="clusterSize.toString()"
+          :totalCount="detailInfo.clusterSize"
           :data="getListCluster"
           :search="clusterSearch"
           :isAuth="isProjectAuth"
           @input="onChangeClusterSearch"
-          @click="onClickDeleteCluster"
         />
       </v-tab-item>
     </v-tabs-items>
@@ -45,16 +34,18 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
-import DetailTitle from '@/views/ml/MLTitleWithDetail.vue'
-import ProjectList from '@/views/ml/MLDetailClusterList.vue'
+import DetailTitle from '@/views/ml/components/MLTitleWithDetail.vue'
+import ClusterList from '@/views/ml/components/MLDetailClusterList.vue'
+import MlWorkload from '@/views/ml/components/MLWorkload.vue'
 
-const projectMapUtils = createNamespacedHelpers('ml')
+const mlMapUtils = createNamespacedHelpers('ml')
 
 export default {
   props: {},
   components: {
     DetailTitle,
-    ProjectList,
+    ClusterList,
+    MlWorkload,
   },
   mixins: [checkProjectAuth],
   data() {
@@ -72,25 +63,18 @@ export default {
   },
 
   computed: {
+    // cluster 탭 List
     getListCluster() {
       return {
-        group: this.dataDetailClusterList,
+        group: [this.detailInfo.clusterInfo],
       }
-      // return this.$store.state.projectClusters.data
     },
 
-    getListMember() {
-      return {
-        group: this.dataDetailUserList,
-      }
-      // return this.$store.state.projectMembers.data
-    },
-
-    ...projectMapUtils.mapGetters([
+    ...mlMapUtils.mapGetters([
       'dataDetailClusterList',
-      'userSize',
-      'clusterSize',
-      'dataDetailUserList',
+      // 'userSize',
+      // 'clusterSize',
+      'getMLList',
       'detailInfo',
     ]),
 
@@ -110,43 +94,45 @@ export default {
         date: this.detailInfo.createdAt,
         description: this.detailInfo.description,
         clusterCount: this.detailInfo.clusterCount,
-        memberCount: this.detailInfo.userCount,
+        // memberCount: this.detailInfo.userCount,  // 삭제
       }
     },
   },
 
   mounted() {
     this.getDetail({ mlId: this.mlId, type: 'view' })
-    // this.getDetailClusterList({ projectIdx: this.projectIdx })
-    // this.getDetailUserList({ projectIdx: this.projectIdx })
-    // this.getUserRoleAllList()
+    // // this.getDetailClusterList({ projectIdx: this.projectIdx }) // 삭제
+    // // this.getDetailUserList({ projectIdx: this.projectIdx })    // 삭제
+    // // this.getUserRoleAllList()                                 // 삭제
   },
 
   methods: {
-    ...projectMapUtils.mapActions([
+    ...mlMapUtils.mapActions([
       'getDetail',
       'getDetailClusterList',
       'getDetailUserList',
       'getUserRoleAllList',
     ]),
-    onClickDeleteProject() {},
-    onClickDeleteCluster() {},
-    onClickDeleteMember() {},
+    // onClickDeleteProject() {
+    //   console.log('삭제기능 추가예정')
+    // },
+    // onClickDeleteCluster() {},
+    // onClickDeleteMember() {},
     onChangeClusterSearch(value) {
       this.clusterSearch = value
     },
 
-    onChangeMemberSearch(value) {
-      this.memberSearch = value
-    },
-
-    onClickEditProject() {
-      const id = this.projectIdx
-
-      if (id) {
-        this.$router.push(`/project/edit/${id}`)
-      }
-    },
+    // onChangeMemberSearch(value) {
+    //   this.memberSearch = value
+    // },
+    //
+    // onClickEditProject() {
+    //   const id = this.projectIdx
+    //
+    //   if (id) {
+    //     this.$router.push(`/project/edit/${id}`)
+    //   }
+    // },
   },
 }
 </script>
