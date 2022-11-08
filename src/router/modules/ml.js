@@ -16,6 +16,14 @@ const resource = [
         },
       },
       {
+        path: 'new',
+        name: 'MachinLearning New',
+        component: () => import('@/views/ml/MLNew'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
         path: 'detail/:id',
         name: 'Detail',
         component: () => import('@/views/ml/MLDetail'),

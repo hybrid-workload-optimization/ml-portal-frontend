@@ -5,11 +5,17 @@ const resource = {
   namespaced: true,
   state: {
     dataList: [],
-    detailInfo: {
-      id: null,
-      projectName: '',
-      description: '',
-    },
+    detailInfo: {},
+    clusterInfo: {},
+    clusterSize: 0,
+
+    mlStep: '',
+    jobCount: '',
+    deploymentCount: '',
+    cronJobCount: '',
+    daemonSetCount: '',
+    replicaSetCount: '',
+
     dataClusterAllList: [],
     dataClusterList: [],
     dataGridClusterList: [],
@@ -20,7 +26,6 @@ const resource = {
     dataUserClusterList: [],
     dataUserAllList: [],
     dataDetailClusterList: [],
-    clusterSize: 0,
     dataDetailUserList: [],
     userSize: 0,
 
@@ -48,12 +53,16 @@ const resource = {
   },
 
   getters: {
+    clusterInfo(state) {
+      return state.clusterInfo
+    },
     dataList(state) {
       return state.dataList
     },
     dataListSize(state) {
       return state.dataList.length
     },
+
     detailInfo(state) {
       return state.detailInfo
     },
@@ -136,18 +145,20 @@ const resource = {
           mlId: e.mlId,
           name: e.name,
           description: e.description,
-          mlStepCode: e.mlStepCode,
+          mlStep: e.mlStep,
           status: e.status,
+          resource: e.resourceCount,
           createdAt: e.createdAt,
           updatedAt: e.updatedAt,
           userId: e.userId,
         }
-
         dataList.push(item)
       })
       state.dataList = dataList
     },
 
+    // ML 데이터 조회
+    // TODO -> 추후 세분화 작업
     getMLDetail(state, payload) {
       state.detailInfo = {}
       const { data } = payload
@@ -159,11 +170,34 @@ const resource = {
         state.detailInfo.name = result.name
         state.detailInfo.description = result.description
         state.detailInfo.mlStepCode = result.mlStepCode
-        state.detailI.status = result.status
+        state.detailInfo.status = result.status
         state.detailInfo.projectPmEmail = result.projectPmEmail
         state.detailInfo.createdAt = result.createdAt
         state.detailInfo.updatedAt = result.updatedAt
         state.detailInfo.userId = result.userId
+
+        state.detailInfo.activeCount = result.activeCount
+        state.detailInfo.succeededCount = result.succeededCount
+        state.detailInfo.failedCount = result.failedCount
+
+        state.detailInfo.clusterInfo = result.cluster
+        // TODO -> 파라미터로 clusterSize를 받을수 있나?
+        let clusterSize = 0
+        if (result.cluster.length === undefined) {
+          clusterSize = 1
+        } else {
+          clusterSize = result.cluster.length
+        }
+        state.detailInfo.clusterSize = clusterSize
+
+        state.detailInfo.mlStep = result.mlStep
+        state.detailInfo.jobCount = result.jobCount
+        state.detailInfo.deploymentCount = result.deploymentCount
+        state.detailInfo.cronJobCount = result.cronJobCount
+        state.detailInfo.daemonSetCount = result.daemonSetCount
+        state.detailInfo.replicaSetCount = result.replicaSetCount
+
+        state.detailInfo.resources = result.resources
       }
     },
 
@@ -199,8 +233,6 @@ const resource = {
 
         state.dataGridClusterList.push(item)
       })
-
-      console.log('state.dataGridClusterList === ', state.dataGridClusterList)
     },
 
     getProjectMemberAllList(state, payload) {
@@ -469,7 +501,7 @@ const resource = {
       commit('getMLList', response)
     },
 
-    // Project 상세 정보 조회 요청
+    // ML 상세 정보 조회 요청
     async getDetail({ commit }, payload) {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
@@ -552,10 +584,10 @@ const resource = {
     },
 
     // 상세 화면 Project Cluster 목록 조회 요청
-    async getDetailClusterList({ commit }, payload) {
-      const response = await request.getProjectClusterListUsingGET(payload)
-      commit('getProjectDetailClusterList', response)
-    },
+    // async getDetailClusterList({ commit }, payload) {
+    //   const response = await request.getProjectClusterListUsingGET(payload)
+    //   commit('getProjectDetailClusterList', response)
+    // },
 
     // 상세 화면 Project User 목록 조회 요청
     async getDetailUserList({ commit }, payload) {
@@ -564,17 +596,17 @@ const resource = {
       commit('getProjectDetailUserList', response)
     },
 
-    // 상세 화면 Project Cluster 삭제 요청
-    async deleteProjectCluster(context, payload) {
-      const response = await request.deleteProjectClusterUsingDELETE(payload)
-      return response
-    },
+    // // 상세 화면 Project Cluster 삭제 요청
+    // async deleteProjectCluster(context, payload) {
+    //   const response = await request.deleteProjectClusterUsingDELETE(payload)
+    //   return response
+    // },
 
-    // 상세 화면 Project User 삭제 요청
-    async deleteProjectUser(context, payload) {
-      const response = await request.deleteProjectUserUsingDELETE(payload)
-      return response
-    },
+    // // 상세 화면 Project User 삭제 요청
+    // async deleteProjectUser(context, payload) {
+    //   const response = await request.deleteProjectUserUsingDELETE(payload)
+    //   return response
+    // },
 
     // Project 삭제 요청
     async deleteProject(context, payload) {

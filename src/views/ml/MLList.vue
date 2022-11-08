@@ -9,7 +9,7 @@
         @change="onSearch"
         @input="onInputSearchValue"
         @click="onNewML"
-        button-text="New Machine Learning"
+        button-text="New Workload"
       >
       </search>
     </div>
@@ -55,7 +55,7 @@ import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import Alert from '@/components/molcule/Alert.vue'
 
-const projectMapUtils = createNamespacedHelpers('ml')
+const mlMapUtils = createNamespacedHelpers('ml')
 const loginUserMapUtils = createNamespacedHelpers('loginUser')
 
 export default {
@@ -89,13 +89,19 @@ export default {
         {
           text: 'ML Step',
           align: 'center',
-          value: 'mlStepCode',
+          value: 'mlStep',
           class: 'w-20',
         },
         {
           text: 'Status',
           align: 'center',
           value: 'status',
+          class: 'w-20',
+        },
+        {
+          text: 'Resource',
+          align: 'center',
+          value: 'resource',
           class: 'w-20',
         },
         {
@@ -131,8 +137,8 @@ export default {
   created() {},
 
   computed: {
-    ...projectMapUtils.mapGetters(['dataList']), // ml.js에 저장된 dataList 값 반환(ml.js)
-    ...projectMapUtils.mapGetters(['dataListSize']), // ml.js에 저장된 dataListSize 값 반환(ml.js)
+    ...mlMapUtils.mapGetters(['dataList']), // ml.js에 저장된 dataList 값 반환(ml.js)
+    ...mlMapUtils.mapGetters(['dataListSize']), // ml.js에 저장된 dataListSize 값 반환(ml.js)
     ...loginUserMapUtils.mapState(['currentMenuInfo']),
   },
 
@@ -143,7 +149,7 @@ export default {
   },
 
   methods: {
-    ...projectMapUtils.mapActions(['getList']), // 리스트 조회 요청(ml.js)
+    ...mlMapUtils.mapActions(['getList']), // 리스트 조회 요청(ml.js)
 
     onInputSearchValue(value) {
       this.searchValue = value
@@ -174,7 +180,7 @@ export default {
 
     // New ML 버튼 클릭 시 호출됨
     onNewML() {
-      this.$router.push('/project/new')
+      this.$router.push('/ml/new')
     },
 
     // 상세 페이지로 이동 요청
