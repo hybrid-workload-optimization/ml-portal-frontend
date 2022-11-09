@@ -2,25 +2,19 @@
 <template>
   <div class="sp-box-layout">
     <div>
-      <h1 class="workload-title">New Workload</h1>
-      <!-- 상단 탭 명칭 설정 -->
-      <!-- <v-tabs v-model="tab">
-        <v-tabs-slider></v-tabs-slider>
-        <v-tab v-for="tabName in tabNames" :key="tabName">
-          {{ tabName }}
-        </v-tab>
-      </v-tabs> -->
+      <div class="title-wrapper">
+        <span class="title-text">New Workload</span>
+      </div>
 
-      <!-- 탭별 아이템 설정 -->
-      <v-tabs-items v-model="tab" style="padding-top: 15px">
-        <div class="sp-box-layout">
-          <ml-newtop></ml-newtop>
-        </div>
-      </v-tabs-items>
+      <div class="sp-box-layout">
+        <ml-newtop></ml-newtop>
+      </div>
     </div>
     <div class="sp-box-layout">
-      <label>Yaml</label>
-      <ml-newyaml></ml-newyaml>
+      <div class="yaml-sector">
+        <label class="yaml-title">Yaml</label>
+        <ml-newyaml class="yaml-textarea"></ml-newyaml>
+      </div>
     </div>
     <div class="project__button-wrapper">
       <sp-button
@@ -45,130 +39,74 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-// import ProjectNewGeneral from '@/views/project/tabs/ProjectNewGeneral.vue'
-// import ProjectNewCluster from '@/views/project/tabs/ProjectNewCluster.vue'
-// import ProjectNewMembers from '@/views/project/tabs/ProjectNewMembers.vue'
 import MlNewtop from '@/views/ml/components/MLNewTop.vue'
 import MlNewyaml from '@/views/ml/components/MLNewYaml.vue'
 
-const projectMapUtils = createNamespacedHelpers('project')
+const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
-const loginUserMapUtils = createNamespacedHelpers('loginUser')
+// const projectMapUtils = createNamespacedHelpers('project')
+// const loginUserMapUtils = createNamespacedHelpers('loginUser')
 
 export default {
   components: {
     MlNewtop,
     MlNewyaml,
-    // ProjectNewGeneral,
-    // ProjectNewCluster,
-    // ProjectNewMembers,
   },
 
   data() {
-    return {
-      id: null,
-      tab: null,
-      // tabNames: ['General', 'Cluster', 'Member'], // 탭 명칭들,
-      testName: '',
-    }
+    return {}
   },
 
   created() {
-    this.projectIdx = this.$route.params.id
-    this.initProjectInfo()
-    this.getUserRoleAllList()
-    // this.$store.state.project.newProjectName = ''
-    // this.$store.state.project.newPmUser = null
-    // console.log('initName === ', this.$store.state.project.newProjectName)
-    // console.log('initUser === ', this.$store.state.project.newPmUser)
+    // this.projectIdx = this.$route.params.id
+    this.initMLInfo()
+    // this.getUserRoleAllList()
   },
 
   computed: {
-    ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
-    ...loginUserMapUtils.mapState(['currentMenuInfo']),
+    // ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
+    // ...loginUserMapUtils.mapState(['currentMenuInfo']),
   },
 
   mounted() {
-    // this.getClusterList({ projectIdx: this.projectIdx })
-    this.getUserRoleListForSelect()
+    // this.getUserRoleListForSelect()
   },
 
   methods: {
     ...alertMapUtils.mapMutations(['openAlert']),
-    ...projectMapUtils.mapMutations(['initProjectInfo']),
-    ...projectMapUtils.mapActions(['createProject']),
-    ...projectMapUtils.mapActions(['getUserRoleListForSelect']),
-    ...projectMapUtils.mapActions(['getUserRoleAllList']),
-
+    ...mlMapUtils.mapMutations(['initMLInfo']),
+    ...mlMapUtils.mapActions(['createML']),
+    // ...projectMapUtils.mapActions(['getUserRoleListForSelect']),
+    // ...projectMapUtils.mapActions(['getUserRoleAllList']),
     /* getProjectMembers() {
       return this.$refs.projectMembers
     }, */
-
     onClickCancel() {
       this.openAlert({
-        title: 'Project 생성이 취소 되었습니다.',
+        title: 'Workload 생성이 취소 되었습니다.',
         type: 'error',
       })
       setTimeout(() => {
-        this.$router.push('/project/list')
+        this.$router.push('/ml/list')
       }, 1000)
     },
-
     async onClickFinish() {
+      // Machine Learning 이름 유효성 검사 시작
       if (
-        this.$store.state.project.newProjectName === undefined ||
-        this.$store.state.project.newProjectName === ''
+        this.$store.state.ml.newMLName === undefined ||
+        this.$store.state.ml.newMLName === ''
       ) {
         this.openAlert({
-          title: 'Project Name을 입력해 주세요.',
+          title: 'Machine Learning Name을 입력해 주세요.',
           type: 'error',
         })
         return
       }
+      // Machine Learning 이름 유효성 검사 끝
 
-      console.log('newPmUser === ', this.$store.state.project.newPmUser)
-      if (
-        this.$store.state.project.newPmUser === undefined ||
-        this.$store.state.project.newPmUser === null
-      ) {
-        this.openAlert({
-          title: 'Project Manager를 선택해 주세요.',
-          type: 'error',
-        })
-        return
-      }
-
-      if (this.$store.state.project.newUserList !== undefined) {
-        const roleList = this.$store.state.project.newUserList.filter(
-          member => member.userRoleIdx === undefined,
-        )
-
-        if (roleList.length > 0) {
-          this.openAlert({
-            title: 'Project Member 의 권한을 선택해 주세요.',
-            type: 'error',
-          })
-          return
-        }
-
-        const memberList = this.$store.state.project.newUserList.filter(
-          member =>
-            member.userRoleIdx !== this.getUserRoleIdx('PROJECT_MANAGER'),
-        )
-        this.$store.state.project.newUserList = []
-        this.$store.state.project.newUserList = memberList
-        this.$store.state.project.newUserList.push(
-          this.$store.state.project.newPmUser,
-        )
-      } else {
-        this.$store.state.project.newUserList = []
-        this.$store.state.project.newUserList.push(
-          this.$store.state.project.newPmUser,
-        )
-      }
-
-      if (this.$store.state.project.newDescription !== '') {
-        if (this.$store.state.project.newDescription.length > 200) {
+      // Machine Learning Discription 유효성 검사 시작
+      if (this.$store.state.ml.newDescription !== '') {
+        if (this.$store.state.ml.newDescription.length > 200) {
           this.openAlert({
             title: 'Description 은 200자를 초과 입력할 수 없습니다.',
             type: 'error',
@@ -176,16 +114,29 @@ export default {
           return
         }
       }
+      // Machine Learning Discription 유효성 검사 끝
 
+      // Machine Learning mlStep 유효성 검사 시작
+      if (
+        this.$store.state.ml.newMLStepCode === undefined ||
+        this.$store.state.ml.newMLStepCode === null
+      ) {
+        this.openAlert({
+          title: 'Machine Learning Step을 선택해 주세요.',
+          type: 'error',
+        })
+        return
+      }
+      // Machine Learning mlStep 유효성 검사 끝
+
+      // 테스트를 위한 파라미터
       const param = {
         // loginId: '22222',
         // loginName: '테스터',
-        projectName: this.$store.state.project.newProjectName,
-        description: this.$store.state.project.newDescription,
-        clusterList: this.$store.state.project.newClusterList,
-        userList: this.$store.state.project.newUserList,
+        nameame: this.$store.state.ml.newMLName,
+        description: this.$store.state.ml.newDescription,
+        mlStepCode: this.$store.state.ml.newMLStep,
       }
-
       console.log('new param === ', param)
 
       try {
@@ -195,12 +146,11 @@ export default {
         if (response.status === 201) {
           if (response.data.code === '10001') {
             this.openAlert({
-              title: `${this.$store.state.project.newProjectName} Project 생성이 완료 되었습니다.`,
+              title: `${this.$store.state.ml.newMLName} Machine Learning 생성이 완료 되었습니다.`,
               type: 'info',
             })
-
             setTimeout(() => {
-              this.$router.push('/project/list')
+              this.$router.push('/ml/list')
             }, 1000)
           } else {
             this.openAlert({ title: response.data.message, type: 'error' })
@@ -210,42 +160,23 @@ export default {
         }
       } catch (error) {
         this.openAlert({
-          title: '프로젝트를 생성하지 못했습니다.',
+          title: '머신러닝을 생성하지 못했습니다.',
           type: 'error',
         })
       }
-
-      // this.$refs.projectMembers.onClickFinish()
-
-      /* console.log(
-        'erewtwet4e4terte ter============ ',
-        this.$store.state.newUserList,
-      )
-      if (this.$store.state.newUserList.length > 0) {
-        for (const value of this.$store.state.newUserList) {
-          console.log(value.projectUserRole)
-          if (value.projectUserRole === undefined) {
-            this.openAlert('프로젝트 사용자의 권한을 선택해 주세요.')
-            return
-          }
-        }
-      }
-
-      this.openAlert('등록') */
+      this.$refs.projectMembers.onClickFinish()
     },
-
-    getUserRoleIdx(userRoleCode) {
-      let result = 0
-      const roleList = this.dataUserRoleAllList
-      for (const role of roleList) {
-        if (role.userRoleCode === userRoleCode) {
-          result = role.userRoleIdx
-          break
-        }
-      }
-
-      return result
-    },
+    // getUserRoleIdx(userRoleCode) {
+    //   let result = 0
+    //   const roleList = this.dataUserRoleAllList
+    //   for (const role of roleList) {
+    //     if (role.userRoleCode === userRoleCode) {
+    //       result = role.userRoleIdx
+    //       break
+    //     }
+    //   }
+    //   return result
+    // },
     checkAuth() {
       if (this.currentMenuInfo && this.currentMenuInfo.writableYn !== 'Y') {
         this.$router.go(-1)
@@ -253,16 +184,27 @@ export default {
     },
   },
   beforeMount() {
-    this.checkAuth()
+    // this.checkAuth()
   },
 }
 </script>
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
+.title-wrapper {
+  // margin-top: 20px;
+  margin-bottom: 60px;
+  .title-text {
+    font-size: toRem(36);
+    font-weight: bold;
+    color: $sub-title;
+  }
+}
+
 .sp-box-layout {
   $this: 'project';
   .#{$this}__button-wrapper {
+    clear: both;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -288,6 +230,18 @@ export default {
         border: thin solid $sp-teriary;
         @include set-text(bold, 15, rgba($color: $sp-teriary, $alpha: 1));
       }
+    }
+  }
+  .yaml-sector {
+    width: 100%;
+    .yaml-title {
+      @include set-text(normal, 14, rgba($color: $sp-title, $alpha: 0.7));
+      display: inline-block;
+      float: left;
+    }
+    .yaml-textarea {
+      width: 90%;
+      float: right;
     }
   }
 }

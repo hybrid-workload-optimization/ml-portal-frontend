@@ -4,6 +4,7 @@ import { api } from '@/utils/common'
 const resource = {
   namespaced: true,
   state: {
+    // ml 변수 선언 시작
     dataList: [],
     detailInfo: {},
     clusterInfo: {},
@@ -15,6 +16,11 @@ const resource = {
     cronJobCount: '',
     daemonSetCount: '',
     replicaSetCount: '',
+
+    newMLName: '',
+    newDescription: '',
+    newMLStepCode: '',
+    // ml 변수 선언 끝
 
     dataClusterAllList: [],
     dataClusterList: [],
@@ -29,19 +35,13 @@ const resource = {
     dataDetailUserList: [],
     userSize: 0,
 
-    newProjectName: '',
-    newDescription: '',
-    newClusterList: [],
-    newPmUser: null,
-    newUserList: [],
-
     deleteClusterIdxs: [],
 
     dataUserRoleList: [],
 
     dataUserRoleAllList: [],
 
-    dataManagerUserList: [],
+    dataMLStepList: [],
 
     dataUserMenuList: [],
 
@@ -111,8 +111,8 @@ const resource = {
     dataUserRoleAllList(state) {
       return state.dataUserRoleAllList
     },
-    dataManagerUserList(state) {
-      return state.dataManagerUserList
+    dataMLStepList(state) {
+      return state.dataMLStepList
     },
     dataUserMenuList(state) {
       return state.dataUserMenuList
@@ -120,18 +120,10 @@ const resource = {
   },
 
   mutations: {
-    initProjectInfo(state) {
-      state.newProjectName = ''
+    initMLInfo(state) {
+      state.newWMLName = ''
       state.newDescription = ''
-      state.newPmUser = null
-      state.newClusterList = []
-      state.newUserList = []
-
-      state.editProjectName = ''
-      state.editDescription = ''
-      state.editClusterList = null
-      state.editPmUser = null
-      state.editUserList = null
+      state.newMLStepCode = null
     },
 
     // ML 조회 리스트
@@ -200,6 +192,24 @@ const resource = {
         state.detailInfo.resources = result.resources
       }
     },
+
+    // getMLStepList(state, payload) {
+    //   const { data } = payload
+    //   const { result } = data
+    //   const managerUserList = []
+    //   result.forEach(e => {
+    //     const item = {
+    //       text: `${e.userName} (${e.email})`,
+    //       value: e.userId,
+    //     }
+
+    //     managerUserList.push(item)
+    //   })
+
+    //   state.dataMLStepList = managerUserList
+    // },
+
+    // ML 데이터 처리 끝
 
     getProjectClusterAllList(state, payload) {
       const { data } = payload
@@ -413,22 +423,6 @@ const resource = {
       state.dataUserRoleAllList = userRoleAllList
     },
 
-    getManagerUserList(state, payload) {
-      const { data } = payload
-      const { result } = data
-      const managerUserList = []
-      result.forEach(e => {
-        const item = {
-          text: `${e.userName} (${e.email})`,
-          value: e.userId,
-        }
-
-        managerUserList.push(item)
-      })
-
-      state.dataManagerUserList = managerUserList
-    },
-
     getUserMenuAllList(state, payload) {
       const { data } = payload
       const { result } = data
@@ -483,6 +477,7 @@ const resource = {
   },
 
   actions: {
+    // 머신러닝 api 호출 시작
     async getList({ commit }, payload) {
       const param = {
         userId: payload.userId,
@@ -506,6 +501,14 @@ const resource = {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
     },
+
+    // Machin Learning 신규 생성 요청
+    async createML(context, payload) {
+      const response = await request.createUsingPOST(payload)
+      return response
+    },
+
+    // 머신러닝 api 호출 끝
 
     // Project Cluster 전체 목록 조회 요청
     async getClusterAllList({ commit }, payload) {
@@ -559,12 +562,6 @@ const resource = {
     async getUserAllListForSelect({ commit }, payload) {
       const response = await request.getProjecUserListByUseYnUsingGET(payload)
       commit('getPortalUserAllListForSelect', response)
-      return response
-    },
-
-    // Project 신규 생성 요청
-    async createProject(context, payload) {
-      const response = await request.createProjectUsingPOST(payload)
       return response
     },
 

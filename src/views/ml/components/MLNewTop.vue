@@ -6,9 +6,8 @@
       :horizontal="true"
       background-color="#F5F5f5"
       :className="labelWithTextClass"
-      @input="onChangeProjectName"
+      @input="onChangeMLName"
     />
-
     <label-with-text
       class="general-layout__label"
       name="Description"
@@ -28,8 +27,8 @@
           outlined
           single-line
           flat
-          :items="dataManagerUserList"
-          @input="onChangeProjectManager"
+          :items="dataMLStepList"
+          @input="onChangeMLStep"
         />
       </template>
     </label-with>
@@ -37,12 +36,8 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-import { noKoreanRules } from '@/assets/data/noKoreanRules'
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 import LabelWith from '@/components/molcule/LabelWith.vue'
-
-const projectMapUtils = createNamespacedHelpers('project')
 
 export default {
   components: {
@@ -52,86 +47,58 @@ export default {
 
   data() {
     return {
-      noKorean: noKoreanRules,
-      projectIdx: null,
-      projectName: null,
-      description: null,
-      projectMnanager: null,
       labelWithTextClass: {
-        // titleStyle: {
-        //   fontWeight: 'bold',
-        //   fontSize: '1rem',
-        //   width: '200px',
-        // },
         inputStyle: {
           readonly: this.readOnly,
           fontSize: '2rem',
           borderRadius: '5px',
         },
-        authList: [],
       },
+      // 임시데이터
+      dataMLStepList: [
+        {
+          text: 'Pretreatment',
+          value: 'ml-step-100',
+        },
+        {
+          text: 'Verification',
+          value: 'ml-step-200',
+        },
+        {
+          text: 'Learning',
+          value: 'ml-step-300',
+        },
+        {
+          text: 'Inference',
+          value: 'ml-step-400',
+        },
+        {
+          text: 'Service',
+          value: 'ml-step-500',
+        },
+      ],
     }
   },
 
-  created() {
-    // this.getUserAllListForSelect()
-    this.getUserWithManagerList({ projectIdx: 0 })
-  },
+  created() {},
 
-  computed: {
-    // ...projectMapUtils.mapGetters(['dataUserAllListForSelect']),
-    ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
-    ...projectMapUtils.mapGetters(['dataManagerUserList']),
-  },
+  computed: {},
 
   mounted() {},
 
   methods: {
-    // ...projectMapUtils.mapActions(['getUserAllListForSelect']),
-    ...projectMapUtils.mapActions(['getUserWithManagerList']),
-
-    onChangeProjectName(value) {
-      this.$store.state.project.newProjectName = value
+    // Machine Learning name 저장
+    onChangeMLName(value) {
+      this.$store.state.ml.newMLName = value
     },
 
-    onChangeProjectManager(value) {
-      // const list = []
-      const managerInfo = {
-        userId: value,
-        // projectUserRole: 'PM',
-        // userRoleIdx: 4,
-        userRoleIdx: this.getUserRoleIdx('PROJECT_MANAGER'),
-      }
-
-      console.log('managerInfo === ', managerInfo)
-
-      this.$store.state.project.newPmUser = managerInfo
-
-      /* const getList = this.$store.state.newUserList
-      if (getList == null) {
-        list.push(managerInfo)
-        this.$store.state.newUserList = list
-      } else {
-        getList.push(managerInfo)
-        this.$store.state.newUserList = getList
-      } */
-    },
-
+    // Machine Learning name 저장
     onChangeDescription(value) {
-      this.$store.state.project.newDescription = value
+      this.$store.state.ml.newDescription = value
     },
 
-    getUserRoleIdx(userRoleCode) {
-      let result = 0
-      const roleList = this.dataUserRoleAllList
-      for (const role of roleList) {
-        if (role.userRoleCode === userRoleCode) {
-          result = role.userRoleIdx
-          break
-        }
-      }
-
-      return result
+    onChangeMLStep(value) {
+      this.$store.state.ml.newMLStepCode = value
     },
   },
 }
