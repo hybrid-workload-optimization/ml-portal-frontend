@@ -7,7 +7,7 @@ const resource = {
     // ml 변수 선언 시작
     dataList: [],
     detailInfo: {},
-    clusterInfo: {},
+    clusters: [],
     clusterSize: 0,
 
     mlStep: '',
@@ -53,8 +53,8 @@ const resource = {
   },
 
   getters: {
-    clusterInfo(state) {
-      return state.clusterInfo
+    clusters(state) {
+      return state.clusters
     },
     dataList(state) {
       return state.dataList
@@ -172,15 +172,8 @@ const resource = {
         state.detailInfo.succeededCount = result.succeededCount
         state.detailInfo.failedCount = result.failedCount
 
-        state.detailInfo.clusterInfo = result.cluster
-        // TODO -> 파라미터로 clusterSize를 받을수 있나?
-        let clusterSize = 0
-        if (result.cluster.length === undefined) {
-          clusterSize = 1
-        } else {
-          clusterSize = result.cluster.length
-        }
-        state.detailInfo.clusterSize = clusterSize
+        state.detailInfo.clusters = result.clusters
+        state.detailInfo.clusterSize = result.clusters.length
 
         state.detailInfo.mlStep = result.mlStep
         state.detailInfo.jobCount = result.jobCount

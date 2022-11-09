@@ -66,14 +66,12 @@ export default {
     // cluster 탭 List
     getListCluster() {
       return {
-        group: [this.detailInfo.clusterInfo],
+        group: this.detailInfo.clusters,
       }
     },
 
     ...mlMapUtils.mapGetters([
       'dataDetailClusterList',
-      // 'userSize',
-      // 'clusterSize',
       'getMLList',
       'detailInfo',
     ]),
@@ -94,16 +92,12 @@ export default {
         date: this.detailInfo.createdAt,
         description: this.detailInfo.description,
         clusterCount: this.detailInfo.clusterCount,
-        // memberCount: this.detailInfo.userCount,  // 삭제
       }
     },
   },
 
   mounted() {
     this.getDetail({ mlId: this.mlId, type: 'view' })
-    // // this.getDetailClusterList({ projectIdx: this.projectIdx }) // 삭제
-    // // this.getDetailUserList({ projectIdx: this.projectIdx })    // 삭제
-    // // this.getUserRoleAllList()                                 // 삭제
   },
 
   methods: {
@@ -121,18 +115,6 @@ export default {
     onChangeClusterSearch(value) {
       this.clusterSearch = value
     },
-
-    // onChangeMemberSearch(value) {
-    //   this.memberSearch = value
-    // },
-    //
-    // onClickEditProject() {
-    //   const id = this.projectIdx
-    //
-    //   if (id) {
-    //     this.$router.push(`/project/edit/${id}`)
-    //   }
-    // },
   },
 }
 </script>
