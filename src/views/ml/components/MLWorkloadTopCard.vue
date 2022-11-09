@@ -13,8 +13,8 @@
             width="250px"
             max-width="250px"
             minHeight="0"
-            height="142px"
-            max-height="142px"
+            height="125px"
+            max-height="125px"
             elevation="0"
           ></resource-box>
         </div>
@@ -25,8 +25,8 @@
             :chart-data="podStatusCountData"
             :donut-color="chartColor"
             :chart-option-props="chartOption"
-            width="320px"
-            height="320px"
+            width="250px"
+            height="250px"
           />
         </div>
         <div class="status-wrapper">
@@ -162,7 +162,7 @@ export default {
       .status-display {
         display: block;
         text-align: right;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         .status-title {
           padding-bottom: 10px;
         }
@@ -171,6 +171,9 @@ export default {
           color: $sp-title;
           font-weight: bold;
         }
+      }
+      .status-display:nth-child(3) {
+        margin-bottom: 0px;
       }
     }
     .card-right {
