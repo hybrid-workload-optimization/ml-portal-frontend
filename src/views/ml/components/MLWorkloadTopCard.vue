@@ -21,12 +21,13 @@
       </div>
       <div class="card-center">
         <div class="chart-wrapper">
+          <div class="title-text">Pod 가동률</div>
           <donut-chart
             :chart-data="podStatusCountData"
             :donut-color="chartColor"
             :chart-option-props="chartOption"
-            width="250px"
-            height="250px"
+            width="230px"
+            height="230px"
           />
         </div>
         <div class="status-wrapper">
@@ -144,7 +145,13 @@ export default {
       padding: 10px;
       width: 30%;
       margin-left: 50px;
-
+      .title-text {
+        text-align: center;
+        padding-bottom: 0.5em;
+        font-weight: bold;
+        color: $sp-title;
+        font-size: toRem(20);
+      }
       .chart-wrapper {
         float: left;
         .sp-linear-chart {
