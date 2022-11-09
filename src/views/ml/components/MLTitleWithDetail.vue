@@ -2,12 +2,12 @@
   <div class="sp-project-card-title-with-detail">
     <!-- 컴포넌트 왼쪽 부분 Start,  -->
     <div class="title-left">
-      <!-- <h2 class="card-title">{{ detailInfo.projectName }}</h2> -->
       <h2
         class="card-title"
         v-if="detailInfo.name && detailInfo.name.length <= 20"
       >
         {{ detailInfo.name }}
+        <div class="card-title-status">{{ detailInfo.status }}</div>
       </h2>
       <v-tooltip bottom v-if="detailInfo.name && detailInfo.name.length > 20">
         <template v-slot:activator="{ on }">
@@ -88,7 +88,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Modal from '@/components/modals/Modal.vue'
-import DeleteCluster from '@/views/project/popup/ProjectClusterDeletePop.vue'
+import DeleteCluster from '@/views/ml/popup/MLClusterDeletePop.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -234,6 +234,7 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
+
 .sp-project-card-title-with-detail {
   margin-bottom: 15px;
   .title-left {
@@ -243,6 +244,21 @@ export default {
     .card-title {
       color: $sp-title;
       font-size: toRem(34);
+      // 머신러닝 상태 표시 임시 css
+      .card-title-status {
+        border: 2px solid orange;
+        background-color: orange;
+        display: inline-block;
+        font-size: toRem(20);
+        color: white;
+        font-family: none;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 7px;
+        margin-left: 1em;
+        width: 100px;
+        height: 35px;
+      }
     }
     .left-label {
       opacity: 0.8;
