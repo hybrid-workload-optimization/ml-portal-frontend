@@ -9,7 +9,7 @@ const resource = [
     children: [
       {
         path: 'list',
-        name: 'ML',
+        name: 'MLlist',
         component: () => import('@/views/ml/MLList'),
         meta: {
           isAuthRequired,
@@ -17,7 +17,7 @@ const resource = [
       },
       {
         path: 'new',
-        name: 'MachinLearning New',
+        name: 'MLnew',
         component: () => import('@/views/ml/MLNew'),
         meta: {
           isAuthRequired,
@@ -25,7 +25,7 @@ const resource = [
       },
       {
         path: 'detail/:id',
-        name: 'Detail',
+        name: 'MLdetail',
         component: () => import('@/views/ml/MLDetail'),
         meta: {
           isAuthRequired,

@@ -266,7 +266,15 @@ const PaaSPath = {
     title: 'Tool',
     subTitle: ['Home', 'Setting', 'Tool'],
   },
-  ML: {
+  MLlist: {
+    title: 'Machine Learning',
+    subTitle: ['Home', 'Machine Learning'],
+  },
+  MLnew: {
+    title: 'Machine Learning',
+    subTitle: ['Home', 'Machine Learning'],
+  },
+  MLdetail: {
     title: 'Machine Learning',
     subTitle: ['Home', 'Machine Learning'],
   },
