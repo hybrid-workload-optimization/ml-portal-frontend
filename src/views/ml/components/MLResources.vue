@@ -1,14 +1,8 @@
 <template>
   <div class="sp-dashboard-table-wrapper">
     <div class="title-wrapper">
-      <!-- <search
-        class="sp-basic-search"
-        :title="'Total:'"
-        :todoCount="2"
-        @input="onInputSearchValue"
-        @click="onNewProject"
-      >
-      </search> -->
+      <label class="title">Total</label>
+      <label class="title"> {{ resourceListData.length }}</label>
     </div>
     <div class="datatable-wrapper">
       <resource-table
@@ -18,6 +12,7 @@
         :datas="resourceListData"
         :items-per-page="5"
         is-linked
+        @click:btn.stop="test"
         @click:row="moveToDetailPage"
       >
       </resource-table>
@@ -26,11 +21,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-import ResourceTable from '@/components/dataTables/DataTable.vue'
-// import Search from '@/components/molcule/DataTableSearch.vue'
-
-const mlMapUtils = createNamespacedHelpers('ml')
+import ResourceTable from '@/components/dataTables/MLDataTable.vue'
 
 export default {
   components: {
@@ -58,23 +49,28 @@ export default {
       },
       {
         text: 'Pod',
-        align: 'left',
+        align: 'center',
         value: 'pod',
       },
       {
         text: 'Created At',
-        align: 'left',
+        align: 'center',
         value: 'createdAt',
       },
       {
         text: 'Updated At',
-        align: 'left',
+        align: 'center',
         value: 'updatedAt',
       },
       {
         text: 'Updated',
-        align: 'left',
+        align: 'center',
         value: 'uid',
+      },
+      {
+        text: 'Action',
+        align: 'center',
+        value: '',
       },
     ],
     options: {
@@ -91,50 +87,17 @@ export default {
     },
     resourceListDatasize: 0,
   }),
-  computed: {
-    ...mlMapUtils.mapGetters(['detailInfo']),
-
-    // getChipEachColor() {
-    //   return status => this.getChipColor(status)
-    // },
-    // getStatusText() {
-    //   return status => (status ? 'Power on' : 'Power off')
-    // },
-  },
-  async mounted() {
-    // const param = {
-    //   clusterIdx: this.$route.params.id,
-    // }
-    // this.$refs.spTable.onDataBinding()
-    // await this.getNodeList(param)
-    // await this.getDetail()
-    // this.$refs.spTable.setNoDataText()
-  },
+  computed: {},
+  watch: {},
   methods: {
-    // ...dashboardMapUtils.mapActions(['getNodeList']),
-
-    // getChipColor(statusText) {
-    //   console.log('Status Text: ', statusText)
-    //   let status = ''
-    //   if (statusText) {
-    //     status = 'On'
-    //   } else if (statusText) {
-    //     status = 'Off'
-    //   }
-    //   const STATUS = {
-    //     On: '#00BA88',
-    //     Off: '#1A3350',
-    //   }
-    //   return STATUS[status]
-    // },
+    test() {
+      console.log('성공했음')
+    },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
       const { id } = data
       const { clusterIdx } = data
       if (id != null && clusterIdx != null) {
-        // this.$router.push(
-        //   `/cluster/detail/${clusterIdx}?clusterNodeId=${id}&detail=true#node`,
-        // )
         this.$router.push({
           hash: '#node',
           query: { clusterNodeId: id, detail: true },
