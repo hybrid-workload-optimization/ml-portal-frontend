@@ -1,6 +1,6 @@
-<!-- 기본 베이스 - new Project -->
 <template>
-  <div class="sp-project-new-general">
+  <div class="sp-ml-new">
+    <!-- name 입력 -->
     <label-with-text
       name="Name"
       :horizontal="true"
@@ -8,6 +8,7 @@
       :className="labelWithTextClass"
       @input="onChangeMLName"
     />
+    <!-- Description 입력 -->
     <label-with-text
       class="general-layout__label"
       name="Description"
@@ -18,6 +19,7 @@
       @input="onChangeDescription"
     />
 
+    <!-- ML Step Select -->
     <label-with name="ML Step" horizontal :className="labelWithTextClass">
       <template #append-content class="authority_template">
         <sp-select
@@ -32,17 +34,31 @@
         />
       </template>
     </label-with>
+
+    <div class="yaml-sector">
+      <label class="yaml-title">Yaml</label>
+      <!-- yaml 입력 -->
+      <div class="yaml-textarea">
+        <div class="yaml-part">
+          <div class="editor-wrapper">
+            <editor @input="onChangeYaml"></editor>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 import LabelWith from '@/components/molcule/LabelWith.vue'
+import Editor from '@/components/Editor.vue'
 
 export default {
   components: {
     LabelWithText,
     LabelWith,
+    Editor,
   },
 
   data() {
@@ -74,7 +90,7 @@ export default {
         },
         {
           text: 'Service',
-          value: 'ml-step-500',
+          value: 'ml-step-900',
         },
       ],
     }
@@ -92,13 +108,20 @@ export default {
       this.$store.state.ml.newMLName = value
     },
 
-    // Machine Learning name 저장
+    // Machine Learning Description 저장
     onChangeDescription(value) {
       this.$store.state.ml.newDescription = value
     },
 
+    // Machine Learning MLStep 저장
     onChangeMLStep(value) {
+      console.log(value)
       this.$store.state.ml.newMLStepCode = value
+    },
+
+    // Machine Learning Yaml 저장
+    onChangeYaml(value) {
+      this.$store.state.ml.newMLYaml = value
     },
   },
 }
@@ -106,7 +129,7 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-.sp-project-new-general {
+.sp-ml-new {
   $this: 'sp';
   .sp-label-with-text,
   .sp-label-with {
@@ -167,8 +190,19 @@ export default {
       }
     }
   }
-
-  $this: 'project';
+  .yaml-sector {
+    width: 100%;
+    .yaml-title {
+      @include set-text(normal, 14, rgba($color: $sp-title, $alpha: 0.7));
+      display: inline-block;
+      float: left;
+    }
+    .yaml-textarea {
+      width: 90%;
+      float: right;
+    }
+  }
+  $this: 'ml';
   .#{$this}__button-wrapper {
     display: flex;
     align-items: center;
