@@ -12,6 +12,7 @@
         :datas="resourceListData"
         :items-per-page="5"
         is-linked
+        @page-count="15"
         @click:btn="deleteResource"
         @click:row="moveToDetailPage"
       >
@@ -79,11 +80,6 @@ export default {
         text: 'Updated At',
         align: 'center',
         value: 'updatedAt',
-      },
-      {
-        text: 'Updated',
-        align: 'center',
-        value: 'uid',
       },
       {
         text: 'Action',

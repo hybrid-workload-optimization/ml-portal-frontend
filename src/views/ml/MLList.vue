@@ -23,6 +23,7 @@
       :datas="dataList"
       :options="options"
       :search="searchValue"
+      @page-count="15"
       @click:row="moveToDetailPage"
     />
     <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
