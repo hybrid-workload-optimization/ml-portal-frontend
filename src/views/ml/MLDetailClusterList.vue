@@ -1,17 +1,18 @@
 <template>
   <div class="sp-project-detail-list">
-    <div class="cluster-list__search-wrapper">
+    <div class="project-list__search-wrapper">
       <search
-        class="cluster-list__search"
+        class="project-list__search"
         :title="searchTitle"
         :todoCount="totalCount"
         :search="search"
         @input="onChangeSearch"
       />
     </div>
-    <div class="cluster-list__data-table-wrapper">
-      <cluster-list-table
+    <div class="project-list__data-table-wrapper">
+      <project-list-table
         ref="spTable"
+        :headers="headers"
         :datas="data.group"
         :search="search"
         :options="options"
@@ -19,116 +20,88 @@
         isCustomBody
       >
         <template v-slot:body="{ item }">
-          <tr class="cluster-list__item-wrapper">
-            <td class="cluster-list__name-wrapper">
-              <div class="cluster-list__image-title-wrapper">
+          <tr class="project-list__item-wrapper">
+            <td class="project-list__name-wrapper">
+              <div class="project-list__image-title-wrapper">
                 <div
-                  v-if="item.provisioningType"
-                  class="cluster-list__image-wrapper"
+                  v-if="item.clusterName"
+                  class="project-list__image-wrapper"
                 >
                   <sp-image
-                    class="cluster-list__image"
+                    class="project-list__image"
                     contain
-                    :lazySrc="setImgProvisioning(item.provisioningType)"
-                    :src="setImgProvisioning(item.provisioningType)"
+                    :lazySrc="item.img"
+                    :src="item.img"
                   />
                 </div>
                 <div
                   v-if="item.clusterName"
-                  class="cluster-list__title-wrapper"
+                  class="project-list__title-wrapper"
                   @click="onClickClusterDetail(item)"
                 >
-                  <div class="cluster-list__title">{{ item.clusterName }}</div>
-                  <div class="cluster-list__team">
+                  <div class="project-list__title">{{ item.clusterName }}</div>
+                  <div class="project-list__team">
                     {{ item.description }}
                   </div>
                 </div>
                 <div
                   v-if="item.userName"
-                  class="cluster-list__title-wrapper"
+                  class="project-list__title-wrapper"
                   @click="onClickMemberDetail(item)"
                 >
-                  <div class="cluster-list__title">
+                  <div class="project-list__title">
                     {{ item.userName }}({{ item.email }})
                   </div>
-                  <div class="cluster-list__team">
+                  <div class="project-list__team">
                     {{ item.organization }}
                   </div>
                 </div>
               </div>
             </td>
-            <td class="cluster-list__provider-wrapper">
-              <!--  -->
-              <template>
-                <div
-                  v-if="item.status === 'Unhealthy'"
-                  class="cluster-list__state-box"
-                  v-on="on"
-                >
-                  <div class="cluster-list__image-wrapper" style="width: 25px">
-                    <sp-image
-                      class="cluster-list__image"
-                      contain
-                      :lazySrc="setImageState(item.status)"
-                      :src="setImageState(item.status)"
-                    />
-                  </div>
-                  <label :class="item.state" class="statusLabel">{{
-                    item.status
-                  }}</label>
-                </div>
-                <div v-else class="cluster-list__state-box">
-                  <div class="cluster-list__image-wrapper" style="width: 25px">
-                    <sp-image
-                      class="cluster-list__image"
-                      contain
-                      :lazySrc="setImageState(item.status)"
-                      :src="setImageState(item.status)"
-                    />
-                  </div>
-                  <label :class="item.state" class="statusLabel">{{
-                    item.status
-                  }}</label>
-                </div>
-              </template>
-            </td>
-            <td class="cluster-list__nodepool-wrapper">
-              <label v-if="item.vmType">NodePool</label>
-              <div v-if="item.vmType" class="cluster-list__title">
-                {{ item.vmType }}
+            <td
+              v-if="item.job === 'Cluster'"
+              class="project-list__provider-wrapper"
+            >
+              <label>Node</label>
+              <div v-if="item.nodeCount" class="project-list__title">
+                {{ item.nodeCount }}
               </div>
+              <div v-else class="project-list__title">0</div>
             </td>
-            <td class="cluster-list__provider-wrapper">
+            <td class="project-list__version-wrapper">
               <label v-if="item.provider">Provider</label>
-              <div v-if="item.provider" class="cluster-list__title">
+              <div v-if="item.provider" class="project-list__title">
                 {{ item.provider }}
               </div>
             </td>
-            <td class="cluster-list__version-wrapper">
+            <td class="project-list__role-wrapper">
               <label v-if="item.providerVersion">Version</label>
-              <div v-if="item.providerVersion" class="cluster-list__title">
+              <div v-if="item.providerVersion" class="project-list__title">
                 {{ item.providerVersion }}
               </div>
-            </td>
-            <td class="cluster-list__added-wrapper">
-              <label v-if="item.createdAt">Added</label>
-              <div v-if="item.createdAt" class="cluster-list__title">
-                {{ item.createdAt }}
+              <label v-if="item.userRoleName">Role</label>
+              <div v-if="item.userRoleName" class="project-list__title">
+                {{ item.userRoleName }}
               </div>
             </td>
-            <td class="cluster-list__button-wrapper">
+            <td class="project-list__createdAt-wrapper">
+              <label>Added</label>
+              <div class="project-list__title">{{ item.addedAt }}</div>
+            </td>
+            <td class="project-list__button-wrapper">
               <sp-button
-                @click="onClickEdit(item)"
-                class="cluster-list--edit"
+                @click="onClickDelete(item)"
+                class="project-list--delete"
                 elevation="0"
                 dense
+                v-if="isAuth"
               >
-                Edit
+                Delete
               </sp-button>
             </td>
           </tr>
         </template>
-      </cluster-list-table>
+      </project-list-table>
     </div>
 
     <!-- 삭제 요청 확인 창 -->
@@ -139,7 +112,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Search from '@/components/molcule/DataTableSearch.vue'
-import ClusterListTable from '@/components/dataTables/DataTable.vue'
+import ProjectListTable from '@/components/dataTables/DataTable.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 import encrypt from '@/lib/encrypt'
 
@@ -150,7 +123,7 @@ const confirmMapUtils = createNamespacedHelpers('confirm')
 export default {
   components: {
     Search,
-    ClusterListTable,
+    ProjectListTable,
     Confirm,
   },
 
@@ -162,7 +135,7 @@ export default {
     },
     totalCount: {
       type: String,
-      default: '1',
+      default: '0',
       description: 'totalCount',
     },
     data: {
@@ -183,6 +156,70 @@ export default {
 
   data() {
     return {
+      headers: [
+        {
+          text: '',
+          align: 'left',
+          value: 'clusterName',
+          // class: 'w-30',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'description',
+          // class: 'w-30',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'userName',
+          // class: 'w-30',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'email',
+          // class: 'w-30',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'organization',
+          // class: 'w-30',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'provider',
+          // class: 'w-40',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'providerVersion',
+          // class: 'w-40',
+        },
+        {
+          text: '',
+          align: 'left',
+          // value: 'projectUserRole',
+          value: 'userRoleIdx',
+          // class: 'w-40',
+        },
+        {
+          text: '',
+          align: 'left',
+          // value: 'projectUserRoleNm',
+          value: 'userRoleName',
+          // class: 'w-40',
+        },
+        {
+          text: '',
+          align: 'left',
+          value: 'createdAt',
+          // class: 'w-40',
+        },
+      ],
       options: {
         hideFooter: true,
         hideHeader: true,
@@ -239,36 +276,38 @@ export default {
     ...projectMapUtils.mapActions(['getDetailUserList']),
     ...projectMapUtils.mapActions(['getUserMenuList']),
 
-    setImgProvisioning(value) {
-      if (value.toLowerCase() === 'aks') {
-        return 'Icon_aks.svg'
-      }
-      if (value.toLowerCase() === 'gke') {
-        return 'icon_gke.svg'
-      }
-      if (value.toLowerCase() === 'eks') {
-        return 'icon_eks.svg'
-      }
-      return 'icon_naver.svg'
-    },
-    setImageState(value) {
-      if (value.toLowerCase() === 'healthy') {
-        return 'Icon_healthy.svg'
-      }
-      if (value.toLowerCase() === 'unhealthy') {
-        return 'icon_unhealthy.svg'
-      }
-      return 'icon_waiting.svg'
-    },
-
     onChangeSearch(value) {
       this.$emit('input', value)
     },
 
-    // TODO -> 수정 기능 넣기
-    onClickEdit(item) {
-      console.log('item == ', item)
+    /* onInputSearchValue(value) {
+      this.searchValue = value
+    }, */
+
+    onClickDelete(item) {
+      this.clusterIdx = null
+      this.userId = null
+
+      if (item.job === 'Cluster') {
+        this.openConfirm('이 클러스터를 삭제 하시겠습니까?')
+        this.clusterIdx = item.id
+      } else {
+        if (item.userRoleIdx === this.getUserRoleIdx('PROJECT_MANAGER')) {
+          this.openAlert({
+            title: 'Project Manager는 삭제할 수 없습니다.',
+            type: 'error',
+          })
+          return
+        }
+        this.openConfirm('이 Member를 삭제 하시겠습니까?')
+        this.userId = item.id
+      }
+      this.job = item.job
     },
+
+    /* async onClickDelConfirm() {
+      this.openAlert('삭제 성공')
+    }, */
 
     onClickDelConfirm() {
       const param = {
@@ -287,6 +326,7 @@ export default {
       try {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         const response = await this.deleteProjectCluster(param)
+        console.log('response === ', response)
         if (response.status === 200) {
           this.openAlert({ title: response.data.message, type: 'info' })
           /* setTimeout(() => {
@@ -413,15 +453,13 @@ export default {
 @import '@/styles/_mixin.scss';
 
 .project-layout__member-list {
-  $this: 'cluster-list';
+  $this: 'project-list';
   .#{$this}__state-wrapper,
   .#{$this}__language-wrapper,
   .#{$this}__role-wrapper,
   .#{$this}__provider-wrapper,
   .#{$this}__createdAt-wrapper,
   .#{$this}__version-wrapper,
-  .#{$this}__nodepool-wrapper,
-  .#{$this}__added-wrapper,
   .#{$this}__button-wrapper {
     width: 15% !important;
     @include desktop-small(580px, 1750px) {
@@ -432,7 +470,7 @@ export default {
 
 .sp-project-detail-list {
   width: 100%;
-  $this: 'cluster-list';
+  $this: 'project-list';
   .#{$this}__search-wrapper {
     padding-bottom: 5px;
     @include set-text(normal, 15, rgba($color: $sp-title, $alpha: 1));
@@ -451,7 +489,7 @@ export default {
     width: 100%;
 
     .#{$this}__item-wrapper {
-      width: 110%;
+      width: 100%;
 
       .#{$this}__state-wrapper,
       .#{$this}__language-wrapper,
@@ -460,8 +498,6 @@ export default {
       .#{$this}__button-wrapper,
       .#{$this}__createdAt-wrapper,
       .#{$this}__version-wrapper,
-      .#{$this}__nodepool-wrapper,
-      .#{$this}__added-wrapper,
       .#{$this}__button-wrapper {
         width: 10%;
         @include desktop-small(580px, 1750px) {
@@ -477,7 +513,7 @@ export default {
             true
           );
         }
-        .#{$this}--edit {
+        .#{$this}--delete {
           width: 108px;
           @include desktop-small(580px, 1750px) {
             width: 100px;
@@ -498,6 +534,7 @@ export default {
           font-size: toRem(13);
         }
       }
+
       label {
         @include set-text(
           500,
@@ -509,7 +546,7 @@ export default {
       }
 
       .#{$this}__name-wrapper {
-        width: 30%;
+        width: 50%;
         @include desktop-small(580px, 1750px) {
           width: 40%;
         }
@@ -565,12 +602,6 @@ export default {
           }
         }
       }
-      // .ml-status__image {
-      //   width: 45px;
-      //   height: 45px;
-      //   margin-right: 10px;
-      //   float: left;
-      // }
     }
 
     table {
@@ -624,10 +655,6 @@ export default {
       border-bottom: 1px solid $sp-box-border;
       border-top: 1px solid $sp-box-border;
     }
-  }
-
-  .cluster-list__state-box {
-    display: flex;
   }
 }
 </style>
