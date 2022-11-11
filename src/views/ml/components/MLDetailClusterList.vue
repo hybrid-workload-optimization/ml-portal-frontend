@@ -63,7 +63,6 @@
                 <div
                   v-if="item.status === 'Unhealthy'"
                   class="cluster-list__state-box"
-                  v-on="on"
                 >
                   <div class="cluster-list__image-wrapper" style="width: 25px">
                     <sp-image
@@ -131,8 +130,23 @@
       </cluster-list-table>
     </div>
 
+    <modal
+      class="popup-cluster"
+      title-name="Cluster 조정"
+      modal-width="670"
+      :dialog="isOpenEditScaleModal"
+      @close-modal="onClickCloseLabelModal"
+    >
+      <template v-slot:content>
+        <clusterscale-popup
+          @closePopup="onClickCloseLabelModal"
+          :item="vmData"
+        />
+      </template>
+    </modal>
+
     <!-- 삭제 요청 확인 창 -->
-    <confirm @confirm-modal="onClickDelConfirm" />
+    <!-- <confirm @confirm-modal="onClickDelConfirm" /> -->
   </div>
 </template>
 
@@ -140,10 +154,11 @@
 import { createNamespacedHelpers } from 'vuex'
 import Search from '@/components/molcule/DataTableSearch.vue'
 import ClusterListTable from '@/components/dataTables/DataTable.vue'
-import Confirm from '@/components/molcule/Confirm.vue'
 import encrypt from '@/lib/encrypt'
+import Modal from '@/components/modals/Modal.vue'
+import ClusterscalePopup from '@/views/ml/popup/MLClusterScalePopup.vue'
 
-const projectMapUtils = createNamespacedHelpers('project')
+const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
 
@@ -151,7 +166,8 @@ export default {
   components: {
     Search,
     ClusterListTable,
-    Confirm,
+    ClusterscalePopup,
+    Modal,
   },
 
   props: {
@@ -162,7 +178,7 @@ export default {
     },
     totalCount: {
       type: String,
-      default: '1',
+      default: '0',
       description: 'totalCount',
     },
     data: {
@@ -183,6 +199,7 @@ export default {
 
   data() {
     return {
+      vmData: {},
       options: {
         hideFooter: true,
         hideHeader: true,
@@ -196,48 +213,27 @@ export default {
         itemKey: 'id',
       },
 
-      // searchValue: '',
-      projectIdx: null,
-      clusterIdx: null,
-      userId: null,
-      job: null,
+      // // searchValue: '',
+      // projectIdx: null,
+      // clusterIdx: null,
+      // userId: null,
+      // job: null,
     }
   },
 
-  async created() {
-    this.projectIdx = this.$route.params.id
-    await this.getUserMenuList()
-  },
-  mounted() {
-    this.$refs.spTable.onDataBinding()
-  },
-  updated() {
-    this.$refs.spTable.setNoDataText()
-  },
+  created() {},
+  mounted() {},
+  updated() {},
 
   computed: {
-    ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
-    ...projectMapUtils.mapGetters(['dataUserMenuList']),
-
-    /* searching() {
-      if (!this.searchValue) return this.dataList
-      const search = this.searchValue.toLowerCase()
-      return this.dataList.filter(item => {
-        const text = item.projectName.toLowerCase()
-        return text.indexOf(search) > -1
-      })
-    }, */
+    ...mlMapUtils.mapGetters(['detailInfo']),
+    ...mlMapUtils.mapGetters(['isOpenEditScaleModal']),
   },
 
   methods: {
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
-    ...projectMapUtils.mapActions(['deleteProjectCluster']),
-    ...projectMapUtils.mapActions(['deleteProjectUser']),
-    ...projectMapUtils.mapActions(['getDetail']),
-    ...projectMapUtils.mapActions(['getDetailClusterList']),
-    ...projectMapUtils.mapActions(['getDetailUserList']),
-    ...projectMapUtils.mapActions(['getUserMenuList']),
+    ...mlMapUtils.mapMutations(['openEditScaleModal', 'closeEditScaleModal']),
 
     setImgProvisioning(value) {
       if (value.toLowerCase() === 'aks') {
@@ -252,8 +248,13 @@ export default {
       return 'icon_naver.svg'
     },
     setImageState(value) {
+      // 클러스터 vm edit 수정후 state가 null로 나옴
+      // vmCount 변경이 안됨
+      if (value === null) {
+        return 'Icon_aks.svg'
+      }
       if (value.toLowerCase() === 'healthy') {
-        return 'Icon_healthy.svg'
+        return 'icon_healthy.svg'
       }
       if (value.toLowerCase() === 'unhealthy') {
         return 'icon_unhealthy.svg'
@@ -265,11 +266,14 @@ export default {
       this.$emit('input', value)
     },
 
-    // TODO -> 수정 기능 넣기
     onClickEdit(item) {
-      console.log('item == ', item)
+      this.vmData = item
+      this.openEditScaleModal()
     },
 
+    onClickCloseLabelModal() {
+      this.closeEditScaleModal()
+    },
     onClickDelConfirm() {
       const param = {
         projectIdx: this.projectIdx,
@@ -334,6 +338,7 @@ export default {
     },
 
     onClickClusterDetail(data) {
+      // const authority = 'Y'
       let authority = 'N'
 
       const menuList = this.dataUserMenuList
