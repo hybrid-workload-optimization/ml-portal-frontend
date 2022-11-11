@@ -88,7 +88,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Modal from '@/components/modals/Modal.vue'
-import DeleteCluster from '@/views/ml/popup/MLClusterDeletePop.vue'
+import DeleteCluster from '@/views/ml/popup/MLClusterDeletePopup.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     ...alertMapUtils.mapMutations(['openAlert']),
-    ...mlMapUtils.mapActions(['deleteProject']),
+    ...mlMapUtils.mapActions(['deleteML']),
 
     onClickList() {
       this.$router.push('/ml/list')
@@ -181,7 +181,7 @@ export default {
     },
     onClickConfirmModal() {
       this.isOpenMessage = true
-      this.requestDeleteProject()
+      this.requestDeleteML()
     },
     onClickConfirm() {
       this.isOpenMessage = false
@@ -196,24 +196,22 @@ export default {
       this.isOpenToast = false
     },
 
-    async requestDeleteProject() {
+    async requestDeleteML() {
       this.onClickCloseModal()
 
       const param = {
-        projectIdx: this.projectIdx,
-        loginId: '33333',
-        loginName: '테스터3',
-        clusterList: this.$store.state.project.deleteClusterIdxs,
+        deleteCluster: true,
+        mlId: this.detailInfo.mlId,
       }
 
       try {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteProject(param)
+        const response = await this.deleteML(param)
         if (response.status === 200) {
           if (response.data.code === '10001') {
             this.openAlert({ title: response.data.message, type: 'info' })
             setTimeout(() => {
-              this.$router.push('/project/list')
+              this.$router.push('/ml/list')
             }, 1000)
           } else {
             this.openAlert({ title: response.data.message, type: 'error' })
@@ -223,7 +221,7 @@ export default {
         }
       } catch (error) {
         this.openAlert({
-          title: '프로젝트를 삭제하지 못했습니다.',
+          title: '머신러닝을 삭제하지 못했습니다.',
           type: 'error',
         })
       }
