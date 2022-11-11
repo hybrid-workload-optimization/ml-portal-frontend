@@ -12,21 +12,39 @@
         :datas="resourceListData"
         :items-per-page="5"
         is-linked
-        @click:btn.stop="test"
+        @click:btn="deleteResource"
         @click:row="moveToDetailPage"
       >
       </resource-table>
     </div>
+
+    <modal
+      class="popup-cluster"
+      title-name="Resource 삭제"
+      modal-width="456"
+      :dialog="isOpenDeleteResourceModal"
+      @close-modal="onClickCloseLabelModal"
+    >
+      <template v-slot:content>
+        <clusterscale-popup :item="item" @closePopup="onClickCloseLabelModal" />
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
 import ResourceTable from '@/components/dataTables/MLDataTable.vue'
+import Modal from '@/components/modals/Modal.vue'
+import ClusterscalePopup from '@/views/ml/popup/MLResourceDeletePopup.vue'
+
+const mlMapUtils = createNamespacedHelpers('ml')
 
 export default {
   components: {
     ResourceTable,
-    // Search,
+    ClusterscalePopup,
+    Modal,
   },
   props: {
     resourceListData: {
@@ -86,12 +104,25 @@ export default {
       itemKey: 'id',
     },
     resourceListDatasize: 0,
+    item: [],
   }),
-  computed: {},
+  computed: {
+    ...mlMapUtils.mapGetters(['isOpenDeleteResourceModal']),
+  },
   watch: {},
   methods: {
-    test() {
-      console.log('성공했음')
+    ...mlMapUtils.mapMutations([
+      'openDeleteResourceModal',
+      'closeDeleteResourceModal',
+    ]),
+
+    // 리소스 삭제 버튼 클릭시 해당 함수 호출
+    deleteResource(data) {
+      this.item = data.id
+      this.openDeleteResourceModal()
+    },
+    onClickCloseLabelModal() {
+      this.closeDeleteResourceModal()
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
