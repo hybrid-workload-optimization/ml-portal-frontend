@@ -1,20 +1,36 @@
 <template>
-  <div class="bindTable">
-    <table class="popupTable">
+  <div class="table-wrapper">
+    <table class="table-wrapper-table">
       <tr>
         <td>
-          <label>VM Type</label>
+          <label class="table-wrapper-table-label">VM Type : </label>
         </td>
-        <td>
-          <input class="input-text" type="text" v-model="vmType" disabled />
+        <td class="table-wrapper-table-select">
+          <sp-select
+            class="sp__input authority_select"
+            background-color="#fff"
+            hide-details="auto"
+            outlined
+            single-line
+            flat
+            :items="vmType"
+          />
+          <!-- <input type="text" v-model="vmType" disabled /> -->
         </td>
       </tr>
       <tr>
         <td>
-          <label>VM Count</label>
+          <label class="table-wrapper-table-label">VM Count : </label>
         </td>
-        <td>
-          <input type="number" min="0" max="10" v-model="vmCount" />
+        <td class="table-wrapper-table-number">
+          <input
+            id="vmCount"
+            type="number"
+            min="0"
+            max="20"
+            v-model="vmCount"
+            @input="checkValue"
+          />
         </td>
       </tr>
     </table>
@@ -30,8 +46,8 @@
         class="popup-ml--button finish"
         elevation="0"
         dense
-        @click="clickLimitSave"
-        >Save</sp-button
+        @click="clickEditSave"
+        >Confirm</sp-button
       >
     </div>
   </div>
@@ -51,6 +67,29 @@ export default {
     return {
       vmType: '',
       vmCount: 0,
+
+      dataVMTypeList: [
+        {
+          text: 'Pretreatment',
+          value: 'ml-step-100',
+        },
+        {
+          text: 'Verification',
+          value: 'ml-step-200',
+        },
+        {
+          text: 'Learning',
+          value: 'ml-step-300',
+        },
+        {
+          text: 'Inference',
+          value: 'ml-step-400',
+        },
+        {
+          text: 'Service',
+          value: 'ml-step-900',
+        },
+      ],
     }
   },
   props: {
@@ -65,6 +104,15 @@ export default {
     ...mlMapUtils.mapActions(['updateClusterScale']),
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
+    // input number 에 숫자가 아닌 문자가 들어올경우 조건식으로 체크
+    checkValue(e) {
+      const regex = /[0-9]+$/
+      if (!regex.test(e.data) && e.data !== null) {
+        const value = document.getElementById('vmCount')
+        value.value = null
+      }
+    },
+
     initLimitData() {
       this.vmType = this.item.vmType
       this.vmCount = this.item.nodeCount
@@ -76,7 +124,10 @@ export default {
         this.vmCount = 0
       }
     },
-    async clickLimitSave() {
+    async clickEditSave() {
+      if (this.vmCount === null) {
+        this.vmCount = 0
+      }
       try {
         const response = await this.updateClusterScale({
           clusterIdx: this.item.clusterIdx,
@@ -117,42 +168,29 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-.bindTable {
+.table-wrapper {
   width: 100%;
-  padding-top: 1.7em;
-}
-.popupTable {
-  background: #2a4058;
-  margin: auto;
+  height: 10em;
   text-align: center;
-}
-.popupTable > tr > td:nth-child(1) {
-  background: white;
-  // padding-left: 2em;
-  // width: 15em;
-}
-.popupTable > tr > td:nth-child(2) > input[type='text'] {
-  width: 100%;
-}
-.input-text {
-  margin-left: 10px;
-}
-.popupTable > tr > td:nth-child(2) > input[type='number'] {
-  width: 100%;
-  text-align: center;
-  border: 0px;
-  // border: 1px solid #2a4058;
-}
-.popupTable > tr > td:nth-child(2) > label {
-  margin-left: 1em;
-}
-.popupTable > tr > td:nth-child(2) {
-  background: white;
-  width: 20em;
-}
-
-.popup-ml--button:nth-child(1) {
-  margin-right: 20px;
-  padding-right: 20px;
+  .table-wrapper-table {
+    margin: 0 auto;
+    text-align: center;
+    .table-wrapper-table-label {
+      padding-right: 10px;
+    }
+    #vmCount {
+      height: 2em;
+      font-size: 1.1em;
+    }
+  }
+  .table-wrapper-table > tr:nth-child(2) {
+    text-align: left;
+  }
+  .table-wrapper-table-select {
+    width: 13.2em;
+  }
+  .table-wrapper-table-number > input {
+    width: 13.2em;
+  }
 }
 </style>
