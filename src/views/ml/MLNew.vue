@@ -168,8 +168,7 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 .title-wrapper {
-  // margin-top: 20px;
-  margin-bottom: 60px;
+  margin-top: 20px;
   .title-text {
     font-size: toRem(36);
     font-weight: bold;
