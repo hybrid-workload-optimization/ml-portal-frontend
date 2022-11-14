@@ -12,7 +12,17 @@
         {{ item }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items class="project-layout__tab-item" v-model="tab">
+    <empty
+      v-if="mlStatus === false"
+      class="table-wrapper"
+      title="클러스터 준비중"
+      description=""
+    />
+    <v-tabs-items
+      v-else-if="mlStatus === true"
+      class="project-layout__tab-item"
+      v-model="tab"
+    >
       <v-tab-item v-for="item in tabNames" :key="item">
         <!-- workload일 경우 -->
         <ml-workload v-if="item === 'Workload'"></ml-workload>
@@ -37,6 +47,7 @@ import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 import DetailTitle from '@/views/ml/components/MLTitleWithDetail.vue'
 import ClusterList from '@/views/ml/components/MLDetailClusterList.vue'
 import MlWorkload from '@/views/ml/components/MLWorkload.vue'
+import Empty from '@/components/Empty.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
 
@@ -46,6 +57,7 @@ export default {
     DetailTitle,
     ClusterList,
     MlWorkload,
+    Empty,
   },
   mixins: [checkProjectAuth],
   data() {
@@ -55,6 +67,8 @@ export default {
       tabNames: ['Workload', 'Cluster'], // 탭 명칭들
       clusterSearch: '',
       memberSearch: '',
+
+      mlStatus: false,
     }
   },
 
@@ -96,8 +110,14 @@ export default {
     },
   },
 
-  mounted() {
-    this.getDetail({ mlId: this.mlId, type: 'view' })
+  async mounted() {
+    // api 호출에 따른 status 값으로 화면에 보여지는 데이터 가림
+    const response = await this.getDetail({ mlId: this.mlId, type: 'view' })
+    if (response.status !== 200) {
+      this.mlStatus = false
+    } else {
+      this.mlStatus = true
+    }
   },
 
   methods: {
@@ -107,11 +127,6 @@ export default {
       'getDetailUserList',
       'getUserRoleAllList',
     ]),
-    // onClickDeleteProject() {
-    //   console.log('삭제기능 추가예정')
-    // },
-    // onClickDeleteCluster() {},
-    // onClickDeleteMember() {},
     onChangeClusterSearch(value) {
       this.clusterSearch = value
     },

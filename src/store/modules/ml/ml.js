@@ -181,6 +181,9 @@ const resource = {
         state.detailInfo.replicaSetCount = result.replicaSetCount
 
         state.detailInfo.resources = result.resources
+
+        state.detailInfo.promethusUrl = result.promethusUrl
+        state.detailInfo.grafanaUrl = result.grafanaUrl
       }
     },
 
@@ -487,6 +490,7 @@ const resource = {
     async getDetail({ commit }, payload) {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
+      return response
     },
 
     // ML 신규 생성 요청

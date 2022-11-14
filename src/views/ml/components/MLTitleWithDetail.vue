@@ -7,7 +7,11 @@
         v-if="detailInfo.name && detailInfo.name.length <= 20"
       >
         {{ detailInfo.name }}
-        <div class="card-title-status">{{ detailInfo.status }}</div>
+        <div class="card-title-status">
+          <label :class="{ 'status-green': detailInfo.status }">
+            {{ detailInfo.status }}
+          </label>
+        </div>
       </h2>
       <v-tooltip bottom v-if="detailInfo.name && detailInfo.name.length > 20">
         <template v-slot:activator="{ on }">
@@ -30,8 +34,23 @@
         </template>
       </div>
     </div>
-    <div class="title-middle"></div>
     <div class="title-right">
+      <div class="right-title">Monitoring</div>
+      <div>
+        <span class="right-label">Prometheus URL :</span>
+        <span class="right-content">
+          <a :href="detailInfo.promethusUrl">{{ detailInfo.promethusUrl }}</a>
+        </span>
+      </div>
+      <div>
+        <span class="right-label">Grafana URL :</span>
+        <span class="right-content">
+          <a :href="detailInfo.grafanaUrl">{{ detailInfo.grafanaUrl }}</a>
+        </span>
+      </div>
+    </div>
+    <div class="title-middle"></div>
+    <div class="title-right-btn">
       <slot name="additional-buttons"></slot>
       <sp-button outlined class="list-button title-button" @click="onClickList"
         >List</sp-button
@@ -130,8 +149,7 @@ export default {
     ...mlMapUtils.mapGetters(['detailInfo']),
     content() {
       // return this.detailInfo.description.split('\n').join('<br />')
-      // return this.detailInfo.description.split('\n')
-      return this.detailInfo.description
+      return this.detailInfo.description.split('\n')
     },
   },
   methods: {
@@ -242,20 +260,22 @@ export default {
     .card-title {
       color: $sp-title;
       font-size: toRem(34);
-      // 머신러닝 상태 표시 임시 css
       .card-title-status {
-        border: 2px solid orange;
-        background-color: orange;
         display: inline-block;
-        font-size: toRem(20);
-        color: white;
-        font-family: none;
-        text-align: center;
-        vertical-align: middle;
-        border-radius: 7px;
-        margin-left: 1em;
-        width: 100px;
-        height: 35px;
+        .status-green {
+          background-color: #00e200;
+          border: 0px;
+          display: inline-block;
+          font-size: toRem(20);
+          color: white;
+          font-family: none;
+          text-align: center;
+          vertical-align: middle;
+          border-radius: 7px;
+          margin-left: 1em;
+          width: 100px;
+          height: 35px;
+        }
       }
     }
     .left-label {
@@ -269,6 +289,28 @@ export default {
       margin-right: 20px;
     }
   }
+
+  .title-right {
+    display: inline-block;
+    width: 30%;
+    vertical-align: middle;
+    .right-title {
+      color: $sp-title;
+      font-size: toRem(18);
+      text-align: left;
+    }
+    .right-label {
+      opacity: 0.8;
+      font-size: 0.8rem;
+      margin-right: 10px;
+      word-break: break-all;
+    }
+    .right-content {
+      font-size: 0.8rem;
+      margin-right: 20px;
+    }
+  }
+
   .title-middle {
     width: 20%;
     display: inline-block;
@@ -294,16 +336,16 @@ export default {
       }
     }
   }
-  .title-right {
+  .title-right-btn {
     width: 40%;
     display: inline-block;
     text-align: right;
     vertical-align: middle;
+    float: right;
 
     .title-button {
       width: 120px;
       color: $sp-teriary;
-      // border-radius: 50px;
       border-radius: 5px;
       border-width: thin;
       font-weight: bold;
