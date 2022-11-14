@@ -6,9 +6,7 @@
       :pod-status-data="setPodStatusData"
     ></workload-top-card>
     <!-- workload 탭 하단 List-->
-    <resources-table
-      :resource-list-data="setResourceListData"
-    ></resources-table>
+    <resources-table></resources-table>
   </div>
 </template>
 
@@ -28,27 +26,23 @@ export default {
     return {}
   },
   computed: {
-    ...mlMapUtils.mapGetters(['detailInfo']), // 상세
-    setResourceListData() {
-      return this.detailInfo.resources
-    },
+    ...mlMapUtils.mapGetters(['detailInfo']), //
     setPodStatusData() {
-      // 테스트를 위한 임시 데이터
       return [
         {
           name: 'Running',
-          value: 12,
-          // value: this.detailInfo.activeCount,
+          default: 0,
+          value: this.detailInfo.activeCount,
         },
         {
           name: 'Succeded',
-          value: 3,
-          // value: this.detailInfo.succeededCount,
+          default: 0,
+          value: this.detailInfo.succeededCount,
         },
         {
           name: 'Failed',
-          value: 3,
-          // value: this.detailInfo.failedCount,
+          default: 0,
+          value: this.detailInfo.failedCount,
         },
       ]
     },

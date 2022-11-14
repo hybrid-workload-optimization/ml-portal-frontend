@@ -2,14 +2,14 @@
   <div class="sp-dashboard-table-wrapper">
     <div class="title-wrapper">
       <label class="title">Total</label>
-      <label class="title"> {{ resourceListData.length }}</label>
+      <label class="title"> {{ detailInfo.resources.length }}</label>
     </div>
     <div class="datatable-wrapper">
       <resource-table
         ref="spTable"
         :headers="headers"
         :options="options"
-        :datas="resourceListData"
+        :datas="detailInfo.resources"
         :items-per-page="5"
         is-linked
         @page-count="15"
@@ -47,13 +47,7 @@ export default {
     ClusterscalePopup,
     Modal,
   },
-  props: {
-    resourceListData: {
-      type: Array,
-      default: () => [],
-      description: '자원 List 데이터',
-    },
-  },
+  props: {},
   data: () => ({
     headers: [
       {
@@ -99,11 +93,11 @@ export default {
       showSelect: false,
       itemKey: 'id',
     },
-    resourceListDatasize: 0,
     item: [],
+    resourceList: [],
   }),
   computed: {
-    ...mlMapUtils.mapGetters(['isOpenDeleteResourceModal']),
+    ...mlMapUtils.mapGetters(['isOpenDeleteResourceModal', 'detailInfo']),
   },
   watch: {},
   methods: {
@@ -121,17 +115,18 @@ export default {
       this.closeDeleteResourceModal()
     },
     // 상세 페이지로 이동 요청
-    moveToDetailPage(data) {
-      const { id } = data
-      const { clusterIdx } = data
-      if (id != null && clusterIdx != null) {
-        this.$router.push({
-          hash: '#node',
-          query: { clusterNodeId: id, detail: true },
-        })
-      } else {
-        console.log('잘못된 접근 입니다.')
-      }
+    moveToDetailPage() {
+      // param : data
+      // const { id } = data
+      // const { clusterIdx } = data
+      // if (id != null && clusterIdx != null) {
+      //   this.$router.push({
+      //     hash: '#node',
+      //     query: { clusterNodeId: id, detail: true },
+      //   })
+      // } else {
+      //   console.log('잘못된 접근 입니다.')
+      // }
     },
   },
 }

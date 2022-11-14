@@ -50,7 +50,8 @@ export default {
   },
   conputed: {},
   methods: {
-    ...mlMapUtils.mapActions(['deleteMLResource']), // ml.js에 저장된 dataList 값 반환(ml.js)
+    ...mlMapUtils.mapActions(['deleteMLResource']),
+    ...mlMapUtils.mapMutations(['getResourceList']),
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     async onClickConfirmModal() {
@@ -66,6 +67,7 @@ export default {
             type: 'info',
           })
           // 1초 후 리스트 화면으로 이동
+          this.getResourceList(this.item)
           setTimeout(() => this.onClickCloseModal(), 1000)
         } else {
           // 삭제 실패 시
