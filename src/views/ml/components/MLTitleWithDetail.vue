@@ -39,13 +39,17 @@
       <div>
         <span class="right-label">Prometheus URL :</span>
         <span class="right-content">
-          <a :href="detailInfo.promethusUrl">{{ detailInfo.promethusUrl }}</a>
+          <a :href="detailInfo.promethusUrl" target="_blank">{{
+            detailInfo.promethusUrl
+          }}</a>
         </span>
       </div>
       <div>
         <span class="right-label">Grafana URL :</span>
         <span class="right-content">
-          <a :href="detailInfo.grafanaUrl">{{ detailInfo.grafanaUrl }}</a>
+          <a :href="detailInfo.grafanaUrl" target="_blank">{{
+            detailInfo.grafanaUrl
+          }}</a>
         </span>
       </div>
     </div>
