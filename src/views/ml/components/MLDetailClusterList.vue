@@ -257,7 +257,7 @@ export default {
         return 'icon_aks.svg'
       }
       if (value.toLowerCase() === 'gke') {
-        return 'icon_gke.svg'
+        return 'icon_cloud.svg'
       }
       if (value.toLowerCase() === 'eks') {
         return 'icon_eks.svg'
@@ -268,7 +268,7 @@ export default {
       // 클러스터 vm edit 수정후 state가 null로 나옴
       // vmCount 변경이 안됨
       if (value === null) {
-        return 'icon_waiting.svg'
+        return 'icon_loading.gif'
       }
       if (value.toLowerCase() === 'healthy') {
         return 'icon_healthy.svg'
@@ -276,7 +276,7 @@ export default {
       if (value.toLowerCase() === 'unhealthy') {
         return 'icon_unhealthy.svg'
       }
-      return 'icon_waiting.svg'
+      return 'icon_loading.gif'
     },
 
     onChangeSearch(value) {
@@ -329,34 +329,34 @@ export default {
       }
     },
 
-    async deleteUser(param) {
-      try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteProjectUser(param)
-        if (response.status === 200) {
-          this.openAlert({ title: response.data.message, type: 'info' })
-          /* setTimeout(() => {
-            this.$router.push('/project/list')
-          }, 1000) */
-          await this.getDetail({ projectIdx: this.projectIdx }).then(
-            await this.getDetailUserList({
-              projectIdx: this.projectIdx,
-            }),
-          )
-        } else {
-          this.openAlert({ title: response.data.message, type: 'error' })
-        }
-      } catch (error) {
-        this.openAlert({
-          title: 'Member를 삭제하지 못했습니다.',
-          type: 'error',
-        })
-      }
-    },
+    // async deleteUser(param) {
+    //   try {
+    //     // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
+    //     const response = await this.deleteProjectUser(param)
+    //     if (response.status === 200) {
+    //       this.openAlert({ title: response.data.message, type: 'info' })
+    //       /* setTimeout(() => {
+    //         this.$router.push('/project/list')
+    //       }, 1000) */
+    //       await this.getDetail({ projectIdx: this.projectIdx }).then(
+    //         await this.getDetailUserList({
+    //           projectIdx: this.projectIdx,
+    //         }),
+    //       )
+    //     } else {
+    //       this.openAlert({ title: response.data.message, type: 'error' })
+    //     }
+    //   } catch (error) {
+    //     this.openAlert({
+    //       title: 'Member를 삭제하지 못했습니다.',
+    //       type: 'error',
+    //     })
+    //   }
+    // },
 
     onClickClusterDetail(data) {
-      // const authority = 'Y'
-      let authority = 'N'
+      let authority = 'Y'
+      // let authority = 'N'
 
       const menuList = this.dataUserMenuList
       for (const menu of menuList) {
@@ -370,21 +370,26 @@ export default {
       }
 
       if (authority === 'Y') {
-        if (data.provisioningType === 'KUBESPRAY') {
+        if (
+          data.provisioningType === 'AKS' ||
+          data.provisioningType === 'GKE' ||
+          data.provisioningType === 'GKE' ||
+          data.provisioningType === 'Naver'
+        ) {
           if (
             data.provisioningStatus === 'STARTED' ||
             data.provisioningStatus === 'FAILED'
           ) {
             this.$router.push(
-              `/cluster/provisioning/${data.id}/${data.provisioningStatus}`,
+              `/cluster/provisioning/${data.clusterIdx}/${data.provisioningStatus}`,
             )
           } else if (data.provisioningStatus === 'FINISHED') {
-            this.$router.push(`/cluster/detail/${data.id}`)
+            this.$router.push(`/cluster/detail/${data.clusterIdx}`)
           } else {
             this.openAlert({ title: '배포중입니다.', type: 'info' })
           }
         } else {
-          this.$router.push(`/cluster/detail/${data.id}`)
+          this.$router.push(`/cluster/detail/${data.clusterIdx}`)
         }
       } else {
         this.openAlert({ title: '접근권한이 없습니다.', type: 'error' })
@@ -648,8 +653,17 @@ export default {
     }
   }
 
-  .cluster-list__state-box {
-    display: flex;
+  .cluster-list__state-box,
+  .cluster-list__image-wrapper,
+  .cluster-list__image {
+    display: inline-block;
+  }
+  .statusLabel {
+    display: inline-block;
+    padding-left: 6px;
+    padding-bottom: 10px;
+    vertical-align: middle;
+    font-size: toRem(15);
   }
 }
 </style>

@@ -6,7 +6,7 @@
           <label class="table-wrapper-table-label">VM Type : </label>
         </td>
         <td class="table-wrapper-table-select">
-          <sp-select
+          <!-- <sp-select
             class="sp__input authority_select"
             background-color="#fff"
             hide-details="auto"
@@ -14,8 +14,8 @@
             single-line
             flat
             :items="vmType"
-          />
-          <!-- <input type="text" v-model="vmType" disabled /> -->
+          /> -->
+          <input type="text" v-model="vmType" disabled />
         </td>
       </tr>
       <tr>
@@ -101,6 +101,7 @@ export default {
   },
   conputed: {},
   methods: {
+    ...mlMapUtils.mapMutations(['initClusters']),
     ...mlMapUtils.mapActions(['updateClusterScale']),
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
@@ -134,14 +135,14 @@ export default {
           vmType: this.nodeType,
           nodeCount: this.vmCount,
         })
-
         if (response.status === 200) {
           // 삭제 성공 시
           this.openAlert({
             title: '클러스터가 수정 되었습니다.',
             type: 'info',
           })
-          // 1초 후 리스트 화면으로 이동
+          // 1초 후 팝업 닫기
+          this.initClusters()
           setTimeout(() => this.popupClose(), 1000)
         } else {
           // 삭제 실패 시
