@@ -189,10 +189,14 @@ const resource = {
     async getDetail({ commit, dispatch }, payload) {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
-      // 1분마다 재호출 하여 cluster status 변화 적용
+
+      // cluster status가 null일때 1분마다 재호출 하여 cluster status 변화 적용
       setTimeout(() => {
-        dispatch('getDetail', payload)
+        if (this.state.ml.detailInfo.clusters[0].status === null) {
+          dispatch('getDetail', payload)
+        }
       }, 60000)
+
       return response
     },
 
