@@ -5,7 +5,7 @@
         <sp-image contain lazySrc="icon_logo.svg" src="icon_logo.svg" />
       </div>
       <div class="info__first-title">Welcome to</div>
-      <div class="info__second-title">Paas Portal</div>
+      <div class="info__second-title">ML Workload Portal</div>
       <div class="info__desc"></div>
     </div>
     <div class="info__footer">Powered by STRATO Cloud Management Platform</div>

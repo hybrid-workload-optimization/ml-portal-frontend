@@ -47,7 +47,7 @@
                 lazySrc="Strato_logo_white.png"
                 src="Strato_logo_white.png"
               />
-              <span class="title-text" v-if="!mini">PaaS Portal</span>
+              <span class="title-text" v-if="!mini">ML Workload Portal</span>
             </div>
           </div>
           <div class="burger-wrapper" @click="openFullMenu">
@@ -382,7 +382,7 @@ export default {
         }
         .title-text {
           color: white;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           margin-left: 10px;
           font-weight: bold;
           white-space: nowrap;
