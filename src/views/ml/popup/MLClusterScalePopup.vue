@@ -173,14 +173,23 @@ export default {
   width: 100%;
   height: 10em;
   text-align: center;
+  margin-top: 1em;
   .table-wrapper-table {
     margin: 0 auto;
     text-align: center;
     .table-wrapper-table-label {
       padding-right: 10px;
     }
+    .table-wrapper-table-label:nth-child(1) {
+      text-align: left;
+    }
+    .table-wrapper-table-select,
+    .table-wrapper-table-number {
+      border: 0.8px solid #ccc;
+      text-align: left;
+      padding-left: 1.2em;
+    }
     #vmCount {
-      height: 2em;
       font-size: 1.1em;
     }
   }
