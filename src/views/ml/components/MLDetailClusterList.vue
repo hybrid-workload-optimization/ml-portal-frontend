@@ -57,7 +57,7 @@
                 </div>
               </div>
             </td>
-            <td class="cluster-list__provider-wrapper">
+            <td class="cluster-list__status-wrapper">
               <!--  -->
               <template>
                 <div
@@ -134,10 +134,10 @@
               <sp-button
                 @click="onClickEdit(item)"
                 class="cluster-list--edit"
-                elevation="0"
-                dense
+                icon
+                outlined
               >
-                Edit
+                <v-icon>edit</v-icon>
               </sp-button>
             </td>
           </tr>
@@ -148,7 +148,7 @@
     <modal
       class="popup-cluster"
       title-name="Cluster 조정"
-      modal-width="450"
+      modal-width="500"
       :dialog="isOpenEditScaleModal"
       @close-modal="onClickCloseLabelModal"
     >
@@ -228,12 +228,6 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-
-      // // searchValue: '',
-      // projectIdx: null,
-      // clusterIdx: null,
-      // userId: null,
-      // job: null,
     }
   },
 
@@ -373,7 +367,7 @@ export default {
         if (
           data.provisioningType === 'AKS' ||
           data.provisioningType === 'GKE' ||
-          data.provisioningType === 'GKE' ||
+          data.provisioningType === 'EKS' ||
           data.provisioningType === 'Naver'
         ) {
           if (
@@ -439,23 +433,23 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 
-.project-layout__member-list {
-  $this: 'cluster-list';
-  .#{$this}__state-wrapper,
-  .#{$this}__language-wrapper,
-  .#{$this}__role-wrapper,
-  .#{$this}__provider-wrapper,
-  .#{$this}__createdAt-wrapper,
-  .#{$this}__version-wrapper,
-  .#{$this}__nodepool-wrapper,
-  .#{$this}__added-wrapper,
-  .#{$this}__button-wrapper {
-    width: 15% !important;
-    @include desktop-small(580px, 1750px) {
-      width: 9%;
-    }
-  }
-}
+// .project-layout__member-list {
+//   $this: 'cluster-list';
+//   .#{$this}__state-wrapper,
+//   .#{$this}__language-wrapper,
+//   .#{$this}__status-wrapper,
+//   .#{$this}__provider-wrapper,
+//   .#{$this}__createdAt-wrapper,
+//   .#{$this}__version-wrapper,
+//   .#{$this}__nodepool-wrapper,
+//   .#{$this}__added-wrapper {
+//     width: 15% !important;
+//     @include desktop-small(580px, 1750px) {
+//       width: 9%;
+//     }
+//   }
+
+// }
 
 .sp-project-detail-list {
   width: 100%;
@@ -479,21 +473,30 @@ export default {
 
     .#{$this}__item-wrapper {
       width: 110%;
-
+      .#{$this}__nodepool-wrapper {
+        width: 10% !important;
+        @include desktop-small(580px, 1750px) {
+          width: 20%;
+        }
+      }
+      .#{$this}__button-wrapper {
+        width: 5% !important;
+        @include desktop-small(580px, 1750px) {
+          width: 5%;
+        }
+      }
       .#{$this}__state-wrapper,
-      .#{$this}__language-wrapper,
-      .#{$this}__role-wrapper,
+      .#{$this}__status-wrapper,
       .#{$this}__provider-wrapper,
-      .#{$this}__button-wrapper,
       .#{$this}__createdAt-wrapper,
       .#{$this}__version-wrapper,
       .#{$this}__nodepool-wrapper,
-      .#{$this}__added-wrapper,
-      .#{$this}__button-wrapper {
+      .#{$this}__added-wrapper {
         width: 10%;
         @include desktop-small(580px, 1750px) {
-          width: 12%;
+          width: 5%;
         }
+
         text-align: center;
         .#{$this}__title {
           @include set-text(
@@ -536,9 +539,9 @@ export default {
       }
 
       .#{$this}__name-wrapper {
-        width: 30%;
+        width: 15%;
         @include desktop-small(580px, 1750px) {
-          width: 40%;
+          width: 20%;
         }
         .#{$this}__image-title-wrapper {
           display: flex;
@@ -592,12 +595,6 @@ export default {
           }
         }
       }
-      // .ml-status__image {
-      //   width: 45px;
-      //   height: 45px;
-      //   margin-right: 10px;
-      //   float: left;
-      // }
     }
 
     table {
@@ -652,6 +649,9 @@ export default {
       border-top: 1px solid $sp-box-border;
     }
   }
+  .cluster-list__state-box {
+    margin-top: 10px;
+  }
 
   .cluster-list__state-box,
   .cluster-list__image-wrapper,
@@ -664,6 +664,11 @@ export default {
     padding-bottom: 10px;
     vertical-align: middle;
     font-size: toRem(15);
+  }
+  .cluster-list__nodepool-wrapper {
+    @include desktop-small(580px, 1750px) {
+      width: 30%;
+    }
   }
 }
 </style>
