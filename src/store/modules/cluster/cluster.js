@@ -118,6 +118,14 @@ const resource = {
           item.img = 'icon_k8s.svg'
         } else if (e.provider.toLowerCase() === 'vmware') {
           item.img = 'icon_vm-ware.svg'
+        }
+        // TODO -> provider 넘어오는 데이터 확인후 수정
+        else if (e.provider.toLowerCase() === 'azure') {
+          item.img = 'icon_aks.svg'
+        } else if (e.provider.toLowerCase() === 'gke') {
+          item.img = 'icon_cloud.svg'
+        } else if (e.provider.toLowerCase() === 'eks') {
+          item.img = 'icon_eks.svg'
         } else {
           item.img = 'icon_cloud.svg'
         }
