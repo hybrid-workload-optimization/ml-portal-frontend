@@ -2,9 +2,6 @@
   <div class="table-wrapper">
     <table class="table-wrapper-table">
       <tr>
-        <td>
-          <label class="table-wrapper-table-label">VM Type : </label>
-        </td>
         <td class="table-wrapper-table-select">
           <!-- <sp-select
             class="sp__input authority_select"
@@ -15,35 +12,37 @@
             flat
             :items="vmType"
           /> -->
-          <input type="text" v-model="vmType" disabled />
+          <label-with-text
+            horizontal
+            name="VM Type : "
+            disabled
+            v-model="vmType"
+          ></label-with-text>
         </td>
       </tr>
       <tr>
-        <td>
-          <label class="table-wrapper-table-label">VM Count : </label>
-        </td>
         <td class="table-wrapper-table-number">
-          <input
+          <label-with-text
             id="vmCount"
-            type="number"
-            min="0"
-            max="20"
+            horizontal
+            name="VM Count : "
             v-model="vmCount"
-            @input="checkValue"
-          />
+            @blur="checkValue"
+            type="number"
+          ></label-with-text>
         </td>
       </tr>
     </table>
     <div class="popup-ml__button-wrapper">
       <sp-button
-        class="popup-ml--button finish"
+        class="popup-ml--button cancel"
         elevation="0"
         dense
         @click="popupClose"
         >Cancel</sp-button
       >
       <sp-button
-        class="popup-ml--button finish"
+        class="popup-ml--button confirm"
         elevation="0"
         dense
         @click="clickEditSave"
@@ -55,11 +54,15 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import LabelWithText from '@/components/molcule/LabelWithText.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
+  components: {
+    LabelWithText,
+  },
   created() {
     this.initLimitData()
   },
@@ -170,37 +173,59 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 .table-wrapper {
-  width: 100%;
-  height: 10em;
-  text-align: center;
-  margin-top: 1em;
+  $this: 'popup-ml';
   .table-wrapper-table {
     margin: 0 auto;
-    text-align: center;
-    .table-wrapper-table-label {
-      padding-right: 10px;
-    }
-    .table-wrapper-table-label:nth-child(1) {
-      text-align: left;
-    }
-    .table-wrapper-table-select,
-    .table-wrapper-table-number {
-      border: 0.8px solid #ccc;
-      text-align: left;
-      padding-left: 1.2em;
-    }
-    #vmCount {
-      font-size: 1.1em;
-    }
+    margin-top: 2em;
   }
-  .table-wrapper-table > tr:nth-child(2) {
-    text-align: left;
+  .sp-label-with-text .horizontal {
+    width: 20em;
+    margin-left: 10px;
+    margin-bottom: 15px;
   }
-  .table-wrapper-table-select {
-    width: 13.2em;
+  .sp__label {
+    width: 6em;
+    text-align: right;
   }
-  .table-wrapper-table-number > input {
-    width: 13.2em;
+  .#{$this}__button-wrapper {
+    margin: 0 auto;
+    margin-top: auto;
+    text-align: right;
+
+    .#{$this}--button {
+      margin-right: 10px;
+      margin-left: 10px;
+      width: 114px;
+      border-radius: 20px;
+    }
+
+    .cancel {
+      border: 1px solid inherit;
+    }
+    .confirm {
+      border: 1px solid $sp-teriary;
+      color: $sp-teriary;
+    }
   }
 }
+
+// .table-wrapper {
+//   width: 100%;
+//   height: 10em;
+//   text-align: center;
+//   margin-top: 1em;
+//   .table-wrapper-table {
+//     margin: 0 auto;
+//     text-align: right;
+//     #vmCount {
+//       font-size: 1.1em;
+//     }
+//   }
+//   .table-wrapper-table > tr:nth-child(2) {
+//     text-align: left;
+//   }
+//   .popup-ml--button {
+//     margin: 40px 15px 0 15px;
+//   }
+// }
 </style>
