@@ -233,6 +233,10 @@ export default {
     width: 18% !important;
     height: 100px !important;
   }
+  @include desktop-small(540px, 1507px) {
+    width: 30% !important;
+    height: 100px !important;
+  }
   &.basicFont {
     font-family: $basic-font;
   }

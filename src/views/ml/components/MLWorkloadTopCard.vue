@@ -1,7 +1,7 @@
 <template>
   <div class="sp-cluster-general-top-card">
     <sp-card outlined class="general-top-card" elevation="0">
-      <div class="card-right">
+      <div class="card-left">
         <div class="box-wrapper">
           <resource-box
             class="resource-box"
@@ -19,7 +19,7 @@
           ></resource-box>
         </div>
       </div>
-      <div class="card-center">
+      <div class="card-right">
         <div class="chart-wrapper">
           <div class="title-text">Pod 가동률</div>
           <donut-chart
@@ -93,58 +93,10 @@ export default {
       font-size: toRem(15);
       color: $sp-title;
     }
-
-    .card-left {
-      width: 15%;
-      padding: 10px;
-      .left-top {
-        margin-bottom: 10px;
-        .content-text {
-          @include desktop-small(580px, 1366px) {
-            font-size: toRem(12);
-          }
-        }
-      }
-      .left-middle {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        .content-text {
-          @include desktop-small(580px, 1366px) {
-            font-size: toRem(12);
-          }
-        }
-        .created-wrapper {
-          @include desktop-small(580px, 1366px) {
-            padding-left: 30px;
-          }
-        }
-      }
-      .left-bottom {
-        .v-icon {
-          font-size: toRem(16);
-          margin-right: 15px;
-          @include desktop-small(580px, 1366px) {
-            font-size: toRem(10);
-            margin-right: 5px;
-          }
-        }
-        .content-button {
-          height: 35px;
-          border-radius: 5px;
-          border-width: thin;
-          font-weight: bold;
-          font-size: toRem(15);
-          @include desktop-small(580px, 1366px) {
-            font-size: 5px !important;
-          }
-        }
-      }
-    }
-    .card-center {
+    .card-right {
       padding: 10px;
       width: 30%;
-      margin-left: 50px;
+      margin-left: 5px;
       .title-text {
         text-align: center;
         padding-bottom: 0.5em;
@@ -154,6 +106,7 @@ export default {
       }
       .chart-wrapper {
         float: left;
+        padding-left: 3em;
         .sp-linear-chart {
           &:first-child {
             padding-bottom: 20px;
@@ -166,6 +119,7 @@ export default {
     }
     .status-wrapper {
       margin-left: 10px;
+      margin-right: 50px;
       .status-display {
         display: block;
         text-align: right;
@@ -183,8 +137,8 @@ export default {
         margin-bottom: 0px;
       }
     }
-    .card-right {
-      width: 55%;
+    .card-left {
+      width: 70%;
       display: flex;
       padding-right: 10px;
       align-items: center;
