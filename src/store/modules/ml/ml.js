@@ -186,9 +186,13 @@ const resource = {
     },
 
     // ML 상세 정보 조회 요청
-    async getDetail({ commit }, payload) {
+    async getDetail({ commit, dispatch }, payload) {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
+      // 1분마다 재호출 하여 cluster status 변화 적용
+      setTimeout(() => {
+        dispatch('getDetail', payload)
+      }, 60000)
       return response
     },
 
