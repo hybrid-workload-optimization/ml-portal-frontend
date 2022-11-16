@@ -1,6 +1,6 @@
 <template>
-  <div class="sp-cluster-general-top-card">
-    <sp-card outlined class="general-top-card" elevation="0">
+  <div class="sp-workload-top-card">
+    <sp-card outlined class="workload-top-card" elevation="0">
       <div class="card-left">
         <div class="box-wrapper">
           <resource-box
@@ -45,9 +45,10 @@
 </template>
 
 <script>
-import ResourceBox from '@/components/molcule/ResourceBox.vue'
+// import ResourceBox from '@/components/molcule/ResourceBox.vue'
+import ResourceBox from '@/views/ml/components/MLResourceBox.vue'
 import DonutChart from '@/components/DonutChart.vue'
-import { dashboardDonutChartOptions } from '@/assets/data/dashboardDonutChartOptions'
+import { dashboardDonutChartOptions } from '@/assets/data/mlWorkloadDountChartOptions'
 
 export default {
   components: {
@@ -80,9 +81,9 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-.sp-cluster-general-top-card {
+.sp-workload-top-card {
   padding-top: 20px;
-  .general-top-card {
+  .workload-top-card {
     background-color: $sp-body-bg-color;
     .card-body {
       display: flex;
@@ -102,6 +103,12 @@ export default {
       float: right;
       @include desktop-small(580px, 1850px) {
         width: 30%;
+      }
+      @include desktop-small(580px, 1477px) {
+        width: 35%;
+      }
+      @include desktop-small(580px, 1366px) {
+        width: 40%;
       }
       .title-text {
         text-align: center;
@@ -150,8 +157,13 @@ export default {
       @include desktop-small(580px, 1850px) {
         width: 10%;
       }
-      @include desktop-small(580px, 1366px) {
+      @include desktop-small(580px, 1515px) {
+        width: 5%;
+      }
+      @include desktop-small(580px, 1477px) {
         width: 0%;
+        margin: 0px;
+        padding: 0px;
       }
     }
     .card-left {
@@ -209,7 +221,7 @@ export default {
   }
 
   .sp-resource-box {
-    @include desktop-small(540px, 1849px) {
+    @include desktop-small(540px, 1850px) {
       width: 30% !important;
     }
   }
