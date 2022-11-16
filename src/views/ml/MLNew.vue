@@ -61,13 +61,7 @@ export default {
     ...mlMapUtils.mapActions(['createML']),
 
     onClickCancel() {
-      this.openAlert({
-        title: 'Machine Learning 생성이 취소 되었습니다.',
-        type: 'error',
-      })
-      setTimeout(() => {
-        this.$router.push('/ml/list')
-      }, 1000)
+      this.$router.push('/ml/list')
     },
 
     openYamlEditor() {},
