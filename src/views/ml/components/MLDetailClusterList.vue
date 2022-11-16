@@ -480,11 +480,12 @@ export default {
         }
       }
       .#{$this}__button-wrapper {
-        width: 5% !important;
+        width: 4% !important;
         @include desktop-small(580px, 1750px) {
-          width: 5%;
+          width: 3%;
         }
       }
+
       .#{$this}__state-wrapper,
       .#{$this}__status-wrapper,
       .#{$this}__provider-wrapper,
@@ -494,7 +495,7 @@ export default {
       .#{$this}__added-wrapper {
         width: 10%;
         @include desktop-small(580px, 1750px) {
-          width: 5%;
+          width: 4.5%;
         }
 
         text-align: center;
@@ -523,6 +524,16 @@ export default {
           );
         }
       }
+      .#{$this}__added-wrapper {
+        @include desktop-small(580px, 1750px) {
+          width: 10%;
+        }
+      }
+      // .cluster-list__nodepool-wrapper {
+      //   @include desktop-small(580px, 1750px) {
+      //     width: 5%;
+      //   }
+      // }
       .#{$this}__button-wrapper {
         @include desktop-small(580px, 1366px) {
           font-size: toRem(13);
@@ -664,11 +675,6 @@ export default {
     padding-bottom: 10px;
     vertical-align: middle;
     font-size: toRem(15);
-  }
-  .cluster-list__nodepool-wrapper {
-    @include desktop-small(580px, 1750px) {
-      width: 30%;
-    }
   }
 }
 </style>
