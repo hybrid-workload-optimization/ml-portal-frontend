@@ -1,26 +1,35 @@
 <template>
   <div>
-    <!-- src="http://20.249.24.41/grafana/d/4b545447f/cluster-monitoring?orgId=1&from=1668482864526&to=1668493664526&theme=light&kiosk=tv" -->
     <iframe
+      v-if="monitoringUrl"
       class="iframe_style"
       id="easyPayIframe"
       :src="monitoringUrl"
     ></iframe>
+    <empty v-if="!monitoringUrl" />
   </div>
 </template>
 
 <script>
+import Empty from '@/components/Empty.vue'
+
 export default {
-  data() {
-    return {
-      monitoringUrl: '',
-    }
+  components: {
+    Empty,
   },
+
   props: {
     url: {
       type: String,
     },
   },
+
+  data() {
+    return {
+      monitoringUrl: '',
+    }
+  },
+
   mounted() {
     this.monitoringUrl = this.url
     this.test()
@@ -30,6 +39,16 @@ export default {
       const obj = document.getElementById('easyPayIframe')
 
       console.log('obj = ', obj)
+      console.log('this.monitoringUrl = ', this.monitoringUrl)
+      console.log('this.monitoringUrl typeof = ', typeof this.monitoringUrl)
+      console.log(
+        'this.monitoringUrl toString = ',
+        this.monitoringUrl.toString(),
+      )
+      console.log(
+        'this.monitoringUrl toString typeof= ',
+        typeof this.monitoringUrl.toString(),
+      )
       return this.monitoringUrl
     },
   },

@@ -116,6 +116,7 @@ const resource = {
 
         state.detailInfo.promethusUrl = result.promethusUrl
         state.detailInfo.grafanaUrl = result.grafanaUrl
+        state.detailInfo.monitoringUrl = result.monitoringUrl
       }
     },
 
