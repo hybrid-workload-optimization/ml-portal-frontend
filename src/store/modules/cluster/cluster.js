@@ -121,7 +121,7 @@ const resource = {
         }
         // TODO -> provider 넘어오는 데이터 확인후 수정
         else if (e.provider.toLowerCase() === 'azure') {
-          item.img = 'icon_aks.svg'
+          item.img = 'icon_azer.svg'
         } else if (e.provider.toLowerCase() === 'gke') {
           item.img = 'icon_cloud.svg'
         } else if (e.provider.toLowerCase() === 'eks') {

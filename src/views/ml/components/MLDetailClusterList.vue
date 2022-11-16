@@ -248,7 +248,7 @@ export default {
 
     setImgProvisioning(value) {
       if (value.toLowerCase() === 'aks') {
-        return 'icon_aks.svg'
+        return 'icon_azer.svg'
       }
       if (value.toLowerCase() === 'gke') {
         return 'icon_cloud.svg'
