@@ -14,7 +14,7 @@
           /> -->
           <label-with-text
             horizontal
-            name="VM Type : "
+            name="VM Type"
             disabled
             v-model="vmType"
           ></label-with-text>
@@ -25,7 +25,7 @@
           <label-with-text
             id="vmCount"
             horizontal
-            name="VM Count : "
+            name="VM Count"
             v-model="vmCount"
             @blur="checkValue"
             type="number"
@@ -181,11 +181,12 @@ export default {
   .sp-label-with-text .horizontal {
     width: 20em;
     margin-left: 10px;
-    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   .sp__label {
     width: 6em;
-    text-align: right;
+    // text-align: left;
   }
   .#{$this}__button-wrapper {
     margin: 0 auto;

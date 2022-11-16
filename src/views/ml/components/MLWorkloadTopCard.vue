@@ -97,11 +97,11 @@ export default {
     .card-right {
       padding-right: 10px;
       padding-top: 5px;
-      width: 30%;
+      width: 25%;
       margin-left: 5px;
+      float: right;
       @include desktop-small(580px, 1850px) {
-        // width: 35%;
-        width: 55%;
+        width: 30%;
       }
       .title-text {
         text-align: center;
@@ -146,8 +146,11 @@ export default {
       }
     }
     .card-center {
-      width: 10%;
+      width: 15%;
       @include desktop-small(580px, 1850px) {
+        width: 10%;
+      }
+      @include desktop-small(580px, 1366px) {
         width: 0%;
       }
     }
@@ -157,6 +160,7 @@ export default {
       padding-right: 10px;
       align-items: center;
       justify-content: flex-end;
+      float: left;
       @include desktop-small(580px, 1850px) {
         width: 65%;
       }
@@ -201,6 +205,12 @@ export default {
     }
     @include desktop-small(580px, 1500px) {
       font-size: toRem(15) !important;
+    }
+  }
+
+  .sp-resource-box {
+    @include desktop-small(540px, 1849px) {
+      width: 30% !important;
     }
   }
 }

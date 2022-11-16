@@ -230,15 +230,8 @@ export default {
   font-weight: initial;
   font-family: $basic-font;
   @include desktop-small(540px, 1366px) {
-    width: 16% !important;
+    width: 18% !important;
     height: 100px !important;
-  }
-  @include desktop-small(540px, 1507px) {
-    width: 30% !important;
-    height: 100px !important;
-  }
-  @include desktop-small(540px, 1800px) {
-    width: 30% !important;
   }
   &.basicFont {
     font-family: $basic-font;
