@@ -36,6 +36,7 @@
           :isAuth="isProjectAuth"
           @input="onChangeClusterSearch"
         />
+        <ml-monitoring v-if="item === 'Monitoring'" :url="getMonitoringUrl" />
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -45,8 +46,9 @@
 import { createNamespacedHelpers } from 'vuex'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 import DetailTitle from '@/views/ml/components/MLTitleWithDetail.vue'
-import ClusterList from '@/views/ml/components/MLDetailClusterList.vue'
 import MlWorkload from '@/views/ml/components/MLWorkload.vue'
+import ClusterList from '@/views/ml/components/MLDetailClusterList.vue'
+import MlMonitoring from '@/views/ml/components/MLMonitoring.vue'
 import Empty from '@/components/Empty.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
@@ -55,8 +57,9 @@ export default {
   props: {},
   components: {
     DetailTitle,
-    ClusterList,
     MlWorkload,
+    ClusterList,
+    MlMonitoring,
     Empty,
   },
   mixins: [checkProjectAuth],
@@ -64,7 +67,7 @@ export default {
     return {
       mlId: null,
       tab: null,
-      tabNames: ['Workload', 'Cluster'], // 탭 명칭들
+      tabNames: ['Workload', 'Cluster', 'Monitoring'], // 탭 명칭들
       clusterSearch: '',
       memberSearch: '',
 
@@ -77,6 +80,9 @@ export default {
   },
 
   computed: {
+    getMonitoringUrl() {
+      return this.detailInfo.monitoringUrl
+    },
     // cluster 탭 List
     getListCluster() {
       return {
