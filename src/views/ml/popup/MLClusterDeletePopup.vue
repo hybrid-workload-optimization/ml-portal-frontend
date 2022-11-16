@@ -1,6 +1,5 @@
 <template>
   <div class="sp-delete-cluster">
-    <span>test</span>
     <span v-if="detailInfo.clusters.length" class="delete-cluster__info"
       >삭제 할 Cluster 선택</span
     >

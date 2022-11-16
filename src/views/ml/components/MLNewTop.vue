@@ -230,5 +230,10 @@ export default {
       }
     }
   }
+
+  .sp-editor__code-box {
+    border: 1px solid $sp-box-border;
+    border-radius: 5px;
+  }
 }
 </style>

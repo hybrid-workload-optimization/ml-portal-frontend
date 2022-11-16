@@ -296,7 +296,7 @@ export default {
 
   .title-right {
     display: inline-block;
-    width: 30%;
+    width: 40%;
     vertical-align: middle;
     .right-title {
       color: $sp-title;

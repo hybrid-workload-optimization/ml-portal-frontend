@@ -10,8 +10,8 @@
             :title="data.title"
             :value="data.value"
             outlined
-            width="250px"
-            max-width="250px"
+            width="260px"
+            max-width="260px"
             minHeight="0"
             height="125px"
             max-height="125px"
@@ -19,6 +19,7 @@
           ></resource-box>
         </div>
       </div>
+      <div class="card-center"></div>
       <div class="card-right">
         <div class="chart-wrapper">
           <div class="title-text">Pod 가동률</div>
@@ -94,9 +95,14 @@ export default {
       color: $sp-title;
     }
     .card-right {
-      padding: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
       width: 30%;
       margin-left: 5px;
+      @include desktop-small(580px, 1850px) {
+        // width: 35%;
+        width: 55%;
+      }
       .title-text {
         text-align: center;
         padding-bottom: 0.5em;
@@ -106,7 +112,6 @@ export default {
       }
       .chart-wrapper {
         float: left;
-        padding-left: 3em;
         .sp-linear-chart {
           &:first-child {
             padding-bottom: 20px;
@@ -120,6 +125,9 @@ export default {
     .status-wrapper {
       margin-left: 10px;
       margin-right: 50px;
+      @include desktop-small(580px, 1850px) {
+        margin-right: 10px;
+      }
       .status-display {
         display: block;
         text-align: right;
@@ -137,12 +145,21 @@ export default {
         margin-bottom: 0px;
       }
     }
+    .card-center {
+      width: 10%;
+      @include desktop-small(580px, 1850px) {
+        width: 0%;
+      }
+    }
     .card-left {
-      width: 70%;
+      width: 60%;
       display: flex;
       padding-right: 10px;
       align-items: center;
       justify-content: flex-end;
+      @include desktop-small(580px, 1850px) {
+        width: 65%;
+      }
       .resource-box {
         margin-left: 10px;
         display: inline-block;
@@ -171,6 +188,19 @@ export default {
       .value-wrapper:nth-child(1) {
         font-size: toRem(15) !important;
       }
+    }
+  }
+  .box-wrapper
+    > .sp-resource-box:nth-child(1)
+    > .card-body
+    > .contents-wrapper
+    > .value-wrapper {
+    font-size: toRem(23) !important;
+    @include desktop-small(580px, 1850px) {
+      font-size: toRem(18) !important;
+    }
+    @include desktop-small(580px, 1500px) {
+      font-size: toRem(15) !important;
     }
   }
 }

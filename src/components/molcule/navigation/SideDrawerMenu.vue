@@ -228,7 +228,8 @@ export default {
         selectedName === 100000 ||
         selectedName === 101000 ||
         selectedName === 102000 ||
-        selectedName === 107000
+        selectedName === 107000 ||
+        selectedName === 108000
       ) {
         this.$router.push(path).catch(() => {})
       }
@@ -276,7 +277,7 @@ export default {
   width: 600px !important;
   // width: 30% !important;
   &.one-depth {
-    width: 300px !important;
+    width: 310px !important;
     .body-wrapper {
       .shrink-button-wrapper {
         right: 11px;
@@ -285,7 +286,7 @@ export default {
   }
   @include desktop-small {
     &.one-depth {
-      width: 300px !important;
+      width: 310px !important;
     }
   }
   .top-wrapper {
@@ -339,7 +340,7 @@ export default {
     }
     .left-wrapper {
       //width: 50%;
-      width: 275px !important;
+      width: 300px !important;
       padding: 20px 0;
       background-color: $sp-primary;
       // &.one-depth {
