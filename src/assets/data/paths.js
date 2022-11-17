@@ -278,6 +278,18 @@ const PaaSPath = {
     title: 'Machine Learning',
     subTitle: ['Home', 'Machine Learning'],
   },
+  AutoMLlist: {
+    title: 'Suggestion',
+    subTitle: ['Home', 'Hyperparameter Tuning', 'Suggestion'],
+  },
+  AutoMLdetail: {
+    title: 'Deploy Experiments',
+    subTitle: ['Home', 'Hyperparameter Tuning', 'Deploy Experiments'],
+  },
+  AutoMLnew: {
+    title: 'Experiments',
+    subTitle: ['Home', 'Hyperparameter Tuning', 'Experiments'],
+  },
 }
 
 const Paths = {

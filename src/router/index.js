@@ -12,6 +12,7 @@ import Config from '@/router/modules/config'
 import store from '@/store'
 import Error from '@/router/modules/error'
 import ML from '@/router/modules/ml'
+import AutoML from '@/router/modules/automl'
 import encrypt from '@/lib/encrypt'
 
 Vue.use(VueRouter)
@@ -27,6 +28,7 @@ const routes = [
   ...Config,
   ...Networking,
   ...ML,
+  ...AutoML,
   ...Error,
 ]
 

@@ -144,7 +144,6 @@ const resource = {
 
     // Persistent Volume Claim 생성 요청
     async createPersistentVolumeClaim(context, payload) {
-      console.log('payload === ', payload)
       const response = await request.registerPersistentVolumeClaimUsingPOST(
         payload,
       )

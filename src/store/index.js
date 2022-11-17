@@ -25,6 +25,7 @@ import dashboard from '@/store/modules/dashboard/dashboard'
 import console from '@/store/modules/console'
 import config from '@/store/modules/config'
 import ml from '@/store/modules/ml'
+import automl from '@/store/modules/automl'
 import _ from 'lodash'
 
 Vue.use(Vuex)
@@ -53,6 +54,7 @@ const initialStoreModules = {
   console,
   ...config,
   ...ml,
+  ...automl,
 }
 
 export default new Vuex.Store({

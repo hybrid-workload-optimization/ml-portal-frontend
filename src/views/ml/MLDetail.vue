@@ -128,6 +128,7 @@ export default {
 
   methods: {
     ...mlMapUtils.mapActions([
+      'testList',
       'getDetail',
       'getDetailClusterList',
       'getDetailUserList',
