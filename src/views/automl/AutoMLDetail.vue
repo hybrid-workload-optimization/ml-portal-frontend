@@ -87,7 +87,7 @@ export default {
           class: 'w-10',
         },
         {
-          text: 'Optimal_trial',
+          text: 'Optimal trial',
           align: 'center',
           value: 'metric',
           class: 'w-20',
@@ -139,8 +139,8 @@ export default {
     // 리스트 조회 요청
     async getDetailData() {
       const param = {
-        namespace: 'kubeflow',
-        name: 'experiment-mnist',
+        namespace: this.$route.params.namespace,
+        name: this.$route.params.name,
       }
       await this.getDetail(param)
     },

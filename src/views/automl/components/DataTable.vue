@@ -73,19 +73,23 @@
                 <td>&ensp;Validation_Accuracy&ensp;</td>
                 <td>
                   &ensp;{{
-                    dataList[selectionRowIndex].validationAccuracy
+                    optimalTrialList[selectionRowIndex].validationAccuracy
                   }}&ensp;
                 </td>
               </tr>
               <tr>
                 <td>&ensp;Train_Accuracy&ensp;</td>
                 <td>
-                  &ensp;{{ dataList[selectionRowIndex].trainAccuracy }}&ensp;
+                  &ensp;{{
+                    optimalTrialList[selectionRowIndex].trainAccuracy
+                  }}&ensp;
                 </td>
               </tr>
               <tr>
                 <td>&ensp;RMSSE&ensp;</td>
-                <td>&ensp;{{ dataList[selectionRowIndex].rmsse }}&ensp;</td>
+                <td>
+                  &ensp;{{ optimalTrialList[selectionRowIndex].rmsse }}&ensp;
+                </td>
               </tr>
 
               <tr class="tooltip-title-tr">
@@ -95,15 +99,25 @@
               </tr>
               <tr>
                 <td>&ensp;Lr&ensp;</td>
-                <td>&ensp;{{ dataList[selectionRowIndex].lr }}&ensp;</td>
+                <td>
+                  &ensp;{{ optimalTrialList[selectionRowIndex].lr }}&ensp;
+                </td>
               </tr>
               <tr>
                 <td>&ensp;Num_layers&ensp;</td>
-                <td>&ensp;{{ dataList[selectionRowIndex].numLayers }}&ensp;</td>
+                <td>
+                  &ensp;{{
+                    optimalTrialList[selectionRowIndex].numLayers
+                  }}&ensp;
+                </td>
               </tr>
               <tr>
                 <td>&ensp;Optimizer&ensp;</td>
-                <td>&ensp;{{ dataList[selectionRowIndex].optimizer }}&ensp;</td>
+                <td>
+                  &ensp;{{
+                    optimalTrialList[selectionRowIndex].optimizer
+                  }}&ensp;
+                </td>
               </tr>
             </table>
           </span>
@@ -198,7 +212,7 @@ export default {
     paddingWidth: 16,
     noDataText: '표시할 데이터가 존재하지 않습니다.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
 
-    dataList: {},
+    // dataList: {},
     selectionRowIndex: '',
   }),
   computed: {
@@ -259,7 +273,7 @@ export default {
   },
   mounted() {
     console.log(tag, 'mounted')
-    this.dataList = this.optimalTrialList
+    // this.dataList = this.optimalTrialList
   },
   updated() {
     console.log(tag, 'updated', this.datas)
@@ -277,7 +291,9 @@ export default {
         event.target.parentElement.offsetWidth - this.paddingWidth * 2
 
       this.selectionRowIndex = event.path[3].sectionRowIndex
-      if (spanWidth > tdWidth) {
+      console.log('eee = ', event)
+
+      if (spanWidth > tdWidth || event.path[1].classList[0] !== 'v-image') {
         this.isOpenTooltipId = true
       }
     },

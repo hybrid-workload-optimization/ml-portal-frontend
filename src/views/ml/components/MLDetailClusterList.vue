@@ -259,8 +259,6 @@ export default {
       return 'icon_naver.svg'
     },
     setImageState(value) {
-      // 클러스터 vm edit 수정후 state가 null로 나옴
-      // vmCount 변경이 안됨
       if (value === null) {
         return 'icon_loading.gif'
       }

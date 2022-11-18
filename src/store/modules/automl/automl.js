@@ -6,7 +6,7 @@ const resource = {
     dataList: [], // list Data
     hpDataList: [], // hp List Data
     detailInfo: [], // detail Data
-    detaiList: [], // detail List Data
+    detailList: [], // detail List Data
 
     optimalTrialList: {},
   },
@@ -31,6 +31,7 @@ const resource = {
       return state.detailInfo.size
     },
     optimalTrialList(state) {
+      // console.log('test :: ', state.optimalTrialList)
       return state.optimalTrialList
     },
   },
@@ -46,6 +47,7 @@ const resource = {
 
     // AUTO ML response 리스트
     getAllList(state, payload) {
+      state.dataList = []
       state.dataList = payload.data
     },
 
@@ -63,22 +65,25 @@ const resource = {
           algorithm: e.algorithm,
           lr: e.parameter.lr,
           numLayers: e.parameter['num-layers'],
-          optimizer: payload.data.optimizer,
+          optimizer: e.parameter.optimizer,
           optimalTrial: optimalTrialValue,
         }
         hpDataList.push(item)
       })
+      state.hpDataList = []
       state.hpDataList = hpDataList
     },
 
     // AUTO ML Detail
     getAllDetail(state, payload) {
+      state.detailInfo = []
       state.detailInfo = payload.data
     },
 
     // AUTO ML Detail
     getHPDetail(state, payload) {
       const detailList = []
+      // console.log('payload.data.items == ', payload.data.items)
       payload.data.items.forEach(e => {
         // metrics의 첫번째 값(최적화 값)을 출력해준다.
         const optimalTrialValue = `${Object.keys(e.metric)[0]}:
@@ -94,6 +99,7 @@ const resource = {
         }
         detailList.push(items)
       })
+      state.detailList = []
       state.detailList = detailList
     },
 
@@ -113,27 +119,29 @@ const resource = {
 
         optimalTrialList.push(item)
       })
+      state.optimalTrialList = []
       state.optimalTrialList = optimalTrialList
     },
 
     // Tool Tip Data 리스트(Detail)
-    // getOptimalTrialListForDetail(state, payload) {
-    //   const optimalTrialList = []
-    //   payload.data.items.forEach(e => {
-    //     const item = {
-    //       validationAccuracy: e.metric['Validation-accuracy'],
-    //       trainAccuracy: e.metric['Train-accuracy'],
-    //       rmsse: e.metric.RMSSE,
+    getOptimalTrialListForDetail(state, payload) {
+      const optimalTrialList = []
+      payload.data.items.forEach(e => {
+        const item = {
+          validationAccuracy: e.metric['Validation-accuracy'],
+          trainAccuracy: e.metric['Train-accuracy'],
+          rmsse: e.metric.RMSSE,
 
-    //       lr: e.paramter.lr,
-    //       numLayers: e.paramter['num-layers'],
-    //       optimizer: e.paramter.optimizer,
-    //     }
+          lr: e.paramter.lr,
+          numLayers: e.paramter['num-layers'],
+          optimizer: e.paramter.optimizer,
+        }
 
-    //     optimalTrialList.push(item)
-    //   })
-    //   state.optimalTrialList = optimalTrialList
-    // },
+        optimalTrialList.push(item)
+      })
+      state.optimalTrialList = []
+      state.optimalTrialList = optimalTrialList
+    },
 
     openEditScaleModal(state) {
       state.isOpenEditScaleModal = true
@@ -150,27 +158,27 @@ const resource = {
   },
 
   actions: {
-    async getList({ commit, dispatch }, payload) {
+    async getList({ commit }, payload) {
       const response = await request.doSuggestionListGET(payload)
       commit('getAllList', response)
       commit('getHPList', response)
       commit('getOptimalTrialList', response)
 
-      setTimeout(() => {
-        dispatch('getList', payload)
-      }, 300000)
+      // setTimeout(() => {
+      //   dispatch('getList', payload)
+      // }, 300000)
     },
 
     // ML 상세 정보 조회 요청
-    async getDetail({ commit, dispatch }, payload) {
+    async getDetail({ commit }, payload) {
       const response = await request.doSuggestionDetailGET(payload)
       commit('getAllDetail', response)
       commit('getHPDetail', response)
-      // commit('getOptimalTrialListForDetail', response)
+      commit('getOptimalTrialListForDetail', response)
 
-      setTimeout(() => {
-        dispatch('getDetail', payload)
-      }, 300000)
+      // setTimeout(() => {
+      //   dispatch('getDetail', payload)
+      // }, 300000)
 
       return response
     },

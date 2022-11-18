@@ -111,7 +111,7 @@ export default {
       searchValue: '',
 
       itemsNamespace: [],
-      namespace: null,
+      namespace: 'kubeflow',
 
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [

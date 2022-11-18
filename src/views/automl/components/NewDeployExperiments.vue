@@ -51,6 +51,7 @@ import { createNamespacedHelpers } from 'vuex'
 import { form } from '@/utils/mixins/form'
 
 const autoMLMapUtils = createNamespacedHelpers('automl')
+const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
@@ -85,6 +86,7 @@ export default {
       'doExampleVersionList',
       'doAlgorithm',
     ]),
+    ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     onClickAddItem() {
       this.externalIp.push({ ipPort: '' })
@@ -107,6 +109,17 @@ export default {
       const result = await this.createDepolyExperiments(params)
       console.log('응답 : ', result)
       console.log('저장 클릭!', params)
+      if (result.status === 'Succeeded') {
+        this.openAlert({
+          title: '생성이 완료되었습니다.',
+          type: 'info',
+        })
+      } else {
+        this.openAlert({
+          title: '생성에 실패하였습니다.',
+          type: 'error',
+        })
+      }
     },
     initData() {
       this.namespace = ''
