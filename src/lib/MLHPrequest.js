@@ -58,9 +58,9 @@ const request = (() => {
   }
 
   /**
-   * doLogin
+   * Experiment Deploy 생성
    * @method
-   * @name request#doLoginUsingPOST
+   * @name request#createExperimentDeployPut
    * @param {object} parameters - method options and parameters
    * @param {} parameters.namespace - Api Documentation
    * @param {} parameters.name - Api Documentation
@@ -123,15 +123,15 @@ const request = (() => {
   }
 
   /**
-   *
+   * Suggestion List 가져오기
    * @method
-   * @name request#doLogoutUsingGET
+   * @name request#doSuggestionListGET
    * @param {object} parameters - method options and parameters
    * @param {} parameters.namespace - namespace
    */
   request.doSuggestionListGET = parameters => {
     if (parameters === undefined) {
-      parameters = { namespace: 'kubeflow' }
+      parameters = {}
     }
     const path = `${process.env.VUE_APP_AUTOML_API}/v1/experiment/suggestion`
     const body = {}
@@ -159,15 +159,16 @@ const request = (() => {
   }
 
   /**
-   *
+   * Suggestion Detail List 가져오기
    * @method
-   * @name request#doLogoutUsingGET
+   * @name request#doSuggestionDetailGET
    * @param {object} parameters - method options and parameters
    * @param {} parameters.namespace - namespace
+   * @param {} parameters.name - name
    */
   request.doSuggestionDetailGET = parameters => {
     if (parameters === undefined) {
-      parameters = { namespace: 'kubeflow', name: 'experiment-mnist' }
+      parameters = {}
     }
     const path = `${process.env.VUE_APP_AUTOML_API}/v1/experiment/suggestion/detail`
     const body = {}
@@ -188,6 +189,84 @@ const request = (() => {
       queryParameters.name = parameters.name
     }
     queryParameters = mergeQueryParams(parameters, queryParameters)
+
+    return axios({
+      url: path,
+      method: 'GET',
+      data: parameters,
+      body,
+      headers,
+      params: queryParameters,
+      form,
+    })
+  }
+  /**
+   * Namespace List 가져오기
+   * @method
+   * @param {object} parameters - method options and parameters
+   * @name request#doNamespaceListGET
+   */
+  request.doNamespaceListGET = parameters => {
+    if (parameters === undefined) {
+      parameters = {}
+    }
+    const path = `${process.env.VUE_APP_AUTOML_API}/v1/namespaces`
+    const body = {}
+    const queryParameters = {}
+    const headers = {}
+    const form = {}
+
+    return axios({
+      url: path,
+      method: 'GET',
+      data: parameters,
+      body,
+      headers,
+      params: queryParameters,
+      form,
+    })
+  }
+  /**
+   * exampleVersion List 가져오기
+   * @method
+   * @param {object} parameters - method options and parameters
+   * @name request#doExampleVersionListGET
+   */
+  request.doExampleVersionListGET = parameters => {
+    if (parameters === undefined) {
+      parameters = {}
+    }
+    const path = `${process.env.VUE_APP_AUTOML_API}/v1/example/version`
+    const body = {}
+    const queryParameters = {}
+    const headers = {}
+    const form = {}
+
+    return axios({
+      url: path,
+      method: 'GET',
+      data: parameters,
+      body,
+      headers,
+      params: queryParameters,
+      form,
+    })
+  }
+  /**
+   * Algorithm List 가져오기
+   * @method
+   * @param {object} parameters - method options and parameters
+   * @name request#doAlgorithmListGET
+   */
+  request.doAlgorithmListGET = parameters => {
+    if (parameters === undefined) {
+      parameters = {}
+    }
+    const path = `${process.env.VUE_APP_AUTOML_API}/v1/experiment/algorithm`
+    const body = {}
+    const queryParameters = {}
+    const headers = {}
+    const form = {}
 
     return axios({
       url: path,

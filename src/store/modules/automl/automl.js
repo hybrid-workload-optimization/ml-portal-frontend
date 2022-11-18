@@ -7,6 +7,8 @@ const resource = {
     hpDataList: [], // hp List Data
     detailInfo: [], // detail Data
     detaiList: [], // detail List Data
+
+    optimalTrialList: {},
   },
 
   getters: {
@@ -17,7 +19,7 @@ const resource = {
       return state.hpDataList
     },
     dataListSize(state) {
-      return state.dataList.size
+      return state.hpDataList.length
     },
     detailInfo(state) {
       return state.detailInfo
@@ -27,6 +29,9 @@ const resource = {
     },
     detailListSize(state) {
       return state.detailInfo.size
+    },
+    optimalTrialList(state) {
+      return state.optimalTrialList
     },
   },
 
@@ -48,15 +53,18 @@ const resource = {
     getHPList(state, payload) {
       const hpDataList = []
       payload.data.items.forEach(e => {
+        // metrics의 첫번째 값(최적화 값)을 출력해준다.
+        const optimalTrialValue = `${Object.keys(e.metrics)[0]}:
+        ${e.metrics[Object.keys(e.metrics)[0]]}`
         const item = {
           namespace: payload.data.namespace,
           name: e.name,
-          status: payload.data.status,
+          status: e.status,
           algorithm: e.algorithm,
           lr: e.parameter.lr,
           numLayers: e.parameter['num-layers'],
           optimizer: payload.data.optimizer,
-          optimalTrial: e.metrics['Validation-accuracy'],
+          optimalTrial: optimalTrialValue,
         }
         hpDataList.push(item)
       })
@@ -72,21 +80,60 @@ const resource = {
     getHPDetail(state, payload) {
       const detailList = []
       payload.data.items.forEach(e => {
-        // TODO -> 최적화된 실험의 매트릭 계산후 세팅
-        const value = e.metric['Validation-accuracy']
+        // metrics의 첫번째 값(최적화 값)을 출력해준다.
+        const optimalTrialValue = `${Object.keys(e.metric)[0]}:
+        ${e.metric[Object.keys(e.metric)[0]]}`
         const items = {
           name: e.name,
           status: e.status,
           successful: e.successful,
           running: e.running,
           failed: e.failed,
-          metric: value,
+          metric: optimalTrialValue,
           age: e.age,
         }
         detailList.push(items)
       })
       state.detailList = detailList
     },
+
+    // Tool Tip Data 리스트
+    getOptimalTrialList(state, payload) {
+      const optimalTrialList = []
+      payload.data.items.forEach(e => {
+        const item = {
+          validationAccuracy: e.metrics['Validation-accuracy'],
+          trainAccuracy: e.metrics['Train-accuracy'],
+          rmsse: e.metrics.RMSSE,
+
+          lr: e.parameter.lr,
+          numLayers: e.parameter['num-layers'],
+          optimizer: e.parameter.optimizer,
+        }
+
+        optimalTrialList.push(item)
+      })
+      state.optimalTrialList = optimalTrialList
+    },
+
+    // Tool Tip Data 리스트(Detail)
+    // getOptimalTrialListForDetail(state, payload) {
+    //   const optimalTrialList = []
+    //   payload.data.items.forEach(e => {
+    //     const item = {
+    //       validationAccuracy: e.metric['Validation-accuracy'],
+    //       trainAccuracy: e.metric['Train-accuracy'],
+    //       rmsse: e.metric.RMSSE,
+
+    //       lr: e.paramter.lr,
+    //       numLayers: e.paramter['num-layers'],
+    //       optimizer: e.paramter.optimizer,
+    //     }
+
+    //     optimalTrialList.push(item)
+    //   })
+    //   state.optimalTrialList = optimalTrialList
+    // },
 
     openEditScaleModal(state) {
       state.isOpenEditScaleModal = true
@@ -107,6 +154,7 @@ const resource = {
       const response = await request.doSuggestionListGET(payload)
       commit('getAllList', response)
       commit('getHPList', response)
+      commit('getOptimalTrialList', response)
 
       setTimeout(() => {
         dispatch('getList', payload)
@@ -118,6 +166,7 @@ const resource = {
       const response = await request.doSuggestionDetailGET(payload)
       commit('getAllDetail', response)
       commit('getHPDetail', response)
+      // commit('getOptimalTrialListForDetail', response)
 
       setTimeout(() => {
         dispatch('getDetail', payload)
@@ -129,8 +178,26 @@ const resource = {
     // New Deploy Experiments
     async createDepolyExperiments(context, payload) {
       const response = await request.createExperimentDeployPut(payload)
-      console.log('response == ', response)
+      console.log('create response == ', response)
       return response
+    },
+
+    // Namespace List
+    async doNamespaceList(context, payload) {
+      const response = await request.doNamespaceListGET(payload)
+      return response.data.items
+    },
+
+    // Example Version List
+    async doExampleVersionList(context, payload) {
+      const response = await request.doExampleVersionListGET(payload)
+      return response.data.items
+    },
+
+    // Algorithm List
+    async doAlgorithm(context, payload) {
+      const response = await request.doAlgorithmListGET(payload)
+      return response.data.items
     },
   },
 }

@@ -41,7 +41,7 @@
         :items="thirdItems"
       />
     </div>
-    <div class="multi-select__button-box">
+    <div class="multi-select__button-box" v-if="secondSelectMeta">
       <sp-button
         class="multi-select--deploy"
         elevation="0"

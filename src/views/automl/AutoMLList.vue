@@ -1,5 +1,15 @@
 <template>
   <div class="sp-list-content">
+    <div class="list-select-wrapper">
+      <sp-select
+        outlined
+        dense
+        hide-details
+        :items="itemsNamespace"
+        v-model="namespace"
+        @input="onChangeItem"
+      ></sp-select>
+    </div>
     <div class="list-search-wrapper">
       <search
         class="sp-basic-search"
@@ -76,7 +86,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Search from '@/components/molcule/DataTableSearch.vue'
-import spTable from '@/components/dataTables/DataTable.vue'
+import spTable from '@/views/automl/components/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import Modal from '@/components/modals/Modal.vue'
 import NewDeployExperiments from '@/views/automl/components/NewDeployExperiments.vue'
@@ -99,6 +109,9 @@ export default {
       dialog: false,
 
       searchValue: '',
+
+      itemsNamespace: [],
+      namespace: null,
 
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
@@ -162,32 +175,39 @@ export default {
     }
   },
 
-  created() {},
+  async created() {
+    await this.getNamespaceList()
+  },
 
   computed: {
-    ...automlMapUtils.mapGetters(['hpDataList']),
-    ...automlMapUtils.mapGetters(['dataListSize']),
+    ...automlMapUtils.mapGetters(['hpDataList', 'dataListSize']),
     ...loginUserMapUtils.mapState(['currentMenuInfo']),
   },
 
   async mounted() {
     this.isLoading = true
-    await this.getListData()
+    await this.getListData(this.namespace)
     this.isLoading = false
   },
 
   methods: {
-    ...automlMapUtils.mapActions(['getList']),
+    ...automlMapUtils.mapActions(['doNamespaceList', 'getList']),
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
-
     onInputSearchValue(value) {
       this.searchValue = value
     },
 
+    async getNamespaceList() {
+      this.itemsNamespace = await this.doNamespaceList()
+    },
+
     // 리스트 조회 요청
-    async getListData() {
-      await this.getList()
+    async getListData(value) {
+      const param = {
+        namespace: value,
+      }
+      await this.getList(param)
     },
 
     // Search 박스 입력값 변경 시 호출됨
@@ -201,6 +221,10 @@ export default {
       if (name && namespace) {
         this.$router.push(`/automl/detail/${namespace}/${name}`)
       }
+    },
+    async onChangeItem() {
+      await this.getListData(this.namespace)
+      this.isLoading = false
     },
 
     // New Popup
@@ -261,7 +285,7 @@ export default {
 
       await this.$refs.modalContent.onSubmit()
       this.onClickCloseModal()
-      this.getListData()
+      this.getListData(this.namespace)
     },
   },
 }
@@ -271,7 +295,10 @@ export default {
 .sp-list-content {
   width: 100%;
 }
-
+.list-select-wrapper {
+  width: 20%;
+  margin-bottom: 1em;
+}
 .popup-new-deploy-experiments {
   $this: 'popup-new-deploy-experiments';
   .card-body {
@@ -298,40 +325,4 @@ export default {
     }
   }
 }
-// .sp-list-content {
-//   .sp-basic-search {
-//     .search-wrapper--button {
-//       width: 20em;
-//     }
-//     .sp-basic-toggle-button {
-//       padding-right: 10px;
-//       .sp-basic-toggle--click {
-//         background-color: #f5f8fbcc;
-//         border: 1px solid rgba($color: #4b556680, $alpha: 1);
-//         &.v-item--active {
-//           background-color: $sp-teriary;
-//           .v-icon {
-//             @include set-text(normal, 20, rgba($color: #fff, $alpha: 0.2));
-//             color: #fff !important;
-//           }
-//         }
-
-//         .v-icon {
-//           @include set-text(
-//             normal,
-//             20,
-//             rgba($color: $sp-box-border, $alpha: 1)
-//           );
-//           color: $sp-sky-blue-500 !important;
-//         }
-//       }
-//     }
-//     .search-wrapper {
-//       width: 50%;
-//       @include desktop-small {
-//         width: 60%;
-//       }
-//     }
-//   }
-// }
 </style>

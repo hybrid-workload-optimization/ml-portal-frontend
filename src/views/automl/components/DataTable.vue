@@ -19,7 +19,6 @@
       :page.sync="page"
       @page-count="pageCount = $event"
       v-model="changeSelected"
-      @click:btn="onClickButton"
       @click:row="onClickRow"
       fixed-header
     >
@@ -31,35 +30,83 @@
         <v-tooltip :key="index" bottom :disabled="!isOpenTooltipId">
           <template v-slot:activator="{ on }">
             <span
-              v-if="
-                `item.${el.text}` !== 'item.Action' ||
-                `item.${el.value}` !== 'item.'
-              "
+              class="list-value"
               v-on="on"
               :data-id="item.id"
               @mouseover="onMouseOverText"
               @mouseleave="onMouseLeaveText"
             >
-              {{ item[el.value] || '-' }}
-            </span>
-            <span
-              v-if="
-                `item.${el.text}` === 'item.Action' &&
-                `item.${el.value}` === 'item.'
-              "
-              v-on="on"
-              :data-id="item.id"
-            >
-              <sp-button
-                class="list-delete-button"
-                @click.stop="onClickButton(item)"
-                elevation="0"
-                dense
-              >
-                Delete
-              </sp-button>
+              <sp-image
+                v-if="item[el.value] === 'Succeeded'"
+                class="suggestion-list__image"
+                contain
+                :lazySrc="'icon_healthy.svg'"
+                :src="'icon_healthy.svg'"
+              />
+              <sp-image
+                v-if="item[el.value] === 'Failed'"
+                class="suggestion-list__image"
+                contain
+                :lazySrc="'icon_unhealthy.svg'"
+                :src="'icon_unhealthy.svg'"
+              />
+              <span class="suggestion-list__value">
+                {{ item[el.value] || '-' }}
+              </span>
             </span>
           </template>
+          <span
+            v-if="isOpenTooltipId && headers[index].text !== 'Optimal trial'"
+          >
+            {{ item[el.value] || '-' }}
+          </span>
+          <span
+            v-if="isOpenTooltipId && headers[index].text === 'Optimal trial'"
+          >
+            <table class="tooltip-table" style="width: 100px, height: 150px">
+              <tr class="tooltip-title-tr">
+                <th class="tooltip-title-th" colspan="2" style="height: 30px">
+                  Metrics
+                </th>
+              </tr>
+              <tr>
+                <td>&ensp;Validation_Accuracy&ensp;</td>
+                <td>
+                  &ensp;{{
+                    dataList[selectionRowIndex].validationAccuracy
+                  }}&ensp;
+                </td>
+              </tr>
+              <tr>
+                <td>&ensp;Train_Accuracy&ensp;</td>
+                <td>
+                  &ensp;{{ dataList[selectionRowIndex].trainAccuracy }}&ensp;
+                </td>
+              </tr>
+              <tr>
+                <td>&ensp;RMSSE&ensp;</td>
+                <td>&ensp;{{ dataList[selectionRowIndex].rmsse }}&ensp;</td>
+              </tr>
+
+              <tr class="tooltip-title-tr">
+                <th class="tooltip-title-th" colspan="2" style="height: 30px">
+                  Parameters
+                </th>
+              </tr>
+              <tr>
+                <td>&ensp;Lr&ensp;</td>
+                <td>&ensp;{{ dataList[selectionRowIndex].lr }}&ensp;</td>
+              </tr>
+              <tr>
+                <td>&ensp;Num_layers&ensp;</td>
+                <td>&ensp;{{ dataList[selectionRowIndex].numLayers }}&ensp;</td>
+              </tr>
+              <tr>
+                <td>&ensp;Optimizer&ensp;</td>
+                <td>&ensp;{{ dataList[selectionRowIndex].optimizer }}&ensp;</td>
+              </tr>
+            </table>
+          </span>
         </v-tooltip>
       </template>
 
@@ -83,6 +130,10 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+
+const automlMapUtils = createNamespacedHelpers('automl')
+
 const tag = '[dataTable]'
 
 export default {
@@ -146,8 +197,12 @@ export default {
     isOpenTooltipId: false,
     paddingWidth: 16,
     noDataText: '표시할 데이터가 존재하지 않습니다.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
+
+    dataList: {},
+    selectionRowIndex: '',
   }),
   computed: {
+    ...automlMapUtils.mapGetters(['optimalTrialList']),
     /*
         @brief 옵션 추가하고 싶다면 props로 받아서 추가하는 함수
         @date 2021/11/02
@@ -204,15 +259,12 @@ export default {
   },
   mounted() {
     console.log(tag, 'mounted')
+    this.dataList = this.optimalTrialList
   },
   updated() {
     console.log(tag, 'updated', this.datas)
   },
   methods: {
-    onClickButton(data) {
-      console.log(tag, 'onClickButton')
-      this.$emit('click:btn', data)
-    },
     onClickRow(data) {
       console.log(tag, 'onClickRow')
       this.$emit('click:row', data)
@@ -224,6 +276,7 @@ export default {
       const tdWidth =
         event.target.parentElement.offsetWidth - this.paddingWidth * 2
 
+      this.selectionRowIndex = event.path[3].sectionRowIndex
       if (spanWidth > tdWidth) {
         this.isOpenTooltipId = true
       }
@@ -254,15 +307,6 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-.list-delete-button {
-  border: 1px solid #036eb8 !important;
-  width: 80px !important;
-  color: #036eb8 !important;
-  border-radius: 5px !important;
-  border-width: thin !important;
-  font-weight: bold !important;
-  z-index: 10000 !important;
-}
 .sp-data-table-pagination {
   height: 50px;
   display: flex;
@@ -319,9 +363,6 @@ export default {
           }
           &.w-10 {
             width: 10%;
-          }
-          &.w-15 {
-            width: 15%;
           }
           &.w-20 {
             width: 20%;
@@ -385,6 +426,27 @@ export default {
         }
       }
     }
+  }
+  .list-value > span:nth-child(2) {
+    display: inline-block;
+    // background: red;
+    padding-left: 5px;
+    padding-bottom: 3px;
+  }
+  div.v-image__image {
+    margin-top: 0px;
+  }
+  .suggestion-list__image {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
+  .sp-image {
+    margin-top: 10px;
+  }
+  .suggestion-list__value {
+    height: 2em;
+    vertical-align: middle;
   }
 }
 </style>

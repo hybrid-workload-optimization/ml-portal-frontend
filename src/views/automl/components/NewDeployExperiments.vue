@@ -50,7 +50,6 @@ import LabelWithText from '@/components/molcule/LabelWithText.vue'
 import { createNamespacedHelpers } from 'vuex'
 import { form } from '@/utils/mixins/form'
 
-// const multiSelectMapUtils = createNamespacedHelpers('multiSelect')
 const autoMLMapUtils = createNamespacedHelpers('automl')
 
 export default {
@@ -66,35 +65,26 @@ export default {
     searchAlgorithm: '',
     repeatNumber: '',
 
-    namespaces: ['kubeflow'],
-    versions: [
-      'mnist-latest',
-      'mnist-v1',
-      'mnist-v2',
-      'iris-latest',
-      'iris-v1',
-    ],
-    algorithms: ['Grid', 'Random'],
-
-    replicas: 1,
-    serviceType: 'NodePort',
-    externalIp: [
-      {
-        ipAddress: '',
-      },
-    ],
-    provider: '',
-    httpPort: '',
-    httpsPort: '',
+    namespaces: [],
+    versions: [],
+    algorithms: [],
   }),
-  computed: {
-    // ...multiSelectMapUtils.mapGetters(['secondValue']),
+  async created() {
+    this.namespaces = await this.doNamespaceList()
+    this.versions = await this.doExampleVersionList()
+    this.algorithms = await this.doAlgorithm()
   },
+  computed: {},
   mounted() {
     this.initData()
   },
   methods: {
-    ...autoMLMapUtils.mapActions(['createDepolyExperiments']),
+    ...autoMLMapUtils.mapActions([
+      'createDepolyExperiments',
+      'doNamespaceList',
+      'doExampleVersionList',
+      'doAlgorithm',
+    ]),
 
     onClickAddItem() {
       this.externalIp.push({ ipPort: '' })

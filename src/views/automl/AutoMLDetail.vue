@@ -2,7 +2,7 @@
   <div class="sp-list-content">
     <div class="list-search-wrapper">
       <search
-        class="sp-basic-search"
+        class="sp-basic-search_1"
         :title="'Total:'"
         :todoCount="detailListSize.toString()"
         :isDisabled="currentMenuInfo.writableYn !== 'Y'"
@@ -36,7 +36,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Search from '@/components/molcule/DataTableSearch.vue'
-import spTable from '@/components/dataTables/DataTable.vue'
+import spTable from '@/views/automl/components/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 
 const automlMapUtils = createNamespacedHelpers('automl')
@@ -87,10 +87,10 @@ export default {
           class: 'w-10',
         },
         {
-          text: 'Optimal trial',
+          text: 'Optimal_trial',
           align: 'center',
           value: 'metric',
-          class: 'w-10',
+          class: 'w-20',
         },
         {
           text: 'Age',
@@ -138,7 +138,11 @@ export default {
 
     // 리스트 조회 요청
     async getDetailData() {
-      await this.getDetail()
+      const param = {
+        namespace: 'kubeflow',
+        name: 'experiment-mnist',
+      }
+      await this.getDetail(param)
     },
 
     // Search 박스 입력값 변경 시 호출됨
@@ -181,7 +185,7 @@ export default {
         }
       }
     }
-    .search-wrapper {
+    .search-wrapper_1 {
       width: 50%;
       @include desktop-small {
         width: 60%;
