@@ -31,7 +31,6 @@ const resource = {
       return state.detailInfo.size
     },
     optimalTrialList(state) {
-      // console.log('test :: ', state.optimalTrialList)
       return state.optimalTrialList
     },
   },
@@ -186,7 +185,6 @@ const resource = {
     // New Deploy Experiments
     async createDepolyExperiments(context, payload) {
       const response = await request.createExperimentDeployPut(payload)
-      console.log('create response == ', response)
       return response
     },
 

@@ -109,7 +109,7 @@ export default {
       const result = await this.createDepolyExperiments(params)
       console.log('응답 : ', result)
       console.log('저장 클릭!', params)
-      if (result.status === 'Succeeded') {
+      if (result.status === '200') {
         this.openAlert({
           title: '생성이 완료되었습니다.',
           type: 'info',

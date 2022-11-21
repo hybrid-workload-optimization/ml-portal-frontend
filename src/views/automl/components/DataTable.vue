@@ -37,7 +37,11 @@
               @mouseleave="onMouseLeaveText"
             >
               <sp-image
-                v-if="item[el.value] === 'Succeeded'"
+                v-if="
+                  item[el.value] === 'Succeeded' ||
+                  item[el.value] === 'Running' ||
+                  item[el.value] === 'Created'
+                "
                 class="suggestion-list__image"
                 contain
                 :lazySrc="'icon_healthy.svg'"
@@ -61,7 +65,9 @@
             {{ item[el.value] || '-' }}
           </span>
           <span
-            v-if="isOpenTooltipId && headers[index].text === 'Optimal trial'"
+            v-else-if="
+              isOpenTooltipId && headers[index].text === 'Optimal trial'
+            "
           >
             <table class="tooltip-table" style="width: 100px, height: 150px">
               <tr class="tooltip-title-tr">
@@ -212,7 +218,6 @@ export default {
     paddingWidth: 16,
     noDataText: '표시할 데이터가 존재하지 않습니다.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
 
-    // dataList: {},
     selectionRowIndex: '',
   }),
   computed: {
@@ -273,7 +278,6 @@ export default {
   },
   mounted() {
     console.log(tag, 'mounted')
-    // this.dataList = this.optimalTrialList
   },
   updated() {
     console.log(tag, 'updated', this.datas)
@@ -291,10 +295,10 @@ export default {
         event.target.parentElement.offsetWidth - this.paddingWidth * 2
 
       this.selectionRowIndex = event.path[3].sectionRowIndex
-      console.log('eee = ', event)
 
-      if (spanWidth > tdWidth || event.path[1].classList[0] !== 'v-image') {
-        this.isOpenTooltipId = true
+      if (spanWidth > tdWidth) {
+        if (event.path[1].classList[0] !== 'v-image')
+          this.isOpenTooltipId = true
       }
     },
     onMouseLeaveText() {
