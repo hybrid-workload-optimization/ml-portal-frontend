@@ -15,14 +15,14 @@ const resource = [
           isAuthRequired,
         },
       },
-      {
-        path: 'new',
-        name: 'AutoMLdetail',
-        component: () => import('@/views/automl/AutoMLNew'),
-        meta: {
-          isAuthRequired,
-        },
-      },
+      // {
+      //   path: 'new',
+      //   name: 'AutoMLdetail',
+      //   component: () => import('@/views/automl/AutoMLNew'),
+      //   meta: {
+      //     isAuthRequired,
+      //   },
+      // },
       {
         path: 'detail/:namespace/:name',
         name: 'AutoMLnew',

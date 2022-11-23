@@ -106,10 +106,9 @@ export default {
         algorithm: this.searchAlgorithm,
         repeat: this.repeatNumber,
       }
+
       const result = await this.createDepolyExperiments(params)
-      console.log('응답 : ', result)
-      console.log('저장 클릭!', params)
-      if (result.status === '200') {
+      if (result.data.status === 'Succeeded') {
         this.openAlert({
           title: '생성이 완료되었습니다.',
           type: 'info',
