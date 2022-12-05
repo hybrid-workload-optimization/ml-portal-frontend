@@ -15,8 +15,8 @@
     <empty
       v-if="mlStatus === false"
       class="table-wrapper"
-      title="클러스터 준비중"
-      description=""
+      title="클러스터 배포 중"
+      icon="loading"
     />
     <v-tabs-items
       v-else-if="mlStatus === true"
