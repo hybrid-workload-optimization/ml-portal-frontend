@@ -35,22 +35,24 @@
       </div>
     </div>
     <div class="title-right">
-      <div class="right-title">Monitoring</div>
-      <div>
-        <span class="right-label">Prometheus URL :</span>
-        <span class="right-content">
-          <a :href="detailInfo.promethusUrl" target="_blank">{{
-            detailInfo.promethusUrl
-          }}</a>
-        </span>
-      </div>
-      <div>
-        <span class="right-label">Grafana URL :</span>
-        <span class="right-content">
-          <a :href="detailInfo.grafanaUrl" target="_blank">{{
-            detailInfo.grafanaUrl
-          }}</a>
-        </span>
+      <div v-if="detailInfo.status === 'Started'">
+        <div class="right-title">Monitoring</div>
+        <div>
+          <span class="right-label">Prometheus URL :</span>
+          <span class="right-content">
+            <a :href="detailInfo.promethusUrl" target="_blank">{{
+              detailInfo.promethusUrl
+            }}</a>
+          </span>
+        </div>
+        <div>
+          <span class="right-label">Grafana URL :</span>
+          <span class="right-content">
+            <a :href="detailInfo.grafanaUrl" target="_blank">{{
+              detailInfo.grafanaUrl
+            }}</a>
+          </span>
+        </div>
       </div>
     </div>
     <div class="title-middle"></div>
