@@ -4,7 +4,6 @@
     <div class="project-layout__detail-wrapper">
       <detail-title :titleData="titleData" />
     </div>
-
     <!-- workload / cluster -->
     <v-tabs class="project-layout__tabs" v-model="tab" color="#000">
       <v-tabs-slider color="#000"></v-tabs-slider>
@@ -13,13 +12,13 @@
       </v-tab>
     </v-tabs>
     <empty
-      v-if="mlStatus === false"
+      v-if="detailInfo.status === 'Pending' || detailInfo.status === undefined"
       class="table-wrapper"
       title="클러스터 배포 중"
       icon="loading"
     />
     <v-tabs-items
-      v-else-if="mlStatus === true"
+      v-if="detailInfo.status !== 'Pending' && detailInfo.status !== undefined"
       class="project-layout__tab-item"
       v-model="tab"
     >
@@ -70,8 +69,6 @@ export default {
       tabNames: ['Workload', 'Cluster', 'Monitoring'], // 탭 명칭들
       clusterSearch: '',
       memberSearch: '',
-
-      mlStatus: false,
     }
   },
 
@@ -118,12 +115,8 @@ export default {
 
   async mounted() {
     // api 호출에 따른 status 값으로 화면에 보여지는 데이터 가림
-    const response = await this.getDetail({ mlId: this.mlId, type: 'view' })
-    if (response.status !== 200) {
-      this.mlStatus = false
-    } else {
-      this.mlStatus = true
-    }
+    // const response = await this.getDetail({ mlId: this.mlId, type: 'view' })
+    this.getDetail({ mlId: this.mlId, type: 'view' })
   },
 
   methods: {
@@ -137,6 +130,17 @@ export default {
     onChangeClusterSearch(value) {
       this.clusterSearch = value
     },
+
+    // mlStatusFlag() {
+    //   if (
+    //     this.detailInfo.status === undefined ||
+    //     this.detailInfo.status === 'Pending'
+    //   ) {
+    //     this.mlStatus = false
+    //   } else {
+    //     this.mlStatus = true
+    //   }
+    // },
   },
 }
 </script>

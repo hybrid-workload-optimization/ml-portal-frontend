@@ -191,12 +191,12 @@ const resource = {
       const response = await request.getMlDetailUsingGET(payload)
       commit('getMLDetail', response)
 
-      // cluster status가 null일때 1분마다 재호출 하여 cluster status 변화 적용
+      // 응답값의 status가 Pending일때 1분마다 재호출 하여 cluster status 변화 적용
       setTimeout(() => {
-        if (this.state.ml.detailInfo.clusters[0].status === null) {
+        if (this.state.ml.detailInfo.status === 'Pending') {
           dispatch('getDetail', payload)
         }
-      }, 60000)
+      }, 30000)
 
       return response
     },
