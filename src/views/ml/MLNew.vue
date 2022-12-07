@@ -136,7 +136,7 @@ export default {
         if (response.status === 201 || response.status === 200) {
           if (response.data.code === '10001') {
             this.openAlert({
-              title: `${this.$store.state.ml.newMLName} Machine Learning 생성이 완료 되었습니다.`,
+              title: `${this.$store.state.ml.newMLName} Machine Learning Workload 가 시작되었습니다.`,
               type: 'info',
             })
             setTimeout(() => {
