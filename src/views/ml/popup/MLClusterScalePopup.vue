@@ -139,25 +139,25 @@ export default {
           nodeCount: this.vmCount,
         })
         if (response.status === 200) {
-          // 삭제 성공 시
+          // 수정 성공 시
           this.openAlert({
-            title: '클러스터가 수정 되었습니다.',
+            title: '클러스터 용량 변경이 시작 되었습니다.',
             type: 'info',
           })
           // 1초 후 팝업 닫기
           this.initClusters()
           setTimeout(() => this.popupClose(), 1000)
         } else {
-          // 삭제 실패 시
+          // 수정 실패 시
           this.openAlert({
-            title: '클러스터 수정을 실패했습니다.',
+            title: '클러스터 용량 변경에 실패하였습니다.',
             type: 'error',
           })
           console.log(response.data.message)
         }
       } catch (error) {
         this.openAlert({
-          title: '클러스터 수정을 실패했습니다.',
+          title: '클러스터 용량 변경에 실패하였습니다.',
           type: 'error',
         })
         console.log(error)
