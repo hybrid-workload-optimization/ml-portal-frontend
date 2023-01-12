@@ -1,5 +1,46 @@
 import { api } from '@/utils/common'
 import request from '@/lib/request'
+import _ from 'lodash'
+
+const pubClusterInit = {
+  clusterName: null,
+  regionId: null,
+  regionName: null,
+  zoneNames: [],
+  kubernetesVersion: null,
+  clusterRole: 'arn:aws:iam::751498871854:role/eksClusterRole',
+  channel: 'REGULAR',
+  authKeyName: 'default',
+}
+
+const nodePoolInit = {
+  nodePool: {
+    nodePoolName: null,
+    serverType: null,
+    serverTypeName: null,
+    nodeCount: 1,
+    nodePoolMode: 'system',
+    diskType: null,
+    diskSize: 10,
+    nodeIamRole: 'arn:aws:iam::751498871854:role/strato_eksNodeRole',
+    serverImageType: null,
+    serverImage: null,
+  },
+}
+
+const networkInit = {
+  network: {
+    dnsPrefix: null,
+    lbPrivateSubnetName: null,
+    networkKey: null,
+    networkName: null,
+    networkType: null,
+    networkTypeName: null,
+    subnetNames: [],
+  },
+}
+
+const pubInitData = { ...pubClusterInit, ...nodePoolInit, ...networkInit }
 
 const resource = {
   namespaced: true,
@@ -34,6 +75,7 @@ const resource = {
       nodes: [],
       originalNodes: [],
     },
+    publicNewClusterForm: { ...pubInitData },
     monitoringAddOnData: {},
     timeoutList: [],
   },
@@ -55,6 +97,24 @@ const resource = {
     },
     provisioningStatus(state) {
       return state.dataDetail.provisioningStatus
+    },
+    publicNewClusterForm(state) {
+      return state.publicNewClusterForm
+    },
+    pubInitData() {
+      return pubInitData
+    },
+    pubClusterInit() {
+      return pubClusterInit
+    },
+    nodePoolInit() {
+      return nodePoolInit
+    },
+    networkInit() {
+      return networkInit
+    },
+    provider(state) {
+      return state.dataForm.provider
     },
   },
   mutations: {
@@ -124,8 +184,10 @@ const resource = {
           item.img = 'icon_azer.svg'
         } else if (e.provider.toLowerCase() === 'gke') {
           item.img = 'icon_cloud.svg'
-        } else if (e.provider.toLowerCase() === 'eks') {
+        } else if (e.provider.toLowerCase() === 'aws') {
           item.img = 'icon_eks.svg'
+        } else if (e.provider.toLowerCase() === 'naver') {
+          item.img = 'icon_naver.png'
         } else {
           item.img = 'icon_cloud.svg'
         }
@@ -236,6 +298,24 @@ const resource = {
     },
     initTimeoutList(state) {
       state.timeoutList = []
+    },
+    setInitTargetData(state, payload) {
+      if (payload === undefined) {
+        // 전체 초기화
+        state.publicNewClusterForm = _.cloneDeep(pubInitData)
+        state.publicNewClusterForm.cloudType = state.dataForm.provider
+      } else {
+        // 단계별 초기화
+        const keys = Object.keys(payload)
+        keys.forEach(key => {
+          state.publicNewClusterForm[key] = _.cloneDeep(payload[key])
+        })
+      }
+    },
+    setPublicNewClusterForm(state, payload) {
+      if (payload) {
+        state.publicNewClusterForm = payload
+      }
     },
   },
   actions: {

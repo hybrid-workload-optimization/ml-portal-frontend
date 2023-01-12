@@ -247,16 +247,25 @@ export default {
     ...mlMapUtils.mapMutations(['openEditScaleModal', 'closeEditScaleModal']),
 
     setImgProvisioning(value) {
+      if (value.toLowerCase() === 'kubernetes') {
+        return 'icon_k8s.svg'
+      }
+      if (value.toLowerCase() === 'vmware') {
+        return 'icon_vm-ware.svg'
+      }
       if (value.toLowerCase() === 'aks') {
         return 'icon_azer.svg'
       }
       if (value.toLowerCase() === 'gke') {
         return 'icon_cloud.svg'
       }
-      if (value.toLowerCase() === 'eks') {
+      if (value.toLowerCase() === 'aws') {
         return 'icon_eks.svg'
       }
-      return 'icon_naver.svg'
+      if (value.toLowerCase() === 'naver') {
+        return 'icon_naver.png'
+      }
+      return 'icon_cloud.svg'
     },
     setImageState(value) {
       if (value === null) {
