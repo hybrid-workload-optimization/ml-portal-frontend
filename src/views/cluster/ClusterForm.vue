@@ -160,38 +160,38 @@ export default {
       }
     },
     async onSaveByNew() {
-      console.log(`[dataForm]: ${this.dataForm}`)
-      console.log(`[publicNewClusterForm]: ${this.publicNewClusterForm}`)
-      // try {
-      //   const response = await this.createData(this.dataForm)
+      try {
+        if (this.dataForm.provider === 'Kubernetes') {
+          const response = await this.createData(this.dataForm)
 
-      //   if (response.status === 200) {
-      //     if (this.dataForm.provisioningType === 'KUBESPRAY') {
-      //       this.openAlert({
-      //         title: 'Cluster 등록을 요청하였습니다.',
-      //         type: 'info',
-      //       })
-      //     } else {
-      //       this.openAlert({
-      //         title: 'Cluster 등록 되었습니다.',
-      //         type: 'info',
-      //       })
-      //     }
-      //     setTimeout(() => this.$router.push('/cluster/list'), 1000)
-      //   } else {
-      //     this.openAlert({
-      //       title: 'Cluster 등록을 실패했습니다.',
-      //       type: 'error',
-      //     })
-      //     console.log(response.data.message)
-      //   }
-      // } catch (error) {
-      //   this.openAlert({
-      //     title: 'Cluster 등록을 실패했습니다.',
-      //     type: 'error',
-      //   })
-      //   console.log(error)
-      // }
+          if (response.status === 200) {
+            if (this.dataForm.provisioningType === 'KUBESPRAY') {
+              this.openAlert({
+                title: 'Cluster 등록을 요청하였습니다.',
+                type: 'info',
+              })
+            } else {
+              this.openAlert({
+                title: 'Cluster 등록 되었습니다.',
+                type: 'info',
+              })
+            }
+            setTimeout(() => this.$router.push('/cluster/list'), 1000)
+          } else {
+            this.openAlert({
+              title: 'Cluster 등록을 실패했습니다.',
+              type: 'error',
+            })
+            console.log(response.data.message)
+          }
+        }
+      } catch (error) {
+        this.openAlert({
+          title: 'Cluster 등록을 실패했습니다.',
+          type: 'error',
+        })
+        console.log(error)
+      }
     },
     async onSaveByEdit() {
       try {
