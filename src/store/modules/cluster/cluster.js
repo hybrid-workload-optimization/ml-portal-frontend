@@ -8,7 +8,7 @@ const pubClusterInit = {
   regionName: null,
   zoneNames: [],
   kubernetesVersion: null,
-  clusterRole: 'arn:aws:iam::751498871854:role/eksClusterRole',
+  roleArn: 'arn:aws:iam::751498871854:role/eksClusterRole',
   channel: 'REGULAR',
   authKeyName: 'default',
 }
@@ -458,6 +458,39 @@ const resource = {
           {
             title: '데이터를 가져오는데 실패했습니다.',
             type: 'error',
+          },
+          { root: true },
+        )
+      }
+    },
+    async createPublicCluster({ commit, state }) {
+      // TODO 임시
+      let params = {
+        cloudProvider: state.dataForm.provider,
+      }
+      if (state.dataForm.provider === 'AWS') {
+        const form = state.publicNewClusterForm
+        const nodePool = {
+          ...form.nodePool,
+          vmType: form.nodePool.serverType,
+        }
+        const provisioningParam = {
+          clusterName: state.dataForm.clusterName,
+          kubernetesVersion: form.kubernetesVersion,
+          region: form.regionName,
+          roleArn: form.roleArn,
+          subnetworks: form.network.subnetNames,
+          nodePools: [nodePool],
+        }
+        params = { ...params, ...provisioningParam }
+      }
+      const { data } = await request.provisioningClusterUsingPOST(params)
+      if (data.result) {
+        commit(
+          'alert/openAlert',
+          {
+            title: 'Cluster 등록을 요청하였습니다.',
+            type: 'info',
           },
           { root: true },
         )

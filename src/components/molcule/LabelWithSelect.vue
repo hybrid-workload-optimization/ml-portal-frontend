@@ -9,7 +9,7 @@
       {{ name }}
     </label>
     <sp-select
-      background-color="#F5F5f5"
+      :background-color="backgroundColor"
       hide-details="auto"
       outlined
       single-line
@@ -19,7 +19,10 @@
       :value="value"
       @input="onChangeSelect"
       :items="items"
+      :item-text="itemText"
+      :item-value="itemValue"
       :style="{ ...cssProps['inputStyle'] }"
+      :rules="rules"
     />
   </div>
 </template>
@@ -53,7 +56,7 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: '#F5F7F8',
+      default: '#FFF',
       description: '백그라운드 색상',
     },
     lines: {
@@ -135,6 +138,14 @@ export default {
       default() {
         return []
       },
+    },
+    itemText: {
+      type: String,
+      default: null,
+    },
+    itemValue: {
+      type: String,
+      default: null,
     },
   },
 

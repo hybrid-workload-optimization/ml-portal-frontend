@@ -108,6 +108,30 @@ export default {
           disabled: false,
           divider: false,
         },
+        {
+          text: 'EKS',
+          value: 'AWS',
+          disabled: false,
+          divider: false,
+        },
+        {
+          text: 'Naver',
+          value: 'NAVER',
+          disabled: false,
+          divider: false,
+        },
+        {
+          text: 'GCP',
+          value: 'GCP',
+          disabled: false,
+          divider: false,
+        },
+        {
+          text: 'AKS',
+          value: 'Azure',
+          disabled: false,
+          divider: false,
+        },
       ],
       labelWithTextClass: {
         titleStyle: {},
@@ -156,6 +180,7 @@ export default {
     onChangeProvider(e) {
       console.log(tag, 'onChangeProvider=', e)
       this.formData.provider = e
+      this.setDataFormClusterInfo(this.formData)
     },
     onChangeDescription(e) {
       console.log(tag, 'onChangeDescription=', e)
