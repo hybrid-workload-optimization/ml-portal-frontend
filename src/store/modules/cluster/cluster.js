@@ -37,6 +37,7 @@ const networkInit = {
     networkType: null,
     networkTypeName: null,
     subnetNames: [],
+    subnetKeys: [],
   },
 }
 
@@ -468,23 +469,31 @@ const resource = {
       let params = {
         cloudProvider: state.dataForm.provider,
       }
-      if (state.dataForm.provider === 'AWS') {
-        const form = state.publicNewClusterForm
-        const nodePool = {
-          ...form.nodePool,
-          vmType: form.nodePool.serverType,
-        }
-        const provisioningParam = {
-          clusterName: state.dataForm.clusterName,
-          kubernetesVersion: form.kubernetesVersion,
-          region: form.regionName,
-          roleArn: form.roleArn,
-          subnetworks: form.network.subnetNames,
-          nodePools: [nodePool],
-        }
-        params = { ...params, ...provisioningParam }
+      const form = state.publicNewClusterForm
+      const nodePool = {
+        ...form.nodePool,
+        vmType: form.nodePool.serverType,
       }
-      const { data } = await request.provisioningClusterUsingPOST(params)
+      const povisioningParam = {
+        clusterName: state.dataForm.clusterName,
+        kubernetesVersion: form.kubernetesVersion,
+        region: form.regionName,
+        roleArn: form.roleArn,
+        nodePools: [nodePool],
+      }
+      params = { ...params, povisioningParam }
+      if (state.dataForm.provider === 'AWS') {
+        povisioningParam.subnetworks = form.network.subnetNames
+      } else if (state.dataForm.provider === 'NAVER') {
+        povisioningParam.subnetworksNo = form.network.subnetNames.length
+          ? form.network.subnetKeys[0]
+          : ''
+        povisioningParam.lbPrivateSubnetNo = form.network.lbPrivateSubnetNo
+      }
+      const { data } = await request.provisioningClusterUsingPOST({
+        ...params,
+        header: {},
+      })
       if (data.result) {
         commit(
           'alert/openAlert',
@@ -494,7 +503,9 @@ const resource = {
           },
           { root: true },
         )
+        return true
       }
+      return false
     },
   },
 }

@@ -158,7 +158,7 @@
             ></label-with-text>
           </template>
           <template v-else>
-            <template>
+            <template v-if="cloudType">
               <label-with-select
                 name="VPC"
                 :className="labelWithSelectClass"
@@ -173,7 +173,7 @@
             </template>
             <template v-if="cloudType === 'NAVER'">
               <label-with-select
-                name="VPC"
+                name="Network Type"
                 :className="labelWithSelectClass"
                 :items="networkTypeList"
                 v-model="saveData.network.networkType"
@@ -372,7 +372,7 @@ export default {
       'setInitTargetData',
       'setPublicNewClusterForm',
     ]),
-    ...clusterMapUtils.mapActions(['onSubmitPublicCluster']),
+    ...clusterMapUtils.mapActions(['createPublicCluster']),
     async getRegions() {
       const response = await axios.get(this.apiUrl.regionList, {
         params: {
@@ -696,7 +696,7 @@ export default {
       }
       this.selectedSubnetName = null
     },
-    onSubmit() {
+    async onSubmit() {
       if (!this.$refs.clusterInfoForm.validate()) {
         return false
       }
@@ -719,6 +719,10 @@ export default {
       })
       console.log('save data: ', this.saveData)
       this.setPublicNewClusterForm(this.saveData)
+      const result = await this.createPublicCluster()
+      if (result) {
+        this.$router.push('/cluster/list')
+      }
       return true
     },
   },
