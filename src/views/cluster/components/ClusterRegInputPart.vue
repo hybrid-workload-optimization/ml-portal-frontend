@@ -109,7 +109,7 @@ export default {
           divider: false,
         },
         {
-          text: 'EKS',
+          text: 'AWS',
           value: 'AWS',
           disabled: false,
           divider: false,
@@ -127,7 +127,7 @@ export default {
           divider: false,
         },
         {
-          text: 'AKS',
+          text: 'AZURE',
           value: 'Azure',
           disabled: false,
           divider: false,
