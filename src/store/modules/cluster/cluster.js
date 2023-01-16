@@ -1,45 +1,12 @@
 import { api } from '@/utils/common'
 import request from '@/lib/request'
 import _ from 'lodash'
-
-const pubClusterInit = {
-  clusterName: null,
-  regionId: null,
-  regionName: null,
-  zoneNames: [],
-  kubernetesVersion: null,
-  roleArn: 'arn:aws:iam::751498871854:role/eksClusterRole',
-  channel: 'REGULAR',
-  authKeyName: 'default',
-}
-
-const nodePoolInit = {
-  nodePool: {
-    nodePoolName: null,
-    serverType: null,
-    serverTypeName: null,
-    nodeCount: 1,
-    nodePoolMode: 'system',
-    diskType: null,
-    diskSize: 10,
-    nodeIamRole: 'arn:aws:iam::751498871854:role/strato_eksNodeRole',
-    serverImageType: null,
-    serverImage: null,
-  },
-}
-
-const networkInit = {
-  network: {
-    dnsPrefix: null,
-    lbPrivateSubnetName: null,
-    networkKey: null,
-    networkName: null,
-    networkType: null,
-    networkTypeName: null,
-    subnetNames: [],
-    subnetKeys: [],
-  },
-}
+import {
+  pubClusterInit,
+  nodePoolInit,
+  networkInit,
+  makeClusterParameter,
+} from './pubCluster'
 
 const pubInitData = { ...pubClusterInit, ...nodePoolInit, ...networkInit }
 
@@ -465,31 +432,14 @@ const resource = {
       }
     },
     async createPublicCluster({ commit, state }) {
-      // TODO 임시
+      // TODO 임시(리팩토링 필요)
       let params = {
+        callbackUrl: '',
         cloudProvider: state.dataForm.provider,
       }
-      const form = state.publicNewClusterForm
-      const nodePool = {
-        ...form.nodePool,
-        vmType: form.nodePool.serverType,
-      }
-      const povisioningParam = {
-        clusterName: state.dataForm.clusterName,
-        kubernetesVersion: form.kubernetesVersion,
-        region: form.regionName,
-        roleArn: form.roleArn,
-        nodePools: [nodePool],
-      }
+      const povisioningParam = makeClusterParameter(state)
+
       params = { ...params, povisioningParam }
-      if (state.dataForm.provider === 'AWS') {
-        povisioningParam.subnetworks = form.network.subnetNames
-      } else if (state.dataForm.provider === 'NAVER') {
-        povisioningParam.subnetworksNo = form.network.subnetNames.length
-          ? form.network.subnetKeys[0]
-          : ''
-        povisioningParam.lbPrivateSubnetNo = form.network.lbPrivateSubnetNo
-      }
       const { data } = await request.provisioningClusterUsingPOST({
         ...params,
         header: {},

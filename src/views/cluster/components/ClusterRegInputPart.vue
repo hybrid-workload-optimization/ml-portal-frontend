@@ -115,8 +115,8 @@ export default {
           divider: false,
         },
         {
-          text: 'Naver',
-          value: 'NAVER',
+          text: 'NAVER',
+          value: 'Naver',
           disabled: false,
           divider: false,
         },

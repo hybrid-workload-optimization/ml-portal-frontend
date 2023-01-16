@@ -14,14 +14,15 @@
             :rules="regEx.required"
             required
           ></label-with-select>
-          <template v-if="['AZURE', 'GOOGLE', 'NAVER'].includes(cloudType)">
+          <template v-if="['Azure', 'GCP', 'Naver'].includes(cloudType)">
             <label-with-select
+              ref="zone"
               name="Zone"
               :className="labelWithSelectClass"
               :items="zoneList"
-              v-model="selectedZoneId"
               item-text="zoneName"
               item-value="zoneId"
+              v-model="selectedZoneId"
               @input="appendZoneItem"
               :rules="regEx.requiredZoneItems"
             ></label-with-select>
@@ -32,7 +33,7 @@
                 :key="index"
                 outlined
                 close
-                @click-close="appendedZoneItems.splice(index, 1)"
+                @click-close="removeZoneItem(index)"
                 >{{ data.zoneName }}
               </sp-chip>
             </template>
@@ -58,6 +59,7 @@
             :value="saveData.nodePool.nodePoolName"
             placeholder="Node Pool Name을 입력하세요."
             :rules="regEx.nodePoolName"
+            @input="value => (saveData.nodePool.nodePoolName = value)"
             required
           ></label-with-text>
           <label-with-select
@@ -76,10 +78,11 @@
             name="Node Count"
             :className="labelWithTextClass"
             :value="saveData.nodePool.nodeCount"
+            @input="value => (saveData.nodePool.nodeCount = value)"
             :rules="regEx.required"
             required
           ></label-with-text>
-          <template v-if="cloudType === 'GOOGLE'">
+          <template v-if="cloudType === 'GCP'">
             <label-with-select
               name="Server Image"
               :className="labelWithSelectClass"
@@ -103,7 +106,7 @@
               required
             ></label-with-select>
           </template>
-          <template v-if="['AWS', 'NAVER'].includes(cloudType)">
+          <template v-if="['AWS', 'Naver'].includes(cloudType)">
             <label-with-select
               name="Server Image"
               :className="labelWithSelectClass"
@@ -116,11 +119,12 @@
               required
             ></label-with-select>
           </template>
-          <template v-if="['AWS', 'GOOGLE'].includes(cloudType)">
+          <template v-if="['AWS', 'GCP'].includes(cloudType)">
             <label-with-text
               name="Disk Size"
               :className="labelWithTextClass"
               :value="saveData.nodePool.diskSize"
+              @input="value => (saveData.nodePool.diskSize = value)"
               suffix="GiB"
               :rules="regEx.required"
               required
@@ -153,6 +157,7 @@
               name="DNS Name Prefix"
               :className="labelWithTextClass"
               :value="saveData.network.dnsPrefix"
+              @input="value => (saveData.network.dnsPrefix = value)"
               :rules="regEx.dnsPrefix"
               required
             ></label-with-text>
@@ -171,7 +176,7 @@
                 required
               ></label-with-select>
             </template>
-            <template v-if="cloudType === 'NAVER'">
+            <template v-if="cloudType === 'Naver'">
               <label-with-select
                 name="Network Type"
                 :className="labelWithSelectClass"
@@ -201,12 +206,12 @@
                   :key="index"
                   outlined
                   close
-                  @click-close="appendedSubnetItems.splice(index, 1)"
+                  @click-close="removeSubnetItem(index)"
                   >{{ data.subnetName }}
                 </sp-chip>
               </template>
             </div>
-            <template v-if="cloudType === 'NAVER'">
+            <template v-if="cloudType === 'Naver'">
               <label-with-select
                 name="LB Private Subnet"
                 :className="labelWithSelectClass"
@@ -268,7 +273,7 @@ export default {
           () => this.appendedSubnetItems.length > 0 || '값을 추가해주세요.',
           () =>
             this.checkAWSSubnet() ||
-            '서로 다른 Zone의 서브넷이 2개 이상 추가되어야 합니다.',
+            '서로 다른 Zone의 Subnet이 2개 이상 추가되어야 합니다.',
         ],
       },
       message: {
@@ -327,6 +332,12 @@ export default {
       isNewNetwork: true,
       selectedZoneId: null,
       selectedSubnetName: null,
+      cloudTypeParamMap: {
+        AWS: 'AWS',
+        Naver: 'NAVER',
+        GCP: 'GOOGLE',
+        Azure: 'AZURE',
+      },
     }
   },
   computed: {
@@ -354,11 +365,13 @@ export default {
       this.saveData = this.publicNewClusterForm
       this.appendedZoneItems = []
       this.appendedSubnetItems = []
-      this.saveData.cloudProvider = newVal
+      if (newVal !== 'Azure') {
+        this.isNewNetwork = false
+      }
     },
   },
   mounted() {
-    if (this.cloudType !== 'AZURE') {
+    if (this.cloudType !== 'Azure') {
       this.isNewNetwork = false
     }
     this.setInitTargetData()
@@ -376,7 +389,7 @@ export default {
     async getRegions() {
       const response = await axios.get(this.apiUrl.regionList, {
         params: {
-          cloudType: this.cloudType,
+          cloudType: this.cloudTypeParamMap[this.cloudType],
         },
       })
       this.regionList = response.data.body
@@ -394,7 +407,7 @@ export default {
       this.k8sVersionList = []
       const response = await axios.get(this.apiUrl.k8sVersionList, {
         params: {
-          cloudType: this.cloudType,
+          cloudType: this.cloudTypeParamMap[this.cloudType],
           regionId: this.saveData.regionId,
         },
       })
@@ -404,14 +417,13 @@ export default {
       this.diskTypeList = []
       if (!this.saveData.regionId) return
       const params = {
-        cloudType: this.cloudType,
+        cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
       }
-      const response = await axios.get(this.apiUrl.diskTypeList, { params })
-
       if (this.appendedZoneItems.length) {
         params.zoneId = this.appendedZoneItems[0].zoneId
       }
+      const response = await axios.get(this.apiUrl.diskTypeList, { params })
       this.diskTypeList = response.data.body
     },
     async getServerImageList() {
@@ -419,7 +431,7 @@ export default {
       if (!this.saveData.regionId) return
       const response = await axios.get(this.apiUrl.serverImageTypeList, {
         params: {
-          cloudType: this.cloudType,
+          cloudType: this.cloudTypeParamMap[this.cloudType],
         },
       })
       this.serverImageList = response.data.body
@@ -427,16 +439,20 @@ export default {
     async getServerTypeList() {
       this.serverTypeList = []
       if (!this.saveData.regionId) return
+      const params = {
+        cloudType: this.cloudTypeParamMap[this.cloudType],
+        regionId: this.saveData.regionId,
+        fromVcpu: 1,
+        toVcpu: 4,
+        fromMemoryGib: 2,
+        toMemoryGib: 8,
+        gpu: false,
+      }
+      if (this.cloudType === 'Naver') {
+        params.serverTypeName = 'STAND'
+      }
       const response = await axios.get(this.apiUrl.serverTypeList, {
-        params: {
-          cloudType: this.cloudType,
-          regionId: this.saveData.regionId,
-          fromVcpu: 1,
-          toVcpu: 4,
-          fromMemoryGib: 2,
-          toMemoryGib: 8,
-          gpu: false,
-        },
+        params,
       })
       const sortedItems = _.sortBy(response.data.body, 'category')
       this.serverTypeList = sortedItems.map(item => {
@@ -450,7 +466,7 @@ export default {
     async getVpcList() {
       this.vpcList = []
       const params = {
-        cloudType: this.cloudType,
+        cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
       }
       const response = await axios.get(this.apiUrl.vpcList, { params })
@@ -465,11 +481,11 @@ export default {
       this.subnetList = []
       if (!this.saveData.regionId || !this.saveData.network.networkKey) return
       const params = {
-        cloudType: this.cloudType,
+        cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
         networkKey: this.saveData.network.networkKey,
       }
-      if (this.cloudType === 'NAVER') {
+      if (this.cloudType === 'Naver') {
         if (!this.appendedZoneItems.length) {
           this.openAlert({
             title: '존을 선택해 주세요.',
@@ -483,16 +499,18 @@ export default {
       }
       const response = await axios.get(this.apiUrl.subnetList, { params })
       this.subnetList = response.data.body.map(item => {
-        item.subnetNameText = `${item.subnetName} | ${item.zoneName}`
+        item.subnetNameText = `${item.subnetName} | ${
+          item.zoneName ? item.zoneName : '-'
+        }`
         return item
       })
     },
     async getLbPrivateSubnetList() {
-      // NAVER LB 서브넷 전용 API 호출(usageType 고정)
+      // Naver LB 서브넷 전용 API 호출(usageType 고정)
       this.lbPrivateSubnetList = []
 
       const params = {
-        cloudType: this.cloudType,
+        cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
         networkKey: this.saveData.network.networkKey,
         usageType: 'LOADB',
@@ -528,16 +546,16 @@ export default {
       this.getK8SVersionList()
       // 2단계 데이터 초기화
       this.setInitTargetData(this.secondData)
-      if (this.cloudType === 'GOOGLE') {
+      if (this.cloudType === 'GCP') {
         this.getDiskTypeList()
       }
-      if (['AWS', 'GOOGLE', 'NAVER'].includes(this.cloudType)) {
+      if (['AWS', 'GCP', 'Naver'].includes(this.cloudType)) {
         this.getServerImageList()
       }
       this.getServerTypeList()
       // 3단계 데이터 초기화
       this.setInitTargetData(this.thirdData)
-      if (this.cloudType !== 'AZURE') {
+      if (this.cloudType !== 'Azure') {
         this.getVpcList()
       }
     },
@@ -545,7 +563,7 @@ export default {
       /**
        * Naver의 경우 zone에 따라 subnet, LB private subnet의 목록 변동이 있음
        */
-      if (this.cloudType === 'NAVER') {
+      if (this.cloudType === 'Naver') {
         this.saveData.network.lbPrivateSubnetName = null
         this.selectedSubnetName = null
         this.appendedSubnetItems = []
@@ -580,8 +598,8 @@ export default {
       this.saveData.network.networkType = null
       this.selectedSubnetName = null
       this.saveData.network.lbPrivateSubnetName = null
-      if (this.cloudType !== 'NAVER') {
-        // NAVER의 경우 네트워크 타입까지 선택해야 서브넷 목록 호출 가능
+      if (this.cloudType !== 'Naver') {
+        // Naver의 경우 네트워크 타입까지 선택해야 서브넷 목록 호출 가능
         this.getSubnetList()
       }
     },
@@ -634,11 +652,12 @@ export default {
       }
       return true
     },
-    appendZoneItem() {
+    appendZoneItem(selectedZoneId) {
+      this.selectedZoneId = selectedZoneId
       /**
-       * Zone: Azure(멀티 존 선택), Naver&Google(단일 존 선택)
+       * Zone: Azure(멀티 존 선택), Naver&GCP(단일 존 선택)
        */
-      if (!this.selectedZoneId) {
+      if (!selectedZoneId) {
         this.openAlert({
           title: '존을 선택해 주세요.',
           type: 'warn',
@@ -646,10 +665,13 @@ export default {
         return
       }
 
-      if (this.cloudType === 'AZURE' && this.appendedZoneItems.length) {
+      if (
+        ['GCP', 'Naver'].includes(this.cloudType) &&
+        this.appendedZoneItems.length
+      ) {
         this.openAlert({
           title:
-            '해당 프로젝트는 존을 하나만 추가할 수 있습니다. 선택된 존을 삭제하신 뒤 추가해주세요.',
+            '해당 Provider는 존을 하나만 추가할 수 있습니다. 선택된 존을 삭제하신 뒤 추가해주세요.',
           type: 'warn',
         })
         return
@@ -657,14 +679,14 @@ export default {
 
       // 중복 제거
       const findIndex = this.appendedZoneItems.findIndex(item => {
-        if (item && item.zoneId === this.selectedZoneId) {
+        if (item && item.zoneId === selectedZoneId) {
           return item
         }
         return false
       })
       if (findIndex < 0) {
         this.zoneList.some(item => {
-          if (item.zoneId === this.selectedZoneId) {
+          if (item.zoneId === selectedZoneId) {
             this.appendedZoneItems.push(item)
             this.onChangeAppendedZone()
             return item
@@ -672,7 +694,6 @@ export default {
           return false
         })
       }
-      this.selectedZoneId = null
     },
     appendSubnetItem() {
       /**
@@ -724,6 +745,14 @@ export default {
         setTimeout(() => this.$router.push('/cluster/list'), 1000)
       }
       return true
+    },
+    removeZoneItem(index) {
+      this.selectedZoneId = 0
+      this.appendedZoneItems.splice(index, 1)
+    },
+    removeSubnetItem(index) {
+      this.selectedSubnetName = 0
+      this.appendedSubnetItems.splice(index, 1)
     },
   },
 }

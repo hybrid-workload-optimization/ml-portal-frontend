@@ -27,7 +27,7 @@ module.exports = {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
       },
-      '^/config': {
+      '/config': {
         target: process.env.VUE_APP_PUBLIC_CONFIG_URL,
         changeOrigin: true,
       },

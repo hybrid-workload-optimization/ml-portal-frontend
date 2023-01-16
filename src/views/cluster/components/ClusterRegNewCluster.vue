@@ -3,7 +3,7 @@
     <private-provider v-if="provider === 'Kubernetes'" ref="privateProvider" />
     <public-provider
       ref="publicProvider"
-      v-else-if="['AWS', 'NAVER', 'Azure', 'GCP'].includes(provider)"
+      v-else-if="['AWS', 'Naver', 'Azure', 'GCP'].includes(provider)"
     />
     <empty v-else description="Provider를 선택해 주세요."></empty>
   </div>
