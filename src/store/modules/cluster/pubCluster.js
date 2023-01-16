@@ -47,7 +47,7 @@ export function makeClusterParameter(state) {
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
       roleArn: form.roleArn,
-      subnetworks: form.network.subnetNames,
+      subnetworks: form.network.subnetKeys,
       nodePools: [
         {
           nodePoolName: form.nodePool.nodePoolName,
