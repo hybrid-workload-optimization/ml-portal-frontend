@@ -25,10 +25,11 @@ export default {
       type: String,
       default: '',
     },
-    flag: {
-      type: Boolean,
-      default: true,
-    },
+  },
+  data() {
+    return {
+      flag: true,
+    }
   },
   methods: {
     onClickLabel() {

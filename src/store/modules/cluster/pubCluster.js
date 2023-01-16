@@ -51,10 +51,10 @@ export function makeClusterParameter(state) {
       nodePools: [
         {
           nodePoolName: form.nodePool.nodePoolName,
-          nodeCount: form.nodePool.nodeCount,
+          nodeCount: Number(form.nodePool.nodeCount),
           nodeRole: form.nodePool.nodeIamRole,
           vmType: form.nodePool.serverTypeName,
-          diskSize: form.nodePool.diskSize,
+          diskSize: Number(form.nodePool.diskSize),
         },
       ],
     }
@@ -70,7 +70,7 @@ export function makeClusterParameter(state) {
       lbPrivateSubnetNo: form.network.lbPrivateSubnetKey,
       nodePools: [
         {
-          nodeCount: form.nodePool.nodeCount,
+          nodeCount: Number(form.nodePool.nodeCount),
           vmType: form.nodePool.serverTypeName,
         },
       ],
@@ -84,7 +84,7 @@ export function makeClusterParameter(state) {
         {
           nodePoolName: form.nodePool.nodePoolName,
           vmType: form.nodePool.serverTypeName,
-          nodeCount: form.nodePool.nodeCount,
+          nodeCount: Number(form.nodePool.nodeCount),
           availabilityZones: form.zoneNames,
         },
       ],
@@ -101,10 +101,10 @@ export function makeClusterParameter(state) {
         {
           nodePoolName: form.nodePool.nodePoolName,
           vmType: form.nodePool.serverTypeName,
-          nodeCount: form.nodePool.nodeCount,
+          nodeCount: Number(form.nodePool.nodeCount),
           nodePoolOsType: form.nodePool.k8sType,
           diskType: form.nodePool.diskTypeName,
-          diskSize: form.nodePool.diskSize,
+          diskSize: Number(form.nodePool.diskSize),
         },
       ],
       network: form.network.networkName,

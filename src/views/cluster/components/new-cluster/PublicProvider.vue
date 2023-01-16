@@ -76,6 +76,7 @@
           </label-with-select>
           <label-with-text
             name="Node Count"
+            type="number"
             :className="labelWithTextClass"
             :value="saveData.nodePool.nodeCount"
             @input="value => (saveData.nodePool.nodeCount = value)"
@@ -127,6 +128,7 @@
               @input="value => (saveData.nodePool.diskSize = value)"
               suffix="GiB"
               :rules="regEx.required"
+              type="number"
               required
             ></label-with-text>
           </template>
