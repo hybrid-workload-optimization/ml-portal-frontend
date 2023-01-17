@@ -449,7 +449,7 @@ export default {
       const params = {
         cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
-        fromVcpu: 1,
+        fromVcpu: 2,
         toVcpu: 4,
         fromMemoryGib: 2,
         toMemoryGib: 8,
