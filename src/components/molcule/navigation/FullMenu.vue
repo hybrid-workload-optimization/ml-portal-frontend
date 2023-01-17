@@ -15,7 +15,7 @@
             src="Strato_logo_white.png"
           ></sp-image>
 
-          <span class="title-text">ML Workload Portal</span>
+          <span class="title-text">PaaS Portal</span>
         </div>
       </div>
 
