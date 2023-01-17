@@ -256,7 +256,7 @@ export default {
       if (value.toLowerCase() === 'aks') {
         return 'icon_azer.svg'
       }
-      if (value.toLowerCase() === 'gke') {
+      if (value.toLowerCase() === 'gcp') {
         return 'icon_cloud.svg'
       }
       if (value.toLowerCase() === 'aws') {
