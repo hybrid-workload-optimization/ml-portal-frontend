@@ -80,7 +80,7 @@
             :className="labelWithTextClass"
             :value="saveData.nodePool.nodeCount"
             @input="value => (saveData.nodePool.nodeCount = value)"
-            :rules="regEx.required"
+            :rules="regEx.requiredNodeCount"
             required
           ></label-with-text>
           <template v-if="cloudType === 'GCP'">
@@ -107,7 +107,7 @@
               required
             ></label-with-select>
           </template>
-          <template v-if="['AWS', 'Naver'].includes(cloudType)">
+          <template v-if="['AWS'].includes(cloudType)">
             <label-with-select
               name="Server Image"
               :className="labelWithSelectClass"
@@ -127,7 +127,7 @@
               :value="saveData.nodePool.diskSize"
               @input="value => (saveData.nodePool.diskSize = value)"
               suffix="GiB"
-              :rules="regEx.required"
+              :rules="regEx.requiredDiskSize"
               type="number"
               required
             ></label-with-text>
@@ -268,6 +268,19 @@ export default {
             'DNS 이름 접두사는 영문(소문자), 숫자, (-)으로만 구성되어야 하며, 첫글자는 영문이어야하고 끝은 영문 또는 숫자이어야 합니다. 최대 54자까지 입력 가능합니다.',
         ],
         required: [value => !!value || '값을 입력하세요.'],
+        requiredNodeCount: [
+          value => !!Number(value) || '값을 입력하세요.',
+          value =>
+            !!Number.isInteger(Number(value)) ||
+            'Node Count 는 정수값만 입력이 가능합니다.',
+        ],
+        requiredDiskSize: [
+          value => !!Number(value) || '값을 입력하세요.',
+          value => value >= 10 || 'Disk Size는 10GiB 이상이어야 합니다.',
+          value =>
+            Number.isInteger(Number(value)) ||
+            'Disk Size는 정수값만 입력이 가능합니다.',
+        ],
         requiredZoneItems: [
           () =>
             this.provider === 'Azure'
@@ -455,6 +468,17 @@ export default {
         toMemoryGib: 8,
         gpu: false,
       }
+      if (this.cloudType === 'GCP') {
+        if (!this.appendedZoneItems.length) {
+          this.openAlert({
+            title: '존을 선택해 주세요.',
+            type: 'warn',
+          })
+          return
+        }
+        // eslint-disable-next-line prefer-destructuring
+        params.zoneId = this.appendedZoneItems[0].zoneId
+      }
       if (this.cloudType === 'Naver') {
         params.serverTypeName = 'STAND'
       } else if (this.cloudType === 'AWS') {
@@ -562,7 +586,10 @@ export default {
       if (['AWS', 'GCP', 'Naver'].includes(this.cloudType)) {
         this.getServerImageList()
       }
-      this.getServerTypeList()
+      if (this.cloudType !== 'GCP') {
+        this.getServerTypeList()
+      }
+
       // 3단계 데이터 초기화
       this.setInitTargetData(this.thirdData)
       if (this.cloudType !== 'Azure') {
@@ -580,6 +607,9 @@ export default {
 
         this.getSubnetList()
         this.getLbPrivateSubnetList()
+      }
+      if (this.cloudType === 'GCP') {
+        this.getServerTypeList()
       }
     },
     onChangeDiskType() {
