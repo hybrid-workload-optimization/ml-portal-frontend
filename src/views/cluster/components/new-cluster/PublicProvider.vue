@@ -269,7 +269,10 @@ export default {
         ],
         required: [value => !!value || '값을 입력하세요.'],
         requiredZoneItems: [
-          () => this.appendedZoneItems.length > 0 || '값을 추가해주세요.',
+          () =>
+            this.provider === 'Azure'
+              ? true
+              : this.appendedZoneItems.length > 0 || '값을 추가해주세요.',
         ],
         requiredSubnetItems: [
           () => this.appendedSubnetItems.length > 0 || '값을 추가해주세요.',
@@ -369,6 +372,8 @@ export default {
       this.appendedSubnetItems = []
       if (newVal !== 'Azure') {
         this.isNewNetwork = false
+      } else {
+        this.isNewNetwork = true
       }
     },
   },
@@ -452,6 +457,9 @@ export default {
       }
       if (this.cloudType === 'Naver') {
         params.serverTypeName = 'STAND'
+      } else if (this.cloudType === 'AWS') {
+        // TODO 임시
+        params.serverImageName = 't3'
       }
       const response = await axios.get(this.apiUrl.serverTypeList, {
         params,

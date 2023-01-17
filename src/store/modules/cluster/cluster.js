@@ -46,6 +46,7 @@ const resource = {
     publicNewClusterForm: { ...pubInitData },
     monitoringAddOnData: {},
     timeoutList: [],
+    monitoringIframeUrl: '',
   },
   getters: {
     dataList(state) {
@@ -285,6 +286,9 @@ const resource = {
         state.publicNewClusterForm = payload
       }
     },
+    setMonitoringIframeUrl(state, payload) {
+      state.monitoringIframeUrl = payload
+    },
   },
   actions: {
     // 목록 정보 조회 요청
@@ -456,6 +460,12 @@ const resource = {
         return true
       }
       return false
+    },
+    async getMonitoringData({ commit }, payload) {
+      const { data } = await request.getGrafanIframeUrlUsingGET(payload)
+      if (data.result) {
+        commit('setMonitoringIframeUrl', data.result)
+      }
     },
   },
 }
