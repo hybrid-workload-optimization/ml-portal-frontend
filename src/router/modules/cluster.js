@@ -40,15 +40,6 @@ const resource = [
         },
       },
       {
-        path: 'detail_pub',
-        name: 'Cluster Detail Pub',
-        component: () =>
-          import('@/views/cluster/components/ClusterNodeDetail_pub'),
-        meta: {
-          isAuthRequired,
-        },
-      },
-      {
         path: 'provisioning/:id/:provisioningStatus',
         name: 'Cluster Provisioning',
         component: () => import('@/views/cluster/ClusterProvisioning'),
