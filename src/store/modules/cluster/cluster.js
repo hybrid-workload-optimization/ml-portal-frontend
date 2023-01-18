@@ -404,22 +404,21 @@ const resource = {
               { title: 'Cluster가 삭제 되었습니다.', type: 'info' },
               { root: true },
             )
-          } else if (data.result.status !== 'deleted') {
-            if (type === 'detail') {
-              commit('setClusterStatus', data)
-              commit(
-                'alert/openAlert',
-                {
-                  title: 'Cluster 배포가 완료 되었습니다.',
-                  type: 'info',
-                },
-                { root: true },
-              )
-            } else {
-              commit('setClusterListStatus', data)
-            }
           }
         } else {
+          if (type === 'detail') {
+            commit('setClusterStatus', data)
+            commit(
+              'alert/openAlert',
+              {
+                title: 'Cluster 배포가 완료 되었습니다.',
+                type: 'info',
+              },
+              { root: true },
+            )
+          } else {
+            commit('setClusterListStatus', data)
+          }
           const index = setTimeout(() => {
             dispatch('getDataStatus', payload)
           }, 10000)

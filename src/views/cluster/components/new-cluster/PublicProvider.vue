@@ -381,8 +381,6 @@ export default {
       this.setInitTargetData()
       this.getRegions()
       this.saveData = this.publicNewClusterForm
-      this.appendedZoneItems = []
-      this.appendedSubnetItems = []
       if (newVal !== 'Azure') {
         this.isNewNetwork = false
       } else {
@@ -407,6 +405,18 @@ export default {
     ]),
     ...clusterMapUtils.mapActions(['createPublicCluster']),
     async getRegions() {
+      this.appendedZoneItems = []
+      this.appendedSubnetItems = []
+
+      this.zoneList = []
+      this.diskTypeList = []
+      this.k8sVersionList = []
+      this.serverTypeList = []
+      this.serverImageList = []
+      this.vpcList = []
+      this.subnetList = []
+      this.lbPrivateSubnetList = []
+      this.regionList = []
       const response = await axios.get(this.apiUrl.regionList, {
         params: {
           cloudType: this.cloudTypeParamMap[this.cloudType],
@@ -503,6 +513,9 @@ export default {
     },
     async getVpcList() {
       this.vpcList = []
+      if (!this.saveData.regionId) {
+        return
+      }
       const params = {
         cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
@@ -581,6 +594,7 @@ export default {
       }
 
       this.appendedZoneItems = []
+      this.appendedSubnetItems = []
       this.selectedZoneId = null
       this.getZoneList()
       this.getK8SVersionList()
