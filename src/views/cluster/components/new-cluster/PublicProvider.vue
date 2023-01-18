@@ -270,13 +270,15 @@ export default {
         required: [value => !!value || '값을 입력하세요.'],
         requiredNodeCount: [
           value => !!Number(value) || '값을 입력하세요.',
+          value => Number(value) > 0 || 'Node Count는 1 이상이어야 합니다.',
           value =>
             !!Number.isInteger(Number(value)) ||
             'Node Count 는 정수값만 입력이 가능합니다.',
         ],
         requiredDiskSize: [
           value => !!Number(value) || '값을 입력하세요.',
-          value => value >= 10 || 'Disk Size는 10GiB 이상이어야 합니다.',
+          value =>
+            Number(value) >= 10 || 'Disk Size는 10GiB 이상이어야 합니다.',
           value =>
             Number.isInteger(Number(value)) ||
             'Disk Size는 정수값만 입력이 가능합니다.',
