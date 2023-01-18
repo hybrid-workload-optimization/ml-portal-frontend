@@ -465,7 +465,7 @@ export default {
         fromVcpu: 2,
         toVcpu: 4,
         fromMemoryGib: 2,
-        toMemoryGib: 8,
+        toMemoryGib: 32,
         gpu: false,
       }
       if (this.cloudType === 'GCP') {
@@ -480,17 +480,20 @@ export default {
         params.zoneId = this.appendedZoneItems[0].zoneId
       }
       if (this.cloudType === 'Naver') {
-        params.serverTypeName = 'STAND'
+        params.serverTypeName = 'SSD.B050'
       } else if (this.cloudType === 'AWS') {
         // TODO 임시
-        params.serverImageName = 't3'
+        params.serverTypeName = 't3.'
       }
       const response = await axios.get(this.apiUrl.serverTypeList, {
         params,
       })
-      const sortedItems = _.sortBy(response.data.body, 'category')
+      const sortedMemory = _.sortBy(response.data.body, 'memory').reverse()
+      const sortedItems = _.sortBy(sortedMemory, 'category').reverse()
+
       this.serverTypeList = sortedItems.map(item => {
-        item.serverTypeNameText = `${item.serverTypeName} ( vcore: ${
+        const category = item.category ? `[${item.category}] ` : ''
+        item.serverTypeNameText = `${category}${item.serverTypeName} ( vcore: ${
           item.vcpu
         } | memory: ${Math.round(item.memory / 1024)} )`
 
