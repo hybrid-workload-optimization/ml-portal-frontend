@@ -108,7 +108,7 @@ export function makeClusterParameter(state) {
           vmType: form.nodePool.serverTypeName,
           nodeCount: Number(form.nodePool.nodeCount),
           nodePoolOsType: form.nodePool.k8sType,
-          diskType: form.nodePool.diskTypeName,
+          // diskType: form.nodePool.diskTypeName,
           diskSize: Number(form.nodePool.diskSize),
         },
       ],
