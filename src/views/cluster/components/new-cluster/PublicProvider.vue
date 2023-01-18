@@ -547,6 +547,8 @@ export default {
       // Naver LB 서브넷 전용 API 호출(usageType 고정)
       this.lbPrivateSubnetList = []
 
+      if (!this.appendedZoneItems.length) return
+
       const params = {
         cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
