@@ -44,6 +44,7 @@ export function makeClusterParameter(state) {
   if (['AWS'].includes(state.dataForm.provider)) {
     povisioningParam = {
       clusterName: state.dataForm.clusterName,
+      clusterDesc: state.dataForm.description,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
       roleArn: form.roleArn,
@@ -61,6 +62,7 @@ export function makeClusterParameter(state) {
   } else if (state.dataForm.provider === 'Naver') {
     povisioningParam = {
       clusterName: state.dataForm.clusterName,
+      clusterDesc: state.dataForm.description,
       kubernetesVersion: form.kubernetesVersion,
       loginKeyName: form.authKeyName,
       region: form.regionName,
@@ -78,6 +80,7 @@ export function makeClusterParameter(state) {
   } else if (state.dataForm.provider === 'Azure') {
     povisioningParam = {
       clusterName: state.dataForm.clusterName,
+      clusterDesc: state.dataForm.description,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
       nodePools: [
@@ -93,6 +96,7 @@ export function makeClusterParameter(state) {
   } else if (state.dataForm.provider === 'GCP') {
     povisioningParam = {
       clusterName: state.dataForm.clusterName,
+      clusterDesc: state.dataForm.description,
       channel: form.channel,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
