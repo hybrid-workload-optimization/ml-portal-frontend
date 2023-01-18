@@ -398,21 +398,26 @@ const resource = {
           data.result.status !== 'Scale in'
         ) {
           if (data.result.status === 'deleted') {
-            commit('removeItem', params.clusterIdx)
+            dispatch('getDataList', params.clusterIdx)
             commit(
               'alert/openAlert',
               { title: 'Cluster가 삭제 되었습니다.', type: 'info' },
               { root: true },
             )
-          } else if (type === 'detail') {
-            commit(
-              'alert/openAlert',
-              {
-                title: 'Cluster 배포가 완료 되었습니다.',
-                type: 'info',
-              },
-              { root: true },
-            )
+          } else if (data.result.status !== 'deleted') {
+            if (type === 'detail') {
+              commit('setClusterStatus', data)
+              commit(
+                'alert/openAlert',
+                {
+                  title: 'Cluster 배포가 완료 되었습니다.',
+                  type: 'info',
+                },
+                { root: true },
+              )
+            } else {
+              commit('setClusterListStatus', data)
+            }
           }
         } else {
           const index = setTimeout(() => {
@@ -421,15 +426,8 @@ const resource = {
           console.log(index)
           commit('addTimeoutIdx', index)
         }
-
-        if (type === 'detail') {
-          commit('setClusterStatus', data)
-        } else {
-          commit('setClusterListStatus', data)
-        }
       } catch (error) {
         // 이미 삭제가 완료된 데이터
-        commit('removeItem', params.clusterIdx)
         commit(
           'alert/openAlert',
           {
