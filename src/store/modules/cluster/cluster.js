@@ -254,9 +254,11 @@ const resource = {
         return false
       })
       state.dataList[idx].status = result.status
+      state.dataList[idx].nodeCount = result.nodeCount
     },
     setClusterStatus(state, payload) {
       state.dataDetail.status = payload.data.result.status
+      state.dataDetail.nodeCount = payload.data.result.nodeCount
     },
     removeItem(state, payload) {
       const idx = state.dataList.findIndex(item => item.clusterIdx === payload)
@@ -411,9 +413,6 @@ const resource = {
               },
               { root: true },
             )
-            commit('setClusterStatus', data)
-          } else {
-            commit('setClusterListStatus', data)
           }
         } else {
           const index = setTimeout(() => {
@@ -421,6 +420,12 @@ const resource = {
           }, 10000)
           console.log(index)
           commit('addTimeoutIdx', index)
+        }
+
+        if (type === 'detail') {
+          commit('setClusterStatus', data)
+        } else {
+          commit('setClusterListStatus', data)
         }
       } catch (error) {
         // 이미 삭제가 완료된 데이터

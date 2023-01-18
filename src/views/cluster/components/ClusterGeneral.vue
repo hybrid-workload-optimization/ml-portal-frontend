@@ -6,7 +6,12 @@
       :resource-box-data="setResourceBoxData"
     ></general-top-card>
     <div style="margin-top: 30px">
-      <empty description="Relationship Diagram 적용 예정" />
+      <!-- <empty description="Relationship Diagram 적용 예정" /> -->
+      <cluster-monitoring
+        v-if="monitoringIframeUrl"
+        :url="monitoringIframeUrl"
+      />
+      <empty description="Click the Install Monitoring button." v-else />
     </div>
     <!-- <general-node-table></general-node-table> -->
   </div>
@@ -15,6 +20,7 @@
 <script>
 import GeneralTopCard from '@/views/cluster/components/ClusterGeneralTopCard.vue'
 // import GeneralNodeTable from '@/views/cluster/components/ClusterGeneralTable.vue'
+import ClusterMonitoring from '@/views/ml/components/MLMonitoring.vue'
 import { createNamespacedHelpers } from 'vuex'
 // pub 화면
 // import GeneralTopCard from '@/components/cluster/general/ClusterGeneralTopCard.vue'
@@ -27,11 +33,13 @@ export default {
     GeneralTopCard,
     // GeneralNodeTable,
     Empty,
+    ClusterMonitoring,
   },
   data() {
     return {}
   },
   computed: {
+    ...clusterMapUtils.mapState(['monitoringIframeUrl']),
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
 
     setClusterData() {

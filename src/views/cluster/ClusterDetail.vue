@@ -81,10 +81,6 @@
               $route.query.detail
             "
           />
-          <cluster-monitoring
-            v-else-if="tab === index && tabName === 'Monitoring'"
-            :url="monitoringIframeUrl"
-          />
         </v-tab-item>
       </v-tabs-items>
     </div>
@@ -112,7 +108,6 @@ import ClusterStorageClass from '@/views/cluster/components/ClusterStorageClassL
 import ClusterStorageClassDetail from '@/views/cluster/components/ClusterStorageClassDetail.vue'
 import ClusterAddonCardList from '@/views/cluster/components/ClusterAddonCardList.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
-import ClusterMonitoring from '@/views/ml/components/MLMonitoring.vue'
 
 const clusterMapUtils = createNamespacedHelpers('cluster')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -132,7 +127,6 @@ export default {
     ClusterStorageClass,
     ClusterStorageClassDetail,
     ClusterAddonCardList,
-    ClusterMonitoring,
   },
   mixins: [checkProjectAuth],
   data() {
@@ -147,7 +141,6 @@ export default {
         'Namespace',
         'Persistent Volume',
         'Storage Class',
-        'Monitoring',
       ], // 탭 명칭들
     }
   },
@@ -180,7 +173,6 @@ export default {
     this.getMonitoringData({ clusterIdx: this.clusterIdx })
   },
   computed: {
-    ...clusterMapUtils.mapState(['monitoringIframeUrl']),
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
 
     getTitle() {
