@@ -95,7 +95,7 @@
               :rules="regEx.required"
               required
             ></label-with-select>
-            <label-with-select
+            <!-- <label-with-select
               name="Disk Type"
               :className="labelWithSelectClass"
               :items="diskTypeList"
@@ -105,7 +105,7 @@
               @input="onChangeDiskType"
               :rules="regEx.required"
               required
-            ></label-with-select>
+            ></label-with-select> -->
           </template>
           <template v-if="['AWS'].includes(cloudType)">
             <label-with-select
