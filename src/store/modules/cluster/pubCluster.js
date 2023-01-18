@@ -70,7 +70,7 @@ export function makeClusterParameter(state) {
       vpcNo: form.network.networkKey,
       subnetworksNo: form.network.subnetKeys,
       lbPrivateSubnetNo: form.network.lbPrivateSubnetKey,
-      networkType: form.network.networkType.toLowercase(),
+      networkType: form.network.networkType.toLowerCase(),
       nodePools: [
         {
           nodeCount: Number(form.nodePool.nodeCount),
