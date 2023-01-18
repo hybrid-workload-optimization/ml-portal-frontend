@@ -258,8 +258,8 @@ export default {
         nodePoolName: [
           value => !!value || '값을 입력하세요.',
           value =>
-            /^[a-zA-Z]([a-zA-Z0-9-_]){2,10}[a-z0-9]$/.test(value) ||
-            '노드 풀 명은 영문, 숫자, (-,_)으로만 구성되어야 하며, 첫글자는 영문이어야 합니다. 길이는 최소 3글자, 최대 11자까지 입력 가능합니다.',
+            /^[a-zA-Z]([a-zA-Z0-9]){2,10}[a-z0-9]$/.test(value) ||
+            '노드 풀 명은 영문, 숫자로만 구성되어야 하며, 첫글자는 영문이어야 합니다. 길이는 최소 3글자, 최대 11자까지 입력 가능합니다.',
         ],
         dnsPrefix: [
           value => !!value || '값을 입력하세요.',
@@ -481,9 +481,10 @@ export default {
       }
       if (this.cloudType === 'Naver') {
         params.serverTypeName = 'SSD.B050'
+        params.category = 'STAND'
       } else if (this.cloudType === 'AWS') {
         // TODO 임시
-        params.serverTypeName = 't3.'
+        params.category = 't3'
       }
       const response = await axios.get(this.apiUrl.serverTypeList, {
         params,
@@ -792,6 +793,7 @@ export default {
     removeZoneItem(index) {
       this.selectedZoneId = 0
       this.appendedZoneItems.splice(index, 1)
+      this.onChangeAppendedZone()
     },
     removeSubnetItem(index) {
       this.selectedSubnetName = 0
