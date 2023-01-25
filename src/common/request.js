@@ -33,7 +33,9 @@ service.interceptors.request.use(
     // console.log(reqUrl)
     // 로그인, 토큰갱신 요청시 예외
     if (
-      (reqUrl === '/api/v1/user-manage/users' && method === 'post') ||
+      (reqUrl === '/api/v1/user-manage/users' &&
+        method === 'post' &&
+        (!accessToken || !refreshToken)) ||
       (reqUrl.includes('/api/v1/access-manage') &&
         reqUrl !== '/api/v1/access-manage/user-authority') ||
       reqUrl.includes('/users/dupl')
