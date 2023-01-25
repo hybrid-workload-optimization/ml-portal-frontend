@@ -17,22 +17,25 @@ export default {
   components: {
     Empty,
   },
-
   props: {
     url: {
       type: String,
     },
   },
-
   data() {
     return {
       monitoringUrl: '',
     }
   },
-
   mounted() {
     this.monitoringUrl = this.url
     this.test()
+  },
+  watch: {
+    url(newValue) {
+      console.log(newValue)
+      this.monitoringUrl = newValue
+    },
   },
   methods: {
     test() {
