@@ -289,7 +289,7 @@ const resource = {
       }
     },
     setMonitoringIframeUrl(state, payload) {
-      state.monitoringIframeUrl = payload
+      state.monitoringIframeUrl = payload || null
     },
   },
   actions: {

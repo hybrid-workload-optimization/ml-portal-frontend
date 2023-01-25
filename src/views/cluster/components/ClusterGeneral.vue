@@ -39,8 +39,8 @@ export default {
     return {}
   },
   computed: {
-    ...clusterMapUtils.mapState(['monitoringIframeUrl']),
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
+    ...clusterMapUtils.mapState(['monitoringIframeUrl']),
 
     setClusterData() {
       return {
