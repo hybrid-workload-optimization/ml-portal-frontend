@@ -395,7 +395,8 @@ const resource = {
           data.result.status !== 'Waiting' &&
           data.result.status !== 'Deleting' &&
           data.result.status !== 'Scale out' &&
-          data.result.status !== 'Scale in'
+          data.result.status !== 'Scale in' &&
+          data.result.status !== 'Healthy'
         ) {
           if (data.result.status === 'deleted') {
             dispatch('getDataList', params.clusterIdx)
