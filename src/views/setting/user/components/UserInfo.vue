@@ -44,14 +44,15 @@
           readonly
           v-if="readOnly"
         />
-
         <label-with-select
           v-if="mode"
           name="Authority"
           horizontal
           @input="onChangeRole"
           :items="selectRoles"
-          :value="detailInfo.userRole.userRoleCode"
+          item-text="text"
+          item-value="value"
+          :value="userRoleCode"
           :className="labelWithTextClass"
         >
         </label-with-select>

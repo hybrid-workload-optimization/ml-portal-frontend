@@ -4,6 +4,7 @@
       v-if="monitoringUrl"
       class="iframe_style"
       id="easyPayIframe"
+      :name="'name=' + Date.now()"
       :src="monitoringUrl"
     ></iframe>
     <empty v-if="!monitoringUrl" />

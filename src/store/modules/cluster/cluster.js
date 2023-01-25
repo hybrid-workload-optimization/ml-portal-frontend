@@ -257,8 +257,11 @@ const resource = {
       state.dataList[idx].nodeCount = result.nodeCount
     },
     setClusterStatus(state, payload) {
-      state.dataDetail.status = payload.data.result.status
-      state.dataDetail.nodeCount = payload.data.result.nodeCount
+      state.dataDetail.status = payload.status
+      state.dataDetail.provisioningStatus = payload.status
+        ? payload.status.toUpperCase()
+        : ''
+      state.dataDetail.nodeCount = payload.nodeCount
     },
     removeItem(state, payload) {
       const idx = state.dataList.findIndex(item => item.clusterIdx === payload)
@@ -399,9 +402,9 @@ const resource = {
         ) {
           if (data.result.status === 'deleted') {
             if (type === 'detail') {
-              dispatch('getDataDetail', params.clusterIdx)
+              commit('setClusterStatus', data.result)
             } else {
-              dispatch('getDataList', params.clusterIdx)
+              dispatch('getDataList')
             }
 
             commit(
@@ -409,18 +412,20 @@ const resource = {
               { title: 'Cluster가 삭제 되었습니다.', type: 'info' },
               { root: true },
             )
-          } else if (type === 'detail') {
-            commit('setClusterStatus', data)
-            commit(
-              'alert/openAlert',
-              {
-                title: 'Cluster 배포가 완료 되었습니다.',
-                type: 'info',
-              },
-              { root: true },
-            )
-          } else {
-            commit('setClusterListStatus', data)
+          } else if (data.result.status === 'Healthy') {
+            if (type === 'detail') {
+              commit(
+                'alert/openAlert',
+                {
+                  title: 'Cluster 배포가 완료 되었습니다.',
+                  type: 'info',
+                },
+                { root: true },
+              )
+              dispatch('getDataDetail', { clusterIdx: params.clusterIdx })
+            } else {
+              commit('setClusterListStatus', data)
+            }
           }
         } else {
           const index = setTimeout(() => {
@@ -431,14 +436,22 @@ const resource = {
         }
       } catch (error) {
         // 이미 삭제가 완료된 데이터
-        commit(
-          'alert/openAlert',
-          {
-            title: '데이터를 가져오는데 실패했습니다.',
-            type: 'error',
-          },
-          { root: true },
-        )
+        if (type === 'detail') {
+          dispatch('setClusterStatus', {
+            status: 'deleted',
+            provisioningStatus: 'DELETED',
+          })
+        } else {
+          dispatch('getDataList')
+        }
+        // commit(
+        //   'alert/openAlert',
+        //   {
+        //     title: '데이터를 가져오는데 실패했습니다.',
+        //     type: 'error',
+        //   },
+        //   { root: true },
+        // )
       }
     },
     async createPublicCluster({ commit, state }) {
