@@ -468,6 +468,8 @@ const resource = {
       const { data } = await request.getGrafanIframeUrlUsingGET(payload)
       if (data.result) {
         commit('setMonitoringIframeUrl', data.result)
+      } else {
+        commit('setMonitoringIframeUrl', null)
       }
     },
   },
