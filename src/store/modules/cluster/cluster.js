@@ -395,19 +395,21 @@ const resource = {
           data.result.status !== 'Waiting' &&
           data.result.status !== 'Deleting' &&
           data.result.status !== 'Scale out' &&
-          data.result.status !== 'Scale in' &&
-          data.result.status !== 'Healthy'
+          data.result.status !== 'Scale in'
         ) {
           if (data.result.status === 'deleted') {
-            dispatch('getDataList', params.clusterIdx)
+            if (type === 'detail') {
+              dispatch('getDataDetail', params.clusterIdx)
+            } else {
+              dispatch('getDataList', params.clusterIdx)
+            }
+
             commit(
               'alert/openAlert',
               { title: 'Cluster가 삭제 되었습니다.', type: 'info' },
               { root: true },
             )
-          }
-        } else {
-          if (type === 'detail') {
+          } else if (type === 'detail') {
             commit('setClusterStatus', data)
             commit(
               'alert/openAlert',
@@ -420,6 +422,7 @@ const resource = {
           } else {
             commit('setClusterListStatus', data)
           }
+        } else {
           const index = setTimeout(() => {
             dispatch('getDataStatus', payload)
           }, 10000)

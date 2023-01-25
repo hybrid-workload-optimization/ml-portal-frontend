@@ -21,7 +21,10 @@
     <div class="sp-empty">
       <sp-card class="empty__card-wrapper">
         <div class="empty__title-wrapper">{{ getProvisioningTitle }}</div>
-        <div class="empty__desc-wrapper">
+        <div
+          class="empty__desc-wrapper"
+          v-if="['KUBESPRAY'].includes(dataDetail.provisioningType)"
+        >
           로그를 확인 하시려면
           <router-link
             :to="{
