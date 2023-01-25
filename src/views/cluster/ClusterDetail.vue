@@ -236,7 +236,11 @@ export default {
 
         if (response.status === 200) {
           // 삭제 성공 시
-          if (this.dataDetail.provisioningType === 'KUBESPRAY') {
+          if (
+            ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'Naver'].includes(
+              this.dataDetail.provisioningType,
+            )
+          ) {
             this.openAlert({
               title: '클러스터 삭제를 요청하였습니다.',
               type: 'info',

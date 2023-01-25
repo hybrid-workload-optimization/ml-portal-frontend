@@ -132,6 +132,7 @@ export default {
   },
   watch: {
     provisioningStatus(newValue) {
+      console.log(newValue)
       if (
         newValue &&
         !['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
