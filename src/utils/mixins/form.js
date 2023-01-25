@@ -56,7 +56,7 @@ export const form = {
       // console.log(this.rules)
       // const regVal = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '')
       // this.email = regVal
-      this.email = value.trim()
+      this.email = value?.trim()
       this.$refs.email.lazyValue = this.email
       // if (this.$refs.email && Object.keys(this.$refs.email).length) {
       //   this.$refs.email.lazyValue = regVal

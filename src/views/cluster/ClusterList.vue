@@ -155,7 +155,11 @@ export default {
     moveToDetailPage(data) {
       console.log('data', data)
       console.log(data.provisioningType)
-      if (data.provisioningType === 'KUBESPRAY') {
+      if (
+        ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'Naver'].includes(
+          data.provisioningType,
+        )
+      ) {
         if (
           ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
             data.provisioningStatus,
