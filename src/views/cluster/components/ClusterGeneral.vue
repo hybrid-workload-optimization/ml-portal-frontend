@@ -7,10 +7,11 @@
     ></general-top-card>
     <div style="margin-top: 30px">
       <!-- <empty description="Relationship Diagram 적용 예정" /> -->
-      <cluster-monitoring
-        v-if="monitoringIframeUrl"
-        :url="monitoringIframeUrl"
+      <empty
+        description="Click the Move to Monitoring button."
+        v-if="monitoringUrl === 'NOT_FOUND'"
       />
+      <cluster-monitoring v-else-if="monitoringUrl" :url="monitoringUrl" />
       <empty description="Click the Install Monitoring button." v-else />
     </div>
     <!-- <general-node-table></general-node-table> -->
@@ -39,7 +40,7 @@ export default {
     return {}
   },
   computed: {
-    ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
+    ...clusterMapUtils.mapGetters(['dataDetail', 'monitoringAddOnData']), // 상세
     ...clusterMapUtils.mapState(['monitoringIframeUrl']),
 
     setClusterData() {
@@ -88,6 +89,35 @@ export default {
           value: String(this.dataDetail.pvcCount),
         },
       ]
+    },
+    monitoringUrl() {
+      if (this.monitoringIframeUrl) {
+        return this.monitoringIframeUrl
+      }
+      if (Object.keys(this.monitoringAddOnData).length) {
+        if (
+          this.monitoringAddOnData.packages &&
+          this.monitoringAddOnData.packages.length
+        ) {
+          let endpoints = []
+          this.monitoringAddOnData.packages.some(item => {
+            if (
+              item.name === 'grafana' &&
+              item.endpoints &&
+              item.endpoints.length &&
+              item.endpoints[0].endpoints
+            ) {
+              endpoints = item.endpoints[0].endpoints
+              return item
+            }
+            return false
+          })
+          if (endpoints.length) {
+            return this.monitoringIframeUrl || 'NOT_FOUND'
+          }
+        }
+      }
+      return false
     },
   },
   mounted() {

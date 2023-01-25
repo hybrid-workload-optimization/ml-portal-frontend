@@ -12,6 +12,9 @@
 
 <script>
 import Empty from '@/components/Empty.vue'
+import { createNamespacedHelpers } from 'vuex'
+
+const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   components: {
@@ -38,6 +41,7 @@ export default {
     },
   },
   methods: {
+    ...clusterMapUtils.mapMutations(['setMonitoringIframeUrl']),
     test() {
       const obj = document.getElementById('easyPayIframe')
 
@@ -54,6 +58,9 @@ export default {
       )
       return this.monitoringUrl
     },
+  },
+  beforeDestroy() {
+    this.setMonitoringIframeUrl()
   },
 }
 </script>
