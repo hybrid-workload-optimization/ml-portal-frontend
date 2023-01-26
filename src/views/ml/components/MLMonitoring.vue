@@ -4,7 +4,7 @@
       v-if="monitoringUrl"
       class="iframe_style"
       id="easyPayIframe"
-      :name="'name=' + Date.now()"
+      :key="'name=' + Date.now()"
       :src="monitoringUrl"
     ></iframe>
     <empty v-if="!monitoringUrl" />
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// iframe의 key 값 제거 시 iframe 이전 페이지의 src를 호출하는 이슈 있음
 import Empty from '@/components/Empty.vue'
 import { createNamespacedHelpers } from 'vuex'
 
