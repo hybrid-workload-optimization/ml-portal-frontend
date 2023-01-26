@@ -135,7 +135,10 @@
         </template>
       </line-button-title>
 
-      <line-button-title title="Network Info">
+      <line-button-title
+        title="Network Info"
+        v-if="!['AWS', 'Naver'].includes(cloudType)"
+      >
         <template v-slot:content>
           <label-with name="Network Setting">
             <template v-slot:append-content>
@@ -474,10 +477,6 @@ export default {
       const params = {
         cloudType: this.cloudTypeParamMap[this.cloudType],
         regionId: this.saveData.regionId,
-        fromVcpu: 2,
-        toVcpu: 4,
-        fromMemoryGib: 2,
-        toMemoryGib: 32,
         gpu: false,
       }
       if (this.cloudType === 'GCP') {
@@ -490,13 +489,6 @@ export default {
         }
         // eslint-disable-next-line prefer-destructuring
         params.zoneId = this.appendedZoneItems[0].zoneId
-      }
-      if (this.cloudType === 'Naver') {
-        params.serverTypeName = 'SSD.B050'
-        params.category = 'STAND'
-      } else if (this.cloudType === 'AWS') {
-        // TODO 임시
-        params.category = 't3'
       }
       const response = await axios.get(this.apiUrl.serverTypeList, {
         params,
@@ -514,6 +506,11 @@ export default {
       })
     },
     async getVpcList() {
+      // Demo
+      if (['Naver', 'AWS'].includes(this.cloudType)) {
+        return
+      }
+
       this.vpcList = []
       if (!this.saveData.regionId) {
         return
@@ -531,6 +528,10 @@ export default {
        * Subnet: GEN (General)
        * LB Private Subnet: LOADB (Loadbalancer)
        */
+      if (['Naver', 'AWS'].includes(this.cloudType)) {
+        return
+      }
+
       this.subnetList = []
       if (!this.saveData.regionId || !this.saveData.network.networkKey) return
       const params = {
@@ -622,6 +623,16 @@ export default {
       /**
        * Naver의 경우 zone에 따라 subnet, LB private subnet의 목록 변동이 있음
        */
+
+      if (this.cloudType === 'GCP') {
+        this.getServerTypeList()
+      }
+
+      // Demo
+      if (['Naver', 'AWS'].includes(this.cloudType)) {
+        return
+      }
+
       if (this.cloudType === 'Naver') {
         this.saveData.network.lbPrivateSubnetName = null
         this.selectedSubnetName = null
@@ -629,9 +640,6 @@ export default {
 
         this.getSubnetList()
         this.getLbPrivateSubnetList()
-      }
-      if (this.cloudType === 'GCP') {
-        this.getServerTypeList()
       }
     },
     onChangeDiskType() {
@@ -787,19 +795,49 @@ export default {
       this.saveData.zoneNames = this.appendedZoneItems.map(item => {
         return item.zoneName
       })
-      const subnetKeys = []
-      this.saveData.network.subnetNames = this.appendedSubnetItems.map(item => {
-        subnetKeys.push(item.subnetKey)
-        return item.subnetName
-      })
-      this.saveData.network.subnetKeys = subnetKeys
-      this.lbPrivateSubnetList.some(item => {
-        if (this.saveData.network.lbPrivateSubnetName === item.subnetName) {
-          this.saveData.network.lbPrivateSubnetKey = item.subnetKey
-          return item
+
+      if (['Naver', 'AWS'].includes(this.cloudType)) {
+        // Demo 하드코딩
+        if (this.cloudType === 'AWS') {
+          this.saveData.network.subnetKeys = [
+            'subnet-070a278a6b71d22fb',
+            'subnet-02397bcd8e79dbc48',
+          ]
+        } else if (
+          this.cloudType === 'Naver' &&
+          this.saveData.zoneNames[0] === 'KR-1'
+        ) {
+          this.saveData.network.networkType = 'private'
+          this.saveData.network.networkKey = '22224'
+          this.saveData.network.subnetKeys = ['46462']
+          this.saveData.network.lbPrivateSubnetKey = '46461'
+        } else if (
+          this.cloudType === 'Naver' &&
+          this.saveData.zoneNames[0] === 'KR-2'
+        ) {
+          this.saveData.network.networkType = 'public'
+          this.saveData.network.networkKey = '22224'
+          this.saveData.network.subnetKeys = ['56804']
+          this.saveData.network.lbPrivateSubnetKey = '56805'
         }
-        return false
-      })
+      } else {
+        const subnetKeys = []
+        this.saveData.network.subnetNames = this.appendedSubnetItems.map(
+          item => {
+            subnetKeys.push(item.subnetKey)
+            return item.subnetName
+          },
+        )
+        this.saveData.network.subnetKeys = subnetKeys
+        this.lbPrivateSubnetList.some(item => {
+          if (this.saveData.network.lbPrivateSubnetName === item.subnetName) {
+            this.saveData.network.lbPrivateSubnetKey = item.subnetKey
+            return item
+          }
+          return false
+        })
+      }
+
       console.log('save data: ', this.saveData)
       this.setPublicNewClusterForm(this.saveData)
       const result = await this.createPublicCluster()
