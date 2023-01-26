@@ -81,12 +81,12 @@ export default {
           value: String(this.dataDetail.namespaceCount),
         },
         {
-          title: 'Pod',
-          value: String(this.dataDetail.podCount),
+          title: 'PV',
+          value: String(this.dataDetail.pvCount),
         },
         {
-          title: 'PVC',
-          value: String(this.dataDetail.pvcCount),
+          title: 'Storage Class',
+          value: String(this.dataDetail.storageClassCount),
         },
       ]
     },

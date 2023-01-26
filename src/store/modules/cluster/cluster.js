@@ -24,6 +24,8 @@ const resource = {
       createdAt: '',
       masterCount: 0,
       workerCount: 0,
+      pvCount: 0,
+      storageClassCount: 0,
       clusterId: 0,
       provisioningType: '',
       provisioningStatus: '',
@@ -109,6 +111,8 @@ const resource = {
         provisioningUser: '',
         masterCount: 0,
         workerCount: 0,
+        pvCount: 0,
+        storageClassCount: 0,
         availableMasterPercent: 0,
         availableWorkerPercent: 0,
         namespaceCount: 0,
@@ -212,6 +216,8 @@ const resource = {
         state.dataDetail.namespaceCount = result.namespaceCount
         state.dataDetail.podCount = result.podCount
         state.dataDetail.pvcCount = result.pvcCount
+        state.dataDetail.pvCount = result.pvCount
+        state.dataDetail.storageClassCount = result.storageClassCount
         state.dataDetail.monitoringServiceUrl = result.monitoringServiceUrl
       }
     },
