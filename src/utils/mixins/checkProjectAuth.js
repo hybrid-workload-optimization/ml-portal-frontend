@@ -6,6 +6,7 @@ export const checkProjectAuth = {
   methods: {
     checkProjectAuth(projectIdx) {
       if (!projectIdx) {
+        // Project 메뉴가 아닌경우 기본 권한을 따라감
         this.checkDefaultAuth()
       }
       const { userInfo } = this.$store.state.loginUser
@@ -19,6 +20,7 @@ export const checkProjectAuth = {
         // 관리자의 경우 Default 권한을 따라감
         this.checkDefaultAuth()
       } else {
+        // Manager 및 Member는 Project 권한을 따라감
         this.projectUserRoleList = this.$store.state.loginUser.projectUserRole
         if (projectIdx) {
           const { currentMenuInfo } = this.$store.state.loginUser
