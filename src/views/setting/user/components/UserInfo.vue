@@ -169,11 +169,13 @@ export default {
     this.getAuthList()
   },
   computed: {
-    ...userMapUtils.mapGetters(['detailInfo']),
-    ...userMapUtils.mapGetters(['changedInfo']),
-    ...userMapUtils.mapGetters(['userRoleList']),
-    ...userMapUtils.mapGetters(['selectRoleList']),
-    ...userMapUtils.mapGetters(['selectRoles']),
+    ...userMapUtils.mapGetters([
+      'detailInfo',
+      'changedInfo',
+      'userRoleList',
+      'selectRoleList',
+      'selectRoles',
+    ]),
   },
   methods: {
     ...authMapUtils.mapActions(['getAllListAuthority']),
@@ -185,6 +187,7 @@ export default {
       'getUserRoleList',
       'getUserRoles',
     ]),
+    ...userMapUtils.mapMutations(['changeInfo']),
 
     async getAuthList() {
       try {
@@ -198,8 +201,9 @@ export default {
       console.log(payload)
       this.setChangeInfo(payload)
     },
-    onClickUpdate() {
+    async onClickUpdate() {
       const params = {
+        type: 'general',
         userId: this.detailInfo.email,
         organization: this.userOrganization,
         contact: this.userContact,
@@ -207,13 +211,11 @@ export default {
           userRoleCode: this.userRoleCode,
         },
       }
-      // this.changeInfo(this.userInfo)
       this.userInfo = params
-      this.updateUserInfo(this.userInfo)
-    },
-    async updateUserInfo(param) {
+      this.changeInfo(params)
+
       try {
-        const response = await this.updateUser(param)
+        const response = await this.updateUser()
         if (response.status === 200) {
           this.openAlert({ title: this.successMsg, type: 'info' })
           const id = encodeURIComponent(encrypt.encrypt(this.userId))

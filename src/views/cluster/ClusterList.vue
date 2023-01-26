@@ -156,7 +156,7 @@ export default {
       console.log('data', data)
       console.log(data.provisioningType)
       if (
-        ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'Naver'].includes(
+        ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
           data.provisioningType,
         )
       ) {

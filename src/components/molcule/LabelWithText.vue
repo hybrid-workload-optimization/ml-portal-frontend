@@ -6,7 +6,7 @@
       for="state-title"
       :style="{ ...cssProps['titleStyle'] }"
     >
-      {{ name }}
+      {{ labelName }}
     </label>
     <sp-input
       ref="spInput"
@@ -176,6 +176,10 @@ export default {
       description:
         'Function, Boolean 및 String 유형의 혼합 배열 허용. 함수는 입력 값을 인수로 전달하고 true/false 또는 오류 메시지가 포함된 문자열을 반환해야 합니다. 함수가 false를 반환(또는 배열의 값이 포함)하거나 문자열인 경우 입력 필드는 오류 상태가 됩니다.',
     },
+    label: {
+      type: String,
+      default: null,
+    },
   },
   computed: {
     cssProps() {
@@ -191,6 +195,9 @@ export default {
       set(value) {
         this.$refs.spInput.lazyValue = value
       },
+    },
+    labelName() {
+      return this.label || this.name
     },
   },
   methods: {

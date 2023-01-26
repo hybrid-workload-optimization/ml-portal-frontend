@@ -13,7 +13,27 @@
         >
       </template>
     </card-title>
-    <user-info :mode="false" />
+    <v-tabs v-model="tab" color="#000">
+      <v-tabs-slider color="#000"></v-tabs-slider>
+      <v-tab
+        v-for="tabName in tabNames"
+        :key="tabName"
+        @change="onClickTab(tabName)"
+      >
+        {{ tabName }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items class="detail-tab-item" v-model="tab">
+      <v-tab-item>
+        <user-info :mode="false" />
+      </v-tab-item>
+      <v-tab-item>
+        <naver-info :mode="false"></naver-info>
+      </v-tab-item>
+      <v-tab-item>
+        <aws-info :mode="false"></aws-info>
+      </v-tab-item>
+    </v-tabs-items>
     <!-- 삭제 요청 확인 창 -->
     <confirm
       @confirm-modal="onClickDelConfirm"
@@ -26,6 +46,8 @@ import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import UserInfo from '@/views/setting/user/components/UserInfo.vue'
+import AwsInfo from '@/views/setting/user/components/AwsInfo.vue'
+import NaverInfo from '@/views/setting/user/components/NaverInfo.vue'
 import encrypt from '@/lib/encrypt'
 
 const userMapUtils = createNamespacedHelpers('user')
@@ -37,11 +59,15 @@ export default {
   components: {
     CardTitle,
     UserInfo,
+    AwsInfo,
+    NaverInfo,
     Confirm,
   },
   data() {
     return {
       userId: null,
+      tab: 'General',
+      tabNames: ['General', 'Naver', 'AWS'],
     }
   },
   async created() {
@@ -110,6 +136,9 @@ export default {
 
     // [삭제 요청 확인창] 취소 클릭 시
     onClickDelCancel() {},
+    onClickTab(tab) {
+      this.tabName = tab
+    },
   },
 }
 </script>
