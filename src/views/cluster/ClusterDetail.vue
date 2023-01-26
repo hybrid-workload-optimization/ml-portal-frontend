@@ -146,8 +146,7 @@ export default {
   },
 
   created() {
-    const { hash, params } = this.$route
-    this.checkProjectAuth(params.id)
+    const { hash } = this.$route
     const tabIdx = this.tabNames.findIndex(item => {
       if (
         item.replace(' ', '').toLowerCase() ===
@@ -169,6 +168,7 @@ export default {
       this.$router.push('/cluster/list')
     }
     console.log('클러스터 데이터: ', this.dataDetail)
+    this.checkProjectAuth(this.dataDetail.projectIdx)
     this.getDataSummary({ clusterIdx: this.clusterIdx })
     this.getMonitoringData({ clusterIdx: this.clusterIdx })
   },
