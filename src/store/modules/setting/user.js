@@ -38,6 +38,14 @@ const resource = {
         userRoleCode: '',
       },
     },
+    naverChangedInfo: {
+      accessKey: 'laxFfnAoZa0NLvu4b5QF',
+      secretKey: 'Fq3efxkisMd7LnW6rNCZhO1WhdWTE9TnC8sQKSkQ',
+    },
+    awsChangedInfo: {
+      accessKey: 'AKIA256GSYQXL2UVSKVC',
+      secretKey: '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',
+    },
     userRoleList: [],
     selectRoleList: [],
     selectProjectList: [],
@@ -180,11 +188,23 @@ const resource = {
       }
     },
     changeInfo(state, payload) {
-      state.userChangedInfo = {
-        userId: payload.userId,
-        organization: payload.organization,
-        contact: payload.contact,
-        userRole: payload.userRole,
+      if (payload.type === 'general') {
+        state.userChangedInfo = {
+          userId: payload.userId,
+          organization: payload.organization,
+          contact: payload.contact,
+          userRole: payload.userRole,
+        }
+      } else if (payload.type === 'Naver') {
+        state.naverChangedInfo = {
+          accessKey: payload.accessKey,
+          secretKey: payload.secretKey,
+        }
+      } else {
+        state.awsChangedInfo = {
+          accessKey: payload.accessKey,
+          secretKey: payload.secretKey,
+        }
       }
     },
     changeSelectRoles(state, payload) {
@@ -231,8 +251,11 @@ const resource = {
       return response
     },
     // 유저 정보 수정
-    async updateUser(context, payload) {
-      const response = await request.patchUserUsingPATCH(payload)
+    async updateUser({ state }) {
+      const params = {
+        ...state.userChangedInfo,
+      }
+      const response = await request.patchUserUsingPATCH(params)
       // commit('changeList', response)
       return response
     },

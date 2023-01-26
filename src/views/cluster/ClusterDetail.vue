@@ -237,7 +237,7 @@ export default {
         if (response.status === 200) {
           // 삭제 성공 시
           if (
-            ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'Naver'].includes(
+            ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
               this.dataDetail.provisioningType,
             )
           ) {
