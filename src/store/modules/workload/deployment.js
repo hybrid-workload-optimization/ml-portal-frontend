@@ -87,7 +87,7 @@ const resource = {
           age: `${date.getDiffFromToday(e.createdAt)}`,
           label: '',
         }
-        if (e.label) {
+        if (e.label && e.label !== 'null') {
           e.label = JSON.parse(e.label)
           let count = 0
           for (const [key, value] of Object.entries(e.label)) {
@@ -237,18 +237,18 @@ const resource = {
         page: 1,
         size: 100,
         clusterIdx: payload.clusterIdx,
-        namespaceIdx: payload.namespaceIdx,
+        namespace: payload.namespace,
       }
 
       const response = await api.getAllData(
-        request.getDeploymentListUsingGET,
+        request.getDeploymentListUsingGET_1,
         param,
       )
       commit('changeDataList', response)
     },
 
     async getDeploymentDetail({ commit }, payload) {
-      const response = await request.getDeploymentUsingGET(payload)
+      const response = await request.getDeploymentUsingGET_1(payload)
       commit('changeDetailInfo', response)
     },
 

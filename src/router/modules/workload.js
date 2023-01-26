@@ -20,7 +20,7 @@ const resource = [
         },
       },
       {
-        path: 'deployment/detail/:id',
+        path: 'deployment/detail/:clusterIdx/:namespace/:name',
         name: 'WorkloadDeployment Detail',
         component: () => import('@/views/workload/deployment/DeploymentDetail'),
         meta: {

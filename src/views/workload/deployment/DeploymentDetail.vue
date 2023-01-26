@@ -55,7 +55,9 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
-      deploymentIdx: null,
+      clusterIdx: null,
+      namespace: null,
+      name: null,
       tab: null,
       isEncodingContent: true,
       tabNames: ['General', 'Relationship diagram'],
@@ -63,7 +65,9 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.deploymentIdx = this.$route.params.id
+    this.clusterIdx = this.$route.params.clusterIdx
+    this.namespace = this.$route.params.namespace
+    this.name = this.$route.params.name
     await this.getData()
 
     // mixin
@@ -92,7 +96,11 @@ export default {
     // 상세 정보와 파드 리스트 정보를 가져오는 메서드
     async getData() {
       try {
-        await this.getDeploymentDetail({ idx: this.deploymentIdx })
+        await this.getDeploymentDetail({
+          clusterIdx: this.clusterIdx,
+          namespace: this.namespace,
+          name: this.name,
+        })
         const { deploymentDetailInfo } = this
 
         const param = {

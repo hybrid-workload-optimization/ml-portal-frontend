@@ -77,7 +77,7 @@ export default {
         valueKey: 'projectIdx',
       },
       thirdSelectMeta: {
-        requestFunc: request.getNamespacesUsingGET,
+        requestFunc: request.getNamespacesAPIOnlyUsingGET,
         parameters: { clusterIdx: '' },
         valueKey: 'clusterIdx',
       },
@@ -160,7 +160,7 @@ export default {
       return {
         projectId: this.firstValue,
         clusterIdx: this.secondValue,
-        namespaceIdx: this.thirdValue,
+        namespace: this.thirdValue,
       }
     },
   },
@@ -203,9 +203,12 @@ export default {
     },
 
     moveToDetailPage(data) {
-      const { idx } = data
+      const idx = this.secondValue
+      const { namespace, name } = data
       if (idx) {
-        this.$router.push(`/workload/deployment/detail/${idx}`)
+        this.$router.push(
+          `/workload/deployment/detail/${idx}/${namespace}/${name}`,
+        )
       }
     },
 
