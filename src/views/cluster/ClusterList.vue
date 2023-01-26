@@ -128,7 +128,7 @@ export default {
       if (this.dataList.length) {
         this.dataList.forEach(item => {
           if (
-            ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
+            ['STARTED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
             )
           ) {

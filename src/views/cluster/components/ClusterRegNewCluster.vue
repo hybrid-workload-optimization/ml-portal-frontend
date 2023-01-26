@@ -1,6 +1,11 @@
 <template>
   <div class="new-cluster-provider">
-    <private-provider v-if="provider === 'Kubernetes'" ref="privateProvider" />
+    <private-provider
+      v-if="provider === 'Kubernetes'"
+      ref="privateProvider"
+      :edit-data="editData"
+      :editable="editable"
+    />
     <public-provider
       ref="publicProvider"
       v-else-if="['AWS', 'Naver', 'Azure', 'GCP'].includes(provider)"
@@ -21,8 +26,17 @@ const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   components: { PrivateProvider, PublicProvider, Empty },
-  data() {
-    return {}
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+      description: '수정 가능 여부',
+    },
+    editData: {
+      type: Object,
+      default: {},
+      description: '수정 데이터',
+    },
   },
   mounted() {
     console.log(tag)
@@ -31,7 +45,7 @@ export default {
     onSave() {
       // 이벤트 전달
       if (this.provider === 'Kubernetes') {
-        return this.$refs.PrivateProvider.onSubmit()
+        return this.$refs.privateProvider.onSave()
       }
       return this.$refs.publicProvider.onSubmit()
     },

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-// iframe의 key 값 제거 시 iframe 이전 페이지의 src를 호출하는 이슈 있음
+// iframe의 key 값 제거 시 iframe 이전 페이지의 src를 호출하는 이슈 있음(멱등성 이슈)
 import Empty from '@/components/Empty.vue'
 import { createNamespacedHelpers } from 'vuex'
 
