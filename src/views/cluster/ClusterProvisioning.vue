@@ -105,10 +105,10 @@ export default {
     },
     getProvisioningTitle() {
       if (this.provisioningStatus === 'STARTED') {
-        return 'Cluster 배포가 진행 중입니다.'
+        return 'Cluster deployment is in progress.'
       }
       if (this.provisioningStatus === 'DELETING') {
-        return 'Cluster 삭제가 진행 중입니다.'
+        return 'Cluster deletion is in progress.'
       }
       if (this.provisioningStatus === 'SCALE_OUT') {
         return 'Cluster Scale Out이 진행 중입니다.'
@@ -117,7 +117,7 @@ export default {
         return 'Cluster Scale In이 진행 중입니다.'
       }
       if (this.provisioningStatus === 'FAILED') {
-        return 'Cluster 배포에 실패했습니다.'
+        return 'Cluster deployment failed.'
       }
       return ''
     },

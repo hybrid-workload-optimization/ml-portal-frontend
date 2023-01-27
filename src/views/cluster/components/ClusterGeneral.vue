@@ -53,13 +53,13 @@ export default {
     setSystemItems() {
       return [
         {
-          title: 'Mater 가동률',
+          title: 'Master utilization rate',
           usageStorage: 100,
           color: '#29AA54',
           usagePercentage: this.dataDetail.availableMasterPercent,
         },
         {
-          title: 'Worker 가동률',
+          title: 'Worker utilization rate',
           usageStorage: 100,
           color: '#F49440',
           usagePercentage: this.dataDetail.availableWorkerPercent,

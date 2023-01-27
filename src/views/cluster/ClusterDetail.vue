@@ -30,7 +30,7 @@
           />
           <cluster-addon-card-list
             v-else-if="
-              tab === index && tabName === 'Add-on' && !$route.query.detail
+              tab === index && tabName === 'Catalog' && !$route.query.detail
             "
           />
           <cluster-node
@@ -136,7 +136,7 @@ export default {
       isEncodingContent: true,
       tabNames: [
         'General',
-        'Add-on',
+        'Catalog',
         'Node',
         'Namespace',
         'Persistent Volume',
@@ -223,7 +223,7 @@ export default {
     // [삭제 버튼] 클릭 시
     onClickDelete() {
       this.openConfirm(
-        `${this.dataDetail.clusterName} 을(를) 삭제하시겠습니까?`,
+        `Are you sure you want to delete ${this.dataDetail.clusterName} ?`,
       )
     },
 
@@ -242,12 +242,12 @@ export default {
             )
           ) {
             this.openAlert({
-              title: '클러스터 삭제를 요청하였습니다.',
+              title: 'Cluster deletion requested.',
               type: 'info',
             })
           } else {
             this.openAlert({
-              title: '클러스터가 삭제 되었습니다.',
+              title: 'The cluster has been deleted.',
               type: 'info',
             })
           }
@@ -256,14 +256,14 @@ export default {
         } else {
           // 삭제 실패 시
           this.openAlert({
-            title: '클러스터 삭제를 실패했습니다.',
+            title: 'Failed to delete cluster.',
             type: 'error',
           })
           console.log(response.data.message)
         }
       } catch (error) {
         this.openAlert({
-          title: '클러스터 삭제를 실패했습니다.',
+          title: 'Failed to delete cluster.',
           type: 'error',
         })
         console.log(error)

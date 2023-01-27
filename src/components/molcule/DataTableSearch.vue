@@ -13,7 +13,7 @@
     <div class="search-wrapper">
       <slot name="btn-group"></slot>
       <sp-input
-        placeholder="검색할 키워드를 입력하세요"
+        placeholder="Enter keywords to search for"
         append-icon="mdi-magnify"
         single-line
         @input="onInputSearch"
@@ -27,8 +27,8 @@
         v-if="!multiple"
       ></sp-input>
       <v-combobox
-        label="검색할 키워드를 입력하세요"
-        placeholder="검색할 키워드를 입력하세요"
+        label="Enter keywords to search for"
+        placeholder="Enter keywords to search for"
         chips
         deletable-chips
         class="search"

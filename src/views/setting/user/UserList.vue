@@ -11,7 +11,7 @@
     />
     <modal
       class="popup-cluster"
-      title-name="유저 생성"
+      title-name="New User"
       modal-width="670"
       :dialog="isOpenSignUpModal"
       @close-modal="onClickCloseLabelModal"
@@ -51,11 +51,7 @@
     />
 
     <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
-    <empty
-      v-else-if="!isLoading"
-      title="User가 존재하지 않습니다."
-      description=""
-    />
+    <empty v-else-if="!isLoading" title="User does not exist." description="" />
 
     <!-- <alert
       titleName="생성 실패"
