@@ -197,7 +197,7 @@ export default {
   async created() {
     this.storageClassId = this.$route.query.storageClassId
     await this.getDetail({ id: this.storageClassId })
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']),

@@ -101,7 +101,7 @@ export default {
     }
   },
   async created() {
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
     this.isLoading = true
     await this.getListData()
     this.isLoading = false

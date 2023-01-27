@@ -226,7 +226,7 @@ export default {
   async created() {
     this.nodeId = this.$route.query.clusterNodeId
     this.getData()
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']),
