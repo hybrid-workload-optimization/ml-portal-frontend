@@ -30,7 +30,7 @@
           />
           <cluster-addon-card-list
             v-else-if="
-              tab === index && tabName === 'Add-on' && !$route.query.detail
+              tab === index && tabName === 'Catalog' && !$route.query.detail
             "
           />
           <cluster-node
@@ -136,7 +136,7 @@ export default {
       isEncodingContent: true,
       tabNames: [
         'General',
-        'Add-on',
+        'Catalog',
         'Node',
         'Namespace',
         'Persistent Volume',
