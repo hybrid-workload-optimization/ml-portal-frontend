@@ -2,7 +2,7 @@
   <div class="sp-user-detail">
     <div class="sp-detail-metadata">
       <div class="title-wrapper">
-        <span class="title-text">회원정보</span>
+        <!-- <span class="title-text">회원정보</span> -->
       </div>
       <!-- <span class="sub-title">회원정보</span> -->
 
@@ -59,7 +59,7 @@
 
         <label-with-text
           name="Status"
-          :value="detailInfo.useYn === 'Y' ? '활성' : '비활성'"
+          :value="detailInfo.useYn === 'Y' ? 'Active' : 'Inactive'"
           :horizontal="true"
           readonly
           v-if="readOnly"

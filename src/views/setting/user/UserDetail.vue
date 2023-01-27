@@ -106,7 +106,7 @@ export default {
     },
     // 삭제
     onClickDelete() {
-      const msg = this.detailInfo.useYn === 'Y' ? '비활성화' : '활성화'
+      const msg = this.detailInfo.useYn === 'Y' ? 'Inactive' : 'Active'
       this.openConfirm(`${this.detailInfo.email} 사용자를 ${msg} 하시겠습니까?`)
     },
 
@@ -121,7 +121,7 @@ export default {
         })
 
         // 삭제 성공 시
-        const msg = enabled ? '비활성화' : '활성화'
+        const msg = enabled ? 'Inactive' : 'Active'
         this.openAlert({ title: `사용자가 ${msg} 되었습니다.`, type: 'info' })
 
         await this.getDetail({ userId: this.userId })
