@@ -126,7 +126,7 @@ export default {
     pageCount: 0,
     isOpenTooltipId: false,
     paddingWidth: 16,
-    noDataText: '표시할 데이터가 존재하지 않습니다.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
+    noDataText: 'Data to display does not exist.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
   }),
   computed: {
     /*
@@ -218,11 +218,11 @@ export default {
       return text
     },
     onDataBinding() {
-      this.noDataText = '데이터를 가져오고 있습니다.'
+      this.noDataText = 'Importing data...'
     },
     setNoDataText() {
       if (!this.datas.length) {
-        this.noDataText = '표시할 데이터가 존재하지 않습니다.'
+        this.noDataText = 'Data to display does not exist.'
       }
     },
   },
