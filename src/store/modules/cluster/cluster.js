@@ -415,7 +415,7 @@ const resource = {
 
             commit(
               'alert/openAlert',
-              { title: 'Cluster가 삭제 되었습니다.', type: 'info' },
+              { title: 'Cluster has been deleted.', type: 'info' },
               { root: true },
             )
           } else if (data.result.status === 'Healthy') {
@@ -423,7 +423,7 @@ const resource = {
               commit(
                 'alert/openAlert',
                 {
-                  title: 'Cluster 배포가 완료 되었습니다.',
+                  title: 'Cluster deployment is complete.',
                   type: 'info',
                 },
                 { root: true },
@@ -477,7 +477,7 @@ const resource = {
         commit(
           'alert/openAlert',
           {
-            title: 'Cluster 등록을 요청하였습니다.',
+            title: 'Cluster creation requested.',
             type: 'info',
           },
           { root: true },
