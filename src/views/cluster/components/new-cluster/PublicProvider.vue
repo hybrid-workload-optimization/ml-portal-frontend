@@ -493,10 +493,10 @@ export default {
       const response = await axios.get(this.apiUrl.serverTypeList, {
         params,
       })
-      const sortedMemory = _.sortBy(response.data.body, 'memory').reverse()
-      const sortedItems = _.sortBy(sortedMemory, 'category').reverse()
+      // const sortedMemory = _.sortBy(response.data.body, 'memory').reverse()
+      // const sortedItems = _.sortBy(sortedMemory, 'category').reverse()
 
-      this.serverTypeList = sortedItems.map(item => {
+      this.serverTypeList = response.data.body.map(item => {
         const category = item.category ? `[${item.category}] ` : ''
         item.serverTypeNameText = `${category}${item.serverTypeName} ( vcore: ${
           item.vcpu
