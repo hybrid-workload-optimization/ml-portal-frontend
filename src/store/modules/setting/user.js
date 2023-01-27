@@ -133,7 +133,7 @@ const resource = {
           email: e.email,
           organization: e.organization,
           roleName: e.userRole.userRoleName,
-          status: e.useYn === 'Y' ? '활성' : '비활성',
+          status: e.useYn === 'Y' ? 'Active' : 'Inactive',
           createdAt: moment(e.createdAt).format('YYYY-MM-DD HH:mm:ss'),
         }
         tableList.push(item)

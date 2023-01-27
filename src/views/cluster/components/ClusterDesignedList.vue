@@ -108,8 +108,8 @@
     <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
     <empty
       v-else-if="!isLoading"
-      title="Cluster가 존재하지 않습니다."
-      description="Cluster를 추가하려면 “New Cluster” 버튼을 클릭하시기 바랍니다."
+      title="Cluster does not exist."
+      description="Click the 'New Cluster' button to add a cluster."
     />
   </div>
 </template>

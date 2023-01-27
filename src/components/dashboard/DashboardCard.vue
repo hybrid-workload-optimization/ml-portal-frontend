@@ -32,7 +32,7 @@
 
         <resource-box
           class="status-box"
-          title="Node 가동 상태"
+          title="Node Status"
           :value="nodeState.nodeUtilizationState"
           outlined
           minHeight="0"
@@ -41,7 +41,7 @@
         ></resource-box>
         <resource-box
           class="status-box"
-          title="10분 이내 재시작"
+          title="Restart within 10 minutes"
           :value="nodeState.restartWithinTenMinutes.toString()"
           outlined
           minHeight="0"
@@ -53,7 +53,7 @@
       <!-- Node 사용률 차트 -->
       <div class="card-center">
         <div class="title-wrapper">
-          <span class="title-text">Node 가동률</span>
+          <span class="title-text">Node utilization ratio</span>
         </div>
         <div class="chart-wrapper">
           <donut-chart
@@ -90,7 +90,7 @@
       <div class="card-right">
         <div class="right-left">
           <div class="title-wrapper">
-            <div class="title-text">Master 가동률</div>
+            <div class="title-text">Master utilization rate</div>
           </div>
           <div class="chart-wrapper">
             <donut-chart
@@ -113,7 +113,7 @@
         <!-- Worker 가동률 차트 -->
         <div class="right-right">
           <div class="title-wrapper">
-            <div class="title-text">Worker 가동률</div>
+            <div class="title-text">Worker utilization rate</div>
           </div>
           <div class="chart-wrapper">
             <donut-chart
