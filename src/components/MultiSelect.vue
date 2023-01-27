@@ -247,8 +247,6 @@ export default {
       this.setSecondValue(value)
       if (this.thirdSelectMeta) {
         await this.requestGetThirdItems(this.thirdSelectMeta)
-        this.initThirdItems()
-        this.emitChageItem()
       } else if (init) {
         this.emitChageItem()
       }
