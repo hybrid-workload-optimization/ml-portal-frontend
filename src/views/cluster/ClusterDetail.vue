@@ -168,7 +168,7 @@ export default {
       this.$router.push('/cluster/list')
     }
     console.log('클러스터 데이터: ', this.dataDetail)
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
     this.getDataSummary({ clusterIdx: this.clusterIdx })
     this.getMonitoringData({ clusterIdx: this.clusterIdx })
   },

@@ -8,6 +8,7 @@ export const checkProjectAuth = {
       if (!projectIdx) {
         // Project 메뉴가 아닌경우 기본 권한을 따라감
         this.checkDefaultAuth()
+        return
       }
       const { userInfo } = this.$store.state.loginUser
       if (

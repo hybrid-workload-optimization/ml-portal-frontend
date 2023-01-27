@@ -159,7 +159,7 @@ export default {
   async created() {
     this.namespaceId = this.$route.query.namespaceId
     await this.getDetail({ id: this.namespaceId })
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']),

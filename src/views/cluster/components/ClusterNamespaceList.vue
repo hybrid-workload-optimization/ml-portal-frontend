@@ -110,7 +110,7 @@ export default {
     }
   },
   created() {
-    this.checkProjectAuth(this.dataDetail.projectIdx)
+    this.checkProjectAuth()
     this.getListData()
   },
   computed: {
