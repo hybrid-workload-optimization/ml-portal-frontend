@@ -15,7 +15,7 @@
             src="Strato_logo_white.png"
           ></sp-image>
 
-          <span class="title-text">PaaS Portal</span>
+          <span class="title-text">CMP Portal</span>
         </div>
       </div>
 

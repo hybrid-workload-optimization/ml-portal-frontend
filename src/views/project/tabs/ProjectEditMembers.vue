@@ -111,7 +111,7 @@ export default {
       resultMemberList: [],
       asIsHeaders: [
         {
-          text: '사용자명',
+          text: 'User Name',
           align: 'left',
           value: 'userName',
           class: 'w-30',
@@ -125,7 +125,7 @@ export default {
       ],
       toBeHeaders: [
         {
-          text: '사용자명',
+          text: 'User Name',
           align: 'left',
           value: 'userName',
           class: 'w-30',
