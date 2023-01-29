@@ -80,13 +80,13 @@ export default {
     return {
       headers: [
         {
-          text: '클러스터명',
+          text: 'Cluster Name',
           align: 'left',
           value: 'clusterName',
           class: 'w-30',
         },
         {
-          text: '설명',
+          text: 'Description',
           align: 'left',
           value: 'description',
           class: 'w-70',
