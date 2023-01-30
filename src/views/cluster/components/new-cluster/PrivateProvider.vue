@@ -185,13 +185,13 @@ export default {
     },
     validateDataForm() {
       if (this.formData.provisioningUser === '') {
-        this.openAlert({ title: 'User를 입력하십시오.', type: 'error' })
+        this.openAlert({ title: 'Please enter User.', type: 'error' })
         return false
       }
 
       if (this.formData.nodes.length < 1) {
         this.openAlert({
-          title: '노드 정보(Host name/IP/Role)를 최소 1개 이상 입력하십시오',
+          title: 'Enter at least one node information (Host name/IP/Role)',
           type: 'warn',
         })
         return false
@@ -218,14 +218,15 @@ export default {
       if (needInputNode) {
         this.openAlert({
           title:
-            '노드 정보(Host name/IP)를 입력하십시오(입력되지 않은 항목이 있습니다.)',
+            'Enter node information (Host name/IP) (There are items that have not been entered.)',
           type: 'warn',
         })
         return false
       }
       if (needInputMaster) {
         this.openAlert({
-          title: '노드 정보(Role)에서 최소 1개의 Master가 선택되어야 합니다.',
+          title:
+            'At least one Master must be selected in the Node Information (Role).',
           type: 'warn',
         })
         return false
@@ -233,7 +234,7 @@ export default {
       if (!(countInputMaster % 2)) {
         this.openAlert({
           title:
-            '노드 정보(Role)에서 Master의 개수는 홀수로 설정되어야 합니다.',
+            'In Node Information (Role), the number of masters must be set to odd.',
           type: 'warn',
         })
         return false
@@ -248,14 +249,15 @@ export default {
         const ipCnt = ipMap.get(item.ip) || 0
         if (nameMap.get(item.name) > 0) {
           this.openAlert({
-            title: '노드 정보(Role)에서 Host name에 중복값이 있습니다.',
+            title:
+              'Duplicate value found in Hostname in Node Information (Role).',
             type: 'warn',
           })
           return item
         }
         if (ipMap.get(item.ip) > 0) {
           this.openAlert({
-            title: '노드 정보(Role)에서 IP에 중복값이 있습니다.',
+            title: 'Duplicate value found in IP in Node Information (Role).',
             type: 'warn',
           })
           return item

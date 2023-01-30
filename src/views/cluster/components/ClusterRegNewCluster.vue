@@ -5,7 +5,7 @@
       ref="publicProvider"
       v-else-if="['AWS', 'Naver', 'Azure', 'GCP'].includes(provider)"
     />
-    <empty v-else description="Provider를 선택해 주세요."></empty>
+    <empty v-else description="Please select a Provider."></empty>
   </div>
 </template>
 
