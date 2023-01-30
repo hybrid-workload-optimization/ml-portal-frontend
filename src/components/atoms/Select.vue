@@ -317,7 +317,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '선택',
+      default: 'Select',
       description: '입력의 자리 표시자 텍스트를 설정',
     },
     prefix: {

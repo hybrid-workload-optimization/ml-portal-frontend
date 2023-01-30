@@ -57,7 +57,7 @@
             name="Node Pool Name"
             :className="labelWithTextClass"
             :value="saveData.nodePool.nodePoolName"
-            placeholder="Node Pool Name을 입력하세요."
+            placeholder="Enter Node Pool Name."
             :rules="regEx.nodePoolName"
             @input="value => (saveData.nodePool.nodePoolName = value)"
             required
@@ -259,50 +259,49 @@ export default {
     return {
       regEx: {
         nodePoolName: [
-          value => !!value || '값을 입력하세요.',
+          value => !!value || 'Please enter a value.',
           value =>
             /^[a-zA-Z]([a-zA-Z0-9]){2,10}[a-z0-9]$/.test(value) ||
-            '노드 풀 명은 영문, 숫자로만 구성되어야 하며, 첫글자는 영문이어야 합니다. 길이는 최소 3글자, 최대 11자까지 입력 가능합니다.',
+            'The node pool name must consist of only English and numbers, and the first letter must be English. You can enter at least 3 characters in length and up to 11 characters in length.',
         ],
         dnsPrefix: [
-          value => !!value || '값을 입력하세요.',
+          value => !!value || 'Please enter a value.',
           value =>
             /^[a-z]([a-z0-9-]){0,52}[a-z0-9]$/.test(value) ||
-            'DNS 이름 접두사는 영문(소문자), 숫자, (-)으로만 구성되어야 하며, 첫글자는 영문이어야하고 끝은 영문 또는 숫자이어야 합니다. 최대 54자까지 입력 가능합니다.',
+            'DNS name prefixes must consist of only English (lowercase), numbers, (-), the first letter must be English, and the end must be English or numeric. You can enter up to 54 characters.',
         ],
-        required: [value => !!value || '값을 입력하세요.'],
+        required: [value => !!value || 'Please enter a value.'],
         requiredNodeCount: [
-          value => !!Number(value) || '값을 입력하세요.',
-          value => Number(value) > 0 || 'Node Count는 1 이상이어야 합니다.',
+          value => !!Number(value) || 'Please enter a value.',
+          value => Number(value) > 0 || 'Node Count must be at least 1.',
           value =>
             !!Number.isInteger(Number(value)) ||
-            'Node Count 는 정수값만 입력이 가능합니다.',
+            'Only integer values can be entered for Node Count.',
         ],
         requiredDiskSize: [
-          value => !!Number(value) || '값을 입력하세요.',
-          value =>
-            Number(value) >= 10 || 'Disk Size는 10GiB 이상이어야 합니다.',
+          value => !!Number(value) || 'Please enter a value.',
+          value => Number(value) >= 10 || 'Disk Size must be at least 10 GiB.',
           value =>
             Number.isInteger(Number(value)) ||
-            'Disk Size는 정수값만 입력이 가능합니다.',
+            'Only integer values can be entered for Disk Size.',
         ],
         requiredZoneItems: [
           () =>
             this.provider === 'Azure'
               ? true
-              : this.appendedZoneItems.length > 0 || '값을 추가해주세요.',
+              : this.appendedZoneItems.length > 0 || 'Please add a value.',
         ],
         requiredSubnetItems: [
-          () => this.appendedSubnetItems.length > 0 || '값을 추가해주세요.',
+          () => this.appendedSubnetItems.length > 0 || 'Please add a value.',
           () =>
             this.checkAWSSubnet() ||
-            '서로 다른 Zone의 Subnet이 2개 이상 추가되어야 합니다.',
+            'At least two Subnets from different zones must be added.',
         ],
       },
       message: {
-        required: '{name}은 필수 값 입니다.',
+        required: '{name} is a required value.',
         awsSubnet:
-          '이 프로젝트는 서로 다른 존의 서브넷이 2개 이상 추가되어야 합니다.',
+          'This project requires at least two additional subnets from different zones.',
       },
       apiUrl: {
         k8sVersionList: '/config/public/k8s/version/list',
@@ -482,7 +481,7 @@ export default {
       if (this.cloudType === 'GCP') {
         if (!this.appendedZoneItems.length) {
           this.openAlert({
-            title: '존을 선택해 주세요.',
+            title: 'Please select a zone.',
             type: 'warn',
           })
           return
@@ -542,7 +541,7 @@ export default {
       if (this.cloudType === 'Naver') {
         if (!this.appendedZoneItems.length) {
           this.openAlert({
-            title: '존을 선택해 주세요.',
+            title: 'Please select a zone.',
             type: 'warn',
           })
           return
@@ -729,7 +728,7 @@ export default {
        */
       if (!selectedZoneId) {
         this.openAlert({
-          title: '존을 선택해 주세요.',
+          title: 'Please select a zone.',
           type: 'warn',
         })
         return
@@ -741,7 +740,7 @@ export default {
       ) {
         this.openAlert({
           title:
-            '해당 Provider는 존을 하나만 추가할 수 있습니다. 선택된 존을 삭제하신 뒤 추가해주세요.',
+            'This provider can only add one zone. Please delete the selected zone and add it.',
           type: 'warn',
         })
         return

@@ -86,7 +86,7 @@ export default {
 
       if (this.formData.kubeConfig === '') {
         this.openAlert({
-          title: 'Kube Config 정보를 입력하십시오.',
+          title: 'Please enter the Kube Config information.',
           type: 'error',
         })
         return false
@@ -94,7 +94,7 @@ export default {
 
       if (!this.checkedKubeConfig) {
         this.openAlert({
-          title: 'Check Connect를 통하여 연결확인하여 주십시오',
+          title: 'Please check the connection through Check Connect.',
           type: 'error',
         })
         return false
@@ -115,7 +115,7 @@ export default {
 
       if (this.formData.kubeConfig === '') {
         this.openAlert({
-          title: 'Kube Config 정보를 입력하십시오.',
+          title: 'Please enter the Kube Config information.',
           type: 'error',
         })
         return
@@ -129,20 +129,20 @@ export default {
         if (response.status === 200) {
           if (response.data.result) {
             this.openAlert({
-              title: '클러스터 연결이 확인 되었습니다.',
+              title: 'Cluster connection verified.',
               type: 'info',
             })
             this.checkedKubeConfig = true
           } else {
             this.openAlert({
-              title: '클러스터에 연결 할 수 없습니다.',
+              title: 'Unable to connect to the cluster.',
               type: 'error',
             })
             this.checkedKubeConfig = false
           }
         } else {
           this.openAlert({
-            title: '클러스터에 연결 실패했습니다.',
+            title: 'Failed to connect to cluster.',
             type: 'error',
           })
           this.checkedKubeConfig = false
@@ -150,7 +150,7 @@ export default {
         }
       } catch (error) {
         this.openAlert({
-          title: '클러스터에 연결 실패했습니다.',
+          title: 'Failed to connect to cluster.',
           type: 'error',
         })
         this.checkedKubeConfig = false

@@ -4,7 +4,7 @@
       <label-with-text
         class="cluster-name-input"
         name="Cluster name"
-        placeholder="Cluster Name을 입력하세요."
+        placeholder="Enter a cluster name."
         :className="labelWithTextClass"
         :value="formData.clusterName"
         :disabled="editable"
@@ -22,7 +22,7 @@
             height="40"
             color="#4B5566"
             @click="checkDuplicate(), (snackbar = false)"
-            >중복확인</sp-button
+            >Duplicate check</sp-button
           >
         </template>
       </label-with-text>
@@ -147,10 +147,10 @@ export default {
       },
       rules: {
         clusterName: [
-          value => !!value || '값을 입력하세요.',
+          value => !!value || 'Please enter a value.',
           value =>
             /^[a-z|A-Z|0-9|_|-]+$/.test(value) ||
-            'Cluster name은 영문/숫자/특수문자(-_)만 입력할 수 있습니다.',
+            'Cluster name can only contain English/Number/Special characters (-_).',
         ],
       },
     }
@@ -188,7 +188,7 @@ export default {
     },
     validateDataForm() {
       if (this.formData.clusterName === '') {
-        this.openAlert({ title: 'Cluster name을 입력하십시오.', type: 'error' })
+        this.openAlert({ title: 'Enter a cluster name.', type: 'error' })
         return false
       }
       // 클러스터 이름은 영문/숫자/특수문자2개로 한정
@@ -198,21 +198,22 @@ export default {
 
       if (!validClusterName) {
         this.openAlert({
-          title: 'Cluster name은 영문/숫자/특수문자(-_)만 입력할 수 있습니다.',
+          title:
+            'Cluster name can only contain English/Number/Special characters (-_).',
           type: 'error',
         })
         return false
       }
       if (!this.checkedClusterName) {
         this.openAlert({
-          title: 'Cluster name을 중복확인하여 주십시오',
+          title: 'Duplicate check cluster name please',
           type: 'error',
         })
         return false
       }
       console.log(tag, 'this.formData.provider=', this.formData.provider)
       if (this.formData.provider === '') {
-        this.openAlert({ title: 'Provider를 선택하십시오.', type: 'error' })
+        this.openAlert({ title: 'Please select a Provider.', type: 'error' })
         return false
       }
       return true
@@ -229,7 +230,8 @@ export default {
       const validClusterName = engExp.test(this.formData.clusterName)
       if (!validClusterName) {
         this.openAlert({
-          title: 'Cluster name은 영문/숫자/특수문자(-_)만 입력할 수 있습니다.',
+          title:
+            'Cluster name can only contain English/Number/Special characters (-_).',
           type: 'error',
         })
         return
@@ -241,17 +243,20 @@ export default {
         })
 
         if (response.data.result) {
-          this.openAlert({ title: '중복되었습니다.', type: 'error' })
+          this.openAlert({ title: 'Duplicated.', type: 'error' })
           this.checkedClusterName = false
         } else {
           this.openAlert({
-            title: '사용할 수 있는 Cluster Name 입니다.',
+            title: 'This is the Cluster Name that can be used.',
             type: 'info',
           })
           this.checkedClusterName = true
         }
       } catch (error) {
-        this.openAlert({ title: '중복 확인에 실패했습니다.', type: 'error' })
+        this.openAlert({
+          title: 'Duplicate verification failed.',
+          type: 'error',
+        })
         this.checkedClusterName = false
         console.log(error)
       }
