@@ -351,10 +351,10 @@ const resource = {
         )
       }
     },
-    async updateMyInfo({ commit, dispatch }, payload) {
+    async updateMyInfo({ commit }, payload) {
       try {
         await request.patchUserUsingPUT(payload)
-        await dispatch('loginUser/refreshToken', null, { root: true })
+        // await dispatch('loginUser/refreshToken', null, { root: true })
         commit(
           'alert/openAlert',
           {

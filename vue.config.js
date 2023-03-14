@@ -15,6 +15,10 @@ module.exports = {
   devServer: {
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
+      '/auth/realms': {
+        target: 'http://172.16.10.177:8580',
+        changeOrigin: true,
+      },
       '/api': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,

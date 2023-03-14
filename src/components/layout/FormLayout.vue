@@ -34,7 +34,7 @@
       - rules.requiredPw : 비밀번호 필수 검사
     </div>
     <h1>* 회원가입 컴포넌트 #4 (완료)</h1>
-    <signup-form />
+    <!-- <signup-form /> -->
     <div class="form-layout__description">
       <div>이벤트</div>
       - onChangeName : 이름 입력시 이벤트
@@ -143,8 +143,7 @@
 </template>
 
 <script>
-import LoginForm from '@/components/LoginForm.vue'
-import SignupForm from '@/components/SignupForm.vue'
+import LoginForm from '@/components/Login.vue'
 import PasswordForm from '@/components/PasswordForm.vue'
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 
@@ -157,7 +156,6 @@ export default {
   },
   components: {
     LoginForm,
-    SignupForm,
     PasswordForm,
     LabelWithText,
   },
