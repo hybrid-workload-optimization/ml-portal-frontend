@@ -114,8 +114,8 @@ router.beforeEach(async (to, from, next) => {
     to.path !== '/change-password'
   ) {
     // token refresh 실패시 login
-    const refreshResult = await store.dispatch('loginUser/refreshToken')
-    if (!refreshResult) {
+    // const refreshResult = await store.dispatch('loginUser/refreshToken')
+    if (store.state.loginUser.userInfo === null) {
       console.log('no refreshResult')
       next('/login')
     } else {

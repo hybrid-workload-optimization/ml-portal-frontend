@@ -7,15 +7,13 @@ const resource = {
   namespaced: true,
   state: {
     userInfo: null,
-    accessToken: null,
-    expireTime: null,
-    refreshTokenExpireTime: null,
     menuList: [],
     flatMenuList: [],
     projectUserRole: [],
     favoriteList: [],
     currentMenuInfo: {},
     isShowEditModal: false,
+    accessToken: '',
   },
   getters: {
     userInfo(state) {
@@ -25,15 +23,6 @@ const resource = {
   mutations: {
     setUserInfo: (state, userInfo) => {
       state.userInfo = userInfo
-    },
-    setAccessToken: (state, accessToken) => {
-      state.accessToken = accessToken
-    },
-    setExpireTime: (state, expireTime) => {
-      state.expireTime = expireTime
-    },
-    setRefreshTokenExpireTime: (state, refreshTokenExpireTime) => {
-      state.refreshTokenExpireTime = refreshTokenExpireTime
     },
     setMenuInfo: (state, authority) => {
       state.menuList = authority.defaultUserRole
@@ -63,11 +52,17 @@ const resource = {
     changeShowEditModal: (state, payload) => {
       state.isShowEditModal = payload
     },
+    setAccessToken: (state, payload) => {
+      state.accessToken = payload
+    },
   },
   actions: {
-    doLogin: async ({ dispatch }, payload) => {
+    doLogin: async ({ commit, dispatch }, payload) => {
       try {
+        const accessToken = await request.getAccessToken()
+        commit('setAccessToken', accessToken.data.access_token)
         const loginResult = await request.doLoginUsingPOST(payload)
+        console.log(loginResult)
         dispatch('initUserInfo', loginResult.data.result)
         const { authority } = loginResult.data.result
         if (authority) {
@@ -96,12 +91,8 @@ const resource = {
       try {
         const response = await request.doLogoutUsingGET(param)
         if (response.status === 200) {
-          cookieHelper.removeCookie(cookieName.refresh_token)
-          cookieHelper.removeCookie(cookieName.setExpireTime)
           cookieHelper.removeCookie(cookieName.username)
           commit('setUserInfo', null)
-          commit('setAccessToken', null)
-          commit('setExpireTime', null)
 
           sessionStorage.removeItem('firstVal')
           sessionStorage.removeItem('secondVal')
@@ -113,42 +104,8 @@ const resource = {
         console.error(error)
       }
     },
-    refreshToken: async ({ dispatch }) => {
-      try {
-        const refreshResultawait = await request.tokenRefreshUsingPOST()
-        dispatch('initUserInfo', refreshResultawait.data.result)
-        return true
-      } catch (error) {
-        // 로그인 페이지 이동
-        console.error(error)
-        return false
-      }
-    },
     initUserInfo: ({ commit, dispatch }, userInfo) => {
       commit('setUserInfo', userInfo.user)
-      commit('setAccessToken', userInfo.token.accessToken)
-      commit(
-        'setExpireTime',
-        // new Date().getTime() + 10 * 1000,
-        new Date().getTime() + userInfo.token.expiresIn * 1000,
-      )
-      commit(
-        'setRefreshTokenExpireTime',
-        // new Date().getTime() + 20 * 1000,
-        new Date().getTime() + userInfo.token.refreshExpiresIn * 1000,
-      )
-      const { refreshToken } = userInfo.token
-      const refreshTokenExpireMin = userInfo.token.refreshExpiresIn
-      cookieHelper.setCookie(
-        'refresh_token',
-        refreshToken,
-        refreshTokenExpireMin,
-      )
-      cookieHelper.setCookie(
-        'username',
-        userInfo.user.userName,
-        refreshTokenExpireMin,
-      )
       // 즐겨찾기 데이터
       dispatch('getFavoriteInfo')
     },

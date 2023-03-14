@@ -186,6 +186,7 @@ export default {
   }),
   async created() {
     await this.getAllListAuthority()
+    console.log(this.authGroups)
     this.expandAll()
     if (
       this.authGroups.length &&

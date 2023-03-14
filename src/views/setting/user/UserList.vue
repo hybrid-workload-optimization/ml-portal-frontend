@@ -75,7 +75,6 @@ import request from '@/lib/request'
 import Empty from '@/components/Empty.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Modal from '@/components/modals/Modal.vue'
-import SignupForm from '@/components/SignupForm.vue'
 import Search from '@/components/molcule/DataTableSearch.vue'
 import { form } from '@/utils/mixins/form'
 import encrypt from '@/lib/encrypt'
@@ -96,7 +95,6 @@ export default {
     Empty,
     MultiSelect,
     // MultiSelectForSeparate,
-    SignupForm,
   },
   mixins: [form],
   data() {
