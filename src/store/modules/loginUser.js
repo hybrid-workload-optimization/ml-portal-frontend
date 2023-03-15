@@ -63,7 +63,11 @@ const resource = {
         commit('setAccessToken', accessToken.data.access_token)
         const loginResult = await request.doLoginUsingPOST(payload)
         console.log(loginResult)
-        dispatch('initUserInfo', loginResult.data.result)
+        const userInfo = await request.getUserDetailUsingGET(
+          loginResult.data.result.user,
+        )
+        // dispatch('initUserInfo', loginResult.data.result)
+        dispatch('initUserInfo', userInfo.data.result)
         const { authority } = loginResult.data.result
         if (authority) {
           sessionStorage.setItem(
@@ -105,7 +109,8 @@ const resource = {
       }
     },
     initUserInfo: ({ commit, dispatch }, userInfo) => {
-      commit('setUserInfo', userInfo.user)
+      // commit('setUserInfo', userInfo.user)
+      commit('setUserInfo', userInfo)
       // 즐겨찾기 데이터
       dispatch('getFavoriteInfo')
     },

@@ -6,6 +6,7 @@
     "local": "vue-cli-service serve --mode local",
     "start": "npm run api-gen-local && vue-cli-service serve --mode local",
     "dev": "npm run api-gen-dev && vue-cli-service serve --mode dev",
+    "sso": "npm run api-gen-dev && vue-cli-service serve --mode sso",
     "build-dev": "npm run api-gen-dev && vue-cli-service build --mode dev",
     "build-stg": "vue-cli-service build --mode stg",
     "build-prod": "cross-env NODE_ENV=prod && npm run api-gen-prod && vue-cli-service build --mode prod",
