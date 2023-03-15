@@ -12,73 +12,24 @@
         </sp-button>
       </template>
 
-      <!-- 전체 열기/닫기 버튼 부분 -->
-      <div class="sp-authority-group__function-buttons-wrapper">
-        <sp-button icon @click="expandAll"
-          ><v-icon>expand_more</v-icon></sp-button
-        >
-        <sp-button icon @click="expandNone"
-          ><v-icon>expand_less</v-icon></sp-button
-        >
-      </div>
-
       <!-- 전체 그룹 -->
       <div class="sp-authority-group__expansion-group-wrapper">
         <v-expansion-panels accordion multiple flat v-model="panel">
           <v-expansion-panel v-for="(data, index) in authGroups" :key="index">
-            <v-expansion-panel-header>
-              <template v-slot:actions>
-                <v-icon class="expand-icon">$expand</v-icon>
-              </template>
-              <span class="expand-header">{{ data.userRoleName }}</span>
-              <sp-button
-                icon
-                class="expand-button"
-                v-if="isWritable"
-                @click.stop="popupAddEdit(1, index, 'N', data.userRoleIdx)"
-                ><v-icon>add</v-icon></sp-button
-              >
-              <sp-button
-                icon
-                class="expand-button"
-                @click.stop="
-                  popupAddEdit(2, index, data.groupYn, data.userRoleIdx)
-                "
-                v-if="data.userDefinedYn == 'Y' && isWritable"
-                ><v-icon class="material-icons-outlined"
-                  >drive_file_rename_outline</v-icon
-                ></sp-button
-              >
-              <sp-button
-                icon
-                class="expand-button"
-                @click.stop="
-                  popupDelete(data.userRoleName, index, null, data.userRoleIdx)
-                "
-                v-if="
-                  isWritable &&
-                  data.userDefinedYn &&
-                  data.userDefinedYn == 'Y' &&
-                  !data.subRoleList.length > 0
-                "
-                ><v-icon>clear</v-icon></sp-button
-              >
-            </v-expansion-panel-header>
             <v-expansion-panel-content>
               <ul class="expand-list">
                 <li
-                  v-for="(group, i) in data.subRoleList"
-                  :key="i"
+                  :key="index"
                   class="expand-list-item"
                   :class="{
-                    isActive: selected.userRoleIdx === group.userRoleIdx,
+                    isActive: selected.userRoleIdx === data.userRoleIdx,
                   }"
-                  @click="selectGroup(group)"
+                  @click="selectGroup(data)"
                 >
                   <v-icon class="expand-list-item-icon material-icons-outlined"
                     >people</v-icon
                   ><span class="expand-list-item-text">
-                    {{ group.userRoleName }}
+                    {{ data.userRoleName }}
                   </span>
                   <sp-button
                     icon
@@ -188,12 +139,8 @@ export default {
     await this.getAllListAuthority()
     console.log(this.authGroups)
     this.expandAll()
-    if (
-      this.authGroups.length &&
-      this.authGroups[0].subRoleList &&
-      this.authGroups[0].subRoleList.length
-    ) {
-      this.selectGroup(this.authGroups[0].subRoleList[0])
+    if (this.authGroups.length) {
+      this.selectGroup(this.authGroups[0])
     }
   },
   computed: {

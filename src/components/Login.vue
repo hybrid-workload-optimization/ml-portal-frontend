@@ -1,3 +1,4 @@
+<template><div></div></template>
 <script>
 import encrypt from '@/lib/encrypt'
 import { createNamespacedHelpers } from 'vuex'
