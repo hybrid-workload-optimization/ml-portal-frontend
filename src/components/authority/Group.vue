@@ -31,7 +31,8 @@
                   ><span class="expand-list-item-text">
                     {{ data.userRoleName }}
                   </span>
-                  <sp-button
+
+                  <!-- <sp-button
                     icon
                     class="expand-list-button"
                     @click.stop="
@@ -44,7 +45,7 @@
                     "
                     v-if="isWritable && group.userDefinedYn == 'Y'"
                     ><v-icon>clear</v-icon></sp-button
-                  >
+                  > -->
                 </li>
               </ul>
             </v-expansion-panel-content>
@@ -137,7 +138,6 @@ export default {
   }),
   async created() {
     await this.getAllListAuthority()
-    console.log(this.authGroups)
     this.expandAll()
     if (this.authGroups.length) {
       this.selectGroup(this.authGroups[0])
