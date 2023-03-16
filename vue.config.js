@@ -7,7 +7,9 @@ module.exports = {
   configureWebpack: {
     output: {
       filename:
-        process.env === 'prod' ? '[name].[chunkhash].js' : '[name].bundle.js',
+        process.env === 'prod' || process.env === 'sso'
+          ? '[name].[chunkhash].js'
+          : '[name].bundle.js',
     },
   },
   chainWebpack: config => {
