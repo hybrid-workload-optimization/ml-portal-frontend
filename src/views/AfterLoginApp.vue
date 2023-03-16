@@ -121,7 +121,7 @@ export default {
         //   },
         // })
         this.sse = new EventSource(
-          `/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
+          `/comp-b-svc/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
         )
 
         this.sse.onerror = e => {
