@@ -13,13 +13,14 @@ module.exports = {
     config.resolve.alias.set('@', path.resolve(__dirname, 'src/'))
   },
   devServer: {
+    // base url : comp
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
       '/auth/realms': {
         target: 'http://172.16.10.177:8580',
         changeOrigin: true,
       },
-      '/api': {
+      '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
       },
