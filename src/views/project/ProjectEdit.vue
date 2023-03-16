@@ -13,9 +13,9 @@
       <v-tabs-items v-model="tab" style="padding-top: 15px">
         <div class="sp-box-layout">
           <v-tab-item v-for="tabName in tabNames" :key="tabName">
-            <project-edit-general v-if="tabName === 'General'" />
+            <!-- <project-edit-general v-if="tabName === 'General'" /> -->
             <project-edit-cluster v-if="tabName === 'Cluster'" />
-            <project-edit-members v-if="tabName === 'Member'" />
+            <!-- <project-edit-members v-if="tabName === 'Member'" /> -->
           </v-tab-item>
         </div>
       </v-tabs-items>
@@ -43,9 +43,9 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import ProjectEditGeneral from '@/views/project/tabs/ProjectEditGeneral.vue'
+// import ProjectEditGeneral from '@/views/project/tabs/ProjectEditGeneral.vue'
 import ProjectEditCluster from '@/views/project/tabs/ProjectEditCluster.vue'
-import ProjectEditMembers from '@/views/project/tabs/ProjectEditMembers.vue'
+// import ProjectEditMembers from '@/views/project/tabs/ProjectEditMembers.vue'
 
 const projectMapUtils = createNamespacedHelpers('project')
 const loginUserMapUtils = createNamespacedHelpers('loginUser')
@@ -53,16 +53,17 @@ const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    ProjectEditGeneral,
+    // ProjectEditGeneral,
     ProjectEditCluster,
-    ProjectEditMembers,
+    // ProjectEditMembers,
   },
 
   data() {
     return {
       id: null,
       tab: null,
-      tabNames: ['General', 'Cluster', 'Member'], // 탭 명칭들
+      // tabNames: ['General', 'Cluster', 'Member'], // 탭 명칭들
+      tabNames: ['Cluster'], // 탭 명칭들
     }
   },
 
