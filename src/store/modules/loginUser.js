@@ -57,12 +57,9 @@ const resource = {
     },
   },
   actions: {
-    doLogin: async ({ commit, dispatch }, payload) => {
+    doLogin: async ({ dispatch }, payload) => {
       try {
-        const accessToken = await request.getAccessToken()
-        commit('setAccessToken', accessToken.data.access_token)
         const loginResult = await request.doLoginUsingPOST(payload)
-        console.log(loginResult)
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
         )

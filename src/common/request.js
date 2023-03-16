@@ -29,15 +29,16 @@ service.interceptors.request.use(
     const { method } = config
 
     config.headers.Authorization = accessToken
+    config.baseURL = '/comp'
 
     // console.log(reqUrl)
     // 로그인, 토큰갱신 요청시 예외
     if (
-      (reqUrl === '/api/v1/user-manage/users' &&
+      (reqUrl === '/comp-b-svc/api/v1/user-manage/users' &&
         method === 'post' &&
         !accessToken) ||
-      (reqUrl.includes('/api/v1/access-manage') &&
-        reqUrl !== '/api/v1/access-manage/user-authority') ||
+      (reqUrl.includes('/comp-b-svc/api/v1/access-manage') &&
+        reqUrl !== '/comp-b-svc/api/v1/access-manage/user-authority') ||
       reqUrl.includes('/users/dupl')
     ) {
       vm.$store.commit('loading/showLoading')
