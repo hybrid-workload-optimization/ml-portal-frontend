@@ -16,7 +16,6 @@ module.exports = {
     config.resolve.alias.set('@', path.resolve(__dirname, 'src/'))
   },
   devServer: {
-    // base url : comp
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
       '/comp-b-svc': {
