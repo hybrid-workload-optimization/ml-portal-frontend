@@ -25,18 +25,16 @@ service.interceptors.request.use(
     */
     numberOfCallPending += 1
     const reqUrl = config.url.split('?')[0]
-    const { accessToken } = vm.$store.state.loginUser
+    // const { accessToken } = vm.$store.state.loginUser
     const { method } = config
 
-    config.headers.Authorization = accessToken
-    config.baseURL = '/comp'
+    // config.headers.Authorization = accessToken
 
     // console.log(reqUrl)
     // 로그인, 토큰갱신 요청시 예외
     if (
       (reqUrl === '/comp-b-svc/api/v1/user-manage/users' &&
-        method === 'post' &&
-        !accessToken) ||
+        method === 'post') ||
       (reqUrl.includes('/comp-b-svc/api/v1/access-manage') &&
         reqUrl !== '/comp-b-svc/api/v1/access-manage/user-authority') ||
       reqUrl.includes('/users/dupl')
