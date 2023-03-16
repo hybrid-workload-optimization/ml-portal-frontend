@@ -26,10 +26,7 @@ export default {
       */
       console.log('login request')
 
-      const result = await this.doLogin({
-        userId: 'paasportal@strato.co.kr',
-        userPassword: 'qwer1234',
-      })
+      const result = await this.doLogin()
       console.log('login result ', result)
 
       if (result) {
