@@ -2,6 +2,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 const path = require('path')
 
 module.exports = {
+  publicPath: '/comp/',
   transpileDependencies: ['vuetify'],
   configureWebpack: {
     output: {
@@ -16,10 +17,6 @@ module.exports = {
     // base url : comp
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
-      '/auth/realms': {
-        target: 'http://172.16.10.177:8580',
-        changeOrigin: true,
-      },
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
