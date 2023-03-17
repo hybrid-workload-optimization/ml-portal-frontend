@@ -1,12 +1,18 @@
 <template>
   <div class="sp-bar-layout">
-    <multi-select
+    <!-- <multi-select
       class="margin-bottom-20"
       :btnName="'New User'"
       :firstSelectMeta="firstSelectMeta"
       :secondSelectMeta="secondSelectMeta"
       :isDisabled="currentMenuInfo.writableYn !== 'Y'"
       @clickBtn="onClickOpenLabelModal"
+      @changeItem="onChangeItem"
+    /> -->
+    <multi-select
+      class="margin-bottom-20"
+      :firstSelectMeta="firstSelectMeta"
+      :secondSelectMeta="secondSelectMeta"
       @changeItem="onChangeItem"
     />
     <!-- <modal
