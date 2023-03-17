@@ -106,8 +106,11 @@ export default {
     ...loginUserMapUtils.mapState(['isShowEditModal']),
   },
   methods: {
-    async requestLougout() {
-      await this.doLogout()
+    // async requestLougout() {
+    // await this.doLogout()
+    // },
+    requestLougout() {
+      window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
     },
     ...loginUserMapUtils.mapMutations(['changeShowEditModal']),
     ...loginUserMapUtils.mapActions(['doLogout']),
