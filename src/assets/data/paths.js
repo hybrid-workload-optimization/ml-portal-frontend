@@ -61,11 +61,11 @@ const AdminPath = {
     subTitle: ['Home', 'Dashboard'],
   },
   [`${COMMON_PREFIX}Dashboard`]: {
-    title: 'CMP DashBoard',
+    title: 'CoMP DashBoard',
     subTitle: ['Home', 'Dashboard'],
   },
   [`${COMMON_PREFIX}ResourceUsage`]: {
-    title: 'CMP DashBoard Usage Total Viewer',
+    title: 'CoMP DashBoard Usage Total Viewer',
     subTitle: [],
   },
   [`${COMMON_PREFIX}_Test2`]: {
