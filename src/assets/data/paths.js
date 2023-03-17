@@ -135,12 +135,12 @@ const PaaSPath = {
     subTitle: ['Home', 'Dashboard'],
   },
   Project: {
-    title: 'Project',
-    subTitle: ['Home', 'Project'],
+    title: 'Service Group',
+    subTitle: ['Home', 'Service Group'],
   },
   Overview: {
     title: 'Overview',
-    subTitle: ['Home', 'Project', 'Overview'],
+    subTitle: ['Home', 'Service Group', 'Overview'],
   },
   OverviewCluster: {
     title: 'Cluster',

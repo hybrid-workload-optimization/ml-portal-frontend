@@ -13,7 +13,7 @@
         ></resource-box>
         <resource-box
           class="resource-box"
-          title="Project"
+          title="Service Group"
           :value="nodeState.projectCount.toString()"
           outlined
           minHeight="0"
