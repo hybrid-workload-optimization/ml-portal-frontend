@@ -1,7 +1,7 @@
 <template>
   <div class="sp-list-content">
     <div class="list-search-wrapper">
-      <search
+      <!-- <search
         class="sp-basic-search"
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
@@ -10,6 +10,14 @@
         @input="onInputSearchValue"
         @click="onNewProject"
         button-text="New Project"
+      > -->
+
+      <search
+        class="sp-basic-search"
+        :title="'Total:'"
+        :todoCount="dataListSize.toString()"
+        @change="onProjectSearch"
+        @input="onInputSearchValue"
       >
         <template v-slot:btn-group>
           <v-btn-toggle
