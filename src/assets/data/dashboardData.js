@@ -5,7 +5,7 @@ export const dashboardTopData = {
       value: '2',
     },
     {
-      title: 'Project',
+      title: 'Service Group',
       value: '2',
     },
     {

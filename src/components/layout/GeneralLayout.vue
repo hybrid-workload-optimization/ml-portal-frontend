@@ -4,7 +4,7 @@
     <div class="general-layout__project-name-wrapper">
       <label-with-text
         class="general-layout__label"
-        name="* Project Name"
+        name="* Group Name"
         background-color="#F5F5f5"
         @input="onChangeProjectName"
       />

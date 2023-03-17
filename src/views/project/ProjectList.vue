@@ -54,7 +54,7 @@
     <empty
       v-else-if="!isLoading"
       class="table-wrapper"
-      title="Project가 존재하지 않습니다."
+      title="Group 이 존재하지 않습니다."
       description=""
     />
 
@@ -100,7 +100,7 @@ export default {
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
         {
-          text: 'Project Name',
+          text: 'Group Name',
           align: 'left',
           value: 'projectName',
           class: 'w-20',
@@ -124,7 +124,7 @@ export default {
           class: 'w-20',
         },
         {
-          text: 'ProjectManager',
+          text: 'Manager',
           align: 'left',
           value: 'projectUserName',
           class: 'w-20',

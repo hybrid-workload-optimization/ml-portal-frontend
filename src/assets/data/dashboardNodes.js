@@ -6,7 +6,7 @@ const Dashboard = {
       value: 'name',
     },
     {
-      text: 'Project',
+      text: 'Service Group',
       align: 'left',
       value: 'projectName',
     },

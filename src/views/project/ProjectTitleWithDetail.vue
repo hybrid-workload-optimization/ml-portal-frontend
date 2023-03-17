@@ -22,7 +22,7 @@
         <span>{{ detailInfo.projectName }}</span>
       </v-tooltip>
 
-      <span class="left-label">Project Manager</span>
+      <span class="left-label">Manager</span>
       <span class="left-content"
         >{{ detailInfo.projectPmName }}({{ detailInfo.projectPmEmail }})</span
       >
@@ -71,24 +71,24 @@
           @click="onClickEdit"
           >Edit</sp-button
         >
-        <sp-button
+        <!-- <sp-button
           outlined
           class="delete-button title-button"
           @click="onClickDelete"
           >Delete</sp-button
-        >
+        > -->
       </template>
     </div>
 
-    <modal
+    <!-- <modal
       class="popup-cluster"
       title-name="Project 삭제"
       modal-width="456"
       :dialog="isOpenModal"
       @close-modal="onClickCloseModal"
-    >
-      <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-      <template v-slot:content>
+    > -->
+    <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
+    <!-- <template v-slot:content>
         <div class="popup-cluster__title-wrapper">
           <div class="popup-cluster__title">
             선택하신 Project를 삭제하시겠습니까?
@@ -117,22 +117,22 @@
           </sp-button>
         </div>
       </template>
-    </modal>
+    </modal> -->
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Modal from '@/components/modals/Modal.vue'
-import DeleteCluster from '@/views/project/popup/ProjectClusterDeletePop.vue'
+// import Modal from '@/components/modals/Modal.vue'
+// import DeleteCluster from '@/views/project/popup/ProjectClusterDeletePop.vue'
 
 const projectMapUtils = createNamespacedHelpers('project')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    Modal,
-    DeleteCluster,
+    // Modal,
+    // DeleteCluster,
   },
 
   props: {

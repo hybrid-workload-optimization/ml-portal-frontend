@@ -1,8 +1,15 @@
 <template>
   <div class="sp-user-detail">
-    <card-title
+    <!-- <card-title
       :titleData="titleData"
       :showButtons="currentMenuInfo.writableYn === 'Y'"
+      :deleteButtonName="detailInfo.useYn !== 'Y' ? 'Enable' : 'Disable'"
+      @click-edit="onClickEdit"
+      @click-delete="onClickDelete"
+    > -->
+    <card-title
+      :titleData="titleData"
+      :showButtons="false"
       :deleteButtonName="detailInfo.useYn !== 'Y' ? 'Enable' : 'Disable'"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
