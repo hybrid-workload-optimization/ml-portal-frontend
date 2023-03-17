@@ -1,7 +1,7 @@
 <template>
   <div class="sp-authority-group">
     <sp-card headered label="권한 그룹" outlined elevation="0">
-      <template v-slot:header v-if="isWritable">
+      <!-- <template v-slot:header v-if="isWritable">
         <sp-button
           outlined
           elevation="0"
@@ -10,7 +10,7 @@
         >
           <v-icon>add</v-icon> 권한그룹 추가
         </sp-button>
-      </template>
+      </template> -->
 
       <!-- 전체 그룹 -->
       <div class="sp-authority-group__expansion-group-wrapper">

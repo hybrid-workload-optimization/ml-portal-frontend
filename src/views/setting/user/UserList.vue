@@ -9,14 +9,14 @@
       @clickBtn="onClickOpenLabelModal"
       @changeItem="onChangeItem"
     />
-    <modal
+    <!-- <modal
       class="popup-cluster"
       title-name="New User"
       modal-width="670"
       :dialog="isOpenSignUpModal"
       @close-modal="onClickCloseLabelModal"
-    >
-      <!-- <sp-button
+    > -->
+    <!-- <sp-button
         slot="buttons"
         elevation="0"
         color="primary"
@@ -26,10 +26,10 @@
         New User
       </sp-button> -->
 
-      <template v-slot:content>
+    <!-- <template v-slot:content>
         <SignupForm />
       </template>
-    </modal>
+    </modal> -->
 
     <search
       v-if="dataListSize"
@@ -74,7 +74,7 @@ import MultiSelect from '@/components/MultiSelectForSeparate.vue'
 import request from '@/lib/request'
 import Empty from '@/components/Empty.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
-import Modal from '@/components/modals/Modal.vue'
+// import Modal from '@/components/modals/Modal.vue'
 import Search from '@/components/molcule/DataTableSearch.vue'
 import { form } from '@/utils/mixins/form'
 import encrypt from '@/lib/encrypt'
@@ -90,7 +90,7 @@ export default {
   components: {
     Search,
     // Alert,
-    Modal,
+    // Modal,
     spTable,
     Empty,
     MultiSelect,

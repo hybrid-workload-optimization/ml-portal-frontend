@@ -1,7 +1,7 @@
 <template>
   <div class="sp-authority-user">
     <sp-card headered label="사용자" outlined elevation="0">
-      <template v-slot:header v-if="isWritable">
+      <!-- <template v-slot:header v-if="isWritable">
         <sp-button
           outlined
           elevation="0"
@@ -11,7 +11,7 @@
         >
           <v-icon>add</v-icon> 사용자 추가
         </sp-button>
-      </template>
+      </template> -->
       <div class="sp-authority-user__search-box-wrapper">
         <sp-input
           label="사용자를 검색하세요"
@@ -45,7 +45,7 @@
       </div>
     </sp-card>
     <!-- 팝업 모달 부분 -->
-    <modal
+    <!-- <modal
       title-name="사용자 추가"
       modal-width="921"
       modal-height="805"
@@ -84,7 +84,7 @@
           >
         </div>
       </template>
-    </modal>
+    </modal> -->
   </div>
 </template>
 
