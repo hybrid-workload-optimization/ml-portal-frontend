@@ -59,7 +59,7 @@ const resource = {
   actions: {
     doLogin: async ({ dispatch }) => {
       try {
-        const loginResult = await request.getUserInfoUsingPOST()
+        const loginResult = await request.getUserInfoUsingGET()
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
         )
