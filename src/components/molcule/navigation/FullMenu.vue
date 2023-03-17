@@ -15,7 +15,7 @@
             src="Strato_logo_white.png"
           ></sp-image>
 
-          <span class="title-text">CMP Portal</span>
+          <span class="title-text">CoMP Portal</span>
         </div>
       </div>
 
