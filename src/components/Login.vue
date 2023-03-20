@@ -24,8 +24,8 @@ export default {
       3. auth token 저장 -> auth 토큰은 vuex , refresh 토큰은 cookie 에
       4. 실패시 토스트 노출
       */
-      console.log('login request')
 
+      console.log('login request')
       const result = await this.doLogin()
       console.log('login result ', result)
 
@@ -85,7 +85,7 @@ export default {
         flatMenuList.push(menuItem)
       }
     },
-    ...loginUserMapUtils.mapActions(['doLogin', 'doLogout']),
+    ...loginUserMapUtils.mapActions(['doLogin', 'doLogout', 'getAccessToken']),
   },
 }
 </script>

@@ -25,10 +25,12 @@ service.interceptors.request.use(
     */
     numberOfCallPending += 1
     const reqUrl = config.url.split('?')[0]
-    // const { accessToken } = vm.$store.state.loginUser
     const { method } = config
 
-    // config.headers.Authorization = accessToken
+    if (process.env.NODE_ENV === 'local') {
+      const { accessToken } = vm.$store.state.loginUser
+      config.headers.Authorization = accessToken
+    }
 
     // console.log(reqUrl)
     // 로그인, 토큰갱신 요청시 예외
