@@ -2,7 +2,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 const path = require('path')
 
 module.exports = {
-  publicPath: '/comp/',
+  publicPath: process.env.NODE_ENV === 'local' ? '/' : '/comp/',
   transpileDependencies: ['vuetify'],
   configureWebpack: {
     output: {
@@ -22,6 +22,10 @@ module.exports = {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
       },
+      '/api': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+      },
       '/sse': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
@@ -36,6 +40,10 @@ module.exports = {
       },
       '/logout': {
         target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+      },
+      '/auth/realms/strato-platform': {
+        target: process.env.VUE_APP_KEYCLOAK_API,
         changeOrigin: true,
       },
     },

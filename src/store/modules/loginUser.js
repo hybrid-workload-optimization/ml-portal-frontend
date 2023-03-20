@@ -3,6 +3,7 @@ import cookieHelper from '@/lib/cookieHelper'
 import { cookieName } from '@/common/consts'
 import encrypt from '@/lib/encrypt'
 import axios from 'axios'
+import qs from 'qs'
 
 const resource = {
   namespaced: true,
@@ -58,8 +59,27 @@ const resource = {
     },
   },
   actions: {
-    doLogin: async ({ dispatch }) => {
+    getAccessToken: () => {
+      const path = '/auth/realms/strato-platform/protocol/openid-connect/token'
+      const body = qs.stringify({
+        client_id: 'strato-comp',
+        grant_type: 'password',
+        client_secret: 'tI8sZHddIpJpdiKWLKjFiopa3QrC0azQ',
+        scope: 'openid',
+        username: 'demouser',
+        password: 'test1234',
+      })
+      const headers = {
+        'content-type': 'application/x-www-form-urlencoded',
+      }
+      return axios.post(path, body, { headers })
+    },
+    doLogin: async ({ commit, dispatch }) => {
       try {
+        if (process.env.NODE_ENV === 'local') {
+          const test = await dispatch('getAccessToken')
+          commit('setAccessToken', test.data.access_token)
+        }
         const loginResult = await request.getUserInfoUsingGET()
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
