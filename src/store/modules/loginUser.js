@@ -2,6 +2,7 @@ import request from '@/lib/request'
 import cookieHelper from '@/lib/cookieHelper'
 import { cookieName } from '@/common/consts'
 import encrypt from '@/lib/encrypt'
+import axios from 'axios'
 
 const resource = {
   namespaced: true,
@@ -82,25 +83,38 @@ const resource = {
         return false
       }
     },
-    doLogout: async ({ commit, state }) => {
-      if (!state.userInfo) {
-        return
-      }
-      const param = {
-        userId: state.userInfo.userId,
-      }
-      try {
-        const response = await request.doLogoutUsingGET(param)
-        if (response.status === 200) {
-          cookieHelper.removeCookie(cookieName.username)
-          commit('setUserInfo', null)
+    doLogout: async ({ commit }) => {
+      // if (!state.userInfo) {
+      //   return
+      // }
+      // const param = {
+      //   userId: state.userInfo.userId,
+      // }
 
-          sessionStorage.removeItem('firstVal')
-          sessionStorage.removeItem('secondVal')
-          sessionStorage.removeItem('thirdVal')
-          sessionStorage.removeItem('menuList')
-          sessionStorage.removeItem('projectUserRole')
-        }
+      try {
+        // const response = await request.doLogoutUsingGET(param)
+        // if (response.status === 200) {
+        //   cookieHelper.removeCookie(cookieName.username)
+        //   commit('setUserInfo', null)
+
+        //   sessionStorage.removeItem('firstVal')
+        //   sessionStorage.removeItem('secondVal')
+        //   sessionStorage.removeItem('thirdVal')
+        //   sessionStorage.removeItem('menuList')
+        //   sessionStorage.removeItem('projectUserRole')
+        // }
+        axios.post('/logout').then(res => {
+          if (res.status === 200) {
+            cookieHelper.removeCookie(cookieName.username)
+            commit('setUserInfo', null)
+
+            sessionStorage.removeItem('firstVal')
+            sessionStorage.removeItem('secondVal')
+            sessionStorage.removeItem('thirdVal')
+            sessionStorage.removeItem('menuList')
+            sessionStorage.removeItem('projectUserRole')
+          }
+        })
       } catch (error) {
         console.error(error)
       }
