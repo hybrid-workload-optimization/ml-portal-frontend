@@ -110,7 +110,8 @@ export default {
     // await this.doLogout()
     // },
     requestLougout() {
-      window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
+      this.doLogout()
+      // window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
     },
     ...loginUserMapUtils.mapMutations(['changeShowEditModal']),
     ...loginUserMapUtils.mapActions(['doLogout']),

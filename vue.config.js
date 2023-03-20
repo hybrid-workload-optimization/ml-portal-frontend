@@ -34,6 +34,10 @@ module.exports = {
         target: process.env.VUE_APP_PUBLIC_CONFIG_URL,
         changeOrigin: true,
       },
+      '/logout': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+      },
     },
     overlay: false,
   },
