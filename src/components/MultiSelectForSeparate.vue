@@ -44,6 +44,7 @@
     <div class="multi-select__button-box" v-if="secondSelectMeta">
       <sp-button
         class="multi-select--deploy"
+        v-if="btnName"
         elevation="0"
         dense
         outlined
