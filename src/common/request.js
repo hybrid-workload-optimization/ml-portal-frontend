@@ -27,6 +27,7 @@ service.interceptors.request.use(
     const reqUrl = config.url.split('?')[0]
     const { method } = config
 
+    // 로컬 환경에서 토큰 셋팅
     if (process.env.NODE_ENV === 'local') {
       const { accessToken } = vm.$store.state.loginUser
       config.headers.Authorization = accessToken

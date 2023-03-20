@@ -20,10 +20,7 @@ module.exports = {
     proxy: {
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
-        changeOrigin: true,
-      },
-      '/api': {
-        target: process.env.VUE_APP_BASE_API,
+        pathRewrite: { '^/comp-b-svc': '/' },
         changeOrigin: true,
       },
       '/sse': {
