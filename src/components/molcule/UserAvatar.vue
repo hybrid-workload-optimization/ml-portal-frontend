@@ -30,6 +30,11 @@
       }}</span>
     </div>
     <slot name="badge"></slot>
+    <form
+      id="lg"
+      action="http://172.16.10.67:20987/logout"
+      method="post"
+    ></form>
   </div>
 </template>
 
@@ -110,7 +115,8 @@ export default {
     // await this.doLogout()
     // },
     requestLougout() {
-      this.doLogout()
+      document.getElementById('lg').submit()
+      // this.doLogout()
       // window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
     },
     ...loginUserMapUtils.mapMutations(['changeShowEditModal']),
