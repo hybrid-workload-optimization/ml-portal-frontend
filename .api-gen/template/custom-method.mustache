@@ -11,7 +11,7 @@
     if(parameters === undefined) {
         parameters = {};
     }
-    {{#isES6}}let{{/isES6}}{{^isES6}}var{{/isES6}} path = process.env.NODE_ENV === 'local' ? '{{&path}}':'/comp-b-svc{{&path}}';
+    {{#isES6}}let{{/isES6}}{{^isES6}}var{{/isES6}} path = '/comp-b-svc{{&path}}';
     {{#isES6}}let{{/isES6}}{{^isES6}}var{{/isES6}} body = {}, queryParameters = {}, headers = {}, form = {};
 
     {{#isSecure}}

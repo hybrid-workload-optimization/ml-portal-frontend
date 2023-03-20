@@ -76,6 +76,7 @@ const resource = {
     },
     doLogin: async ({ commit, dispatch }) => {
       try {
+        // 로컬 환경에서 토큰 셋팅
         if (process.env.NODE_ENV === 'local') {
           const test = await dispatch('getAccessToken')
           commit('setAccessToken', test.data.access_token)
