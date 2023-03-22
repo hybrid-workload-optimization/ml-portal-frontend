@@ -57,7 +57,6 @@ router.beforeEach(async (to, from, next) => {
   function getViewablePath() {
     if (to.meta.isAuthRequired) {
       const { flatMenuList } = store.state.loginUser
-      console.log(flatMenuList)
       let menuItem = {}
       const viewablePath = flatMenuList.findIndex(item => {
         const menuSplit = item.menuUrl.split('/')
@@ -72,7 +71,6 @@ router.beforeEach(async (to, from, next) => {
         }
 
         const menuStr = menuSplit.slice(0, splitIdx).join('/')
-        console.log(menuStr)
         if (item.menuUrl === to.path || to.path.indexOf(menuStr) > -1) {
           menuItem = item
           return true
@@ -181,51 +179,51 @@ router.beforeEach(async (to, from, next) => {
       if (!userInfoResult) {
         console.log('get userInfo fail')
         next('/ssoLogin')
-      }
-    } else {
-      try {
-        let encryptMenuList = sessionStorage.getItem('menuList')
-        let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
-        if (!encryptMenuList || !encryptProjectUserRole) {
-          await store.dispatch('loginUser/getMenuList')
+      } else {
+        try {
+          let encryptMenuList = sessionStorage.getItem('menuList')
+          let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          if (!encryptMenuList || !encryptProjectUserRole) {
+            await store.dispatch('loginUser/getMenuList')
 
-          encryptMenuList = sessionStorage.getItem('menuList')
-          encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
-        }
-        let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
-        const projectUserRole = JSON.parse(
-          encrypt.decrypt(encryptProjectUserRole),
-        )
-        menuList = menuList.filter(menu => {
-          if (
-            menu.useYn === 'Y' &&
-            (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
-          ) {
-            if (menu.subMenuList && menu.subMenuList.length) {
-              menu.subMenuList = menu.subMenuList.filter(
-                subMenu =>
-                  subMenu.useYn === 'Y' &&
-                  (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
-              )
+            encryptMenuList = sessionStorage.getItem('menuList')
+            encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          }
+          let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
+          const projectUserRole = JSON.parse(
+            encrypt.decrypt(encryptProjectUserRole),
+          )
+          menuList = menuList.filter(menu => {
+            if (
+              menu.useYn === 'Y' &&
+              (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
+            ) {
+              if (menu.subMenuList && menu.subMenuList.length) {
+                menu.subMenuList = menu.subMenuList.filter(
+                  subMenu =>
+                    subMenu.useYn === 'Y' &&
+                    (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
+                )
+                return menu
+              }
               return menu
             }
-            return menu
-          }
-          return false
-        })
-        store.commit('loginUser/setMenuInfo', {
-          defaultUserRole: menuList,
-          projectUserRole,
-        })
-        const flatMenulList = setFlatMenuList(menuList)
-        store.commit('loginUser/setFlatMenuList', flatMenulList)
+            return false
+          })
+          store.commit('loginUser/setMenuInfo', {
+            defaultUserRole: menuList,
+            projectUserRole,
+          })
+          const flatMenulList = setFlatMenuList(menuList)
+          store.commit('loginUser/setFlatMenuList', flatMenulList)
 
-        getViewablePath()
-      } catch (error) {
-        console.error(error)
-        console.log('no token')
-        store.dispatch('loginUser/doLogout')
-        next('/ssoLogin')
+          getViewablePath()
+        } catch (error) {
+          console.error(error)
+          console.log('no token')
+          store.dispatch('loginUser/doLogout')
+          next('/ssoLogin')
+        }
       }
     }
   } else {

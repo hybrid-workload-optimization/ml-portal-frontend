@@ -137,11 +137,9 @@ const resource = {
           dispatch('initRefreshInfo', result.data)
         }
         const loginResult = await request.getUserInfoUsingGET()
-        console.log(loginResult.data.result.user)
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
         )
-        console.log(userInfo.data.result)
         // dispatch('initUserInfo', loginResult.data.result)
         dispatch('initUserInfo', userInfo.data.result)
         const { authority } = loginResult.data.result
@@ -188,10 +186,9 @@ const resource = {
         console.error(error)
       }
     },
-    initUserInfo: ({ commit, dispatch, state }, userInfo) => {
+    initUserInfo: ({ commit, dispatch }, userInfo) => {
       // commit('setUserInfo', userInfo.user)
       commit('setUserInfo', userInfo)
-      console.log(state.userInfo)
       // 즐겨찾기 데이터
       dispatch('getFavoriteInfo')
     },
