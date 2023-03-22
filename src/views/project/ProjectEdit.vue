@@ -113,15 +113,15 @@ export default {
 
     async onClickFinish() {
       // Project General
-      if (
-        this.$store.state.project.editProjectName === undefined ||
-        this.$store.state.project.editProjectName === ''
-      ) {
-        this.openAlert({
-          title: 'Project Name을 입력해 주세요.',
-          type: 'error',
-        })
-      }
+      // if (
+      //   this.$store.state.project.editProjectName === undefined ||
+      //   this.$store.state.project.editProjectName === ''
+      // ) {
+      //   this.openAlert({
+      //     title: 'Project Name을 입력해 주세요.',
+      //     type: 'error',
+      //   })
+      // }
 
       /* if (
         this.$store.state.project.editPmUser === undefined ||
@@ -133,31 +133,31 @@ export default {
         })
       } */
 
-      if (this.$store.state.project.editDescription !== '') {
-        if (this.$store.state.project.editDescription.length > 200) {
-          this.openAlert({
-            title: 'Description 은 200자를 초과 입력할 수 없습니다.',
-            type: 'error',
-          })
-        }
-      }
+      // if (this.$store.state.project.editDescription !== '') {
+      //   if (this.$store.state.project.editDescription.length > 200) {
+      //     this.openAlert({
+      //       title: 'Description 은 200자를 초과 입력할 수 없습니다.',
+      //       type: 'error',
+      //     })
+      //   }
+      // }
 
       // Project Member
       if (
         this.$store.state.project.editUserList !== undefined &&
         this.$store.state.project.editUserList !== null
       ) {
-        const roleList = this.$store.state.project.editUserList.filter(
-          member => member.userRoleIdx === undefined,
-        )
+        // const roleList = this.$store.state.project.editUserList.filter(
+        //   member => member.userRoleIdx === undefined,
+        // )
 
-        if (roleList.length > 0) {
-          this.openAlert({
-            title: 'Project Member 의 권한을 선택해 주세요.',
-            type: 'error',
-          })
-          return
-        }
+        // if (roleList.length > 0) {
+        //   this.openAlert({
+        //     title: 'Project Member 의 권한을 선택해 주세요.',
+        //     type: 'error',
+        //   })
+        //   return
+        // }
 
         const memberList = this.$store.state.project.editUserList.filter(
           member =>
@@ -193,7 +193,7 @@ export default {
         if (response.status === 202) {
           if (response.data.code === '10001') {
             this.openAlert({
-              title: `${this.$store.state.project.editProjectName} Project 가 수정되었습니다.`,
+              title: `${this.$store.state.project.editProjectName} Service Group 이 수정되었습니다.`,
               type: 'info',
             })
 
@@ -208,7 +208,7 @@ export default {
         }
       } catch (error) {
         this.openAlert({
-          title: '프로젝트를 수정하지 못했습니다.',
+          title: 'Service Group 을 수정하지 못했습니다.',
           type: 'error',
         })
       }
