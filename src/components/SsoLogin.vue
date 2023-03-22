@@ -85,7 +85,7 @@ export default {
         flatMenuList.push(menuItem)
       }
     },
-    ...loginUserMapUtils.mapActions(['doLogin', 'doLogout', 'getAccessToken']),
+    ...loginUserMapUtils.mapActions(['doLogin', 'doLogout']),
   },
 }
 </script>

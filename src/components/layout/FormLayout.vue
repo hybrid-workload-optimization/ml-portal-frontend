@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import LoginForm from '@/components/Login.vue'
+import LoginForm from '@/components/LoginForm.vue'
 import PasswordForm from '@/components/PasswordForm.vue'
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 

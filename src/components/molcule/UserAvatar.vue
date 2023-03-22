@@ -114,8 +114,12 @@ export default {
     // async requestLougout() {
     // await this.doLogout()
     // },
-    requestLougout() {
-      document.getElementById('lg').submit()
+    async requestLougout() {
+      if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
+        await this.doLogout()
+      } else {
+        document.getElementById('lg').submit()
+      }
       // this.doLogout()
       // window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
     },
