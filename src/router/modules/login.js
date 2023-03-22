@@ -8,9 +8,17 @@ const resource = [
     component: () => import('@/views/login/LoginLayout.vue'),
     children: [
       {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/components/Login.vue'),
+        path: '/ssoLogin',
+        name: 'SSO Login',
+        component: () => import('@/components/SsoLogin.vue'),
+        meta: {
+          isAuthRequired: !isAuthRequired,
+        },
+      },
+      {
+        path: '/devLogin',
+        name: 'Dev Login',
+        component: () => import('@/views/login/Login.vue'),
         meta: {
           isAuthRequired: !isAuthRequired,
         },

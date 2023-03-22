@@ -2,7 +2,10 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 const path = require('path')
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'local' ? '/' : '/comp/',
+  publicPath:
+    process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev'
+      ? '/'
+      : '/comp/',
   transpileDependencies: ['vuetify'],
   configureWebpack: {
     output: {

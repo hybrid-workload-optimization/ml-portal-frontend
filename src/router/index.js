@@ -14,6 +14,8 @@ import Error from '@/router/modules/error'
 import ML from '@/router/modules/ml'
 import AutoML from '@/router/modules/automl'
 import encrypt from '@/lib/encrypt'
+import cookieHelper from '@/lib/cookieHelper'
+import { cookieName } from '@/common/consts'
 
 Vue.use(VueRouter)
 
@@ -109,15 +111,75 @@ router.beforeEach(async (to, from, next) => {
     (!store.state.loginUser.userInfo ||
       !store.state.loginUser.userInfo.userId) &&
     to.path !== '/login' &&
+    to.path !== '/devLogin' &&
+    to.path !== '/ssoLogin' &&
     to.path !== '/find-password' &&
     to.path !== '/signup' &&
     to.path !== '/change-password'
   ) {
-    // token refresh 실패시 login
-    // const refreshResult = await store.dispatch('loginUser/refreshToken')
-    if (store.state.loginUser.userInfo === null) {
-      console.log('no refreshResult')
-      next('/login')
+    // 개발환경에서 token refresh 실패시 login
+    if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
+      const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
+      const refreshResult = await store.dispatch(
+        'loginUser/refreshToken',
+        refreshToken,
+      )
+      if (!refreshResult) {
+        console.log('no refresh fail')
+        next('/devLogin')
+      } else {
+        try {
+          let encryptMenuList = sessionStorage.getItem('menuList')
+          let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          if (!encryptMenuList || !encryptProjectUserRole) {
+            await store.dispatch('loginUser/getMenuList')
+
+            encryptMenuList = sessionStorage.getItem('menuList')
+            encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          }
+          let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
+          const projectUserRole = JSON.parse(
+            encrypt.decrypt(encryptProjectUserRole),
+          )
+          menuList = menuList.filter(menu => {
+            if (
+              menu.useYn === 'Y' &&
+              (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
+            ) {
+              if (menu.subMenuList && menu.subMenuList.length) {
+                menu.subMenuList = menu.subMenuList.filter(
+                  subMenu =>
+                    subMenu.useYn === 'Y' &&
+                    (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
+                )
+                return menu
+              }
+              return menu
+            }
+            return false
+          })
+          store.commit('loginUser/setMenuInfo', {
+            defaultUserRole: menuList,
+            projectUserRole,
+          })
+          const flatMenulList = setFlatMenuList(menuList)
+          store.commit('loginUser/setFlatMenuList', flatMenulList)
+
+          getViewablePath()
+        } catch (error) {
+          console.error(error)
+          console.log('no token')
+          store.dispatch('loginUser/doLogout')
+          next('/devLogin')
+        }
+      }
+      // SSO 환경에서 유저 정보가 없으면 로그인
+    } else if (store.state.loginUser.userInfo === null) {
+      const userInfoResult = await store.dispatch('loginUser/doLogin')
+      if (!userInfoResult) {
+        console.log('get userInfo fail')
+        next('/ssoLogin')
+      }
     } else {
       try {
         let encryptMenuList = sessionStorage.getItem('menuList')
@@ -161,7 +223,7 @@ router.beforeEach(async (to, from, next) => {
         console.error(error)
         console.log('no token')
         store.dispatch('loginUser/doLogout')
-        next('/login')
+        next('/ssoLogin')
       }
     }
   } else {
