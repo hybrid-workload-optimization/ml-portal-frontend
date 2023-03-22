@@ -89,7 +89,7 @@
               <div class="project-list__title">{{ item.addedAt }}</div>
             </td>
             <td class="project-list__button-wrapper">
-              <sp-button
+              <!-- <sp-button
                 @click="onClickDelete(item)"
                 class="project-list--delete"
                 elevation="0"
@@ -97,7 +97,7 @@
                 v-if="isAuth"
               >
                 Delete
-              </sp-button>
+              </sp-button> -->
             </td>
           </tr>
         </template>

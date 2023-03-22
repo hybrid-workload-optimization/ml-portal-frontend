@@ -34,7 +34,6 @@
           :search="memberSearch"
           :isAuth="isProjectAuth"
           @input="onChangeMemberSearch"
-          @click="onClickDeleteMember"
           class="project-layout__member-list"
         />
       </v-tab-item>
