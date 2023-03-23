@@ -15,7 +15,7 @@
         </template>
         <v-list>
           <v-list-item @click="openUserInfoEditModal">
-            <v-list-item-title>회원정보수정</v-list-item-title>
+            <v-list-item-title>회원정보</v-list-item-title>
           </v-list-item>
           <!-- <v-list-item>
             <v-list-item-title>마이페이지</v-list-item-title>
@@ -101,7 +101,7 @@ export default {
     return {
       fontWhite: this.className?.fontWhite,
       userMenu: [
-        { title: '회원정보 수정' },
+        { title: '회원정보' },
         // { title: '마이페이지' },
         { title: '로그아웃' },
       ],

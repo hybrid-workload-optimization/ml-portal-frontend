@@ -4,15 +4,22 @@
       <span class="title-text">회원정보</span>
     </div>
 
-    <v-form ref="form" @submit.prevent="onSubmit">
+    <!-- <v-form ref="form" @submit.prevent="onSubmit"> -->
+    <v-form ref="form">
       <div class="my-info__content-wrapper">
-        <label-with-text
+        <!-- <label-with-text
           name="UserName"
           :value="userInfo.userName"
           placeholder="이름을 입력하세요."
           :rules="rules.requiredName"
           horizontal
           @input="value => (userInfo.userName = value)"
+        /> -->
+        <label-with-text
+          name="UserName"
+          :value="userInfo.userName"
+          readonly
+          horizontal
         />
         <label-with-text
           name="User Email"
@@ -21,30 +28,41 @@
           horizontal
         />
 
-        <label-with-text
+        <!-- <label-with-text
           name="Organization"
           :value="userInfo.organization"
           placeholder="소속을 입력하세요."
           horizontal
           @input="value => (userInfo.organization = value)"
+        /> -->
+        <label-with-text
+          name="Organization"
+          :value="userInfo.organization"
+          readonly
+          horizontal
         />
 
-        <label-with-text
+        <!-- <label-with-text
           name="Contact"
           :value="userInfo.contact"
           placeholder="(-)를 제외한 숫자만 입력해주세요."
           :rules="rules.requiredContact"
           horizontal
           @input="value => (userInfo.contact = value)"
+        /> -->
+        <label-with-text
+          name="Contact"
+          :value="userInfo.contact"
+          readonly
+          horizontal
         />
-
         <label-with-text
           name="Authority"
           horizontal
           readonly
           :value="userInfo.userRole.userRoleCode"
         />
-        <div class="my-info-change-password__wrapper">
+        <!-- <div class="my-info-change-password__wrapper">
           <span
             class="my-info-change-password__label"
             @click="isChangePassword = !isChangePassword"
@@ -75,7 +93,7 @@
             :value="confirmPassword"
             @input="value => (confirmPassword = value)"
           />
-        </template>
+        </template> -->
       </div>
     </v-form>
   </div>
