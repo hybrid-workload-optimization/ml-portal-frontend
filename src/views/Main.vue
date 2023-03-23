@@ -2,7 +2,7 @@
   <div class="sp-main">
     <router-view />
     <modal
-      title-name="회원정보 수정"
+      title-name="회원정보"
       modal-width="600"
       modal-height="620"
       body-height="750px"
@@ -13,11 +13,11 @@
         <change-my-info ref="myInfo" />
       </template>
       <template v-slot:footer>
-        <div class="my-info__button-wrapper">
+        <!-- <div class="my-info__button-wrapper">
           <sp-button class="edit-button" outlined @click="onClickUpdate">
             Save
           </sp-button>
-        </div>
+        </div> -->
       </template>
     </modal>
   </div>
