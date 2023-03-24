@@ -22,7 +22,7 @@ export const PaaSMenuItems = [
   },
   {
     icon: 'create_new_folder',
-    alt: 'project',
+    alt: 'Service Group',
     name: 'Service Group',
     path: '/project/list',
     subMenuItem: [
