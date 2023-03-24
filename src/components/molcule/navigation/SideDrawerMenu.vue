@@ -178,6 +178,11 @@ export default {
   }),
   methods: {
     isCurrentPathName(menuName) {
+      // project 관련 path 추후 변경 필요
+      // /project -> /servicegroup
+      if (menuName === 'Service Group') {
+        menuName = 'project'
+      }
       return !this.$route.name.toLowerCase().indexOf(menuName.toLowerCase())
     },
     updateGroup() {
