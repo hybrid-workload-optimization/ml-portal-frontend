@@ -54,7 +54,7 @@
     <empty
       v-else-if="!isLoading"
       class="table-wrapper"
-      title="Group 이 존재하지 않습니다."
+      title="Service group does not exist."
       description=""
     />
 
