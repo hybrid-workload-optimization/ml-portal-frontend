@@ -107,40 +107,52 @@ const resource = {
         return false
       }
     },
-    getAccessToken: ({ dispatch }, payload) => {
-      console.log(dispatch)
+    getAccessToken: async ({ commit, dispatch }, payload) => {
+      try {
+        const path =
+          '/auth/realms/strato-platform/protocol/openid-connect/token'
+        const body = qs.stringify({
+          client_id: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+          grant_type: 'password',
+          client_secret: process.env.VUE_APP_KEYCLOAK_CLIENT_SECRET,
+          scope: 'openid',
+          username: payload.userId,
+          password: payload.userPassword,
+        })
+        const headers = {
+          'content-type': 'application/x-www-form-urlencoded',
+        }
 
-      const path = '/auth/realms/strato-platform/protocol/openid-connect/token'
-      const body = qs.stringify({
-        client_id: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
-        grant_type: 'password',
-        client_secret: process.env.VUE_APP_KEYCLOAK_CLIENT_SECRET,
-        scope: 'openid',
-        username: payload.userId,
-        password: payload.userPassword,
-      })
-      const headers = {
-        'content-type': 'application/x-www-form-urlencoded',
+        await axios({
+          method: 'post',
+          url: path,
+          data: body,
+          headers,
+        }).then(res => {
+          const accessToken = res.data.access_token
+          commit('setAccessToken', accessToken)
+          dispatch('initRefreshInfo', res.data)
+        })
+        return true
+      } catch (error) {
+        return false
       }
-
-      return axios.post(path, body, { headers })
     },
-    doLogin: async ({ commit, dispatch }, payload) => {
+    doLogin: async ({ dispatch }, payload) => {
       try {
         // 개발 환경에서 토큰 설정
         if (
           process.env.NODE_ENV === 'local' ||
           process.env.NODE_ENV === 'dev'
         ) {
-          const result = await dispatch('getAccessToken', payload)
-          commit('setAccessToken', result.data.access_token)
-          dispatch('initRefreshInfo', result.data)
+          await dispatch('getAccessToken', payload)
         }
+        // get userId
         const loginResult = await request.getUserInfoUsingGET()
+        // get userDetail
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
         )
-        // dispatch('initUserInfo', loginResult.data.result)
         dispatch('initUserInfo', userInfo.data.result)
         const { authority } = loginResult.data.result
         if (authority) {
