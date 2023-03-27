@@ -193,7 +193,7 @@ export default {
         if (response.status === 202) {
           if (response.data.code === '10001') {
             this.openAlert({
-              title: `${this.$store.state.project.editProjectName} Service Group 이 수정되었습니다.`,
+              title: `${this.$store.state.project.editProjectName} Service group has been modified.`,
               type: 'info',
             })
 
