@@ -20,7 +20,7 @@
           <!-- <v-list-item>
             <v-list-item-title>마이페이지</v-list-item-title>
           </v-list-item> -->
-          <v-list-item @click="requestLougout">
+          <v-list-item @click="requestLogout">
             <v-list-item-title> 로그아웃 </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -30,11 +30,7 @@
       }}</span>
     </div>
     <slot name="badge"></slot>
-    <form
-      id="lg"
-      action="http://172.16.10.67:20987/logout"
-      method="post"
-    ></form>
+    <form id="lg" :action="logoutUrl" method="post"></form>
   </div>
 </template>
 
@@ -105,16 +101,17 @@ export default {
         // { title: '마이페이지' },
         { title: '로그아웃' },
       ],
+      logoutUrl: `${process.env.VUE_APP_BASE_API}/logout`,
     }
   },
   computed: {
     ...loginUserMapUtils.mapState(['isShowEditModal']),
   },
   methods: {
-    // async requestLougout() {
+    // async requestLogout() {
     // await this.doLogout()
     // },
-    async requestLougout() {
+    async requestLogout() {
       if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
         await this.doLogout()
       } else {
