@@ -148,9 +148,6 @@ const resource = {
           await dispatch('getAccessToken', payload)
         }
         // get userId
-        // window.location.replace(
-        //   'http://172.16.10.67:20987/oauth2/authorization/keycloak-with-scope',
-        // )
         const loginResult = await request.getUserInfoUsingGET()
         // get userDetail
         const userInfo = await request.getUserDetailUsingGET(
