@@ -154,7 +154,7 @@ const resource = {
         return false
       }
     },
-    doLogin: async ({ dispatch }, payload) => {
+    doLoginTest: async ({ dispatch }, payload) => {
       try {
         // 개발 환경에서 토큰 설정
         if (
@@ -173,6 +173,39 @@ const resource = {
         )
         dispatch('initUserInfo', userInfo.data.result)
         const { authority } = test.data.result
+        if (authority) {
+          sessionStorage.setItem(
+            'menuList',
+            encrypt.encrypt(JSON.stringify(authority.defaultUserRole)),
+          )
+          sessionStorage.setItem(
+            'projectUserRole',
+            encrypt.encrypt(JSON.stringify(authority.projectUserRole)),
+          )
+        }
+        return true
+      } catch (error) {
+        console.error(error)
+        return false
+      }
+    },
+    doLogin: async ({ dispatch }, payload) => {
+      try {
+        // 개발 환경에서 토큰 설정
+        if (
+          process.env.NODE_ENV === 'local' ||
+          process.env.NODE_ENV === 'dev'
+        ) {
+          await dispatch('getAccessToken', payload)
+        }
+        // get userId
+        const loginResult = await request.getUserInfoUsingGET()
+        // get userDetail
+        const userInfo = await request.getUserDetailUsingGET(
+          loginResult.data.result.user,
+        )
+        dispatch('initUserInfo', userInfo.data.result)
+        const { authority } = loginResult.data.result
         if (authority) {
           sessionStorage.setItem(
             'menuList',
