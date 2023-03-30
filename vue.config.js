@@ -21,6 +21,11 @@ module.exports = {
   devServer: {
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
+      '/servcie/comp-b-svc': {
+        target: process.env.VUE_APP_BASE_API,
+        pathRewrite: { '^/servcie/comp-b-svc': '/' },
+        changeOrigin: true,
+      },
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
         pathRewrite: { '^/comp-b-svc': '/' },

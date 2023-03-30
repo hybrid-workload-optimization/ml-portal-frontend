@@ -107,6 +107,12 @@ router.beforeEach(async (to, from, next) => {
     return flatMenuList
   }
 
+  // if (to.path === '/oauth2/authorization/keycloak-with-scope') {
+  //   window.location.replace(
+  //     'http://172.16.10.67:20987/oauth2/authorization/keycloak-with-scope',
+  //   )
+  // }
+
   if (
     (!store.state.loginUser.userInfo ||
       !store.state.loginUser.userInfo.userId) &&
