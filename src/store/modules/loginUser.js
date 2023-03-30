@@ -138,57 +138,57 @@ const resource = {
         return false
       }
     },
-    test: async () => {
-      try {
-        const url = 'http://172.16.10.164:30987'
-        const path = `${url}/service/comp-b-svc/api/v1/access-manage/user-info`
+    // test: async () => {
+    //   try {
+    //     const url = 'http://172.16.10.164:30987'
+    //     const path = `${url}/service/comp-b-svc/api/v1/access-manage/user-info`
 
-        await axios({
-          method: 'GET',
-          url: path,
-        }).then(res => {
-          console.log(res)
-        })
-        return true
-      } catch (error) {
-        return false
-      }
-    },
-    doLoginTest: async ({ dispatch }, payload) => {
-      try {
-        // 개발 환경에서 토큰 설정
-        if (
-          process.env.NODE_ENV === 'local' ||
-          process.env.NODE_ENV === 'dev'
-        ) {
-          await dispatch('getAccessToken', payload)
-        }
-        // get userId
-        const test = await dispatch('test')
-        console.log(test)
-        // const loginResult = await request.getUserInfoUsingGET()
-        // get userDetail
-        const userInfo = await request.getUserDetailUsingGET(
-          test.data.result.user,
-        )
-        dispatch('initUserInfo', userInfo.data.result)
-        const { authority } = test.data.result
-        if (authority) {
-          sessionStorage.setItem(
-            'menuList',
-            encrypt.encrypt(JSON.stringify(authority.defaultUserRole)),
-          )
-          sessionStorage.setItem(
-            'projectUserRole',
-            encrypt.encrypt(JSON.stringify(authority.projectUserRole)),
-          )
-        }
-        return true
-      } catch (error) {
-        console.error(error)
-        return false
-      }
-    },
+    //     await axios({
+    //       method: 'GET',
+    //       url: path,
+    //     }).then(res => {
+    //       console.log(res)
+    //     })
+    //     return true
+    //   } catch (error) {
+    //     return false
+    //   }
+    // },
+    // doLoginTest: async ({ dispatch }, payload) => {
+    //   try {
+    //     // 개발 환경에서 토큰 설정
+    //     if (
+    //       process.env.NODE_ENV === 'local' ||
+    //       process.env.NODE_ENV === 'dev'
+    //     ) {
+    //       await dispatch('getAccessToken', payload)
+    //     }
+    //     // get userId
+    //     const test = await dispatch('test')
+    //     console.log(test)
+    //     // const loginResult = await request.getUserInfoUsingGET()
+    //     // get userDetail
+    //     const userInfo = await request.getUserDetailUsingGET(
+    //       test.data.result.user,
+    //     )
+    //     dispatch('initUserInfo', userInfo.data.result)
+    //     const { authority } = test.data.result
+    //     if (authority) {
+    //       sessionStorage.setItem(
+    //         'menuList',
+    //         encrypt.encrypt(JSON.stringify(authority.defaultUserRole)),
+    //       )
+    //       sessionStorage.setItem(
+    //         'projectUserRole',
+    //         encrypt.encrypt(JSON.stringify(authority.projectUserRole)),
+    //       )
+    //     }
+    //     return true
+    //   } catch (error) {
+    //     console.error(error)
+    //     return false
+    //   }
+    // },
     doLogin: async ({ dispatch }, payload) => {
       try {
         // 개발 환경에서 토큰 설정

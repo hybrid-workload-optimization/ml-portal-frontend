@@ -16,14 +16,6 @@ const resource = [
         },
       },
       {
-        path: '/ssoLogin2',
-        name: 'SSO Login2',
-        component: () => import('@/components/SsoLogin2.vue'),
-        meta: {
-          isAuthRequired: !isAuthRequired,
-        },
-      },
-      {
         path: '/devLogin',
         name: 'Dev Login',
         component: () => import('@/views/login/Login.vue'),

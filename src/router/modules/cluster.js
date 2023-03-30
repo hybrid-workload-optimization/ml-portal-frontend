@@ -55,14 +55,6 @@ const resource = [
           isAuthRequired,
         },
       },
-      {
-        path: 'ssoLogin2',
-        name: 'SSO Login2',
-        component: () => import('@/components/SsoLogin2.vue'),
-        meta: {
-          isAuthRequired: !isAuthRequired,
-        },
-      },
     ],
   },
 ]
