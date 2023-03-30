@@ -5,7 +5,7 @@ module.exports = {
   publicPath:
     process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev'
       ? '/'
-      : '/service/comp/',
+      : '/comp/',
   transpileDependencies: ['vuetify'],
   configureWebpack: {
     output: {
