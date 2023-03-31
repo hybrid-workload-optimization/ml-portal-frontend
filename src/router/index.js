@@ -241,7 +241,8 @@ router.beforeEach(async (to, from, next) => {
           }
         }
       } else {
-        next({ path: '/ssoLogin', query: { originPath: from.path } })
+        next('/ssoLogin')
+        // next({ path: '/ssoLogin', query: { originPath: from.path } })
       }
     }
   } else {
