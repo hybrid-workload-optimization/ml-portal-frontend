@@ -173,6 +173,10 @@ router.beforeEach(async (to, from, next) => {
           next('/devLogin')
         }
       }
+    } else if (store.state.loginUser.userInfo === null) {
+      console.log('k8s test >>>')
+      window.location.replace('http://172.16.10.164:30784/gw/login')
+
       // SSO 환경에서 유저 정보가 없으면 로그인
     } else if (store.state.loginUser.userInfo === null) {
       const userInfoResult = await store.dispatch('loginUser/doLogin')
