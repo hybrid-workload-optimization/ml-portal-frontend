@@ -20,6 +20,7 @@ module.exports = {
       "error",
       { allowShortCircuit: true, allowTernary: true },
     ],
+    "no-nested-ternary": "off",
     "prettier/prettier": [
       "error",
       {

@@ -3,9 +3,11 @@ const path = require('path')
 
 module.exports = {
   publicPath:
-    process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev'
-      ? '/'
-      : '/service/comp/',
+    process.env.NODE_ENV === 'k8s'
+      ? '/service/comp/'
+      : process.env.NODE_ENV === 'sso'
+      ? '/comp/'
+      : '/',
   transpileDependencies: ['vuetify'],
   configureWebpack: {
     output: {
@@ -21,11 +23,11 @@ module.exports = {
   devServer: {
     port: process.env.VUE_APP_PORT || 3000,
     proxy: {
-      '/servcie/comp-b-svc': {
-        target: process.env.VUE_APP_BASE_API,
-        pathRewrite: { '^/servcie/comp-b-svc': '/' },
-        changeOrigin: true,
-      },
+      // '/servcie/comp-b-svc': {
+      //   target: process.env.VUE_APP_BASE_API,
+      //   pathRewrite: { '^/servcie/comp-b-svc': '/' },
+      //   changeOrigin: true,
+      // },
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
         pathRewrite: { '^/comp-b-svc': '/' },
