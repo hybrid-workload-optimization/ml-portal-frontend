@@ -16,6 +16,14 @@ const resource = [
         },
       },
       {
+        path: '/afterSsoLogin',
+        name: 'After SSO Login',
+        component: () => import('@/components/AfterSsoLogin.vue'),
+        meta: {
+          isAuthRequired: !isAuthRequired,
+        },
+      },
+      {
         path: '/devLogin',
         name: 'Dev Login',
         component: () => import('@/views/login/Login.vue'),
