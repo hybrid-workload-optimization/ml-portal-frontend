@@ -2,6 +2,7 @@
   "name": "paas-portal",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "local": "vue-cli-service serve --mode local",
     "start": "npm run api-gen-local && vue-cli-service serve --mode local",
