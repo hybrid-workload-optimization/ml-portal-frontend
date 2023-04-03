@@ -86,6 +86,7 @@ router.beforeEach(async (to, from, next) => {
         if (!originUri) {
           next()
         } else {
+          from.query.originPath = ''
           next(originUri)
         }
       } else {
