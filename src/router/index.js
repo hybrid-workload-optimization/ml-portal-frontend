@@ -81,11 +81,13 @@ router.beforeEach(async (to, from, next) => {
       })
       if (viewablePath >= 0) {
         store.commit('loginUser/currentMenuInfo', menuItem)
-        // const originUri = from.query.originPath
-        const originUri = from.path
+        const originUri = from.query.originPath
+        const originUri2 = from.path
         console.log(`origin >>>>>>> ${originUri}`)
-        next(originUri)
-        // next()
+        console.log(`origin2 >>>>>>> ${originUri2}`)
+
+        // next(originUri)
+        next()
       } else {
         // TODO 이동 가능한 메뉴가 없을 때
         store.commit('loginUser/currentMenuInfo', {})
