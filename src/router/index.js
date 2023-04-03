@@ -83,9 +83,8 @@ router.beforeEach(async (to, from, next) => {
         store.commit('loginUser/currentMenuInfo', menuItem)
         const originUri = from.query.originPath
         console.log(`origin >>>>>>> ${originUri}`)
-        next()
-
-        // next(originUri)
+        next(originUri)
+        // next()
       } else {
         // TODO 이동 가능한 메뉴가 없을 때
         store.commit('loginUser/currentMenuInfo', {})
@@ -191,62 +190,60 @@ router.beforeEach(async (to, from, next) => {
       // }
       // SSO 환경에서 유저 정보가 없으면 로그인
     } else if (store.state.loginUser.userInfo === null) {
-      if (to.path === '/afterSsoLogin') {
-        const userInfoResult = await store.dispatch('loginUser/doLogin')
-        if (!userInfoResult) {
-          console.log('get userInfo fail')
-          next('/ssoLogin')
-        } else {
-          try {
-            let encryptMenuList = sessionStorage.getItem('menuList')
-            let encryptProjectUserRole =
-              sessionStorage.getItem('projectUserRole')
-            if (!encryptMenuList || !encryptProjectUserRole) {
-              await store.dispatch('loginUser/getMenuList')
+      // if (to.path === '/afterSsoLogin') {
+      const userInfoResult = await store.dispatch('loginUser/doLogin')
+      if (!userInfoResult) {
+        console.log('get userInfo fail')
+        next({ path: '/ssoLogin', query: { originPath: from.path } })
+      } else {
+        try {
+          let encryptMenuList = sessionStorage.getItem('menuList')
+          let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          if (!encryptMenuList || !encryptProjectUserRole) {
+            await store.dispatch('loginUser/getMenuList')
 
-              encryptMenuList = sessionStorage.getItem('menuList')
-              encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
-            }
-            let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
-            const projectUserRole = JSON.parse(
-              encrypt.decrypt(encryptProjectUserRole),
-            )
-            menuList = menuList.filter(menu => {
-              if (
-                menu.useYn === 'Y' &&
-                (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
-              ) {
-                if (menu.subMenuList && menu.subMenuList.length) {
-                  menu.subMenuList = menu.subMenuList.filter(
-                    subMenu =>
-                      subMenu.useYn === 'Y' &&
-                      (subMenu.viewableYn === 'Y' ||
-                        subMenu.writableYn === 'Y'),
-                  )
-                  return menu
-                }
+            encryptMenuList = sessionStorage.getItem('menuList')
+            encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          }
+          let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
+          const projectUserRole = JSON.parse(
+            encrypt.decrypt(encryptProjectUserRole),
+          )
+          menuList = menuList.filter(menu => {
+            if (
+              menu.useYn === 'Y' &&
+              (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
+            ) {
+              if (menu.subMenuList && menu.subMenuList.length) {
+                menu.subMenuList = menu.subMenuList.filter(
+                  subMenu =>
+                    subMenu.useYn === 'Y' &&
+                    (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
+                )
                 return menu
               }
-              return false
-            })
-            store.commit('loginUser/setMenuInfo', {
-              defaultUserRole: menuList,
-              projectUserRole,
-            })
-            const flatMenulList = setFlatMenuList(menuList)
-            store.commit('loginUser/setFlatMenuList', flatMenulList)
+              return menu
+            }
+            return false
+          })
+          store.commit('loginUser/setMenuInfo', {
+            defaultUserRole: menuList,
+            projectUserRole,
+          })
+          const flatMenulList = setFlatMenuList(menuList)
+          store.commit('loginUser/setFlatMenuList', flatMenulList)
 
-            getViewablePath()
-          } catch (error) {
-            console.error(error)
-            console.log('no token')
-            store.dispatch('loginUser/doLogout')
-            next('/ssoLogin')
-          }
+          getViewablePath()
+        } catch (error) {
+          console.error(error)
+          console.log('no token')
+          store.dispatch('loginUser/doLogout')
+          next('/ssoLogin')
         }
-      } else {
-        next({ path: '/ssoLogin', query: { originPath: from.path } })
       }
+      // } else {
+      // next({ path: '/ssoLogin', query: { originPath: from.path } })
+      // }
     }
   } else {
     getViewablePath()
