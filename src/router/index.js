@@ -16,6 +16,7 @@ import AutoML from '@/router/modules/automl'
 import encrypt from '@/lib/encrypt'
 import cookieHelper from '@/lib/cookieHelper'
 import { cookieName } from '@/common/consts'
+import Test from '@/router/modules/test'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,7 @@ const routes = [
   ...ML,
   ...AutoML,
   ...Error,
+  ...Test,
 ]
 
 const router = new VueRouter({
