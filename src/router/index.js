@@ -81,7 +81,8 @@ router.beforeEach(async (to, from, next) => {
       })
       if (viewablePath >= 0) {
         store.commit('loginUser/currentMenuInfo', menuItem)
-        const originUri = from.query.originPath
+        // const originUri = from.query.originPath
+        const originUri = from.path
         console.log(`origin >>>>>>> ${originUri}`)
         next(originUri)
         // next()
