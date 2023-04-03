@@ -18,7 +18,7 @@ export default {
       const originUri = this.$route.query.originPath
 
       window.location.replace(
-        `${process.env.VUE_APP_BASE_API}/gw/login?redirect=${redirectUri}?originPath=${originUri}`,
+        `${process.env.VUE_APP_BASE_API}/gwlogin?redirect=${redirectUri}?originPath=${originUri}`,
       )
     },
   },
