@@ -152,6 +152,7 @@ service.interceptors.response.use(
     console.log(error)
     const { response } = error
     console.log(error)
+    console.log(response)
     if (error.response && [419].indexOf(error.response.status) > -1) {
       // Reload or redirect to login page
       window.location.reload()
