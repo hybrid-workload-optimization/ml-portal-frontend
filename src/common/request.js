@@ -193,7 +193,6 @@ service.interceptors.response.use(
       }
     } else if (response && response.status === 302) {
       console.log('302 error test')
-      vm.$router.push('/ssoLogin').catch(() => {})
     } else {
       errorDesc = errorMsg
     }
