@@ -191,6 +191,9 @@ service.interceptors.response.use(
       if (process.env.NODE_ENV === 'local' && process.env.NODE_ENV === 'dev') {
         vm.$router.push('/devLogin').catch(() => {})
       }
+    } else if (response && response.status === 302) {
+      console.log('302 error test')
+      vm.$router.push('/ssoLogin').catch(() => {})
     } else {
       errorDesc = errorMsg
     }
