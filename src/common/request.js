@@ -197,6 +197,11 @@ service.interceptors.response.use(
       if (process.env.NODE_ENV === 'local' && process.env.NODE_ENV === 'dev') {
         vm.$router.push('/devLogin').catch(() => {})
       }
+      // 토큰 만료 및 검증 실패에 대한 임시 코드
+      // cors error -> login 페이지 이동
+      // 추후 401 error -> login 페이지 이동으로 변경 예정
+    } else if (error.message === 'Network Error') {
+      vm.$router.push('/ssoLogin').catch(() => {})
     } else {
       errorDesc = errorMsg
     }
