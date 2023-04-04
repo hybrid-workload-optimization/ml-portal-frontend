@@ -201,7 +201,9 @@ service.interceptors.response.use(
       // cors error -> login 페이지 이동
       // 추후 401 error -> login 페이지 이동으로 변경 예정
     } else if (error.message === 'Network Error') {
-      vm.$router.push('/ssoLogin').catch(() => {})
+      console.log(vm.$route)
+      console.log(vm.$router)
+      vm.$router.push({ path: '/ssoLogin' }).catch(() => {})
     } else {
       errorDesc = errorMsg
     }
