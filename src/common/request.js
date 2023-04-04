@@ -152,6 +152,11 @@ service.interceptors.response.use(
     console.log(error)
     const { response } = error
     console.log(error)
+    console.log(error.response)
+    console.log(error.request)
+    console.log(error.message)
+    console.log(error.catch)
+
     console.log(response)
     if (error.response && [419].indexOf(error.response.status) > -1) {
       // Reload or redirect to login page
@@ -192,8 +197,6 @@ service.interceptors.response.use(
       if (process.env.NODE_ENV === 'local' && process.env.NODE_ENV === 'dev') {
         vm.$router.push('/devLogin').catch(() => {})
       }
-    } else if (response && response.status === 302) {
-      console.log('302 error test')
     } else {
       errorDesc = errorMsg
     }
