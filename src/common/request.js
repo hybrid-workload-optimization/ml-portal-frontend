@@ -151,13 +151,7 @@ service.interceptors.response.use(
     if (numberOfCallPending === 0) vm.$store.commit('loading/closeLoading')
     console.log(error)
     const { response } = error
-    console.log(error)
-    console.log(error.response)
-    console.log(error.request)
-    console.log(error.message)
-    console.log(error.catch)
 
-    console.log(response)
     if (error.response && [419].indexOf(error.response.status) > -1) {
       // Reload or redirect to login page
       window.location.reload()
@@ -201,9 +195,9 @@ service.interceptors.response.use(
       // cors error -> login 페이지 이동
       // 추후 401 error -> login 페이지 이동으로 변경 예정
     } else if (error.message === 'Network Error') {
-      console.log(vm.$route)
-      console.log(vm.$router)
-      vm.$router.push({ path: '/ssoLogin' }).catch(() => {})
+      vm.$router
+        .push({ path: '/ssoLogin', query: { originPath: vm.$route.path } })
+        .catch(() => {})
     } else {
       errorDesc = errorMsg
     }
