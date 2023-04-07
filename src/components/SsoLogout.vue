@@ -16,13 +16,7 @@ export default {
   },
   methods: {
     requestLogout() {
-      alert('!!!!!!!!!!! SsoLogout >>>>>>>>>>>>>>>>>>>>>>')
-      const originPage = this.$route.query.originPath
       document.getElementById('lg').submit()
-      alert('!!!!!!!!!!! SsoLogin >>>>>>>>>>>>>>>>>>>>>>')
-      this.$router
-        .push({ path: '/ssoLogin', query: { originPath: originPage } })
-        .catch(() => {})
     },
   },
 }
