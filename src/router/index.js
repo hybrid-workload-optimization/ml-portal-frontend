@@ -124,7 +124,8 @@ router.beforeEach(async (to, from, next) => {
     to.path !== '/ssoLogin' &&
     to.path !== '/find-password' &&
     to.path !== '/signup' &&
-    to.path !== '/change-password'
+    to.path !== '/change-password' &&
+    to.path !== '/ssoLogout'
   ) {
     // 개발환경에서 token refresh 실패시 login
     if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
@@ -194,57 +195,59 @@ router.beforeEach(async (to, from, next) => {
       // }
       // SSO 환경에서 유저 정보가 없으면 로그인
     } else if (store.state.loginUser.userInfo === null) {
-      next({ path: '/ssoLogin', query: { originPath: from.path } })
+      // if (to.path === '/afterSsoLogin') {
+      const userInfoResult = await store.dispatch('loginUser/doLogin')
+      if (!userInfoResult) {
+        console.log('get userInfo fail')
+        next({ path: '/ssoLogin', query: { originPath: from.path } })
+      } else {
+        try {
+          let encryptMenuList = sessionStorage.getItem('menuList')
+          let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          if (!encryptMenuList || !encryptProjectUserRole) {
+            await store.dispatch('loginUser/getMenuList')
 
-      // const userInfoResult = await store.dispatch('loginUser/doLogin')
-      // if (!userInfoResult) {
-      //   console.log('get userInfo fail')
-      //   next({ path: '/ssoLogin', query: { originPath: from.path } })
+            encryptMenuList = sessionStorage.getItem('menuList')
+            encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
+          }
+          let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
+          const projectUserRole = JSON.parse(
+            encrypt.decrypt(encryptProjectUserRole),
+          )
+          menuList = menuList.filter(menu => {
+            if (
+              menu.useYn === 'Y' &&
+              (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
+            ) {
+              if (menu.subMenuList && menu.subMenuList.length) {
+                menu.subMenuList = menu.subMenuList.filter(
+                  subMenu =>
+                    subMenu.useYn === 'Y' &&
+                    (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
+                )
+                return menu
+              }
+              return menu
+            }
+            return false
+          })
+          store.commit('loginUser/setMenuInfo', {
+            defaultUserRole: menuList,
+            projectUserRole,
+          })
+          const flatMenulList = setFlatMenuList(menuList)
+          store.commit('loginUser/setFlatMenuList', flatMenulList)
+
+          getViewablePath()
+        } catch (error) {
+          console.error(error)
+          console.log('no token')
+          store.dispatch('loginUser/doLogout')
+          next('/ssoLogin')
+        }
+      }
       // } else {
-      //   try {
-      //     let encryptMenuList = sessionStorage.getItem('menuList')
-      //     let encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
-      //     if (!encryptMenuList || !encryptProjectUserRole) {
-      //       await store.dispatch('loginUser/getMenuList')
-
-      //       encryptMenuList = sessionStorage.getItem('menuList')
-      //       encryptProjectUserRole = sessionStorage.getItem('projectUserRole')
-      //     }
-      //     let menuList = JSON.parse(encrypt.decrypt(encryptMenuList))
-      //     const projectUserRole = JSON.parse(
-      //       encrypt.decrypt(encryptProjectUserRole),
-      //     )
-      //     menuList = menuList.filter(menu => {
-      //       if (
-      //         menu.useYn === 'Y' &&
-      //         (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
-      //       ) {
-      //         if (menu.subMenuList && menu.subMenuList.length) {
-      //           menu.subMenuList = menu.subMenuList.filter(
-      //             subMenu =>
-      //               subMenu.useYn === 'Y' &&
-      //               (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
-      //           )
-      //           return menu
-      //         }
-      //         return menu
-      //       }
-      //       return false
-      //     })
-      //     store.commit('loginUser/setMenuInfo', {
-      //       defaultUserRole: menuList,
-      //       projectUserRole,
-      //     })
-      //     const flatMenulList = setFlatMenuList(menuList)
-      //     store.commit('loginUser/setFlatMenuList', flatMenulList)
-
-      //     getViewablePath()
-      //   } catch (error) {
-      //     console.error(error)
-      //     console.log('no token')
-      //     store.dispatch('loginUser/doLogout')
-      //     next('/ssoLogin')
-      //   }
+      // next({ path: '/ssoLogin', query: { originPath: from.path } })
       // }
     }
   } else {
