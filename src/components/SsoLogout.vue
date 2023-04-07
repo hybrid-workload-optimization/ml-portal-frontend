@@ -16,11 +16,11 @@ export default {
   },
   methods: {
     requestLogout() {
-      const originPage = this.$route.query.originPath
+      // const originPage = this.$route.query.originPath
       document.getElementById('lg').submit()
-      this.$router
-        .push({ path: '/ssoLogin', query: { originPath: originPage } })
-        .catch(() => {})
+      // this.$router
+      // .push({ path: '/ssoLogin', query: { originPath: originPage } })
+      // .catch(() => {})
     },
   },
 }
