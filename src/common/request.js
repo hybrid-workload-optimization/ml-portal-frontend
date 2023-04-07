@@ -195,9 +195,13 @@ service.interceptors.response.use(
       // cors error -> login 페이지 이동
       // 추후 401 error -> login 페이지 이동으로 변경 예정
     } else if (error.message === 'Network Error') {
+      const originPage = vm.$route.path
       vm.$router
-        .push({ path: '/ssoLogin', query: { originPath: vm.$route.path } })
+        .push({ path: '/logout', query: { originPath: originPage } })
         .catch(() => {})
+      // vm.$router
+      //   .push({ path: '/ssoLogin', query: { originPath: originPage } })
+      //   .catch(() => {})
     } else {
       errorDesc = errorMsg
     }
