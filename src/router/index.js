@@ -124,8 +124,7 @@ router.beforeEach(async (to, from, next) => {
     to.path !== '/ssoLogin' &&
     to.path !== '/find-password' &&
     to.path !== '/signup' &&
-    to.path !== '/change-password' &&
-    to.path !== '/ssoLogout'
+    to.path !== '/change-password'
   ) {
     // 개발환경에서 token refresh 실패시 login
     if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
