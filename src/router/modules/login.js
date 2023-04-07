@@ -31,6 +31,14 @@ const resource = [
           isAuthRequired: !isAuthRequired,
         },
       },
+      {
+        path: '/logout',
+        name: 'SSO Logout',
+        component: () => import('@/components/Logout.vue'),
+        meta: {
+          isAuthRequired: !isAuthRequired,
+        },
+      },
     ],
   },
 ]

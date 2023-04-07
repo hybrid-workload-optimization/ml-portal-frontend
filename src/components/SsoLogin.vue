@@ -11,7 +11,7 @@ export default {
   },
 
   methods: {
-    async onSubmit() {
+    onSubmit() {
       const baseUrl = process.env.BASE_URL
       const afterUri = 'afterSsoLogin'
       const redirectUri = `${window.location.protocol}//${window.location.host}${baseUrl}${afterUri}`
