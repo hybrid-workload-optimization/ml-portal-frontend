@@ -197,7 +197,7 @@ service.interceptors.response.use(
     } else if (error.message === 'Network Error') {
       const originPage = vm.$route.path
       vm.$router
-        .push({ path: '/logout', query: { originPath: originPage } })
+        .push({ path: '/ssoLogout', query: { originPath: originPage } })
         .catch(() => {})
       // vm.$router
       //   .push({ path: '/ssoLogin', query: { originPath: originPage } })
