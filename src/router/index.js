@@ -196,6 +196,7 @@ router.beforeEach(async (to, from, next) => {
       // SSO 환경에서 유저 정보가 없으면 로그인
     } else if (store.state.loginUser.userInfo === null) {
       // if (to.path === '/afterSsoLogin') {
+      alert('!!!!!!!!!!! userInfo === null >>>>>>>>>>>>>>>>>>>>>>')
       const userInfoResult = await store.dispatch('loginUser/doLogin')
       if (!userInfoResult) {
         console.log('get userInfo fail')
