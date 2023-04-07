@@ -11,11 +11,12 @@ export default {
       logoutUrl: `${process.env.VUE_APP_BASE_API}/logout`,
     }
   },
-  created() {
+  mounted() {
     this.requestLogout()
   },
   methods: {
     requestLogout() {
+      alert('!!!!!!!!!!! SsoLogout >>>>>>>>>>>>>>>>>>>>>>')
       // const originPage = this.$route.query.originPath
       document.getElementById('lg').submit()
       // this.$router
