@@ -1,16 +1,31 @@
 <template><div></div></template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {}
   },
 
-  mounted() {
-    this.onSubmit() // this.doLogout()
+  created() {
+    this.rmSession()
+    // this.onSubmit()
   },
 
   methods: {
+    async rmSession() {
+      const path = '/gw/rmsession'
+      await axios
+        .get(path)
+        .then(res => {
+          console.log(res)
+          this.onSubmit()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     onSubmit() {
       const baseUrl = process.env.BASE_URL
       const afterUri = 'afterSsoLogin'
