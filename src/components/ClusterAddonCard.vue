@@ -20,8 +20,7 @@
         </div>
         <div class="image-wrapper">
           <sp-image
-            :lazySrcUrl="setImagePath(addonData.iconPath)"
-            :srcUrl="setImagePath(addonData.iconPath)"
+            :srcUrl="`data:image/${addonData.icon.format}+xml;base64,${addonData.icon.data}`"
             class="addon-image"
             alt="addon image"
           />
@@ -57,8 +56,7 @@
         <div class="description-wrapper">
           <div class="description-image-wrapper">
             <sp-image
-              :lazySrcUrl="setImagePath(popupData.iconPath)"
-              :srcUrl="setImagePath(popupData.iconPath)"
+              :srcUrl="`data:image/${addonData.icon.format}+xml;base64,${addonData.icon.data}`"
               class="description-image"
               alt="description image"
             ></sp-image>
