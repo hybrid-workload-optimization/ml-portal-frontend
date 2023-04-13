@@ -65,12 +65,13 @@
         >List</sp-button
       >
       <template v-if="showButton">
-        <sp-button
+        <!-- <sp-button
           outlined
           class="edit-button title-button"
           @click="onClickEdit"
           >Edit</sp-button
-        >
+        > -->
+
         <!-- <sp-button
           outlined
           class="delete-button title-button"

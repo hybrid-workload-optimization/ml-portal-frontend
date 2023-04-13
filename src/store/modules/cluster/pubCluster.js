@@ -43,8 +43,10 @@ export function makeClusterParameter(state) {
   const form = state.publicNewClusterForm
   if (['AWS'].includes(state.dataForm.provider)) {
     povisioningParam = {
+      projectIdx: state.dataForm.projectIdx,
       clusterName: state.dataForm.clusterName,
       clusterDesc: state.dataForm.description,
+      cspAccountUuid: state.dataForm.cspAccountUuid,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
       roleArn: form.roleArn,
@@ -61,8 +63,10 @@ export function makeClusterParameter(state) {
     }
   } else if (state.dataForm.provider === 'Naver') {
     povisioningParam = {
+      projectIdx: state.dataForm.projectIdx,
       clusterName: state.dataForm.clusterName,
       clusterDesc: state.dataForm.description,
+      cspAccountUuid: state.dataForm.cspAccountUuid,
       kubernetesVersion: form.kubernetesVersion,
       loginKeyName: form.authKeyName,
       region: form.regionName,
@@ -80,8 +84,10 @@ export function makeClusterParameter(state) {
     }
   } else if (state.dataForm.provider === 'Azure') {
     povisioningParam = {
+      projectIdx: state.dataForm.projectIdx,
       clusterName: state.dataForm.clusterName,
       clusterDesc: state.dataForm.description,
+      cspAccountUuid: state.dataForm.cspAccountUuid,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,
       nodePools: [
@@ -96,8 +102,10 @@ export function makeClusterParameter(state) {
     }
   } else if (state.dataForm.provider === 'GCP') {
     povisioningParam = {
+      projectIdx: state.dataForm.projectIdx,
       clusterName: state.dataForm.clusterName,
       clusterDesc: state.dataForm.description,
+      cspAccountUuid: state.dataForm.cspAccountUuid,
       channel: form.channel,
       kubernetesVersion: form.kubernetesVersion,
       region: form.regionName,

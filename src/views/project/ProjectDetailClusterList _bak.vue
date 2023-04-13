@@ -36,11 +36,6 @@
                     :src="item.img"
                   />
                 </div>
-                <!-- <div
-                  v-if="item.clusterName"
-                  class="project-list__title-wrapper"
-                  @click="onClickClusterDetail(item)"
-                > -->
                 <div
                   v-if="item.clusterName"
                   class="project-list__title-wrapper"
@@ -116,7 +111,7 @@
 
     <modal
       class="cluster-popup"
-      :title-name="테스트"
+      :title-name="projectIdx"
       modal-width="1400"
       modal-height="1360"
       :dialog="isOpenPopup"
@@ -139,7 +134,6 @@ import ClusterDetail from '@/views/project/cluster/ClusterDetail.vue'
 const projectMapUtils = createNamespacedHelpers('project')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
-const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   components: {
@@ -281,9 +275,7 @@ export default {
   computed: {
     ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
     ...projectMapUtils.mapGetters(['dataUserMenuList']),
-    ...clusterMapUtils.mapState({
-      dialog: 'isShowEditModal',
-    }),
+
     /* searching() {
       if (!this.searchValue) return this.dataList
       const search = this.searchValue.toLowerCase()
@@ -475,9 +467,6 @@ export default {
       }
 
       return result
-    },
-    openClusterDetailModal() {
-      this.changeShowEditModal(true)
     },
     onClickOpenPopup() {
       console.log('[onClickOpenPopup]')
