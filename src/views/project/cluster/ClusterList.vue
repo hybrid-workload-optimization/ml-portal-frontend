@@ -150,7 +150,7 @@ export default {
 
     // 서치 박스의 버튼 클릭 시 호출됨
     onClickButton() {
-      this.$router.push('/cluster/new')
+      this.$router.push(`/project/detail/${this.projectIdx}/cluster/new`)
     },
     // 서치 박스 입력값 변경 시 호출됨
     onInputSearchValue(value) {
