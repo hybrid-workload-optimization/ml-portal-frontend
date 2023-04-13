@@ -128,6 +128,9 @@ export default {
     ClusterStorageClassDetail,
     ClusterAddonCardList,
   },
+  props: {
+    clusterId: Number,
+  },
   mixins: [checkProjectAuth],
   data() {
     return {
@@ -157,7 +160,7 @@ export default {
       return false
     })
     this.tab = tabIdx > 0 ? tabIdx : 0
-    this.clusterIdx = this.$route.params.id
+    this.clusterIdx = this.clusterId
 
     // 상세 초기화
     this.initDataDetail()

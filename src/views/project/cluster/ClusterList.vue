@@ -10,12 +10,28 @@
       @searchButton="onClickButton"
       @click-row="moveToDetailPage"
     />
+
+    <!-- 팝업창 부분 -->
+    <modal
+      class="cluster-popup"
+      title-name="Cluster Resource"
+      modal-width="1600"
+      modal-height="1360"
+      :dialog="isOpenPopup"
+      @close-modal="onClickCloseModal"
+    >
+      <template v-slot:content>
+        <cluster-detail :clusterId="clusterId" />
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import ClusterDesignedList from '@/views/project/cluster/components/ClusterDesignedList.vue'
+import Modal from '@/components/modals/Modal.vue'
+import ClusterDetail from '@/views/project/cluster/ClusterDetail_v2.vue'
 
 // store > cluster > cluster.js
 const clusterMapUtils = createNamespacedHelpers('cluster')
@@ -25,12 +41,14 @@ const projectMapUtils = createNamespacedHelpers('project')
 export default {
   components: {
     ClusterDesignedList,
+    Modal,
+    ClusterDetail,
   },
   data() {
     return {
       projectIdx: null,
       searchValue: '',
-
+      clusterId: null,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
         {
@@ -84,6 +102,7 @@ export default {
         itemKey: 'clusterIdx',
       },
       isLoading: false,
+      isOpenPopup: false,
     }
   },
 
@@ -162,6 +181,8 @@ export default {
     moveToDetailPage(data) {
       console.log('data', data)
       console.log(data.provisioningType)
+      this.clusterId = data.id
+
       if (
         ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
           data.provisioningType,
@@ -176,7 +197,7 @@ export default {
             `/cluster/provisioning/${data.clusterIdx}/${data.provisioningStatus}`,
           )
         } else if (data.provisioningStatus === 'FINISHED') {
-          this.$router.push(`/cluster/detail/${data.clusterIdx}`)
+          this.isOpenPopup = true
         } else if (data.provisioningStatus === 'READY') {
           // 배포 대기 중
           this.openAlert({
@@ -185,8 +206,16 @@ export default {
           })
         }
       } else {
-        this.$router.push(`/cluster/detail/${data.clusterIdx}`)
+        this.isOpenPopup = true
       }
+    },
+    onClickCloseModal() {
+      if (this.$route.query.detail) {
+        this.$router.replace({
+          path: `/project/detail/${this.projectIdx}`,
+        })
+      }
+      this.isOpenPopup = false
     },
   },
   beforeDestroy() {
@@ -198,6 +227,13 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
+
+.authority-page__content-info {
+  height: 1100px;
+  overflow-y: auto;
+  @include scroll();
+  padding: 15px 15px;
+}
 
 .sp-project-list {
   width: 100%;
