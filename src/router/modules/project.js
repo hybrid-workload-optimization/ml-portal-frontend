@@ -40,6 +40,14 @@ const resource = [
         },
       },
       {
+        path: 'detail/:id/cluster/new',
+        name: 'Project Cluster New',
+        component: () => import('@/views/project/cluster/ClusterForm'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
         path: 'new',
         name: 'Project New',
         component: () => import('@/views/project/ProjectNew'),

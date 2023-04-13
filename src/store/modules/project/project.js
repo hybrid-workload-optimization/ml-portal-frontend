@@ -45,6 +45,8 @@ const resource = {
     editClusterList: [],
     editPmUser: null,
     editUserList: [],
+
+    cspAccountList: [],
   },
 
   getters: {
@@ -107,6 +109,9 @@ const resource = {
     },
     dataUserMenuList(state) {
       return state.dataUserMenuList
+    },
+    dataCSPAccountList(state) {
+      return state.cspAccountList
     },
   },
 
@@ -350,7 +355,9 @@ const resource = {
           description: e.description,
           provisioningType: e.provisioningType,
           provisioningStatus: e.provisioningStatus,
-          addedAt: e.addedAt,
+          // addedAt: e.addedAt,
+          createdAt: e.createdAt,
+          status: e.status,
           job: 'Cluster',
         }
 
@@ -487,6 +494,14 @@ const resource = {
       })
 
       state.editUserList = currentMemberList
+    },
+
+    getServiceGroupCSPAccountList(state, payload) {
+      const { data } = payload
+      console.log('data === ', data)
+      const { result } = data
+
+      state.cspAccountList = result
     },
   },
 
@@ -663,6 +678,12 @@ const resource = {
         payload,
       )
       commit('getProjectCurrentMemberList', response)
+    },
+
+    // 서비스그룹 > 클러스터 생성 > CSP 계정 리스트 조회
+    async getServiceGroupCSPAccountList({ commit }, payload) {
+      const response = await request.getGroupCspAccountUsingGET(payload)
+      commit('getServiceGroupCSPAccountList', response)
     },
   },
 }

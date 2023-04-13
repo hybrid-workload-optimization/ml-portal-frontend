@@ -35,9 +35,11 @@ const resource = {
     },
     dataForm: {
       displayClusterName: '',
+      projectIdx: null,
       clusterIdx: null,
       clusterName: '',
       provider: '',
+      cspAccountUuid: '',
       description: '',
       provisioningType: '',
       kubeConfig: '',
@@ -49,6 +51,7 @@ const resource = {
     monitoringAddOnData: {},
     timeoutList: [],
     monitoringIframeUrl: '',
+    isShowEditModal: false,
   },
   getters: {
     dataList(state) {
@@ -121,6 +124,7 @@ const resource = {
         monitoringServiceUrl: '',
         workJobIdx: null,
         projectIdx: '',
+        cspAccountUuid: '',
       }
     },
     // Reg/Edit Form
@@ -135,6 +139,8 @@ const resource = {
         provisioningUser: '',
         nodes: [],
         originalNodes: [],
+        projectIdx: null,
+        cspAccountUuid: '',
       }
     },
     // List 데이터 설정
@@ -223,9 +229,11 @@ const resource = {
     },
 
     setDataFormClusterInfo(state, payload) {
+      state.dataForm.projectIdx = payload.projectIdx
       state.dataForm.clusterIdx = payload.clusterIdx
       state.dataForm.clusterName = payload.clusterName
       state.dataForm.provider = payload.provider
+      state.dataForm.cspAccountUuid = payload.cspAccountUuid
       state.dataForm.description = payload.description
     },
     setDataFormKubespray(state, payload) {
@@ -299,6 +307,9 @@ const resource = {
     },
     setMonitoringIframeUrl(state, payload) {
       state.monitoringIframeUrl = payload || null
+    },
+    changeShowEditModal: (state, payload) => {
+      state.isShowEditModal = payload
     },
   },
   actions: {

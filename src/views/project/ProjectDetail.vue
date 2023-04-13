@@ -16,7 +16,18 @@
     </v-tabs>
     <v-tabs-items class="project-layout__tab-item" v-model="tab">
       <v-tab-item v-for="item in tabNames" :key="item">
-        <project-list
+        <!-- <project-list
+          v-if="item === 'Cluster'"
+          searchTitle="Cluster"
+          :totalCount="clusterSize.toString()"
+          :data="getListCluster"
+          :search="clusterSearch"
+          :isAuth="isProjectAuth"
+          @input="onChangeClusterSearch"
+          @click="onClickDeleteCluster"
+        /> -->
+
+        <cluster-list
           v-if="item === 'Cluster'"
           searchTitle="Cluster"
           :totalCount="clusterSize.toString()"
@@ -26,6 +37,7 @@
           @input="onChangeClusterSearch"
           @click="onClickDeleteCluster"
         />
+
         <project-list
           v-if="item === 'Member'"
           searchTitle="Member"
@@ -45,6 +57,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import DetailTitle from '@/views/project/ProjectTitleWithDetail.vue'
 import ProjectList from '@/views/project/ProjectDetailClusterList.vue'
+import ClusterList from '@/views/project/cluster/ClusterList.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const projectMapUtils = createNamespacedHelpers('project')
@@ -54,6 +67,7 @@ export default {
   components: {
     DetailTitle,
     ProjectList,
+    ClusterList,
   },
   mixins: [checkProjectAuth],
   data() {
@@ -67,7 +81,7 @@ export default {
   },
 
   created() {
-    this.projectIdx = this.$route.params.id
+    this.projectIdx = Number(this.$route.params.id)
     this.checkProjectAuth(this.projectIdx)
   },
 
