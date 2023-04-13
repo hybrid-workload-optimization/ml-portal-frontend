@@ -36,11 +36,6 @@
                     :src="item.img"
                   />
                 </div>
-                <!-- <div
-                  v-if="item.clusterName"
-                  class="project-list__title-wrapper"
-                  @click="onClickClusterDetail(item)"
-                > -->
                 <div
                   v-if="item.clusterName"
                   class="project-list__title-wrapper"
@@ -113,17 +108,6 @@
 
     <!-- 삭제 요청 확인 창 -->
     <confirm @confirm-modal="onClickDelConfirm" />
-
-    <modal
-      class="cluster-popup"
-      :title-name="테스트"
-      modal-width="1400"
-      modal-height="1360"
-      :dialog="isOpenPopup"
-      @close-modal="onClickCloseModal"
-    >
-      <cluster-detail></cluster-detail>
-    </modal>
   </div>
 </template>
 
@@ -133,21 +117,16 @@ import Search from '@/components/molcule/DataTableSearch.vue'
 import ProjectListTable from '@/components/dataTables/DataTable.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 import encrypt from '@/lib/encrypt'
-import Modal from '@/components/modals/Modal.vue'
-import ClusterDetail from '@/views/project/cluster/ClusterDetail.vue'
 
 const projectMapUtils = createNamespacedHelpers('project')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
-const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   components: {
     Search,
     ProjectListTable,
     Confirm,
-    Modal,
-    ClusterDetail,
   },
 
   props: {
@@ -261,9 +240,6 @@ export default {
       clusterIdx: null,
       userId: null,
       job: null,
-
-      isOpenPopup: false,
-      iscConfigOpen: false,
     }
   },
 
@@ -281,9 +257,6 @@ export default {
   computed: {
     ...projectMapUtils.mapGetters(['dataUserRoleAllList']),
     ...projectMapUtils.mapGetters(['dataUserMenuList']),
-    ...clusterMapUtils.mapState({
-      dialog: 'isShowEditModal',
-    }),
     /* searching() {
       if (!this.searchValue) return this.dataList
       const search = this.searchValue.toLowerCase()
@@ -475,17 +448,6 @@ export default {
       }
 
       return result
-    },
-    openClusterDetailModal() {
-      this.changeShowEditModal(true)
-    },
-    onClickOpenPopup() {
-      console.log('[onClickOpenPopup]')
-      this.isOpenPopup = true
-    },
-    onClickCloseModal() {
-      this.isOpenPopup = false
-      this.iscConfigOpen = false
     },
   },
 }
