@@ -61,6 +61,7 @@ const resource = [
         component: () => import('@/views/cluster/ClusterDetail_v2'),
         meta: {
           isAuthRequired,
+          isPopup: true,
         },
       },
       {
@@ -69,6 +70,7 @@ const resource = [
         component: () => import('@/views/cluster/ClusterDetail_v2'),
         meta: {
           isAuthRequired,
+          isPopup: true,
         },
       },
     ],

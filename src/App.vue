@@ -1,7 +1,8 @@
 <template>
   <app-layout class="sp-app">
     <gloval-loading />
-    <after-login-app v-if="isAuthRequired" />
+    <after-login-app v-if="isAuthRequired && !isClusterPopup" />
+    <cluster-detail v-if="isAuthRequired && isClusterPopup" />
     <before-login-app v-else />
     <v-alert
       :titleName="alertTitle"
@@ -22,6 +23,7 @@ import GlovalLoading from '@/components/GlovalLoading.vue'
 import { SET_MINI } from '@/store/modules/sideNav'
 import { createNamespacedHelpers } from 'vuex'
 import VAlert from '@/components/molcule/Alert.vue'
+import ClusterDetail from '@/views/cluster/ClusterDetail_v2.vue'
 
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -36,14 +38,20 @@ export default {
     BeforeLoginApp,
     GlovalLoading,
     VAlert,
+    ClusterDetail,
   },
-
   computed: {
     ...alertMapUtils.mapGetters(['showAlert', 'alertTitle', 'alertOptions']),
     ...loginUserMapUtil.mapState(['userInfo']),
     isAuthRequired() {
       if (this.$route.meta.isAuthRequired) {
         return !!this.userInfo
+      }
+      return false
+    },
+    isClusterPopup() {
+      if (this.$route.meta.isPopup) {
+        return true
       }
       return false
     },

@@ -181,9 +181,10 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
+
 $this: '';
 .#{$this}sp-cluster-detail {
-  margin: 15px;
+  margin: 30px;
   .v-tabs {
     padding-bottom: 35px;
   }
