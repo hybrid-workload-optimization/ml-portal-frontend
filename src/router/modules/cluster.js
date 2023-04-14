@@ -15,14 +15,14 @@ const resource = [
           isAuthRequired,
         },
       },
-      // {
-      //   path: 'detail/:id',
-      //   name: 'Cluster Detail',
-      //   component: () => import('@/views/cluster/ClusterDetail'),
-      //   meta: {
-      //     isAuthRequired,
-      //   },
-      // },
+      {
+        path: 'detail/:id',
+        name: 'Cluster Detail',
+        component: () => import('@/views/cluster/ClusterDetail'),
+        meta: {
+          isAuthRequired,
+        },
+      },
       {
         path: 'new',
         name: 'Cluster New',
@@ -64,15 +64,15 @@ const resource = [
           isPopup: true,
         },
       },
-      {
-        path: 'detail/:id',
-        name: 'Cluster Detail',
-        component: () => import('@/views/cluster/ClusterDetail_v2'),
-        meta: {
-          isAuthRequired,
-          isPopup: true,
-        },
-      },
+      // {
+      //   path: 'detail/:id',
+      //   name: 'Cluster Detail',
+      //   component: () => import('@/views/cluster/ClusterDetail_v2'),
+      //   meta: {
+      //     isAuthRequired,
+      //     isPopup: true,
+      //   },
+      // },
     ],
   },
 ]
