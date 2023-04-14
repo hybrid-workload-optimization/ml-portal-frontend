@@ -12,7 +12,7 @@
     />
 
     <!-- 팝업창 부분 -->
-    <modal
+    <!-- <modal
       class="cluster-popup"
       title-name="Cluster Resource"
       modal-width="1600"
@@ -23,15 +23,13 @@
       <template v-slot:content>
         <cluster-detail :clusterId="clusterId" />
       </template>
-    </modal>
+    </modal> -->
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import ClusterDesignedList from '@/views/project/cluster/components/ClusterDesignedList.vue'
-import Modal from '@/components/modals/Modal.vue'
-import ClusterDetail from '@/views/project/cluster/ClusterDetail_v2.vue'
 
 // store > cluster > cluster.js
 const clusterMapUtils = createNamespacedHelpers('cluster')
@@ -41,8 +39,6 @@ const projectMapUtils = createNamespacedHelpers('project')
 export default {
   components: {
     ClusterDesignedList,
-    Modal,
-    ClusterDetail,
   },
   data() {
     return {
@@ -102,7 +98,6 @@ export default {
         itemKey: 'clusterIdx',
       },
       isLoading: false,
-      isOpenPopup: false,
     }
   },
 
@@ -183,6 +178,11 @@ export default {
       console.log(data.provisioningType)
       this.clusterId = data.id
 
+      // const left = screen.width ? (screen.width - width) / 2 : 0
+      // const top = screen.height ? (screen.height - height) / 2 : 0
+
+      // const attr = `top=${top}, left=${left}, width=${width}, height=${height}, resizable=no,status=no`
+
       if (
         ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
           data.provisioningType,
@@ -197,7 +197,8 @@ export default {
             `/cluster/provisioning/${data.clusterIdx}/${data.provisioningStatus}`,
           )
         } else if (data.provisioningStatus === 'FINISHED') {
-          this.isOpenPopup = true
+          window.open(`/cluster/detail/${this.clusterId}/Node`)
+          // this.isOpenPopup = true
         } else if (data.provisioningStatus === 'READY') {
           // 배포 대기 중
           this.openAlert({
@@ -206,17 +207,18 @@ export default {
           })
         }
       } else {
-        this.isOpenPopup = true
+        window.open(`/cluster/detail/${this.clusterId}/Node`)
+        // this.isOpenPopup = true
       }
     },
-    onClickCloseModal() {
-      if (this.$route.query.detail) {
-        this.$router.replace({
-          path: `/project/detail/${this.projectIdx}`,
-        })
-      }
-      this.isOpenPopup = false
-    },
+    // onClickCloseModal() {
+    //   if (this.$route.query.detail) {
+    //     this.$router.replace({
+    //       path: `/project/detail/${this.projectIdx}`,
+    //     })
+    //   }
+    //   this.isOpenPopup = false
+    // },
   },
   beforeDestroy() {
     this.timeoutList.forEach(idx => clearTimeout(idx))
