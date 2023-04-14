@@ -1,7 +1,7 @@
 <template>
   <div class="authority-page-wrapper">
     <div class="authority-page__content-wrapper">
-      <div class="authority-page__content-menu" v-if="!$route.query.detail">
+      <div class="authority-page__content-menu">
         <sub-list @sendTabName="subListOnClick" />
       </div>
       <div class="authority-page__right-content">
@@ -297,7 +297,7 @@ $this: 'authority-page';
       height: 100%;
     }
     .#{$this}__right-content {
-      width: 100%;
+      width: 75%;
       margin-left: 15px;
       height: 100%;
       .#{$this}__content-info {
