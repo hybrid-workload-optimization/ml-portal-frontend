@@ -197,7 +197,8 @@ export default {
             `/cluster/provisioning/${data.clusterIdx}/${data.provisioningStatus}`,
           )
         } else if (data.provisioningStatus === 'FINISHED') {
-          window.open(`/cluster/detail/${this.clusterId}/Node`)
+          const baseUrl = process.env.BASE_URL
+          window.open(`${baseUrl}cluster/detail/${this.clusterId}/Node`)
           // this.isOpenPopup = true
         } else if (data.provisioningStatus === 'READY') {
           // 배포 대기 중
