@@ -208,7 +208,8 @@ export default {
           })
         }
       } else {
-        window.open(`/cluster/detail/${this.clusterId}/Node`)
+        const baseUrl = process.env.BASE_URL
+        window.open(`${baseUrl}cluster/detail/${this.clusterId}/Node`)
         // this.isOpenPopup = true
       }
     },
