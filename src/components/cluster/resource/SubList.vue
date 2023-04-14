@@ -101,9 +101,9 @@ export default {
     sendTabName(tabName) {
       console.log(tabName)
       this.$emit('sendTabName', tabName)
-      // this.$router.replace(
-      // `/cluster/detail/${this.$route.params.id}/${tabName}`,
-      // )
+      this.$router.replace(
+        `/cluster/detail/${this.$route.params.id}/${tabName}`,
+      )
     },
     expandAll() {
       this.panel = [...Array(this.tabNames.length).keys()].map((k, i) => i)

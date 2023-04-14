@@ -15,14 +15,14 @@ const resource = [
           isAuthRequired,
         },
       },
-      {
-        path: 'detail/:id',
-        name: 'Cluster Detail',
-        component: () => import('@/views/cluster/ClusterDetail'),
-        meta: {
-          isAuthRequired,
-        },
-      },
+      // {
+      //   path: 'detail/:id',
+      //   name: 'Cluster Detail',
+      //   component: () => import('@/views/cluster/ClusterDetail'),
+      //   meta: {
+      //     isAuthRequired,
+      //   },
+      // },
       {
         path: 'new',
         name: 'Cluster New',
@@ -51,6 +51,22 @@ const resource = [
         path: 'log/:id/:clusterName/:workJobIdx',
         name: 'Cluster Provisioning Log',
         component: () => import('@/views/cluster/ClusterLog.vue'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/:resource',
+        name: 'Cluster Detail Resource',
+        component: () => import('@/views/cluster/ClusterDetail_v2'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id',
+        name: 'Cluster Detail',
+        component: () => import('@/views/cluster/ClusterDetail_v2'),
         meta: {
           isAuthRequired,
         },
