@@ -170,7 +170,8 @@ export default {
       if (id) {
         this.$router.push({
           name: this.$route.name,
-          hash: '#namespace',
+          // hash: '#namespace',
+          hash: this.$route.hash,
           query: { namespaceId: id, detail: true },
         })
       }

@@ -203,7 +203,8 @@ export default {
       if (name) {
         this.$router.replace({
           name: this.$route.name,
-          hash: '#resource',
+          // hash: '#resource',
+          hash: this.$route.hash,
           params: {
             clusterIdx: this.getParameters.clusterIdx,
             namespace,

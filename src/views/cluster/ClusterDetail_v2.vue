@@ -1,11 +1,13 @@
 <template>
-  <div class="sp-cluster-detail">
-    <card-title
+  <div class="pop-cluster-detail">
+    <!-- <card-title
       :titleData="getTitle"
       :showButtons="isProjectAuth"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
-    ></card-title>
+    ></card-title> -->
+
+    <card-title :titleData="getTitle" :showButtons="false"></card-title>
 
     <div>
       <!-- 상단 탭 명칭 설정 -->
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
+import CardTitle from '@/components/molcule/CardTitleWithDetailListButton.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import ClusterResource from '@/views/cluster/components/ClusterResource.vue'
@@ -63,16 +65,17 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
+      projectIdx: null,
       clusterIdx: null,
       tab: null,
       isEncodingContent: true,
       tabNames: ['Resource'], // 탭 명칭들
+      isNewWindow: false,
     }
   },
 
   created() {
     this.clusterIdx = this.$route.params.id
-
     // 상세 초기화
     this.initDataDetail()
   },
@@ -83,6 +86,8 @@ export default {
     }
     console.log('클러스터 데이터: ', this.dataDetail)
     this.checkProjectAuth()
+    this.getDataSummary({ clusterIdx: this.clusterIdx })
+    this.getMonitoringData({ clusterIdx: this.clusterIdx })
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
@@ -113,7 +118,12 @@ export default {
   //   },
   // },
   methods: {
-    ...clusterMapUtils.mapActions(['getDataDetail', 'deleteData']),
+    ...clusterMapUtils.mapActions([
+      'getDataDetail',
+      'getDataSummary',
+      'deleteData',
+      'getMonitoringData',
+    ]),
     ...clusterMapUtils.mapMutations(['initDataDetail']),
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
@@ -181,10 +191,11 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-
 $this: '';
-.#{$this}sp-cluster-detail {
-  margin: 30px;
+.#{$this}pop-cluster-detail {
+  // position: fixed;
+  // right: 100px;
+  // width: 75%;
   .v-tabs {
     padding-bottom: 35px;
   }

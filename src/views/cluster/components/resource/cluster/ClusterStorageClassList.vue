@@ -161,7 +161,8 @@ export default {
       if (id) {
         this.$router.push({
           name: this.$route.name,
-          hash: '#storageClass',
+          // hash: '#storageClass',
+          hash: this.$route.hash,
           query: { storageClassId: id, detail: true },
         })
       }

@@ -80,13 +80,13 @@ export default {
   created() {
     this.initDataForm()
 
-    // this.clusterIdx = this.$route.params.id
+    this.clusterIdx = this.$route.params.cid
     this.projectIdx = this.$route.params.id
 
     if (this.clusterIdx) {
       // 수정 모드
       this.isEditMode = true
-      // this.callDataForm()
+      this.callDataForm()
     }
     console.log(tag, 'isEditMode=', this.isEditMode)
   },
@@ -128,9 +128,9 @@ export default {
     },
     onClickCancelConfirm() {
       if (this.isEditMode) {
-        this.$router.push(`/cluster/detail/${this.clusterIdx}`)
+        this.$router.push(`/project/detail/${this.projectIdx}`)
       } else {
-        this.$router.push('/cluster/list')
+        this.$router.push(`/project/detail/${this.projectIdx}`)
       }
     },
     validateSave() {
@@ -178,10 +178,7 @@ export default {
               })
             }
             setTimeout(
-              () =>
-                this.$router.push(
-                  `/project/detail/${this.projcetIdx}/cluster/list`,
-                ),
+              () => this.$router.push(`/project/detail/${this.projcetIdx}`),
               1000,
             )
           } else {
@@ -207,7 +204,7 @@ export default {
         if (response.status === 200) {
           this.openAlert({ title: 'Cluster가 수정 되었습니다.', type: 'info' })
           setTimeout(
-            () => this.$router.push(`/cluster/detail/${this.clusterIdx}`),
+            () => this.$router.push(`/project/detail/${this.projectIdx}`),
             1000,
           )
         } else {

@@ -195,7 +195,8 @@ export default {
       if (id) {
         this.$router.push({
           name: this.$route.name,
-          hash: '#persistentVolume',
+          // hash: '#persistentVolume',
+          hash: this.$route.hash,
           query: { persistentVolumeId: id, detail: true },
         })
       }

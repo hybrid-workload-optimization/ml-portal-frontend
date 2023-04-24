@@ -5,7 +5,7 @@
         <sp-chip v-if="fresh" class="project__tag NEW"> NEW </sp-chip>
         <sp-chip v-if="owner" class="project__tag Owner"> Owner </sp-chip>
       </div>
-      <sp-menu>
+      <!-- <sp-menu>
         <template v-slot:item="slotProps">
           <div v-bind="slotProps.item.attrs" v-on="slotProps.item.on">
             <v-icon>more_horiz</v-icon>
@@ -34,7 +34,7 @@
             >
           </v-list-item>
         </v-list>
-      </sp-menu>
+      </sp-menu> -->
     </div>
     <div class="project__contents-box" style="margin-top: 8px">
       <div

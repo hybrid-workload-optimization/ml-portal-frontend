@@ -7,16 +7,16 @@ const resource = [
     component: () => import('@/views/Main'),
     redirect: '/project/list',
     children: [
+      // {
+      //   path: 'list',
+      //   name: 'Project List',
+      //   component: () => import('@/views/project/ProjectList'),
+      //   meta: {
+      //     isAuthRequired,
+      //   },
+      // },
       {
         path: 'list',
-        name: 'Project List',
-        component: () => import('@/views/project/ProjectList'),
-        meta: {
-          isAuthRequired,
-        },
-      },
-      {
-        path: 'card',
         name: 'Project Card',
         component: () => import('@/views/project/ProjectListWithCard'),
         meta: {
@@ -41,6 +41,14 @@ const resource = [
       },
       {
         path: 'detail/:id/cluster/new',
+        name: 'Project Cluster New',
+        component: () => import('@/views/project/cluster/ClusterForm'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/cluster/edit/:cid',
         name: 'Project Cluster New',
         component: () => import('@/views/project/cluster/ClusterForm'),
         meta: {

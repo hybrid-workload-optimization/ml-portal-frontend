@@ -23,7 +23,10 @@
         isLinked
       >
         <template v-slot:body="{ item }">
-          <tr class="project-list__item-wrapper" @click="onClickRow(item)">
+          <tr
+            class="project-list__item-wrapper"
+            @click="onClickNewWindow(item)"
+          >
             <td class="project-list__name-wrapper">
               <div class="project-list__image-title-wrapper">
                 <div class="project-list__image-wrapper">
@@ -101,6 +104,44 @@
               <label>Created</label>
               <div class="project-list__title">{{ item.createdAt }}</div>
             </td>
+
+            <td class="project-list__icon-wrapper">
+              <div class="project-list__icon_div-wrapper">
+                <!-- <sp-image
+                  class="sp-full-menu__new_window-image"
+                  contain
+                  lazySrc="icon_new_window.png"
+                  src="icon_new_window.png"
+                  @click="onClickNewWindow(item)"
+                /> -->
+
+                <sp-image
+                  class="sp-full-menu__icon_delete-image"
+                  contain
+                  lazySrc="icon_delete.png"
+                  src="icon_delete.png"
+                  @click="onClickDelete(item, $event)"
+                ></sp-image>
+                <sp-image
+                  class="sp-full-menu__icon_edit-image"
+                  contain
+                  lazySrc="icon_edit.png"
+                  src="icon_edit.png"
+                  @click="onClickEdit(item, $event)"
+                ></sp-image>
+              </div>
+            </td>
+
+            <!-- <td class="project-list__button-wrapper">
+              <sp-button
+                @click="onClickDelete(item)"
+                class="project-list--delete"
+                elevation="0"
+                dense
+              >
+                Delete
+              </sp-button>
+            </td> -->
           </tr>
         </template>
       </project-list-table>
@@ -197,7 +238,7 @@ export default {
     },
     onClickDelete(item) {
       console.log(tag, item, 'onClickDelete')
-      this.$emit('click', item)
+      this.$emit('click-delete', item)
     },
     onClickButton(item) {
       console.log(tag, item, '버튼클릭')
@@ -206,6 +247,15 @@ export default {
     onClickRow(item) {
       console.log(tag, item, '로우클릭')
       this.$emit('click-row', item)
+    },
+    onClickNewWindow(item) {
+      console.log(tag, item, '새창클릭')
+      this.$emit('click-newwindow', item)
+    },
+    onClickEdit(item, event) {
+      console.log(tag, item, '수정클릭')
+      this.$emit('click-edit', item)
+      event.stopPropagation()
     },
   },
 }
@@ -391,5 +441,30 @@ export default {
       border-top: 1px solid $sp-box-border;
     }
   }
+}
+
+.sp-full-menu__new_window-image {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  float: left;
+}
+
+.sp-full-menu__icon_edit-image {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  float: right;
+}
+
+.sp-full-menu__icon_delete-image {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  float: right;
+}
+
+.project-list__icon-wrapper {
+  width: 8% !important;
 }
 </style>
