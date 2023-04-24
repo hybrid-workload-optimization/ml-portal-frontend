@@ -245,9 +245,8 @@ export default {
             `/cluster/provisioning/${data.clusterIdx}/${data.provisioningStatus}`,
           )
         } else if (data.provisioningStatus === 'FINISHED') {
-          const baseUrl = process.env.BASE_URL
           const routeData = this.$router.resolve({
-            path: `${baseUrl}cluster/detail/${this.clusterIdx}`,
+            path: `/cluster/detail/${this.clusterIdx}`,
             hash: '#Overview',
           })
           window.open(routeData.href)
@@ -260,9 +259,8 @@ export default {
           })
         }
       } else {
-        const baseUrl = process.env.BASE_URL
         const routeData = this.$router.resolve({
-          path: `${baseUrl}cluster/detail/${this.clusterIdx}`,
+          path: `/cluster/detail/${this.clusterIdx}`,
           hash: '#Overview',
         })
         window.open(routeData.href)
