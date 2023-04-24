@@ -173,11 +173,11 @@ export default {
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
       const { id } = data
-
       if (id) {
         this.$router.replace({
           name: this.$route.name,
-          hash: '#node',
+          // hash: '#node',
+          hash: this.$route.hash,
           query: { clusterNodeId: id, detail: true },
         })
       }

@@ -1,14 +1,22 @@
 <template>
-  <div class="authority-page-wrapper">
-    <div class="authority-page__content-wrapper">
-      <div class="authority-page__content-menu">
-        <sub-list @sendTabName="subListOnClick" />
-      </div>
-      <div class="authority-page__right-content">
-        <div class="authority-page__content-info">
+  <div class="cluster-detail-popup-wrapper">
+    <div class="cluster-detail-popup__content-wrapper">
+      <!-- <div class="cluster-detail-popup__content-menu"> -->
+      <!-- <sub-list @sendTabName="subListOnClick" /> -->
+      <!-- </div> -->
+      <div class="cluster-detail-popup__right-content">
+        <div class="cluster-detail-popup__content-info">
           <sp-card headered :label="getSelectLabel()" outlined elevation="0">
+            <cluster-overview
+              v-if="selectResource === 'Overview' && !$route.query.detail"
+            />
+
+            <cluster-catalog
+              v-else-if="selectResource === 'Catalog' && !$route.query.detail"
+            />
+
             <cluster-node
-              v-if="selectResource === 'Node' && !$route.query.detail"
+              v-else-if="selectResource === 'Node' && !$route.query.detail"
             />
             <cluster-node-detail
               v-else-if="selectResource === 'Node' && $route.query.detail"
@@ -143,16 +151,19 @@
   </div>
 </template>
 <script>
-import SubList from '@/components/cluster/resource/SubList.vue'
+// import SubList from '@/components/cluster/resource/SubList.vue'
+
+import ClusterOverview from '@/views/cluster/components/ClusterOverview.vue'
+import ClusterCatalog from '@/views/cluster/components/ClusterAddonCardList.vue'
 
 import ClusterNode from '@/views/cluster/components/resource/cluster/ClusterNodeList.vue'
-import ClusterNodeDetail from '@/views/cluster/components/ClusterNodeDetail.vue'
+import ClusterNodeDetail from '@/views/cluster/components/resource/cluster/ClusterNodeDetail.vue'
 import ClusterNamespace from '@/views/cluster/components/resource/cluster/ClusterNamespaceList.vue'
-import ClusterNamespaceDetail from '@/views/cluster/components/ClusterNamespaceDetail.vue'
+import ClusterNamespaceDetail from '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail.vue'
 import ClusterPersistentVolume from '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeList.vue'
-import ClusterPersistentVolumeDetail from '@/views/cluster/components/ClusterPersistentVolumeDetail.vue'
+import ClusterPersistentVolumeDetail from '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeDetail.vue'
 import ClusterStorageClass from '@/views/cluster/components/resource/cluster/ClusterStorageClassList.vue'
-import ClusterStorageClassDetail from '@/views/cluster/components/ClusterStorageClassDetail.vue'
+import ClusterStorageClassDetail from '@/views/cluster/components/resource/cluster/ClusterStorageClassDetail.vue'
 
 import DeploymentList from '@/views/cluster/components/resource/workload/deployment/DeploymentList.vue'
 import DeploymentDetail from '@/views/project/cluster/components/resource/workload/deployment/DeploymentDetail.vue'
@@ -185,13 +196,14 @@ import SecretDetail from '@/views/cluster/components/resource/config/secret/Secr
 export default {
   data() {
     return {
-      selectResource: 'Node',
-      selectLabel: 'Cluster > Node',
-      projectIdx: null,
+      selectResource: 'Overview',
+      selectLabel: 'General > Overview',
     }
   },
   components: {
-    SubList,
+    // SubList,
+    ClusterOverview,
+    ClusterCatalog,
     ClusterNode,
     ClusterNodeDetail,
     ClusterNamespace,
@@ -226,19 +238,14 @@ export default {
     SecretList,
     SecretDetail,
   },
-  mounted() {
-    this.projectIdx = this.$route.params.id
-    // this.initDetail()
+  watch: {
+    $route(to, from) {
+      if (to.hash !== from.hash) {
+        this.selectResource = to.hash.substring(1)
+      }
+    },
   },
   methods: {
-    // initDetail() {
-    //   if (this.$route.query.detail) {
-    //     this.$router.replace({
-    //       path: `/project/detail/${this.projectIdx}`,
-    //       hash: this.$route.hash,
-    //     })
-    //   }
-    // },
     subListOnClick(resource) {
       this.selectResource = resource
     },
@@ -272,39 +279,42 @@ export default {
         this.selectResource === 'Secret'
       ) {
         this.selectLabel = `Config > ${this.selectResource}`
+      } else if (
+        this.selectResource === 'Overview' ||
+        this.selectResource === 'Catalog'
+      ) {
+        this.selectLabel = `General > ${this.selectResource}`
       }
       return this.selectLabel
     },
   },
   created() {
-    this.$router.replace({
-      path: `/cluster/detail/${this.$route.params.id}/Node`,
-      hash: this.$route.hash,
-    })
+    // const resourceHash = this.$route.hash.substring(1)
+    // this.selectResource = resourceHash
   },
 }
 </script>
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-$this: 'authority-page';
-.authority-page-wrapper {
-  .#{$this}__content-wrapper {
-    display: flex;
-    .#{$this}__content-menu {
-      width: 25%;
-      margin-left: 15px;
-      height: 100%;
-    }
-    .#{$this}__right-content {
-      width: 75%;
-      margin-left: 15px;
-      height: 100%;
-      .#{$this}__content-info {
-        margin-bottom: 15px;
-      }
-    }
-  }
+$this: 'cluster-detail-popup';
+.cluster-detail-popup-wrapper {
+  // .#{$this}__content-wrapper {
+  //   display: flex;
+  //   .#{$this}__content-menu {
+  //     width: 25%;
+  //     margin-left: 0px;
+  //     height: 100%;
+  //   }
+  //   .#{$this}__right-content {
+  //     width: 100%;
+  //     margin-left: 15px;
+  //     height: 100%;
+  //     .#{$this}__content-info {
+  //       margin-bottom: 15px;
+  //     }
+  //   }
+  // }
   .#{$this}__title-wrapper {
     margin-bottom: 25px;
     .title-text {

@@ -240,7 +240,8 @@ export default {
       if (daemonSetIdx) {
         this.$router.replace({
           name: this.$route.name,
-          hash: '#resource',
+          // hash: '#resource',
+          hash: this.$route.hash,
           params: {
             id: daemonSetIdx,
           },

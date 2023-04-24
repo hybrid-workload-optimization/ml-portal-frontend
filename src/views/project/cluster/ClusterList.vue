@@ -9,6 +9,9 @@
       @input="onInputSearchValue"
       @searchButton="onClickButton"
       @click-row="moveToDetailPage"
+      @click-newwindow="moveToDetailPageNewWindow"
+      @click-edit="onClickEdit"
+      @click-delete="onClickDelete"
     />
 
     <!-- 팝업창 부분 -->
@@ -24,27 +27,33 @@
         <cluster-detail :clusterId="clusterId" />
       </template>
     </modal> -->
+
+    <!-- 삭제 요청 확인 창 -->
+    <confirm @confirm-modal="onClickDelConfirm" />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import ClusterDesignedList from '@/views/project/cluster/components/ClusterDesignedList.vue'
+import Confirm from '@/components/molcule/Confirm.vue'
 
 // store > cluster > cluster.js
 const clusterMapUtils = createNamespacedHelpers('cluster')
 const alertMapUtils = createNamespacedHelpers('alert')
 const projectMapUtils = createNamespacedHelpers('project')
+const confirmMapUtils = createNamespacedHelpers('confirm')
 
 export default {
   components: {
     ClusterDesignedList,
+    Confirm,
   },
   data() {
     return {
       projectIdx: null,
       searchValue: '',
-      clusterId: null,
+      clusterIdx: null,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
         {
@@ -114,6 +123,7 @@ export default {
     // ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
     // ...clusterMapUtils.mapGetters(['dataForm']), // 등록/수정
     ...projectMapUtils.mapGetters(['dataDetailClusterList', 'clusterSize']),
+
     todoCount() {
       if (this.clusterSize) {
         return this.clusterSize.toString()
@@ -144,7 +154,12 @@ export default {
     ...clusterMapUtils.mapActions(['getDataList', 'getDataStatus']),
     ...clusterMapUtils.mapMutations(['initDataList', 'initTimeoutList']),
     ...projectMapUtils.mapActions(['getDetailClusterList']),
+    ...projectMapUtils.mapActions(['deleteProjectCluster']),
+    ...projectMapUtils.mapActions(['getDetail']),
+    ...projectMapUtils.mapActions(['getDetailClusterList']),
     ...alertMapUtils.mapMutations(['openAlert']),
+    ...confirmMapUtils.mapMutations(['openConfirm']),
+
     startInterval() {
       if (this.dataDetailClusterList.length) {
         this.dataDetailClusterList.forEach(item => {
@@ -176,12 +191,45 @@ export default {
     moveToDetailPage(data) {
       console.log('data', data)
       console.log(data.provisioningType)
-      this.clusterId = data.id
+      this.clusterIdx = data.id
 
-      // const left = screen.width ? (screen.width - width) / 2 : 0
-      // const top = screen.height ? (screen.height - height) / 2 : 0
-
-      // const attr = `top=${top}, left=${left}, width=${width}, height=${height}, resizable=no,status=no`
+      if (
+        ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
+          data.provisioningType,
+        )
+      ) {
+        if (
+          ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
+            data.provisioningStatus,
+          )
+        ) {
+          this.$router.push(
+            `/cluster/provisioning/${this.clusterIdx}/${data.provisioningStatus}`,
+          )
+        } else if (data.provisioningStatus === 'FINISHED') {
+          this.$router.push({
+            path: `/cluster/detail/${this.clusterIdx}/Overview`,
+            query: { projectIdx: this.projectIdx },
+          })
+        } else if (data.provisioningStatus === 'READY') {
+          // 배포 대기 중
+          this.openAlert({
+            title: '클러스터 배포 대기 중 입니다.',
+            type: 'info',
+          })
+        }
+      } else {
+        this.$router.push({
+          path: `/cluster/detail/${this.clusterIdx}/Overview`,
+          query: { projectIdx: this.projectIdx },
+        })
+      }
+    },
+    // 새탭으로 이동
+    moveToDetailPageNewWindow(data) {
+      console.log('data', data)
+      console.log(data.provisioningType)
+      this.clusterIdx = data.id
 
       if (
         ['KUBESPRAY', 'AKS', 'GKE', 'EKS', 'NKS'].includes(
@@ -198,7 +246,11 @@ export default {
           )
         } else if (data.provisioningStatus === 'FINISHED') {
           const baseUrl = process.env.BASE_URL
-          window.open(`${baseUrl}cluster/detail/${this.clusterId}/Node`)
+          const routeData = this.$router.resolve({
+            path: `${baseUrl}cluster/detail/${this.clusterIdx}`,
+            hash: '#Overview',
+          })
+          window.open(routeData.href)
           // this.isOpenPopup = true
         } else if (data.provisioningStatus === 'READY') {
           // 배포 대기 중
@@ -209,7 +261,11 @@ export default {
         }
       } else {
         const baseUrl = process.env.BASE_URL
-        window.open(`${baseUrl}cluster/detail/${this.clusterId}/Node`)
+        const routeData = this.$router.resolve({
+          path: `${baseUrl}cluster/detail/${this.clusterIdx}`,
+          hash: '#Overview',
+        })
+        window.open(routeData.href)
         // this.isOpenPopup = true
       }
     },
@@ -221,6 +277,57 @@ export default {
     //   }
     //   this.isOpenPopup = false
     // },
+
+    // [수정 버튼] 클릭 시
+    onClickEdit(item) {
+      this.clusterIdx = item.id
+      this.$router.push(
+        `/project/detail/${this.projectIdx}/cluster/edit/${this.clusterIdx}`,
+      )
+    },
+    onClickDelete(item) {
+      console.log('delete click', item)
+      // this.clusterIdx = null
+      // if (item.job === 'Cluster') {
+      //   this.openConfirm('이 클러스터를 삭제 하시겠습니까?')
+      //   this.clusterIdx = item.id
+      // }
+      // this.job = item.job
+    },
+    onClickDelConfirm() {
+      const param = {
+        projectIdx: this.projectIdx,
+      }
+      if (this.job === 'Cluster') {
+        param.clusterIdx = this.clusterIdx
+        this.deleteCluster(param)
+      }
+    },
+    async deleteCluster(param) {
+      try {
+        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
+        const response = await this.deleteProjectCluster(param)
+        console.log('response === ', response)
+        if (response.status === 200) {
+          this.openAlert({ title: response.data.message, type: 'info' })
+          /* setTimeout(() => {
+            this.$router.push('/project/list')
+          }, 1000) */
+          await this.getDetail({ projectIdx: this.projectIdx }).then(
+            await this.getDetailClusterList({
+              projectIdx: this.projectIdx,
+            }),
+          )
+        } else {
+          this.openAlert({ title: response.data.message, type: 'error' })
+        }
+      } catch (error) {
+        this.openAlert({
+          title: 'Cluster를 삭제하지 못했습니다.',
+          type: 'error',
+        })
+      }
+    },
   },
   beforeDestroy() {
     this.timeoutList.forEach(idx => clearTimeout(idx))

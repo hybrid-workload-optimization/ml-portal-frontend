@@ -1,7 +1,7 @@
 <template>
   <div class="sp-list-content">
     <div class="search-wrapper">
-      <search
+      <!-- <search
         v-if="dataListSize"
         class="sp-basic-search"
         :title="'Total:'"
@@ -10,6 +10,14 @@
         @input="onInputSearchValue"
         @click="onNewProject"
         button-text="New Project"
+      > -->
+      <search
+        v-if="dataListSize"
+        class="sp-basic-search"
+        :title="'Total:'"
+        :todoCount="dataListSize.toString()"
+        @change="onProjectSearch"
+        @input="onInputSearchValue"
       >
         <template v-slot:btn-group>
           <v-btn-toggle
@@ -20,12 +28,12 @@
             dense
             class="sp-basic-toggle-button"
           >
-            <sp-button class="sp-basic-toggle--click" @click="onClickList()">
+            <!-- <sp-button class="sp-basic-toggle--click" @click="onClickList()">
               <v-icon class="icon__list-bullet">format_list_bulleted</v-icon>
             </sp-button>
             <sp-button class="sp-basic-toggle--click">
               <v-icon class="icon__web-asset">web_asset</v-icon>
-            </sp-button>
+            </sp-button> -->
           </v-btn-toggle></template
         >
       </search>

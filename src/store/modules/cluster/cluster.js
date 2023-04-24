@@ -389,6 +389,7 @@ const resource = {
         const response = await request.getClusterMonitoringAddonUsingGET(
           payload,
         )
+        console.log(response)
         commit('setMonitoringAddOn', response)
       } catch (error) {
         console.log(error)

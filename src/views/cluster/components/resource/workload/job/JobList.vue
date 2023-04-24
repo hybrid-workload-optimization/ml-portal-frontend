@@ -185,7 +185,8 @@ export default {
       if (idx) {
         this.$router.replace({
           name: this.$route.name,
-          hash: '#resource',
+          // hash: '#resource',
+          hash: this.$route.hash,
           params: {
             id: idx,
           },
