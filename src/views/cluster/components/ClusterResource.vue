@@ -5,8 +5,12 @@
       <!-- <sub-list @sendTabName="subListOnClick" /> -->
       <!-- </div> -->
       <div class="cluster-detail-popup__right-content">
+        <cluster-resource-nav
+          :mainMenu="selectLabel"
+          :subMenu="selectResource"
+        ></cluster-resource-nav>
         <div class="cluster-detail-popup__content-info">
-          <sp-card headered :label="getSelectLabel()" outlined elevation="0">
+          <sp-card>
             <cluster-overview
               v-if="selectResource === 'Overview' && !$route.query.detail"
             />
@@ -151,8 +155,6 @@
   </div>
 </template>
 <script>
-// import SubList from '@/components/cluster/resource/SubList.vue'
-
 import ClusterOverview from '@/views/cluster/components/ClusterOverview.vue'
 import ClusterCatalog from '@/views/cluster/components/ClusterAddonCardList.vue'
 
@@ -166,9 +168,9 @@ import ClusterStorageClass from '@/views/cluster/components/resource/cluster/Clu
 import ClusterStorageClassDetail from '@/views/cluster/components/resource/cluster/ClusterStorageClassDetail.vue'
 
 import DeploymentList from '@/views/cluster/components/resource/workload/deployment/DeploymentList.vue'
-import DeploymentDetail from '@/views/project/cluster/components/resource/workload/deployment/DeploymentDetail.vue'
+import DeploymentDetail from '@/views/cluster/components/resource/workload/deployment/DeploymentDetail.vue'
 import StatefulSetList from '@/views/cluster/components/resource/workload/stateful-set/StatefulSetList.vue'
-import StatefulSetDetail from '@/views/project/cluster/components/resource/workload/stateful-set/StatefulSetDetail.vue'
+import StatefulSetDetail from '@/views/cluster/components/resource/workload/stateful-set/StatefulSetDetail.vue'
 import PodList from '@/views/cluster/components/resource/workload/pod/PodList.vue'
 import PodDetail from '@/views/cluster/components/resource/workload/pod/PodDetail.vue'
 import CronJobList from '@/views/cluster/components/resource/workload/cron-job/CronJobList.vue'
@@ -192,16 +194,17 @@ import ConfigMapList from '@/views/cluster/components/resource/config/config-map
 import ConfigMapDetail from '@/views/cluster/components/resource/config/config-map/ConfigMapDetail.vue'
 import SecretList from '@/views/cluster/components/resource/config/secret/SecretList.vue'
 import SecretDetail from '@/views/cluster/components/resource/config/secret/SecretDetail.vue'
+import ClusterResourceNav from '@/components/cluster/resource/ClusterResourceNav.vue'
 
 export default {
   data() {
     return {
       selectResource: 'Overview',
-      selectLabel: 'General > Overview',
+      selectLabel: 'General',
     }
   },
   components: {
-    // SubList,
+    ClusterResourceNav,
     ClusterOverview,
     ClusterCatalog,
     ClusterNode,
@@ -242,6 +245,7 @@ export default {
     $route(to, from) {
       if (to.hash !== from.hash) {
         this.selectResource = to.hash.substring(1)
+        this.getSelectLabel()
       }
     },
   },
@@ -256,7 +260,7 @@ export default {
         this.selectResource === 'Persistent Volume' ||
         this.selectResource === 'Storage Class'
       ) {
-        this.selectLabel = `Cluster > ${this.selectResource}`
+        this.selectLabel = 'Cluster'
       } else if (
         this.selectResource === 'Deployment' ||
         this.selectResource === 'Stateful Set' ||
@@ -266,24 +270,24 @@ export default {
         this.selectResource === 'Replica Set' ||
         this.selectResource === 'Daemon Set'
       ) {
-        this.selectLabel = `Workload > ${this.selectResource}`
+        this.selectLabel = 'Workload'
       } else if (
         this.selectResource === 'Service' ||
         this.selectResource === 'Ingress' ||
         this.selectResource === 'Ingress Controller'
       ) {
-        this.selectLabel = `Network > ${this.selectResource}`
+        this.selectLabel = 'Network'
       } else if (
         this.selectResource === 'Persistent Volume Claim' ||
         this.selectResource === 'Config Map' ||
         this.selectResource === 'Secret'
       ) {
-        this.selectLabel = `Config > ${this.selectResource}`
+        this.selectLabel = 'Config'
       } else if (
         this.selectResource === 'Overview' ||
         this.selectResource === 'Catalog'
       ) {
-        this.selectLabel = `General > ${this.selectResource}`
+        this.selectLabel = 'General'
       }
       return this.selectLabel
     },
@@ -299,22 +303,10 @@ export default {
 @import '@/styles/_mixin.scss';
 $this: 'cluster-detail-popup';
 .cluster-detail-popup-wrapper {
-  // .#{$this}__content-wrapper {
-  //   display: flex;
-  //   .#{$this}__content-menu {
-  //     width: 25%;
-  //     margin-left: 0px;
-  //     height: 100%;
-  //   }
-  //   .#{$this}__right-content {
-  //     width: 100%;
-  //     margin-left: 15px;
-  //     height: 100%;
-  //     .#{$this}__content-info {
-  //       margin-bottom: 15px;
-  //     }
-  //   }
-  // }
+  .#{$this}__content-wrapper .sp-card {
+    box-shadow: none;
+    transform: none;
+  }
   border: 0px !important;
   .#{$this}__title-wrapper {
     margin-bottom: 25px;
