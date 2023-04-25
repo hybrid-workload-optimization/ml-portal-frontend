@@ -156,10 +156,6 @@ export default {
   },
   methods: {
     sendTabName(tabName) {
-      console.log(this.userInfo)
-      console.log(this.menuList)
-      console.log(this.flatMenuList)
-
       console.log(tabName)
       // this.$emit('sendTabName', tabName)
       const resourceHash = `#${tabName}`

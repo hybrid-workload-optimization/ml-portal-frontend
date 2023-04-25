@@ -17,14 +17,12 @@
       :class="{ 'mini-lnb': isMini }"
       v-show="!fullMenu"
     >
-      <sub-header :pagePath="getPagePath"></sub-header>
       <router-view />
     </v-main>
   </div>
 </template>
 
 <script>
-import SubHeader from '@/components/molcule/navigation/SubHeader.vue'
 import ClusterResourceMenu from '@/components/cluster/resource/ClusterResourceMenu.vue'
 // import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
@@ -45,7 +43,6 @@ export default {
     clickOutside: vClickOutside.directive,
   },
   components: {
-    SubHeader,
     ClusterResourceMenu,
     // CardTitle,
   },
