@@ -1,13 +1,15 @@
 <template>
-  <div class="cluster-resource-menu" style="background: #3c6355; color: white">
+  <div class="cluster-resource-menu" style="background: #344a63; color: white">
     <div class="cluster-resource-title-wrapper">
-      <sp-image
-        class="sp-resource-menu__icon_resource-image"
-        contain
-        lazySrc="icon_resource.png"
-        src="icon_resource.png"
-      ></sp-image>
-      <span class="cluster-resource-title">Resource</span>
+      <div class="cluster-resource-logo-wrapper">
+        <sp-image
+          class="sp-resource-menu__icon_resource-image"
+          contain
+          lazySrc="Strato_logo_white.png"
+          src="Strato_logo_white.png"
+        ></sp-image>
+        <span class="cluster-resource-title">CoMP Portal</span>
+      </div>
     </div>
     <!-- 전체 그룹 -->
     <div class="cluster-resource-menu__expansion-group-wrapper">
@@ -15,8 +17,9 @@
         <v-expansion-panel
           v-for="(tabName, index) in tabNames"
           :key="index"
-          style="background: #3c6355; color: white"
+          style="background: #344a63; color: white"
         >
+          <!-- #3c6355 -->
           <v-expansion-panel-header>
             <template v-slot:actions>
               <v-icon class="expand-icon">$expand</v-icon>
@@ -170,7 +173,6 @@ export default {
       this.panel = [...Array(this.tabNames.length).keys()].map((k, i) => i)
     },
     initMenu() {
-      console.log(this.menuList)
       // API 메뉴 데이터를 Resource 메뉴로 가공
       for (let i = 0; i < this.menuList.length; i += 1) {
         // General
@@ -232,14 +234,6 @@ export default {
   height: 100% !important;
   overflow-y: scroll;
 }
-.cluster-resource-title-wrapper {
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-.cluster-resource-title {
-  font-size: 30px;
-  font-weight: bold;
-}
 .expand-header {
   font-size: 20px;
 }
@@ -247,7 +241,8 @@ export default {
   list-style: none;
 }
 .expand-list > li:hover {
-  background-color: #344a63;
+  /* background-color: #344a63; */
+  background-color: #125a90;
   color: #fff;
   cursor: pointer;
 }
@@ -267,13 +262,6 @@ export default {
   order: 0;
 }
 
-.sp-resource-menu__icon_resource-image {
-  width: 55px;
-  height: 45px;
-  object-fit: cover;
-  float: left;
-}
-
 .bottom-footer {
   bottom: 20px;
   position: fixed;
@@ -284,7 +272,39 @@ export default {
 }
 
 .cluster-resource-menu__expansion-group-wrapper .expand-list li.active {
-  background-color: #2a453b;
+  /* background-color: #2a453b;
+   */
+  background-color: #125a90;
   font-weight: bold;
+}
+
+.cluster-resource-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.cluster-resource-title-wrapper {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 20px;
+  height: 66px;
+  margin-bottom: 25px;
+}
+.cluster-resource-logo-wrapper {
+  padding: 15px 0;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  width: 30px;
+  height: 66px;
+}
+.sp-resource-menu__icon_resource-image {
+  filter: brightness(0) invert(1);
+}
+.cluster-resource-title {
+  color: white;
+  font-size: 1.25rem;
+  margin-left: 10px;
+  font-weight: bold;
+  white-space: nowrap;
 }
 </style>

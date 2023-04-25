@@ -1,7 +1,7 @@
 <template>
   <v-row class="top-nav-container sub-container">
     <!-- 상단 왼쪽 부분 start -->
-    <div class="left-nav-wrapper">
+    <div class="left-nav-wrapper" v-if="!isClusterNewWindow">
       <slot name="side-bar"></slot>
       <div class="title-wrapper">
         <sp-button icon class="fav-button" @click="toggleFav"
@@ -127,7 +127,7 @@ export default {
     // isShowNotification: false,
     isAdmin: false,
     isFav: false,
-
+    isClusterNewWindow: false,
     userName: 'Gil-dong, Hong',
     accessRoleName: 'System Admin',
   }),
@@ -157,6 +157,7 @@ export default {
   },
   mounted() {
     this.setFavData()
+    this.clusterNewWindowChk()
   },
   watch: {
     $route() {
@@ -191,6 +192,11 @@ export default {
     onClickOutside() {
       this.updateShowNotification(false)
     },
+    clusterNewWindowChk() {
+      if (this.$route.path.includes('/cluster/detail')) {
+        this.isClusterNewWindow = true
+      }
+    },
   },
 }
 </script>
@@ -200,6 +206,8 @@ export default {
 .top-nav-container {
   max-height: 80px;
   margin: 0;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
   .left-nav-wrapper {
     display: flex;
