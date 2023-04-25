@@ -315,6 +315,7 @@ $this: 'cluster-detail-popup';
   //     }
   //   }
   // }
+  border: 0px !important;
   .#{$this}__title-wrapper {
     margin-bottom: 25px;
     .title-text {
