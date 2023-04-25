@@ -206,7 +206,6 @@ export default {
 .top-nav-container {
   max-height: 80px;
   margin: 0;
-  display: flex;
   justify-content: flex-end;
   align-items: center;
   .left-nav-wrapper {
@@ -318,6 +317,7 @@ export default {
   .right-nav-wrapper {
     .user-name-wrapper {
       line-height: 0.7;
+      width: 110px;
     }
   }
 }

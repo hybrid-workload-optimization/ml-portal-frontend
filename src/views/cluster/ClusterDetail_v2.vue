@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import CardTitle from '@/components/molcule/CardTitleWithDetailListButton.vue'
+import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import ClusterResource from '@/views/cluster/components/ClusterResource.vue'

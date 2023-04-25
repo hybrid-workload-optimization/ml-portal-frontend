@@ -100,6 +100,7 @@
     </div>
 
     <div class="title-right">
+      <sub-header></sub-header>
       <slot name="additional-buttons"></slot>
       <template v-if="showButtons">
         <sp-button
@@ -115,7 +116,12 @@
 </template>
 
 <script>
+import SubHeader from '@/components/molcule/navigation/SubHeader.vue'
+
 export default {
+  components: {
+    SubHeader,
+  },
   props: {
     titleData: {
       type: Object,
