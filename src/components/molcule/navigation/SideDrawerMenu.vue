@@ -44,8 +44,8 @@
               <sp-image
                 class="logo-image"
                 contain
-                lazySrc="Strato_logo_white.png"
-                src="Strato_logo_white.png"
+                lazySrc="Strato logo.png"
+                src="Strato logo.png"
               />
               <span class="title-text" v-if="!mini">CoMP Portal</span>
             </div>
@@ -347,7 +347,8 @@ export default {
       //width: 50%;
       width: 300px !important;
       padding: 20px 0;
-      background-color: $sp-primary;
+      // background-color: $sp-primary;
+      background-color: white;
       // &.one-depth {
       //   width: 100% !important;
       // }
@@ -356,13 +357,14 @@ export default {
         margin-bottom: 40px;
         .burger-icon,
         .burger-title {
-          color: white;
+          color: #3b244a;
           opacity: 0.8;
           cursor: pointer;
         }
         .burger-button {
           &:hover {
-            background-color: $sp-secondary;
+            // background-color: $sp-secondary;
+            color: #04c8c8;
           }
         }
         .burger-title {
@@ -383,11 +385,11 @@ export default {
           height: 66px;
 
           .logo-image {
-            filter: brightness(0) invert(1);
+            // filter: brightness(0) invert(1);
           }
         }
         .title-text {
-          color: white;
+          color: #3b244a;
           font-size: 1.25rem;
           margin-left: 10px;
           font-weight: bold;
@@ -402,16 +404,18 @@ export default {
         align-items: center;
         cursor: pointer;
         &:hover {
-          background-color: $sp-secondary;
+          // background-color: $sp-secondary;
           opacity: 1;
           .bottom-title {
+            color: #04c8c8;
             opacity: 1;
           }
         }
         &.isActive {
-          background-color: $sp-secondary;
+          // background-color: $sp-secondary;
           opacity: 1;
           .bottom-title {
+            color: #04c8c8;
             opacity: 1;
           }
         }
@@ -420,26 +424,27 @@ export default {
         }
         .bottom-image {
           margin: 0 20px;
-          color: white;
+          color: #04c8c8;
         }
         .bottom-title {
           font-size: 1rem;
-          color: #fff;
-          opacity: 0.7;
-          font-weight: 500;
+          color: #3f4254;
+          opacity: 1;
+          font-weight: 600;
         }
       }
       .bottom-footer {
         bottom: 20px;
         position: fixed;
         padding-left: 15px;
-        color: white;
+        color: #3f4254;
         opacity: 0.4;
         font-size: 0.7rem;
       }
     }
     .right-wrapper {
-      background-color: $sp-quaternary;
+      // background-color: $sp-quaternary;
+      background-color: #fff;
       //width: 50%;
       width: 275px;
       padding: 15px 0px;
@@ -449,30 +454,40 @@ export default {
         align-items: center;
         padding: 15px 0;
         font-size: 1rem;
-        color: #fff;
-        opacity: 0.7;
+        color: #3f4254;
+        opacity: 1;
+        font-weight: 400;
         &:hover {
           cursor: pointer;
-          background-color: $sp-secondary;
+          // background-color: $sp-secondary;
+          color: #04c8c8 !important;
           opacity: 1;
         }
         &.isActive {
-          background-color: $sp-secondary;
+          // background-color: $sp-secondary;
+          color: #04c8c8 !important;
           opacity: 1;
           .bottom-title {
+            color: #04c8c8 !important;
             opacity: 1;
           }
         }
         .link-wrapper {
           text-decoration: none;
-          color: #fff;
           display: flex;
           align-items: center;
         }
         i {
           margin-left: 15px;
+          color: #04c8c8 !important;
         }
         .name {
+          color: #3f4254;
+          &:hover {
+            cursor: pointer;
+            color: #04c8c8 !important;
+            opacity: 1;
+          }
         }
       }
       .right-body-wrapper {

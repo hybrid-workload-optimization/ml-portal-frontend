@@ -43,6 +43,7 @@
         v-for="{
           id,
           projectName,
+          description,
           clusterCount,
           userCount,
           projectUserName,
@@ -53,6 +54,7 @@
         :key="id"
         :id="id.toString()"
         :projectName="projectName"
+        :description="description"
         :clusterCount="clusterCount"
         :userCount="userCount"
         :projectUserName="projectUserName"
@@ -181,6 +183,7 @@ export default {
         projectName: this.searchValue,
       }
       this.getList(param)
+      console.log(this.dataList)
     },
 
     // Search 박스 입력값 변경 시 호출됨

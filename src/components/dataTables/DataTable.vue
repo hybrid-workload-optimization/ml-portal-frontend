@@ -238,6 +238,7 @@ export default {
   justify-content: flex-end;
 }
 .sp-data-table {
+  background-color: #f3f6f9 !important;
   &.is-linked {
     tr {
       cursor: pointer;

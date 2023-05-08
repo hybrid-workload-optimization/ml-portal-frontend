@@ -171,14 +171,17 @@ export default {
 .sp-project-layout {
   width: 100%;
   $this: 'project-layout';
-
   .#{$this}__detail-wrapper {
     padding-bottom: 13px;
   }
   .#{$this}__tabs {
     padding-bottom: 20px;
   }
+  .#{$this}__tabs .v-tabs-bar {
+    background-color: #f3f6f9 !important;
+  }
   .#{$this}__tab-item {
+    background-color: #f3f6f9 !important;
   }
 }
 </style>

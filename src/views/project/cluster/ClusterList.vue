@@ -337,12 +337,12 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 
-.authority-page__content-info {
-  height: 1100px;
-  overflow-y: auto;
-  @include scroll();
-  padding: 15px 15px;
-}
+// .authority-page__content-info {
+//   height: 1100px;
+//   overflow-y: auto;
+//   @include scroll();
+//   padding: 15px 15px;
+// }
 
 .sp-project-list {
   width: 100%;
@@ -500,7 +500,8 @@ export default {
 
     tr:nth-child(even),
     tr:nth-child(odd) {
-      background-color: #f1f4f680 !important;
+      // background-color: #f1f4f680 !important;
+      background-color: #fff !important;
       height: 75px;
     }
 

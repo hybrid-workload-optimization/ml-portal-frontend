@@ -1,14 +1,21 @@
 <template>
-  <div class="cluster-resource-menu" style="background: #344a63; color: white">
+  <div class="cluster-resource-menu" style="background: #fff">
     <div class="cluster-resource-title-wrapper">
       <div class="cluster-resource-logo-wrapper">
         <sp-image
           class="sp-resource-menu__icon_resource-image"
           contain
-          lazySrc="Strato_logo_white.png"
-          src="Strato_logo_white.png"
+          lazySrc="Strato logo.png"
+          src="Strato logo.png"
         ></sp-image>
-        <span class="cluster-resource-title">CoMP Portal</span>
+        <span class="cluster-resource-title">
+          <div class="cluster-resource-title1">
+            <span>Cluster</span>
+          </div>
+          <div class="cluster-resource-title2">
+            <span class="cluster-resource-title2-text">with CoMP Portal</span>
+          </div>
+        </span>
       </div>
     </div>
     <!-- 전체 그룹 -->
@@ -17,7 +24,7 @@
         <v-expansion-panel
           v-for="(tabName, index) in tabNames"
           :key="index"
-          style="background: #344a63; color: white"
+          style="background: #fff; color: #3f4254"
         >
           <!-- #3c6355 -->
           <v-expansion-panel-header>
@@ -238,8 +245,8 @@ export default {
 }
 .expand-list > li:hover {
   /* background-color: #344a63; */
-  background-color: #125a90;
-  color: #fff;
+  /* background-color: #125a90; */
+  color: #04c8c8;
   cursor: pointer;
 }
 .expand-list > li {
@@ -262,7 +269,7 @@ export default {
   bottom: 20px;
   position: fixed;
   padding-left: 15px;
-  color: white;
+  color: #3f4254;
   opacity: 0.4;
   font-size: 0.7rem;
 }
@@ -270,7 +277,8 @@ export default {
 .cluster-resource-menu__expansion-group-wrapper .expand-list li.active {
   /* background-color: #2a453b;
    */
-  background-color: #125a90;
+  /* background-color: #04c8c8; */
+  color: #04c8c8;
   font-weight: bold;
 }
 
@@ -294,13 +302,31 @@ export default {
   height: 66px;
 }
 .sp-resource-menu__icon_resource-image {
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
 }
 .cluster-resource-title {
-  color: white;
+  /* color: white; */
+  color: #3b244a;
   font-size: 1.25rem;
   margin-left: 10px;
   font-weight: bold;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cluster-resource-title1 {
+  position: relative;
+}
+.cluster-resource-title2 {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-130%, 60%);
+}
+.cluster-resource-title2-text {
+  font-size: 10px;
+  font-weight: 500;
 }
 </style>

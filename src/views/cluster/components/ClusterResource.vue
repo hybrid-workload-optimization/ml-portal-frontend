@@ -304,6 +304,7 @@ export default {
 $this: 'cluster-detail-popup';
 .cluster-detail-popup-wrapper {
   .#{$this}__content-wrapper .sp-card {
+    background-color: #f3f6f9;
     box-shadow: none;
     transform: none;
   }

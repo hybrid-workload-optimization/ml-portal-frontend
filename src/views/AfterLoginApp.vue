@@ -219,7 +219,8 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 .main-wrapper {
-  background-color: #fff;
+  // background-color: #fff;
+  background-color: #f3f6f9;
   padding-left: 310px !important;
   padding-right: 25px !important;
   padding-top: 25px !important;
@@ -230,6 +231,15 @@ export default {
   }
   &.mini-lnb {
     padding-left: 100px !important;
+  }
+  .sp-kubespray-page {
+    background-color: #f3f6f9 !important;
+  }
+  .v-tabs-items {
+    background-color: #f3f6f9 !important;
+  }
+  .v-tabs-bar {
+    background-color: #f3f6f9 !important;
   }
 }
 .material-icons-outlined {
