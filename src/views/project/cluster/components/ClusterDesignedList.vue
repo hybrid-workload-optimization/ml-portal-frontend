@@ -395,7 +395,8 @@ export default {
 
     tr:nth-child(even),
     tr:nth-child(odd) {
-      background-color: #f1f4f680 !important;
+      // background-color: #f1f4f680 !important;
+      background-color: #fff !important;
       height: 100px;
     }
 

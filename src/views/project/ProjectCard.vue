@@ -2,8 +2,8 @@
   <sp-card class="sp-project" :class="{ isMini }" elevation="0">
     <div class="project__header-box">
       <div class="project__tag-box">
-        <sp-chip v-if="fresh" class="project__tag NEW"> NEW </sp-chip>
-        <sp-chip v-if="owner" class="project__tag Owner"> Owner </sp-chip>
+        <!-- <sp-chip v-if="fresh" class="project__tag NEW"> NEW </sp-chip> -->
+        <!-- <sp-chip v-if="owner" class="project__tag Owner"> Owner </sp-chip> -->
       </div>
       <!-- <sp-menu>
         <template v-slot:item="slotProps">
@@ -37,36 +37,71 @@
       </sp-menu> -->
     </div>
     <div class="project__contents-box" style="margin-top: 8px">
-      <div
-        class="project__title"
-        v-if="projectName && projectName.length <= 11"
-        @click="moveToDetailPage(id)"
-      >
-        {{ projectName }}
+      <div class="project__title-wrapper">
+        <div
+          class="project__title"
+          @click="moveToDetailPage(id)"
+          ref="projectTitle"
+          @mouseover="checkOverflowTitle"
+        >
+          <span class="project__title" v-if="!showTooltipTitle">{{
+            projectName
+          }}</span>
+        </div>
+
+        <v-tooltip bottom v-if="showTooltipTitle">
+          <template v-slot:activator="{ on }">
+            <div class="project__title" v-on="on" @click="moveToDetailPage(id)">
+              {{ projectName }}
+            </div>
+          </template>
+          <span>{{ projectName }}</span>
+        </v-tooltip>
       </div>
-      <v-tooltip bottom v-if="projectName && projectName.length > 11">
-        <template v-slot:activator="{ on }">
-          <div class="project__title" v-on="on" @click="moveToDetailPage(id)">
-            {{ lessenText(projectName) }}
-          </div>
-        </template>
-        <span>{{ projectName }}</span>
-      </v-tooltip>
       <div class="project__cluster-wrapper">
         <div class="project__long-box project__cluster-box">
-          <div class="project__cluster-title">
-            <div class="project__cluster__image-wrapper">
-              <sp-image
-                contain
-                lazySrc="icon_cluster1.svg"
-                src="icon_cluster1.svg"
-              />
-            </div>
-            Clusters
+          <div class="project__description" ref="projectDesc">
+            <span v-if="!showTooltipDesc">{{ description }}</span>
           </div>
-          <div class="project__cluster-num">{{ clusterCount }}</div>
+          <v-tooltip bottom v-if="showTooltipDesc">
+            <template v-slot:activator="{ on }">
+              <div class="project__description" v-on="on">
+                <!-- {{ lessenText(description) }} -->
+                {{ description }}
+              </div>
+            </template>
+            <span>{{ description }}</span>
+          </v-tooltip>
         </div>
         <div class="project__long-box project__cluster-box">
+          <div class="project__cluster-count-box">
+            <div class="project__cluster-title">
+              <div class="project__cluster__image-wrapper">
+                <sp-image
+                  contain
+                  lazySrc="icon_cluster1.svg"
+                  src="icon_cluster1.svg"
+                />
+              </div>
+              Clusters
+            </div>
+            <div class="project__cluster-num">{{ clusterCount }}</div>
+          </div>
+          <div class="project__member-count-box">
+            <div class="project__cluster-title">
+              <div class="project__cluster__image-wrapper">
+                <sp-image
+                  contain
+                  lazySrc="icon_users.svg"
+                  src="icon_users.svg"
+                />
+              </div>
+              Members
+            </div>
+            <div class="project__cluster-num">{{ userCount }}</div>
+          </div>
+        </div>
+        <!-- <div class="project__long-box project__cluster-box">
           <div class="project__cluster-title">
             <div class="project__cluster__image-wrapper">
               <sp-image contain lazySrc="icon_users.svg" src="icon_users.svg" />
@@ -74,7 +109,7 @@
             Members
           </div>
           <div class="project__cluster-num">{{ userCount }}</div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="project__footer-box">
@@ -97,6 +132,10 @@ export default {
       default: '',
     },
     projectName: {
+      type: String,
+      default: '',
+    },
+    description: {
       type: String,
       default: '',
     },
@@ -127,15 +166,14 @@ export default {
   },
 
   data() {
-    return {}
+    return { showTooltipTitle: false, showTooltipDesc: false }
   },
-
   computed: {
     isMini() {
       return this.$store.state.sideNav.isMini
     },
   },
-
+  created() {},
   methods: {
     onProjectDetailView(id) {
       this.$router.push(`/project/detail/${id}`)
@@ -161,6 +199,27 @@ export default {
         this.$router.push(`/project/detail/${id}`)
       }
     },
+    checkOverflowTitle() {
+      this.$nextTick(() => {
+        const el = this.$refs.projectTitle
+        if (el.scrollWidth > el.clientWidth) {
+          this.showTooltipTitle = true
+        } else {
+          this.showTooltipTitle = false
+        }
+      })
+    },
+
+    checkOverflowDesc() {
+      this.$nextTick(() => {
+        const el = this.$refs.projectDesc
+        if (el.scrollWidth > el.clientWidth) {
+          this.showTooltipDesc = true
+        } else {
+          this.showTooltipDesc = false
+        }
+      })
+    },
   },
 }
 </script>
@@ -173,6 +232,7 @@ export default {
   width: 18.8%;
   margin-right: 1.5%;
   margin-bottom: 1.5%;
+  white-space: nowrap;
 
   &:nth-child(5n) {
     margin-right: 0;
@@ -233,32 +293,60 @@ export default {
     width: 100%;
     padding-top: 11px;
     padding: 0 20px;
+    .#{$this}__title-wrapper {
+      width: 100%;
+    }
     .#{$this}__title {
       @include set-text(bold, 24, rgba($color: $sp-title, $alpha: 1));
       cursor: pointer;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .#{$this}__cluster-wrapper {
-      padding-top: 24px;
+      padding-top: 10px;
       .#{$this}__long-box {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid rgba($color: $sp-box-border, $alpha: 1);
+        flex-wrap: wrap;
+        // border-bottom: 1px solid rgba($color: $sp-box-border, $alpha: 1);
         padding: 11px 2px;
         &:first-child {
-          border-top: 1px solid rgba($color: $sp-box-border, $alpha: 1);
+          // border-top: 1px solid rgba($color: $sp-box-border, $alpha: 1);
         }
         &.#{$this}__cluster-box {
+          .#{$this}__cluster-count-box {
+            width: 48%;
+            display: flex;
+            align-items: center;
+            float: left;
+            margin-right: 10px;
+          }
+          .#{$this}__member-count-box {
+            width: 48%;
+            display: flex;
+            align-items: center;
+            float: left;
+            order: 1;
+          }
           .#{$this}__cluster-title {
             display: flex;
             align-items: center;
+            margin-right: 10px;
             @include set-text(500, 13, rgba($color: $sp-title, $alpha: 1));
             .#{$this}__cluster__image-wrapper {
               width: 18px;
               height: 18px;
-              margin-right: 21px;
+              margin-right: 10px;
             }
+          }
+          .#{$this}__description {
+            @include set-text(400, 14, rgba($color: $sp-title, $alpha: 1));
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 30px;
+            width: 100%;
           }
           .#{$this}__cluster-num {
             @include set-text(bold, 16, rgba($color: $sp-title, $alpha: 1));

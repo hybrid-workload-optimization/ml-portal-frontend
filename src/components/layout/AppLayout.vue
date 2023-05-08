@@ -41,7 +41,7 @@ body {
     // border: 1px solid red;
     max-width: 1920px;
     margin: 0 auto;
-    background-color: #fff !important;
+    background-color: #f5f7f8 !important;
 
     .form-layout__description {
       border: 1px solid red;

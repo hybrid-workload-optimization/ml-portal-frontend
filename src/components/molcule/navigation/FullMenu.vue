@@ -11,8 +11,8 @@
         <div class="sp-full-menu__logo-wrapper">
           <sp-image
             class="sp-full-menu__logo-image"
-            lazySrc="Strato_logo_white.png"
-            src="Strato_logo_white.png"
+            lazySrc="Strato logo.png"
+            src="Strato logo.png"
           ></sp-image>
 
           <span class="title-text">CoMP Portal</span>
@@ -88,7 +88,8 @@ export default {
   height: 100vh;
   max-height: 100%;
   z-index: 999;
-  background-color: $sp-primary;
+  // background-color: $sp-primary;
+  background-color: white;
   $this: 'sp-full-menu';
 
   .#{$this}__close-button-wrapper {
@@ -116,13 +117,15 @@ export default {
         margin-left: 10px;
         font-size: 1.8rem;
         font-weight: bold;
-        color: white;
+        // color: white;
+        color: #3b244a;
       }
     }
   }
   .#{$this}__menu-wrapper {
     justify-items: center;
-    color: $menu-text-color;
+    // color: $menu-text-color;
+    color: #3f4254;
     .#{$this}__menu-items {
       list-style: none;
       text-align: center;
@@ -141,14 +144,17 @@ export default {
           }
           i {
             margin-right: 10px;
-            color: $menu-text-color;
+            // color: $menu-text-color;
+            color: #04c8c8;
           }
           &:hover {
-            background-color: $sp-teriary;
+            // background-color: $sp-teriary;
             border-radius: 5px;
-            color: white;
+            // color: white;
+            color: #04c8c8;
             i {
-              color: white;
+              // color: white;
+              color: #04c8c8;
             }
           }
         }
@@ -163,14 +169,17 @@ export default {
               padding: 10px;
               i {
                 font-size: 0.9rem;
-                color: $menu-text-color;
+                // color: $menu-text-color;
+                color: #3f4254;
               }
               &:hover {
-                background-color: $sp-teriary;
+                // background-color: $sp-teriary;
                 border-radius: 5px;
-                color: white;
+                // color: white;
+                color: #04c8c8;
                 i {
-                  color: white;
+                  // color: white;
+                  color: #04c8c8;
                 }
               }
             }
@@ -182,7 +191,8 @@ export default {
   .#{$this}__footer {
     text-align: center;
     position: fixed;
-    color: $menu-text-color;
+    // color: $menu-text-color;
+    color: #3f4254;
     left: 50%;
     transform: translate(-50%, 0);
     bottom: 20px;
