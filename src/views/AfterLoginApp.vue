@@ -149,15 +149,21 @@ export default {
         return menu
       })
 
+      // 클러스터 관련 메뉴는 메인페이지에서 삭제 처리
+      const menuNamesToRemove = ['Cluster', 'Workload', 'Network', 'Config']
+      const newMenuList = menuList.filter(
+        menu => !menuNamesToRemove.includes(menu.menuName),
+      )
+
       // 즐겨찾기 (임시)
-      menuList.unshift({
+      newMenuList.unshift({
         icon: 'star_border',
         menuName: 'Favorite',
         menuIdx: 999999,
         menuUrl: '',
         subMenuList: this.favoriteList,
       })
-      this.menuItems = menuList
+      this.menuItems = newMenuList
     },
     setMenuIcon(menuIdx) {
       let icon = 'dashboard'

@@ -22,84 +22,27 @@
     <div class="cluster-resource-menu__expansion-group-wrapper">
       <v-expansion-panels accordion multiple flat v-model="panel">
         <v-expansion-panel
-          v-for="(tabName, index) in tabNames"
-          :key="index"
+          v-for="{ menuName, menuIdx, subMenuList } in menuItems"
+          :key="menuIdx"
           style="background: #fff; color: #3f4254"
         >
-          <!-- #3c6355 -->
           <v-expansion-panel-header>
             <template v-slot:actions>
               <v-icon class="expand-icon">$expand</v-icon>
             </template>
-            <span class="expand-header">{{ tabName }}</span>
+            <span class="expand-header">{{ menuName }}</span>
           </v-expansion-panel-header>
 
-          <v-expansion-panel-content v-if="tabName === 'General'">
+          <v-expansion-panel-content>
             <ul class="expand-list">
               <li
-                v-for="(subtabs, i) in generalSubTabs"
+                v-for="{ menuName, menuIdx } in subMenuList"
                 class="expand-list-item"
-                :class="{ active: isActive === subtabs }"
-                :key="i"
-                @click="sendTabName(subtabs)"
+                :class="{ active: isActive === menuName }"
+                :key="menuIdx"
+                @click="sendTabName(menuName)"
               >
-                <span class="expand-list-item-text">{{ subtabs }}</span>
-              </li>
-            </ul>
-          </v-expansion-panel-content>
-
-          <v-expansion-panel-content v-if="tabName === 'Cluster'">
-            <ul class="expand-list">
-              <li
-                v-for="(subtabs, i) in clusterSubTabs"
-                class="expand-list-item"
-                :class="{ active: isActive === subtabs }"
-                :key="i"
-                @click="sendTabName(subtabs)"
-              >
-                <span class="expand-list-item-text">{{ subtabs }}</span>
-              </li>
-            </ul>
-          </v-expansion-panel-content>
-
-          <v-expansion-panel-content v-if="tabName === 'Workload'">
-            <ul class="expand-list">
-              <li
-                v-for="(subtabs, i) in workloadSubTabs"
-                class="expand-list-item"
-                :class="{ active: isActive === subtabs }"
-                :key="i"
-                @click="sendTabName(subtabs)"
-              >
-                <span class="expand-list-item-text">{{ subtabs }}</span>
-              </li>
-            </ul>
-          </v-expansion-panel-content>
-
-          <v-expansion-panel-content v-if="tabName === 'Network'">
-            <ul class="expand-list">
-              <li
-                v-for="(subtabs, i) in networkSubTabs"
-                class="expand-list-item"
-                :class="{ active: isActive === subtabs }"
-                :key="i"
-                @click="sendTabName(subtabs)"
-              >
-                <span class="expand-list-item-text">{{ subtabs }}</span>
-              </li>
-            </ul>
-          </v-expansion-panel-content>
-
-          <v-expansion-panel-content v-if="tabName === 'Config'">
-            <ul class="expand-list">
-              <li
-                v-for="(subtabs, i) in configSubTabs"
-                class="expand-list-item"
-                :class="{ active: isActive === subtabs }"
-                :key="i"
-                @click="sendTabName(subtabs)"
-              >
-                <span class="expand-list-item-text">{{ subtabs }}</span>
+                <span class="expand-list-item-text">{{ menuName }}</span>
               </li>
             </ul>
           </v-expansion-panel-content>
@@ -120,46 +63,32 @@ const loginUserMapUtil = createNamespacedHelpers('loginUser')
 export default {
   data() {
     return {
-      tabNames: ['General', 'Cluster', 'Workload', 'Network', 'Config'], // 탭 명칭들
-      generalSubTabs: ['Overview', 'Catalog'],
-      clusterSubTabs: [
-        'Node',
-        'Namespace',
-        'Persistent Volume',
-        'Storage Class',
-      ],
-      workloadSubTabs: [
-        'Deployment',
-        'Stateful Set',
-        'Pod',
-        'Cron Job',
-        'Job',
-        'Replica Set',
-        'Daemon Set',
-      ],
-      networkSubTabs: ['Service', 'Ingress', 'Ingress Controller'],
-      configSubTabs: ['Persistent Volume Claim', 'Config Map', 'Secret'],
+      menuItems: [],
+      defaultMenu: {
+        menuName: 'General',
+        subMenuList: [
+          {
+            menuName: 'Overview',
+          },
+          {
+            menuName: 'Catalog',
+          },
+        ],
+      },
       panel: [],
       isActive: 'Overview',
-      menuInfo: [
-        {
-          tabName: '',
-          subTabName: '',
-          useYn: '',
-          viewableYn: '',
-          writableYn: '',
-        },
-      ],
     }
   },
   computed: {
-    ...loginUserMapUtil.mapState(['userInfo']),
-    ...loginUserMapUtil.mapState(['menuList']),
-    ...loginUserMapUtil.mapState(['flatMenuList']),
+    ...loginUserMapUtil.mapState({
+      userMenuList: 'menuList',
+      favoriteList: 'favoriteList',
+      userInfo: 'userInfo',
+    }),
   },
   created() {
+    this.initMenu()
     this.expandAll()
-    // this.initMenu()
   },
   methods: {
     sendTabName(tabName) {
@@ -173,54 +102,41 @@ export default {
       this.isActive = tabName
     },
     expandAll() {
-      this.panel = [...Array(this.tabNames.length).keys()].map((k, i) => i)
+      this.panel = [...Array(this.menuItems.length).keys()].map((k, i) => i)
     },
     initMenu() {
-      // API 메뉴 데이터를 Resource 메뉴로 가공
-      for (let i = 0; i < this.menuList.length; i += 1) {
-        // General
-        if (this.menuList[i].menuName === 'Service Group') {
-          if (this.menuInfo.useYn.push(this.menuList[i].useYn) === 'Y') {
-            if (
-              this.menuInfo.viewableYn.push(this.menuList[i].viewableYn) ===
-                'Y' ||
-              this.menuInfo.writableYn.push(this.menuList[i].viewableYn) === 'Y'
-            ) {
-              this.menuInfo.tabName.push('General')
-              this.menuInfo.subTabName.push('Overview')
-              this.menuInfo.useYn.push(this.menuList[i].useYn)
-              this.menuInfo.viewableYn.push(this.menuList[i].viewableYn)
-              this.menuInfo.writableYn.push(this.menuList[i].writableYn)
+      const menuList = this.userMenuList.map(menu => {
+        // menu.icon = this.setMenuIcon(menu.menuIdx)
+        return menu
+      })
 
-              this.menuInfo.tabName.push('General')
-              this.menuInfo.subTabName.push('Catalog')
-              this.menuInfo.useYn.push(this.menuList[i].useYn)
-              this.menuInfo.viewableYn.push(this.menuList[i].viewableYn)
-              this.menuInfo.writableYn.push(this.menuList[i].writableYn)
-            }
-          }
-        } else if (
-          this.menuList[i].menuName === 'Workload' ||
-          this.menuList[i].menuName === 'Network' ||
-          this.menuList[i].menuName === 'Workload' ||
-          this.menuList[i].menuName === 'Config'
+      // 클러스터 관련 메뉴는 메인페이지에서 삭제 처리
+      const menuNamesToRemove = ['Dashboard', 'Service Group', 'Setting']
+      const newMenuList = menuList.filter(menu => {
+        if (
+          !menuNamesToRemove.includes(menu.menuName) &&
+          menu.useYn === 'Y' &&
+          (menu.viewableYn === 'Y' || menu.writableYn === 'Y')
         ) {
-          for (let j = 0; j < this.menuList.subMenuList.length; j += 1) {
-            this.menuInfo.tabName.push(this.menuList[i].menuName)
-            this.menuInfo.subTabName.push(
-              this.menuList[i].subMenuList[j].menuName,
+          if (menu.subMenuList && menu.subMenuList.length) {
+            menu.subMenuList = menu.subMenuList.filter(
+              subMenu =>
+                subMenu.useYn === 'Y' &&
+                (subMenu.viewableYn === 'Y' || subMenu.writableYn === 'Y'),
             )
-            this.menuInfo.useYn.push(this.menuList[i].subMenuList[j].useYn)
-            this.menuInfo.viewableYn.push(
-              this.menuList[i].subMenuList[j].viewableYn,
-            )
-            this.menuInfo.writableYn.push(
-              this.menuList[i].subMenuList[j].writableYn,
-            )
+            return menu
           }
+          return menu
         }
-      }
-      console.log(this.menuInfo)
+        return false
+      })
+
+      // General > Overview, Catalog 메뉴 추가
+      newMenuList.unshift(this.defaultMenu)
+
+      this.menuItems = newMenuList
+
+      console.log(newMenuList)
     },
   },
 }
