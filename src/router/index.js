@@ -62,6 +62,7 @@ router.beforeEach(async (to, from, next) => {
       let menuItem = {}
       const viewablePath = flatMenuList.findIndex(item => {
         const menuSplit = item.menuUrl.split('/')
+
         let splitIdx
         if (
           menuSplit.length > 4 ||
@@ -73,7 +74,12 @@ router.beforeEach(async (to, from, next) => {
         }
 
         const menuStr = menuSplit.slice(0, splitIdx).join('/')
-        if (item.menuUrl === to.path || to.path.indexOf(menuStr) > -1) {
+
+        if (
+          item.menuUrl === to.path ||
+          to.path.indexOf(menuStr) > -1 ||
+          to.path.includes('/cluster/detail')
+        ) {
           menuItem = item
           return true
         }
