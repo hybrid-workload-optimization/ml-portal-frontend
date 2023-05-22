@@ -195,6 +195,8 @@ const resource = {
           item.img = 'icon_eks.svg'
         } else if (e.provider.toLowerCase() === 'naver') {
           item.img = 'icon_naver.png'
+        } else if (e.provider.toLowerCase() === 'vmware') {
+          item.img = 'icon_vSphere.png'
         } else {
           item.img = 'icon_cloud.svg'
         }

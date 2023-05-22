@@ -163,11 +163,13 @@ export default {
     startInterval() {
       if (this.dataDetailClusterList.length) {
         this.dataDetailClusterList.forEach(item => {
-          console.log(item)
+          console.log(item.provisioningStatus)
+          console.log(item.status)
           if (
             ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
-            )
+            ) ||
+            item.status === 'Unhealthy'
           ) {
             this.getDataStatus({
               params: { clusterIdx: item.id, projectIdx: this.projectIdx },
