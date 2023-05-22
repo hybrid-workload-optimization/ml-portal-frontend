@@ -48,6 +48,28 @@ const resource = {
       originalNodes: [],
     },
     publicNewClusterForm: { ...pubInitData },
+    vSphereForm: {
+      kubernetesVersion: '',
+      templateName: '',
+      controlPlaneIp: '',
+      // ipPool: {
+      //   start: '',
+      //   end: '',
+      // },
+      masterSpec: {
+        cpu: 0,
+        memory: 0,
+        storage: 0,
+        nodeCount: 0,
+      },
+      workerSpec: {
+        cpu: 0,
+        memory: 0,
+        disk: 0,
+        count: 0,
+      },
+    },
+    templateList: [],
     monitoringAddOnData: {},
     timeoutList: [],
     monitoringIframeUrl: '',
@@ -75,6 +97,9 @@ const resource = {
     publicNewClusterForm(state) {
       return state.publicNewClusterForm
     },
+    privateVsphereNewClusterForm(state) {
+      return state.vSphereForm
+    },
     pubInitData() {
       return pubInitData
     },
@@ -89,6 +114,9 @@ const resource = {
     },
     provider(state) {
       return state.dataForm.provider
+    },
+    templateList(state) {
+      return state.templateList
     },
   },
   mutations: {
@@ -305,6 +333,16 @@ const resource = {
         state.publicNewClusterForm = payload
       }
     },
+    setPrivateVsphereNewClusterForm(state, payload) {
+      if (payload) {
+        state.vSphereForm = payload
+      }
+    },
+    setTemplateList(state, payload) {
+      if (payload) {
+        state.templateList = payload
+      }
+    },
     setMonitoringIframeUrl(state, payload) {
       state.monitoringIframeUrl = payload || null
     },
@@ -481,6 +519,65 @@ const resource = {
       const povisioningParam = makeClusterParameter(state)
 
       params = { ...params, povisioningParam }
+      const { data } = await request.provisioningClusterUsingPOST({
+        ...params,
+        header: {},
+      })
+      if (data.result) {
+        commit(
+          'alert/openAlert',
+          {
+            title: 'Cluster creation requested.',
+            type: 'info',
+          },
+          { root: true },
+        )
+        return true
+      }
+      return false
+    },
+    async getTemplateList({ commit }, payload) {
+      const { data } = await request.getGrafanIframeUrlUsingGET(payload)
+      if (data.result) {
+        commit('setTemplateList', data.result)
+      } else {
+        commit('setTemplateList', null)
+      }
+    },
+    async createPrivateVsphereCluster({ commit, state }) {
+      // TODO 임시(리팩토링 필요)
+      let params = {
+        callbackUrl: '',
+        cloudProvider: state.dataForm.provider,
+      }
+      const povisioningParam = {
+        projectIdx: state.dataForm.projectIdx,
+        clusterName: state.dataForm.clusterName,
+        clusterDesc: state.dataForm.description,
+        kubernetesVersion: state.vSphereForm.kubernetesVersion,
+        templateName: state.vSphereForm.templateName,
+        controlPlaneIp: state.vSphereForm.controlPlaneIp,
+        // ipPool: {
+        //   start: state.vSphereForm.ipPool.start,
+        //   end: state.vSphereForm.ipPool.end,
+        // },
+        masterSpec: {
+          cpu: Number(state.vSphereForm.masterSpec.cpu),
+          memory: Number(state.vSphereForm.masterSpec.memory),
+          storage: Number(state.vSphereForm.masterSpec.storage),
+          nodeCount: Number(state.vSphereForm.masterSpec.nodeCount),
+        },
+        workerSpec: {
+          cpu: Number(state.vSphereForm.workerSpec.cpu),
+          memory: Number(state.vSphereForm.workerSpec.memory),
+          storage: Number(state.vSphereForm.workerSpec.storage),
+          nodeCount: Number(state.vSphereForm.workerSpec.nodeCount),
+        },
+      }
+
+      params = { ...params, povisioningParam }
+      console.log(params)
+
       const { data } = await request.provisioningClusterUsingPOST({
         ...params,
         header: {},

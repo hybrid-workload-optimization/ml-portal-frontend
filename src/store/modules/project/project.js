@@ -31,6 +31,7 @@ const resource = {
     newUserList: [],
 
     deleteClusterIdxs: [],
+    deleteClusterIdx: '',
 
     dataUserRoleList: [],
 
@@ -47,6 +48,7 @@ const resource = {
     editUserList: [],
 
     cspAccountList: [],
+    timeoutList: [],
   },
 
   getters: {
@@ -503,6 +505,20 @@ const resource = {
 
       state.cspAccountList = result
     },
+    setClusterListStatus(state, data) {
+      const { result } = data
+      const idx = state.dataDetailClusterList.findIndex(item => {
+        if (item.id === result.clusterIdx) {
+          return item
+        }
+        return false
+      })
+      state.dataDetailClusterList[idx].status = result.status
+      state.dataDetailClusterList[idx].nodeCount = result.nodeCount
+    },
+    addTimeoutIdx(state, index) {
+      state.timeoutList.push(index)
+    },
   },
 
   actions: {
@@ -684,6 +700,80 @@ const resource = {
     async getServiceGroupCSPAccountList({ commit }, payload) {
       const response = await request.getGroupCspAccountUsingGET(payload)
       commit('getServiceGroupCSPAccountList', response)
+    },
+    async getDataStatus({ commit, dispatch }, payload) {
+      const { params, type } = payload
+      try {
+        const { data } = await request.getClusterStatusUsingGET(params)
+        console.log(data)
+        console.log(data.result.status)
+        // 1분마다 재호출
+        if (
+          data.result.status !== 'Deploying' &&
+          data.result.status !== 'Waiting' &&
+          data.result.status !== 'Deleting' &&
+          data.result.status !== 'Scale out' &&
+          data.result.status !== 'Scale in'
+        ) {
+          if (data.result.status === 'deleted') {
+            if (type === 'detail') {
+              commit('setClusterStatus', data.result)
+            } else {
+              dispatch('getDetailClusterList', {
+                projectIdx: params.projectIdx,
+              })
+            }
+
+            commit(
+              'alert/openAlert',
+              { title: 'Cluster has been deleted.', type: 'info' },
+              { root: true },
+            )
+          } else if (data.result.status === 'Healthy') {
+            if (type === 'detail') {
+              commit(
+                'alert/openAlert',
+                {
+                  title: 'Cluster deployment is complete.',
+                  type: 'info',
+                },
+                { root: true },
+              )
+              dispatch('getDetailClusterList', {
+                projectIdx: params.projectIdx,
+              })
+            } else {
+              commit('setClusterListStatus', data)
+            }
+          }
+        } else {
+          const index = setTimeout(() => {
+            dispatch('getDataStatus', payload)
+          }, 10000)
+          console.log(index)
+          commit('addTimeoutIdx', index)
+        }
+      } catch (error) {
+        // 이미 삭제가 완료된 데이터
+        if (type === 'detail') {
+          dispatch('setClusterStatus', {
+            status: 'deleted',
+            provisioningStatus: 'DELETED',
+          })
+        } else {
+          dispatch('getDetailClusterList', {
+            projectIdx: params.projectIdx,
+          })
+        }
+        // commit(
+        //   'alert/openAlert',
+        //   {
+        //     title: '데이터를 가져오는데 실패했습니다.',
+        //     type: 'error',
+        //   },
+        //   { root: true },
+        // )
+      }
     },
   },
 }

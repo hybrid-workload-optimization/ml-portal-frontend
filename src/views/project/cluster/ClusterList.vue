@@ -115,7 +115,6 @@ export default {
     this.projectIdx = this.$route.params.id
     this.initDataList()
   },
-
   computed: {
     ...clusterMapUtils.mapState(['timeoutList']), // 목록
     ...clusterMapUtils.mapGetters(['dataList']), // 목록
@@ -151,25 +150,27 @@ export default {
   },
 
   methods: {
-    ...clusterMapUtils.mapActions(['getDataList', 'getDataStatus']),
+    ...clusterMapUtils.mapActions(['getDataList']),
+    ...clusterMapUtils.mapActions(['deleteData']),
     ...clusterMapUtils.mapMutations(['initDataList', 'initTimeoutList']),
     ...projectMapUtils.mapActions(['getDetailClusterList']),
     ...projectMapUtils.mapActions(['deleteProjectCluster']),
     ...projectMapUtils.mapActions(['getDetail']),
-    ...projectMapUtils.mapActions(['getDetailClusterList']),
+    ...projectMapUtils.mapActions(['getDataStatus']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
 
     startInterval() {
       if (this.dataDetailClusterList.length) {
         this.dataDetailClusterList.forEach(item => {
+          console.log(item)
           if (
             ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
             )
           ) {
             this.getDataStatus({
-              params: { clusterIdx: item.clusterIdx },
+              params: { clusterIdx: item.id, projectIdx: this.projectIdx },
               type: 'list',
             })
           }
@@ -285,43 +286,51 @@ export default {
     },
     onClickDelete(item) {
       console.log('delete click', item)
-      // this.clusterIdx = null
-      // if (item.job === 'Cluster') {
-      //   this.openConfirm('이 클러스터를 삭제 하시겠습니까?')
-      //   this.clusterIdx = item.id
-      // }
-      // this.job = item.job
+      this.$store.state.deleteClusterIdx = item.id
+      // this.clusterIdx = item.id
+      this.openConfirm('이 클러스터를 삭제 하시겠습니까?')
+      // this.clusterIdx = item.id
     },
     onClickDelConfirm() {
+      this.clusterIdx = this.$store.state.deleteClusterIdx
+      // const param = {
+      // projectIdx: this.projectIdx,
+      // }
       const param = {
-        projectIdx: this.projectIdx,
+        clusterIdx: this.clusterIdx,
       }
-      if (this.job === 'Cluster') {
-        param.clusterIdx = this.clusterIdx
-        this.deleteCluster(param)
-      }
+      this.deleteCluster(param)
     },
     async deleteCluster(param) {
       try {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteProjectCluster(param)
+        // const response = await this.deleteProjectCluster(param)
+        const response = await this.deleteData(param)
+        console.log(response)
         console.log('response === ', response)
         if (response.status === 200) {
-          this.openAlert({ title: response.data.message, type: 'info' })
-          /* setTimeout(() => {
-            this.$router.push('/project/list')
-          }, 1000) */
+          // this.openAlert({ title: response.data.message, type: 'info' })
+          this.openAlert({
+            title: 'Cluster deletion requested.',
+            type: 'info',
+          })
           await this.getDetail({ projectIdx: this.projectIdx }).then(
             await this.getDetailClusterList({
               projectIdx: this.projectIdx,
             }),
           )
+          this.startInterval()
         } else {
-          this.openAlert({ title: response.data.message, type: 'error' })
+          // 삭제 실패 시
+          this.openAlert({
+            title: 'Failed to delete cluster.',
+            type: 'error',
+          })
+          console.log(response.data.message)
         }
       } catch (error) {
         this.openAlert({
-          title: 'Cluster를 삭제하지 못했습니다.',
+          title: 'Failed to delete cluster.',
           type: 'error',
         })
       }

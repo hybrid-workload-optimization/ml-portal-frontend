@@ -41,6 +41,7 @@
           :value="formData.provider"
           :disabled="editable"
           @input="onChangeProvider"
+          background-color="#FFF"
         ></sp-select>
       </template>
     </label-with>
@@ -141,6 +142,12 @@ export default {
         {
           text: 'Kubernetes',
           value: 'Kubernetes',
+          disabled: false,
+          divider: false,
+        },
+        {
+          text: 'Kubernetesa(vSphere)',
+          value: 'VMware',
           disabled: false,
           divider: false,
         },

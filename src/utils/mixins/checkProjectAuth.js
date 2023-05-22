@@ -43,7 +43,6 @@ export const checkProjectAuth = {
     checkDefaultAuth() {
       const { currentMenuInfo } = this.$store.state.loginUser
       this.isProjectAuth = currentMenuInfo.writableYn === 'Y'
-      console.log(this.isProjectAuth)
     },
     findMenuByMenuIdx(menuList, menuIdx) {
       return menuList.some(menu => {

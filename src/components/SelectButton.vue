@@ -35,7 +35,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
-// const tag = '[MultiSelect]'
+// const tag = '[SingleSelect]'
 const selectButtonMapUtils = createNamespacedHelpers('selectButton')
 
 export default {
@@ -84,7 +84,7 @@ export default {
   },
   data() {
     return {
-      btnDisabled: true,
+      btnDisabled: false,
       projectUserRole: [], // project member의 권한에 따른 new/edit 버튼 disabled 처리
       currentMenuInfo: {},
     }
@@ -103,18 +103,16 @@ export default {
           firstItem &&
           this.firstItems.some(e => Number(e.id) === Number(firstItem))
         ) {
-          this.setFirstValue(firstItem)
+          this.onChangeFirstSelect(firstItem)
         } else if (this.autoSelect) {
           // session storage의 id 값이 items에 없을 경우
           if (firstItem) {
-            sessionStorage.removeItem('firstVal')
+            sessionStorage.removeItem('thirdVal')
           }
-          if (this.firstItems.length) {
-            this.setFirstValue(this.firstItems[0].value)
-          }
+          this.onChangeFirstSelect('')
         }
         this.checkProjectAuth(this.firstItems[0].value)
-        this.btnDisabled = false
+        // this.btnDisabled = false
       }
     },
     onClickBtn() {
@@ -133,8 +131,8 @@ export default {
     //   console.log(tag, 'onChangeThirdSelect')
     //   this.thirdSelectValue = value
     // },
-    onChangeFirstSelect(value) {
-      this.setFirstValue(value)
+    async onChangeFirstSelect(value) {
+      await this.setFirstValue(value)
       this.checkProjectAuth(value)
       this.emitChageItem()
     },
