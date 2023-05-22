@@ -163,8 +163,6 @@ export default {
     startInterval() {
       if (this.dataDetailClusterList.length) {
         this.dataDetailClusterList.forEach(item => {
-          console.log(item.provisioningStatus)
-          console.log(item.status)
           if (
             ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
@@ -192,7 +190,6 @@ export default {
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
       console.log('data', data)
-      console.log(data.provisioningType)
       this.clusterIdx = data.id
 
       if (
@@ -230,7 +227,6 @@ export default {
     // 새탭으로 이동
     moveToDetailPageNewWindow(data) {
       console.log('data', data)
-      console.log(data.provisioningType)
       this.clusterIdx = data.id
 
       if (
@@ -307,7 +303,6 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         // const response = await this.deleteProjectCluster(param)
         const response = await this.deleteData(param)
-        console.log(response)
         console.log('response === ', response)
         if (response.status === 200) {
           // this.openAlert({ title: response.data.message, type: 'info' })
