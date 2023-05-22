@@ -26,6 +26,7 @@ import console from '@/store/modules/console'
 import config from '@/store/modules/config'
 import ml from '@/store/modules/ml'
 import automl from '@/store/modules/automl'
+import selectButton from '@/store/modules/selectButton'
 import _ from 'lodash'
 
 Vue.use(Vuex)
@@ -34,6 +35,7 @@ Vue.use(Vuex)
 const initialStoreModules = {
   sideNav,
   multiSelect,
+  selectButton,
   notification,
   ...project,
   members,

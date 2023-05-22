@@ -23,11 +23,11 @@
         isLinked
       >
         <template v-slot:body="{ item }">
-          <tr
-            class="project-list__item-wrapper"
-            @click="onClickNewWindow(item)"
-          >
-            <td class="project-list__name-wrapper">
+          <tr class="project-list__item-wrapper">
+            <td
+              class="project-list__name-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <div class="project-list__image-title-wrapper">
                 <div class="project-list__image-wrapper">
                   <sp-image
@@ -45,7 +45,10 @@
                 </div>
               </div>
             </td>
-            <td class="project-list__state-wrapper">
+            <td
+              class="project-list__state-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <v-tooltip bottom class="project-list__tooltip" color="#F4B740">
                 <template v-slot:activator="{ on }">
                   <div
@@ -88,19 +91,31 @@
                 </ul>
               </v-tooltip>
             </td>
-            <td class="project-list__language-wrapper">
+            <td
+              class="project-list__language-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <label>Node</label>
               <div class="project-list__title">{{ item.nodeCount }}</div>
             </td>
-            <td class="project-list__provider-wrapper">
+            <td
+              class="project-list__provider-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <label v-if="item.provider">Provider</label>
               <div class="project-list__title">{{ item.provider }}</div>
             </td>
-            <td class="project-list__version-wrapper">
+            <td
+              class="project-list__version-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <label>Version</label>
               <div class="project-list__title">{{ item.providerVersion }}</div>
             </td>
-            <td class="project-list__createdAt-wrapper">
+            <td
+              class="project-list__createdAt-wrapper"
+              @click="onClickNewWindow(item)"
+            >
               <label>Created</label>
               <div class="project-list__title">{{ item.createdAt }}</div>
             </td>
@@ -120,7 +135,7 @@
                   contain
                   lazySrc="icon_delete.png"
                   src="icon_delete.png"
-                  @click="onClickDelete(item, $event)"
+                  @click="onClickDelete(item)"
                 ></sp-image>
                 <sp-image
                   class="sp-full-menu__icon_edit-image"
@@ -252,10 +267,10 @@ export default {
       console.log(tag, item, '새창클릭')
       this.$emit('click-newwindow', item)
     },
-    onClickEdit(item, event) {
+    onClickEdit(item) {
       console.log(tag, item, '수정클릭')
       this.$emit('click-edit', item)
-      event.stopPropagation()
+      // event.stopPropagation()
     },
   },
 }

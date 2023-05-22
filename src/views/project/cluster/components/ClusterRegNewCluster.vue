@@ -1,6 +1,10 @@
 <template>
   <div class="new-cluster-provider">
     <private-provider v-if="provider === 'Kubernetes'" ref="privateProvider" />
+    <private-provider-vsphere
+      v-else-if="provider === 'VMware'"
+      ref="privateProviderVsphere"
+    />
     <public-provider
       ref="publicProvider"
       v-else-if="['AWS', 'Naver', 'Azure', 'GCP'].includes(provider)"
@@ -11,6 +15,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import PrivateProviderVsphere from '@/views/project/cluster/components/new-cluster/PrivateProviderVsphere.vue'
 import PrivateProvider from '@/views/project/cluster/components/new-cluster/PrivateProvider.vue'
 import PublicProvider from '@/views/project/cluster/components/new-cluster/PublicProvider.vue'
 import Empty from '@/components/Empty.vue'
@@ -20,7 +25,12 @@ const tag = '[cluster-reg-new-cluster]'
 const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
-  components: { PrivateProvider, PublicProvider, Empty },
+  components: {
+    PrivateProvider,
+    PublicProvider,
+    PrivateProviderVsphere,
+    Empty,
+  },
   data() {
     return {}
   },
@@ -32,6 +42,9 @@ export default {
       // 이벤트 전달
       if (this.provider === 'Kubernetes') {
         return this.$refs.PrivateProvider.onSubmit()
+      }
+      if (this.provider === 'VMware') {
+        return this.$refs.privateProviderVsphere.onSubmit()
       }
       return this.$refs.publicProvider.onSubmit()
     },
