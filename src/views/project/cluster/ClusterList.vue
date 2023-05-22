@@ -168,8 +168,7 @@ export default {
           if (
             ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
-            ) ||
-            item.status === 'Unhealthy'
+            )
           ) {
             this.getDataStatus({
               params: { clusterIdx: item.id, projectIdx: this.projectIdx },
