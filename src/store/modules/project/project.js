@@ -764,20 +764,8 @@ const resource = {
             } else {
               commit('setClusterListStatus', data)
             }
-          } else if (data.result.status === 'Unhealthy') {
+          } else {
             commit('setClusterListStatus', data)
-            const index = setTimeout(() => {
-              dispatch('getDataStatus', payload)
-            }, 10000)
-            console.log(index)
-            commit('addTimeoutIdx', index)
-          } else if (
-            data.result.status === 'Fail' ||
-            data.result.status === 'Error'
-          ) {
-            dispatch('getDetailClusterList', {
-              projectIdx: params.projectIdx,
-            })
           }
         } else {
           const index = setTimeout(() => {
