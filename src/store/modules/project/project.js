@@ -724,8 +724,6 @@ const resource = {
       const { params, type } = payload
       try {
         const { data } = await request.getClusterStatusUsingGET(params)
-        console.log(data)
-        console.log(data.result.status)
         // 1분마다 재호출
         if (
           data.result.status !== 'Deploying' &&
