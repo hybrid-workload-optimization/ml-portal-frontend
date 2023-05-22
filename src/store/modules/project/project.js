@@ -762,7 +762,10 @@ const resource = {
                 projectIdx: params.projectIdx,
               })
             } else {
-              commit('setClusterListStatus', data)
+              // commit('setClusterListStatus', data)
+              dispatch('getDetailClusterList', {
+                projectIdx: params.projectIdx,
+              })
             }
           } else {
             commit('setClusterListStatus', data)
