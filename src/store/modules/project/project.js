@@ -362,6 +362,25 @@ const resource = {
           status: e.status,
           job: 'Cluster',
         }
+        if (e.provider.toLowerCase() === 'kubernetes') {
+          item.img = 'icon_k8s.svg'
+        } else if (e.provider.toLowerCase() === 'vmware') {
+          item.img = 'icon_vm-ware.svg'
+        }
+        // TODO -> provider 넘어오는 데이터 확인후 수정
+        else if (e.provider.toLowerCase() === 'azure') {
+          item.img = 'icon_azer.svg'
+        } else if (e.provider.toLowerCase() === 'gcp') {
+          item.img = 'icon_cloud.svg'
+        } else if (e.provider.toLowerCase() === 'aws') {
+          item.img = 'icon_eks.svg'
+        } else if (e.provider.toLowerCase() === 'naver') {
+          item.img = 'icon_naver.png'
+        } else if (e.provider.toLowerCase() === 'vmware') {
+          item.img = 'icon_vSphere.png'
+        } else {
+          item.img = 'icon_cloud.svg'
+        }
 
         dataClusterList.push(item)
       })
