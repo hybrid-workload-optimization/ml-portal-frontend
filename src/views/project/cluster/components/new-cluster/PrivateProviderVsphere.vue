@@ -47,7 +47,59 @@
       </line-button-title>
       <line-button-title title="Node Info" style="padding-top: 5px !important">
         <template v-slot:content>
-          <label-with name="Control Plane(Master)" :className="labelWithClass">
+          <template>
+            <v-radio-group
+              v-model="isBasic"
+              row
+              hide-details="auto"
+              class="expand-radio-button"
+            >
+              <v-radio label="Basic" :value="true"></v-radio>
+              <v-radio label="Advanced" :value="false"></v-radio>
+            </v-radio-group>
+          </template>
+
+          <template v-if="isBasic">
+            <div class="nodeInfoWorkerClass">
+              <label-with-text
+                name="CPU(Core)"
+                type="number"
+                :className="labelWithInnerTextClass"
+                v-model="saveData.workerSpec.cpu"
+                placeholder="Enter CPU core."
+                :rules="regEx.requiredCpuCore"
+                required
+              ></label-with-text>
+              <label-with-text
+                name="Memory(MB)"
+                type="number"
+                :className="labelWithInnerTextClass"
+                v-model="saveData.workerSpec.memory"
+                placeholder="Enter Memory."
+                :rules="regEx.requiredMemorySize"
+                required
+              ></label-with-text>
+              <label-with-text
+                name="Disk(GB)"
+                type="number"
+                :className="labelWithInnerTextClass"
+                v-model="saveData.workerSpec.storage"
+                placeholder="Enter Disk."
+                :rules="regEx.requiredDiskSize"
+                required
+              ></label-with-text>
+              <label-with-text
+                name="Count"
+                type="number"
+                :className="labelWithInnerTextClass"
+                v-model="saveData.workerSpec.nodeCount"
+                placeholder="Enter Node Count."
+                :rules="regEx.requiredNodeCount"
+                required
+              ></label-with-text>
+            </div>
+          </template>
+          <label-with name="Master" :className="labelWithClass" v-if="!isBasic">
             <template v-slot:append-content>
               <div class="nodeInfoMasterClass">
                 <label-with-text
@@ -89,7 +141,7 @@
               </div>
             </template>
           </label-with>
-          <label-with name="Worker" :className="labelWithClass">
+          <label-with name="Worker" :className="labelWithClass" v-if="!isBasic">
             <template v-slot:append-content>
               <div class="nodeInfoWorkerClass">
                 <label-with-text
@@ -224,6 +276,7 @@ export default {
           nodeCount: 1,
         },
       },
+      isBasic: true,
       labelWithSelectClass: {
         titleStyle: { color: '#1a3350b3' },
         inputStyle: {
@@ -263,7 +316,9 @@ export default {
       },
     }
   },
-  computed: {},
+  computed: {
+    ...clusterMapUtils.mapGetters(['templates']),
+  },
   created() {
     this.projectIdx = this.$route.params.id
   },
@@ -272,23 +327,15 @@ export default {
   },
   methods: {
     ...clusterMapUtils.mapMutations(['setPrivateVsphereNewClusterForm']),
-    ...clusterMapUtils.mapActions(['createPrivateVsphereCluster']),
+    ...clusterMapUtils.mapActions([
+      'createPrivateVsphereCluster',
+      'getTemplateList',
+    ]),
     async getTemplates() {
-      // this.templateList = []
-      this.templateList = [
-        {
-          templateName: 'ubuntu-2004-kube-v1.25.7',
-        },
-        {
-          templateName: 'ubuntu-1804-kube-v1.24.11',
-        },
-        {
-          templateName: 'ubuntu-2004-kube-v1.26.2',
-        },
-      ]
-
-      // const response = await this.requestTemplateList()
-      // this.templateList = response.data.body
+      await this.getTemplateList({
+        cspAccountUuid: 'test',
+      })
+      this.templateList = this.templates
     },
     getKubeVersion() {
       const template = this.saveData.templateName
@@ -302,9 +349,14 @@ export default {
       }
       this.getKubeVersion()
       console.log('save data: ', this.saveData)
+
+      if (this.isBasic) {
+        this.saveData.masterSpec = null
+      }
       this.setPrivateVsphereNewClusterForm(this.saveData)
       const result = await this.createPrivateVsphereCluster()
       console.log(result)
+
       if (result) {
         setTimeout(
           () => this.$router.push(`/project/detail/${this.projectIdx}`),
@@ -333,6 +385,10 @@ export default {
   .content-warpper .sp-label-with {
     width: 50% !important;
     float: left;
+  }
+  .expand-radio-button {
+    margin: 0px;
+    margin-bottom: 10px;
   }
 }
 </style>

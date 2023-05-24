@@ -31,11 +31,32 @@ export default {
     PrivateProviderVsphere,
     Empty,
   },
+  props: {
+    editable: {
+      type: Boolean,
+      default: false,
+      description: '수정 가능 여부',
+    },
+    editData: {
+      type: Object,
+      default() {
+        return {
+          clusterName: '',
+          provider: '',
+          cspAccount: '',
+          description: '',
+        }
+      },
+      description: '수정 데이터',
+    },
+  },
   data() {
     return {}
   },
   mounted() {
     console.log(tag)
+    console.log(this.editData)
+    console.log(this.provider)
   },
   methods: {
     onSave() {

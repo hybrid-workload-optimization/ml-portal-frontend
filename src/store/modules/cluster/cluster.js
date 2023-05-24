@@ -56,18 +56,8 @@ const resource = {
       //   start: '',
       //   end: '',
       // },
-      masterSpec: {
-        cpu: 0,
-        memory: 0,
-        storage: 0,
-        nodeCount: 0,
-      },
-      workerSpec: {
-        cpu: 0,
-        memory: 0,
-        disk: 0,
-        count: 0,
-      },
+      masterSpec: {},
+      workerSpec: {},
     },
     templateList: [],
     monitoringAddOnData: {},
@@ -115,7 +105,7 @@ const resource = {
     provider(state) {
       return state.dataForm.provider
     },
-    templateList(state) {
+    templates(state) {
       return state.templateList
     },
   },
@@ -539,7 +529,8 @@ const resource = {
       return false
     },
     async getTemplateList({ commit }, payload) {
-      const { data } = await request.getGrafanIframeUrlUsingGET(payload)
+      const { data } = await request.getTemplatesUsingGET(payload)
+      console.log(data)
       if (data.result) {
         commit('setTemplateList', data.result)
       } else {
@@ -552,6 +543,7 @@ const resource = {
         callbackUrl: '',
         cloudProvider: state.dataForm.provider,
       }
+
       const povisioningParam = {
         projectIdx: state.dataForm.projectIdx,
         clusterName: state.dataForm.clusterName,
@@ -563,12 +555,14 @@ const resource = {
         //   start: state.vSphereForm.ipPool.start,
         //   end: state.vSphereForm.ipPool.end,
         // },
-        masterSpec: {
-          cpu: Number(state.vSphereForm.masterSpec.cpu),
-          memory: Number(state.vSphereForm.masterSpec.memory),
-          storage: Number(state.vSphereForm.masterSpec.storage),
-          nodeCount: Number(state.vSphereForm.masterSpec.nodeCount),
-        },
+        masterSpec: !state.vSphereForm.masterSpec
+          ? null
+          : {
+              cpu: Number(state.vSphereForm.masterSpec.cpu),
+              memory: Number(state.vSphereForm.masterSpec.memory),
+              storage: Number(state.vSphereForm.masterSpec.storage),
+              nodeCount: Number(state.vSphereForm.masterSpec.nodeCount),
+            },
         workerSpec: {
           cpu: Number(state.vSphereForm.workerSpec.cpu),
           memory: Number(state.vSphereForm.workerSpec.memory),
