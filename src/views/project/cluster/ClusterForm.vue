@@ -77,7 +77,20 @@ export default {
     editData: null,
     projcetIdx: null,
   }),
-  created() {
+  // created() {
+  //   this.initDataForm()
+
+  //   this.clusterIdx = this.$route.params.cid
+  //   this.projectIdx = this.$route.params.id
+
+  //   if (this.clusterIdx) {
+  //     // 수정 모드
+  //     this.isEditMode = true
+  //     this.callDataForm()
+  //   }
+  //   console.log(tag, 'isEditMode=', this.isEditMode)
+  // },
+  mounted() {
     this.initDataForm()
 
     this.clusterIdx = this.$route.params.cid
@@ -90,11 +103,10 @@ export default {
     }
     console.log(tag, 'isEditMode=', this.isEditMode)
   },
-  mounted() {
-    //
-  },
   computed: {
     ...clusterMapUtils.mapGetters(['dataForm']), // 등록/수정
+    ...clusterMapUtils.mapGetters(['provider']),
+
     ...loginUserMapUtils.mapState(['currentMenuInfo']),
 
     clusterTitle() {
@@ -111,6 +123,7 @@ export default {
     ...clusterMapUtils.mapActions(['getDataForm']),
     ...clusterMapUtils.mapActions(['createData']),
     ...clusterMapUtils.mapActions(['updateData']),
+    ...clusterMapUtils.mapMutations(['setDataFormClusterInfo']),
 
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈

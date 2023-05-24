@@ -146,7 +146,7 @@ export default {
           divider: false,
         },
         {
-          text: 'Kubernetesa(vSphere)',
+          text: 'Kubernetes(vSphere)',
           value: 'VMware',
           disabled: false,
           divider: false,
