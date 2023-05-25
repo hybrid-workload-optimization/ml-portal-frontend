@@ -107,9 +107,11 @@ export default {
         itemKey: 'id',
       },
       customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      clusterIdx: null,
     }
   },
   created() {
+    this.clusterIdx = this.$route.params.id
     this.checkProjectAuth()
     this.getListData()
   },
@@ -168,12 +170,14 @@ export default {
     moveToDetailPage(data) {
       const { id } = data
       if (id) {
-        this.$router.push({
-          name: this.$route.name,
-          // hash: '#namespace',
-          hash: this.$route.hash,
-          query: { namespaceId: id, detail: true },
-        })
+        // this.$router.push({
+        //   name: this.$route.name,
+        //   // hash: '#namespace',
+        //   hash: this.$route.hash,
+        //   query: { namespaceId: id, detail: true },
+        // })
+
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/Namespace/${id}`)
       }
     },
 

@@ -158,10 +158,12 @@ export default {
         itemKey: 'daemonSetIdx',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initDaemonSetState() // 스테이트풀셋 데이터 초기화
@@ -238,15 +240,18 @@ export default {
       console.log('data', data)
       const { daemonSetIdx } = data
       if (daemonSetIdx) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#resource',
-          hash: this.$route.hash,
-          params: {
-            id: daemonSetIdx,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#resource',
+        //   hash: this.$route.hash,
+        //   params: {
+        //     id: daemonSetIdx,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/Daemon Set/${daemonSetIdx}`,
+        )
       }
     },
 

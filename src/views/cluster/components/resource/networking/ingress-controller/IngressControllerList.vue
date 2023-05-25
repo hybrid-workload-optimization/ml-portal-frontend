@@ -203,10 +203,12 @@ export default {
       customSlotInfo: [{ name: 'action', slotName: 'action' }],
       selectedId: null,
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initDataList() // 데이터 초기화

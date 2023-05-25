@@ -128,10 +128,12 @@ export default {
         itemKey: 'idx',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     this.initDeployment()
     await this.initMultiSelectState()
@@ -191,17 +193,20 @@ export default {
       const idx = this.$route.params.id
       const { namespace, name } = data
       if (idx) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#resource',
-          hash: this.$route.hash,
-          params: {
-            clusterIdx: idx,
-            namespace,
-            name,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#resource',
+        //   hash: this.$route.hash,
+        //   params: {
+        //     clusterIdx: idx,
+        //     namespace,
+        //     name,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/workload/deployment/${namespace}/${name}`,
+        )
       }
     },
 

@@ -142,10 +142,12 @@ export default {
         itemKey: 'configMapIdx',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initConfigMapState()
@@ -219,14 +221,17 @@ export default {
       console.log('data', data)
       const { configMapIdx } = data
       if (configMapIdx) {
-        this.$router.replace({
-          name: this.$route.name,
-          hash: '#resource',
-          params: {
-            id: configMapIdx,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   hash: '#resource',
+        //   params: {
+        //     id: configMapIdx,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/Config Map/${configMapIdx}`,
+        )
       }
     },
 

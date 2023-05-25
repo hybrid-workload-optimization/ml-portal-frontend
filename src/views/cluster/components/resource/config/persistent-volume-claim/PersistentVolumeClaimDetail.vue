@@ -208,7 +208,7 @@ export default {
   },
 
   async created() {
-    this.persistentVolumeClaimIdx = this.$route.params.id
+    this.persistentVolumeClaimIdx = this.$route.params.rid
     await this.getDetail({
       persistentVolumeClaimIdx: this.persistentVolumeClaimIdx,
     })

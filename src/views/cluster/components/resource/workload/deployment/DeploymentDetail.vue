@@ -65,7 +65,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.clusterIdx = this.$route.params.clusterIdx
+    this.clusterIdx = this.$route.params.id
     this.namespace = this.$route.params.namespace
     this.name = this.$route.params.name
     await this.getData()

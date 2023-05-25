@@ -163,6 +163,7 @@ export default {
     startInterval() {
       if (this.dataDetailClusterList.length) {
         this.dataDetailClusterList.forEach(item => {
+          console.log(item)
           if (
             ['STARTED', 'FAILED', 'DELETING', 'SCALE_OUT', 'SCALE_IN'].includes(
               item.provisioningStatus,
@@ -244,8 +245,8 @@ export default {
           )
         } else if (data.provisioningStatus === 'FINISHED') {
           const routeData = this.$router.resolve({
-            path: `/cluster/detail/${this.clusterIdx}`,
-            hash: '#Overview',
+            path: `/cluster/detail/${this.clusterIdx}/Overview`,
+            // hash: '#Overview',
           })
           window.open(routeData.href)
           // this.isOpenPopup = true
@@ -258,8 +259,8 @@ export default {
         }
       } else {
         const routeData = this.$router.resolve({
-          path: `/cluster/detail/${this.clusterIdx}`,
-          hash: '#Overview',
+          path: `/cluster/detail/${this.clusterIdx}/Overview`,
+          // hash: '#Overview',
         })
         window.open(routeData.href)
         // this.isOpenPopup = true

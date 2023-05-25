@@ -224,7 +224,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.nodeId = this.$route.query.clusterNodeId
+    this.nodeId = this.$route.params.rid
     this.getData()
     this.checkProjectAuth()
   },
@@ -282,7 +282,7 @@ export default {
     // 상세 정보와 파드 리스트 정보를 가져오는 메서드
     async getData() {
       try {
-        await this.getDetail({ id: this.$route.query.clusterNodeId })
+        await this.getDetail({ id: this.nodeId })
         const { detailInfo } = this
 
         const param = {
@@ -310,7 +310,7 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteClusterNode({ id: this.$route.query.clusterNodeId })
+        await this.deleteClusterNode({ id: this.nodeId })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동

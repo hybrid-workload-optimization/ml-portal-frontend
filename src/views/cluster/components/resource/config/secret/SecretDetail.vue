@@ -149,7 +149,7 @@ export default {
   },
 
   async created() {
-    this.secretIdx = this.$route.params.id
+    this.secretIdx = this.$route.params.rid
     await this.getDetail({ secretIdx: this.secretIdx })
 
     // mixin

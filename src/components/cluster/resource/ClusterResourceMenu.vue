@@ -38,7 +38,7 @@
               <li
                 v-for="{ menuName, menuIdx } in subMenuList"
                 class="expand-list-item"
-                :class="{ active: isActive === menuName }"
+                :class="{ active: selectedMenu === menuName }"
                 :key="menuIdx"
                 @click="sendTabName(menuName)"
               >
@@ -85,20 +85,29 @@ export default {
       favoriteList: 'favoriteList',
       userInfo: 'userInfo',
     }),
+    selectedMenu() {
+      return this.$route.path.split('/')[4]
+    },
   },
   created() {
+    const currentMenu = this.$route.path.split('/')[4]
+    this.isActive = currentMenu
     this.initMenu()
     this.expandAll()
   },
   methods: {
     sendTabName(tabName) {
       console.log(tabName)
-      // this.$emit('sendTabName', tabName)
-      const resourceHash = `#${tabName}`
-      this.$router.replace({
-        path: `/cluster/detail/${this.$route.params.id}`,
-        hash: resourceHash,
+      // const resourceHash = `#${tabName}`
+      // this.$router.replace({
+      //   path: `/cluster/detail/${this.$route.params.id}`,
+      //   hash: resourceHash,
+      // })
+
+      this.$router.push({
+        path: `/cluster/detail/${this.$route.params.id}/${tabName}`,
       })
+
       this.isActive = tabName
     },
     expandAll() {

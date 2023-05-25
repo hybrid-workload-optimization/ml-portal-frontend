@@ -206,7 +206,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.persistentVolumeId = this.$route.query.persistentVolumeId
+    this.persistentVolumeId = this.$route.params.rid
     await this.getDetail({ id: this.persistentVolumeId })
     this.checkProjectAuth(this.dataDetail.projectIdx)
   },
@@ -306,7 +306,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        id: this.$route.query.persistentVolumeId,
+        id: this.persistentVolumeId,
         kubeConfigId: this.detailInfo.clusterId,
         yaml: value.encodedContent,
       }
@@ -314,7 +314,7 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.updateClusterPersistentVolume(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.$route.query.persistentVolumeId })
+        this.getDetail({ id: this.persistentVolumeId })
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
       }

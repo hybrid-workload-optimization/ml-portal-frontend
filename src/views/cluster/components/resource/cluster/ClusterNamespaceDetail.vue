@@ -157,7 +157,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.namespaceId = this.$route.query.namespaceId
+    this.namespaceId = this.$route.params.rid
     await this.getDetail({ id: this.namespaceId })
     this.checkProjectAuth()
   },
@@ -224,7 +224,7 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteClusterNamespace({ id: this.$route.query.namespaceId })
+        await this.deleteClusterNamespace({ id: this.namespaceId })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
@@ -247,7 +247,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        id: this.$route.query.namespaceId,
+        id: this.namespaceId,
         kubeConfigId: this.detailInfo.clusterId,
         yaml: value.encodedContent,
       }
@@ -255,7 +255,7 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.updateClusterNamespace(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.$route.query.namespaceId })
+        this.getDetail({ id: this.namespaceId })
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
       }

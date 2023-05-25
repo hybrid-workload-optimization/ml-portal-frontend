@@ -142,6 +142,9 @@ export default {
     },
   },
   data: () => ({}),
+  created() {
+    console.log(this.titleData)
+  },
   computed: {
     isMiddleTitle() {
       return (

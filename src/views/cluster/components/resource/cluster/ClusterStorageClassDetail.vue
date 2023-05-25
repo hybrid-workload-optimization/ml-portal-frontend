@@ -195,7 +195,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.storageClassId = this.$route.query.storageClassId
+    this.storageClassId = this.$route.params.rid
     await this.getDetail({ id: this.storageClassId })
     this.checkProjectAuth()
   },
@@ -294,7 +294,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        id: this.$route.query.storageClassId,
+        id: this.storageClassId,
         kubeConfigId: this.detailInfo.clusterId,
         yaml: value.encodedContent,
       }
@@ -302,7 +302,7 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.updateClusterStorageClass(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.$route.query.storageClassId })
+        this.getDetail({ id: this.storageClassId })
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
       }

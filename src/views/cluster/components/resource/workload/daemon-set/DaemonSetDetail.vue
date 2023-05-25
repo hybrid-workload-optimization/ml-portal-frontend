@@ -74,7 +74,7 @@ export default {
     //
   },
   async mounted() {
-    this.daemonSetIdx = this.$route.params.id
+    this.daemonSetIdx = this.$route.params.rid
     await this.getDetail({ daemonSetIdx: this.daemonSetIdx })
 
     // mixin

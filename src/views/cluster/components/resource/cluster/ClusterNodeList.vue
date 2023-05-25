@@ -122,10 +122,12 @@ export default {
         itemKey: 'id',
       },
       customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      clusterIdx: null,
     }
   },
   async created() {
     this.isLoading = true
+    this.clusterIdx = this.$route.params.id
     await this.getListData()
     this.checkProjectAuth(this.dataDetail.projectIdx)
     this.isLoading = false
@@ -174,12 +176,13 @@ export default {
     moveToDetailPage(data) {
       const { id } = data
       if (id) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#node',
-          hash: this.$route.hash,
-          query: { clusterNodeId: id, detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#node',
+        //   hash: this.$route.hash,
+        //   query: { clusterNodeId: id, detail: true },
+        // })
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/Node/${id}`)
       }
     },
     getChipColor(statusText) {

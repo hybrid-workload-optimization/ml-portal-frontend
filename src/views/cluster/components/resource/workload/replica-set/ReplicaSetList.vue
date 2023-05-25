@@ -157,10 +157,12 @@ export default {
         itemKey: 'replicaSetIdx',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initReplicaSetState() // 스테이트풀셋 데이터 초기화
@@ -225,15 +227,19 @@ export default {
       console.log('data', data)
       const { replicaSetIdx } = data
       if (replicaSetIdx) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#resource',
-          hash: this.$route.hash,
-          params: {
-            id: replicaSetIdx,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#resource',
+        //   hash: this.$route.hash,
+        //   params: {
+        //     id: replicaSetIdx,
+        //   },
+        //   query: { detail: true },
+        // })
+
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/Replica Set/${replicaSetIdx}`,
+        )
       }
     },
 

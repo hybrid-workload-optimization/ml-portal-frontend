@@ -139,10 +139,12 @@ export default {
         itemKey: 'id',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initIngressState() // 데이터 초기화
@@ -209,15 +211,16 @@ export default {
     moveToDetailPage(data) {
       const { id } = data
       if (id) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#resource',
-          hash: this.$route.hash,
-          params: {
-            id,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#resource',
+        //   hash: this.$route.hash,
+        //   params: {
+        //     id,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/Ingress/${id}`)
       }
     },
 
