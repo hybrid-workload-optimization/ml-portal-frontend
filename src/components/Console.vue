@@ -38,7 +38,7 @@ export default {
       try {
         // /ws/pod/exec/1/default/test-deployment-84bc6b85f6-wds64
         this.terminalSocket = new WebSocket(
-          `ws://${window.location.host}/ws${this.accessPath}`,
+          `ws://${window.location.host}/comp-b-svc/ws${this.accessPath}`,
         )
 
         this.terminalSocket.onopen = event => {
