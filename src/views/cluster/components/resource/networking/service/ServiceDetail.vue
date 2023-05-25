@@ -64,7 +64,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.serviceId = this.$route.params.id
+    this.serviceId = this.$route.params.rid
     await this.getData()
 
     // mixin

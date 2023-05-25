@@ -7,7 +7,7 @@
       @click-delete="onClickDelete"
     ></card-title> -->
 
-    <card-title :titleData="getTitle" :showButtons="false"></card-title>
+    <!-- <card-title :titleData="getTitle" :showButtons="false"></card-title> -->
 
     <div>
       <!-- 상단 탭 명칭 설정 -->
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
+// import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import ClusterResource from '@/views/cluster/components/ClusterResource.vue'
@@ -58,7 +58,7 @@ const confirmMapUtils = createNamespacedHelpers('confirm')
 
 export default {
   components: {
-    CardTitle,
+    // CardTitle,
     Confirm,
     ClusterResource,
   },
