@@ -53,7 +53,7 @@ export default {
     //
   },
   async mounted() {
-    this.replicaSetIdx = this.$route.params.id
+    this.replicaSetIdx = this.$route.params.rid
     await this.getDetail({ replicaSetIdx: this.replicaSetIdx })
     if (this.detailInfo.clusterId && this.detailInfo.uid) {
       const params = {

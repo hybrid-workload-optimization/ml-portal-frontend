@@ -240,7 +240,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.jobId = this.$route.params.id
+    this.jobId = this.$route.params.rid
     await this.getDetail({ idx: this.jobId })
 
     if (
