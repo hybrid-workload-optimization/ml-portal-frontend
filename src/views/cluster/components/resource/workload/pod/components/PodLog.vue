@@ -46,7 +46,7 @@ export default {
   // 컴포넌트 생성 후 호출됨
   created() {
     const { params } = this.$route
-    this.accessPath = `/pod/${params.type}/${params.clusterIdx}/${params.namespace}/${params.name}`
+    this.accessPath = `/pod/${params.type}/${params.id}/${params.namespace}/${params.name}`
   },
   computed: {
     name() {
@@ -64,7 +64,7 @@ export default {
     async onClickDownload() {
       const { params } = this.$route
       const requestParam = {
-        clusterId: params.clusterIdx,
+        clusterId: params.id,
         namespace: params.namespace,
         name: params.name,
       }

@@ -73,9 +73,12 @@ const resource = [
       // },
 
       {
-        path: '/detail/:id/pod/:type/:namespace/:name',
-        name: 'WorkloadPod Log',
-        component: () => import('@/views/workload/pod/components/PodLog'),
+        path: 'detail/:id/pod/:type/:namespace/:name',
+        name: 'WorkloadPod Log2',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/pod/components/PodLog.vue'
+          ),
         meta: {
           isAuthRequired,
         },
