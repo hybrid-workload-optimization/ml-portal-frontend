@@ -130,9 +130,11 @@ export default {
       },
       customSlotInfo: [{ name: 'status', slotName: 'status' }],
       isLoading: false,
+      clusterIdx: null,
     }
   },
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.checkProjectAuth()
     this.isLoading = true
     await this.getListData()
@@ -193,12 +195,16 @@ export default {
     moveToDetailPage(data) {
       const { id } = data
       if (id) {
-        this.$router.push({
-          name: this.$route.name,
-          // hash: '#persistentVolume',
-          hash: this.$route.hash,
-          query: { persistentVolumeId: id, detail: true },
-        })
+        // this.$router.push({
+        //   name: this.$route.name,
+        //   // hash: '#persistentVolume',
+        //   hash: this.$route.hash,
+        //   query: { persistentVolumeId: id, detail: true },
+        // })
+
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/Persistent Volume/${id}`,
+        )
       }
     },
 

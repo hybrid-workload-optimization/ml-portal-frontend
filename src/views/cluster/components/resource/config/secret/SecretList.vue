@@ -148,10 +148,12 @@ export default {
         itemKey: 'configMapIdx',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initSecretState()
@@ -225,14 +227,17 @@ export default {
       const { secretIdx } = data
       console.log('secret info === ', data)
       if (secretIdx) {
-        this.$router.replace({
-          name: this.$route.name,
-          hash: '#resource',
-          params: {
-            id: secretIdx,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   hash: '#resource',
+        //   params: {
+        //     id: secretIdx,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/Secret/${secretIdx}`,
+        )
       }
     },
 

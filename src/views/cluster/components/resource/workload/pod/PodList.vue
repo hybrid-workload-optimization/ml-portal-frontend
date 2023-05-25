@@ -147,9 +147,11 @@ export default {
         itemKey: 'id',
       },
       isLoading: false,
+      clusterIdx: null,
     }
   },
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.isLoading = true
     await this.initMultiSelectState() // 멀티셀렉트 데이터 초기화
     this.initPodState() // 스테이트풀셋 데이터 초기화
@@ -201,17 +203,20 @@ export default {
     moveToDetailPage(data) {
       const { name, namespace } = data
       if (name) {
-        this.$router.replace({
-          name: this.$route.name,
-          // hash: '#resource',
-          hash: this.$route.hash,
-          params: {
-            clusterIdx: this.getParameters.clusterIdx,
-            namespace,
-            name,
-          },
-          query: { detail: true },
-        })
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   // hash: '#resource',
+        //   hash: this.$route.hash,
+        //   params: {
+        //     clusterIdx: this.getParameters.clusterIdx,
+        //     namespace,
+        //     name,
+        //   },
+        //   query: { detail: true },
+        // })
+        this.$router.push(
+          `/cluster/detail/${this.clusterIdx}/workload/pod/${namespace}/${name}`,
+        )
       }
     },
     // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드

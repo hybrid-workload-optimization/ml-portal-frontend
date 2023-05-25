@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <card-title :titleData="getTitle" :showButtons="false"></card-title> -->
-
     <cluster-resource-menu
       :menu-items="menuItems"
       :selected-name="selectedName"
@@ -17,6 +15,8 @@
       :class="{ 'mini-lnb': isMini }"
       v-show="!fullMenu"
     >
+      <card-title :titleData="getTitle" :showButtons="false"></card-title>
+
       <router-view />
     </v-main>
   </div>
@@ -24,7 +24,7 @@
 
 <script>
 import ClusterResourceMenu from '@/components/cluster/resource/ClusterResourceMenu.vue'
-// import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
+import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
 import Paths from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
@@ -36,6 +36,7 @@ import { SET_MINI } from '../store/modules/sideNav'
 
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
+const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   name: 'App',
@@ -44,7 +45,7 @@ export default {
   },
   components: {
     ClusterResourceMenu,
-    // CardTitle,
+    CardTitle,
   },
 
   data: () => ({
@@ -55,6 +56,7 @@ export default {
     isMini: false,
     fullMenu: false,
     sse: null,
+    clusterIdx: null,
   }),
   computed: {
     ...loginUserMapUtil.mapState({
@@ -62,15 +64,44 @@ export default {
       favoriteList: 'favoriteList',
       userInfo: 'userInfo',
     }),
+    ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
     getPagePath() {
       const path = this.$route.name?.split(' ')[0]
       return Paths[path]
     },
+    getTitle() {
+      return {
+        title: this.dataDetail.clusterName,
+        description: this.dataDetail.description,
+        problem: this.dataDetail.problem,
+        status: this.dataDetail.status,
+      }
+    },
+  },
+  mounted() {
+    // console.error('after login mounted')
+    /* 페이지 첫 로드 시 해상도 감지하여 1366 이하일 때는 LNB mini 상태로 시작 */
+    if (window.innerWidth <= '1366') {
+      this.setMiniStatus(true)
+      this.$refs.lnb.mini = true
+    }
+    this.setSseConfig()
   },
   async created() {
     await this.getNotificationList()
     await this.getFavoriteInfo()
     this.setMenuList()
+    // 상세 초기화
+    this.initDataDetail()
+
+    this.clusterIdx = this.$route.params.id
+
+    const result = await this.getDataDetail({ clusterIdx: this.clusterIdx })
+    if (!result) {
+      this.$router.push('/cluster/list')
+    }
+    console.log('클러스터 데이터: ', this.dataDetail)
+    console.log(this.getTitle)
   },
   watch: {
     favoriteList: {
@@ -83,6 +114,8 @@ export default {
   methods: {
     ...notificationMapUtil.mapActions({ getNotiList: 'getDataList' }),
     ...loginUserMapUtil.mapActions(['getFavoriteInfo']),
+    ...clusterMapUtils.mapActions(['getDataDetail']),
+    ...clusterMapUtils.mapMutations(['initDataDetail']),
     getNotificationList() {
       this.getNotiList()
     },
@@ -198,15 +231,15 @@ export default {
       this.$refs.lnb.subMenuItems = []
     },
   },
-  mounted() {
-    // console.error('after login mounted')
-    /* 페이지 첫 로드 시 해상도 감지하여 1366 이하일 때는 LNB mini 상태로 시작 */
-    if (window.innerWidth <= '1366') {
-      this.setMiniStatus(true)
-      this.$refs.lnb.mini = true
-    }
-    this.setSseConfig()
-  },
+  // mounted() {
+  //   // console.error('after login mounted')
+  //   /* 페이지 첫 로드 시 해상도 감지하여 1366 이하일 때는 LNB mini 상태로 시작 */
+  //   if (window.innerWidth <= '1366') {
+  //     this.setMiniStatus(true)
+  //     this.$refs.lnb.mini = true
+  //   }
+  //   this.setSseConfig()
+  // },
 }
 </script>
 

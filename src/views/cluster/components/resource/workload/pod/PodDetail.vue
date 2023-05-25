@@ -256,7 +256,7 @@ export default {
     const { params } = this.$route
     await this.getDetail({
       podName: this.podName,
-      clusterIdx: params.clusterIdx,
+      clusterIdx: params.id,
       namespace: params.namespace,
     })
 
@@ -343,7 +343,7 @@ export default {
     async onConfirmedFromEditModal(value) {
       const { params } = this.$route
       const param = {
-        clusterIdx: params.clusterIdx,
+        clusterIdx: params.id,
         yaml: value.encodedContent,
       }
       try {
@@ -360,7 +360,7 @@ export default {
     },
     movePath(type) {
       this.$router.push(
-        `/workload/pod/detail/${this.detailInfo.clusterId}/${type}/${this.detailInfo.namespace}/${this.detailInfo.name}`,
+        `/cluster/detail/${this.detailInfo.clusterId}/pod/${type}/${this.detailInfo.namespace}/${this.detailInfo.name}`,
       )
     },
   },

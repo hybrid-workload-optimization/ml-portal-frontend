@@ -141,7 +141,7 @@ export default {
   },
 
   async created() {
-    this.configMapIdx = this.$route.params.id
+    this.configMapIdx = this.$route.params.rid
     await this.getDetail({ configMapIdx: this.configMapIdx })
 
     // mixin
