@@ -192,7 +192,7 @@ export default {
 
     async onConfirmedFromEditModal(value) {
       const param = {
-        idx: this.clusterIdx,
+        idx: this.deploymentIdx,
         yaml: value.encodedContent,
         // namespace: this.namespace,
         // name: this.name,
