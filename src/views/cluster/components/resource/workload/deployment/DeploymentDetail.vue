@@ -9,7 +9,7 @@
 
     <v-tabs v-model="tab">
       <v-tabs-slider></v-tabs-slider>
-      <v-tab v-for="tabName in tabNames" :key="tabName">
+      <v-tab style="display: none" v-for="tabName in tabNames" :key="tabName">
         {{ tabName }}
       </v-tab>
     </v-tabs>
@@ -85,9 +85,9 @@ export default {
     ...deploymentMapUtils.mapActions([
       'getDeploymentDetail',
       'getPodList',
-      'deleteDeployment',
-      'getDeploymentYaml',
-      'updateDeployment',
+      'deleteDeploymentApiOnly',
+      'getDeploymentYamlApiOnly',
+      'updateDeploymentApiOnly',
     ]),
     ...yamlEditModalMapUtils.mapMutations(['openModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
@@ -120,8 +120,11 @@ export default {
       //   text = this.deploymentDetailInfo.yaml
       // } else {
       try {
-        const response = await this.getDeploymentYaml({
-          idx: this.deploymentIdx,
+        const response = await this.getDeploymentYamlApiOnly({
+          // idx: this.deploymentIdx,
+          clusterIdx: this.clusterIdx,
+          namespace: this.namespace,
+          name: this.name,
         })
 
         if (response.status === 200) {
@@ -151,8 +154,11 @@ export default {
 
     async onClickDelConfirm() {
       try {
-        const response = await this.deleteDeployment({
-          idx: this.deploymentIdx,
+        const response = await this.deleteDeploymentApiOnly({
+          // idx: this.deploymentIdx,
+          clusterIdx: this.clusterIdx,
+          namespace: this.namespace,
+          name: this.name,
         })
 
         if (response.status === 200) {
@@ -181,11 +187,13 @@ export default {
 
     async onConfirmedFromEditModal(value) {
       const param = {
-        idx: this.deploymentIdx,
+        clusterIdx: this.clusterIdx,
+        namespace: this.namespace,
+        name: this.name,
         yaml: value.encodedContent,
       }
       try {
-        const response = await this.updateDeployment(param)
+        const response = await this.updateDeploymentApiOnly(param)
         if (response.status === 200) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
