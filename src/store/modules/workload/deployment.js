@@ -256,6 +256,11 @@ const resource = {
       return response
     },
 
+    async getDeploymentYamlApiOnly(context, payload) {
+      const response = await request.getDeploymentYamlUsingGET_1(payload)
+      return response
+    },
+
     async createDeployment(context, payload) {
       const response = await request.postDeploymentUsingPOST(payload)
       return response
@@ -266,10 +271,21 @@ const resource = {
       return response
     },
 
+    async updateDeploymentApiOnly(context, payload) {
+      const response = await request.putDeploymentUsingPUT_1(payload)
+      return response
+    },
+
     async deleteDeployment(context, payload) {
       const response = await request.deleteDeploymentUsingDELETE(payload)
       return response
     },
+
+    async deleteDeploymentApiOnly(context, payload) {
+      const response = await request.deleteDeploymentUsingDELETE_1(payload)
+      return response
+    },
+
     async getPodList({ commit }, payload) {
       const response = await request.getPodListByOwnerUsingPOST(payload)
       commit('changePodList', response)

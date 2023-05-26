@@ -273,7 +273,7 @@ export default {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.deleteClusterStorageClass({
-          id: this.$route.query.storageClassId,
+          id: this.storageClassId,
         })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
