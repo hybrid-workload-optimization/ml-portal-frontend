@@ -220,10 +220,12 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
+      clusterIdx: null,
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.cronJobId = this.$route.params.rid
     await this.getDetail({ idx: this.cronJobId })
 
@@ -297,7 +299,11 @@ export default {
         this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
-        setTimeout(() => this.$router.push('/workload/cron-job/list'), 1000)
+        setTimeout(
+          () =>
+            this.$router.push(`/cluster/detail/${this.clusterIdx}/Cron Job`),
+          1000,
+        )
       } catch (error) {
         this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
       }

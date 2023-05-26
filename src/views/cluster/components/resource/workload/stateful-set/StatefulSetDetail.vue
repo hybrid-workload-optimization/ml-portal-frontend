@@ -60,10 +60,12 @@ export default {
       tab: null,
       isEncodingContent: true,
       tabNames: ['General', 'Relationship diagram'], // 탭 명칭들
+      clusterIdx: null,
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.statefulSetId = this.$route.params.rid
     await this.getData()
 
@@ -159,7 +161,10 @@ export default {
 
           // 1초 후 리스트 화면으로 이동
           setTimeout(
-            () => this.$router.push('/workload/stateful-set/list'),
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Stateful Set`,
+              ),
             1000,
           )
         } else {

@@ -137,10 +137,12 @@ export default {
         showSelect: false,
         itemKey: 'configMapIdx',
       },
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.configMapIdx = this.$route.params.rid
     await this.getDetail({ configMapIdx: this.configMapIdx })
 
@@ -211,7 +213,13 @@ export default {
           this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
 
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/config/config-map/list'), 1000)
+          setTimeout(
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Config Map`,
+              ),
+            1000,
+          )
         } else {
           // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
