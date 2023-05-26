@@ -37,7 +37,7 @@ import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
-import DeploymentGeneral from '@/views/workload/deployment/components/DeploymentGeneral.vue'
+import DeploymentGeneral from '@/views/cluster/components/resource/workload/deployment/components/DeploymentGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const deploymentMapUtils = createNamespacedHelpers('deployment')
@@ -69,7 +69,7 @@ export default {
     this.namespace = this.$route.params.namespace
     this.name = this.$route.params.name
     await this.getData()
-
+    console.log(this.deploymentDetailInfo)
     // mixin
     this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
   },
@@ -77,7 +77,7 @@ export default {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
     titleData() {
       return {
-        title: this.deploymentDetailInfo.title2,
+        title: this.deploymentDetailInfo.name,
       }
     },
   },

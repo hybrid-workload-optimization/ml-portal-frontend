@@ -307,8 +307,11 @@ export default {
   },
   methods: {
     moveToPodDetailPage(item) {
+      // this.$router.push(
+      //   `/workload/pod/detail/${this.serviceDetailInfo.clusterIdx}/${item.namespace}/${item.name}`,
+      // )
       this.$router.push(
-        `/workload/pod/detail/${this.serviceDetailInfo.clusterIdx}/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.serviceDetailInfo.clusterIdx}/Pod/${item.namespace}/${item.name}`,
       )
     },
   },
