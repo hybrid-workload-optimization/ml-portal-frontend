@@ -190,8 +190,10 @@ export default {
     },
 
     moveToDetailPage(data) {
-      const idx = this.$route.params.id
-      const { namespace, name } = data
+      const { idx } = data
+      console.log(data)
+      console.log(idx)
+      // const { namespace, name } = data
       if (idx) {
         // this.$router.replace({
         //   name: this.$route.name,
@@ -204,8 +206,11 @@ export default {
         //   },
         //   query: { detail: true },
         // })
+        // this.$router.push(
+        // `/cluster/detail/${this.clusterIdx}/Deployment/${namespace}/${name}`,
+        // )
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Deployment/${namespace}/${name}`,
+          `/cluster/detail/${this.clusterIdx}/Deployment/${idx}`,
         )
       }
     },
