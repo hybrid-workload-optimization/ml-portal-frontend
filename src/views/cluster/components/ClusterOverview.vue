@@ -91,6 +91,7 @@ export default {
       ]
     },
     monitoringUrl() {
+      console.log(this.monitoringIframeUrl)
       if (this.monitoringIframeUrl) {
         return this.monitoringIframeUrl
       }
@@ -120,11 +121,25 @@ export default {
       return false
     },
   },
-  mounted() {
+  async mounted() {
+    const result = await this.getDataDetail({
+      clusterIdx: this.$route.params.id,
+    })
+    console.log(result)
+    if (!result) {
+      this.$router.push('/cluster/list')
+    }
     this.getClusterMonotoring({ clusterIdx: this.$route.params.id })
+    this.getDataSummary({ clusterIdx: this.$route.params.id })
+    this.getMonitoringData({ clusterIdx: this.$route.params.id })
   },
   methods: {
-    ...clusterMapUtils.mapActions(['getClusterMonotoring']),
+    ...clusterMapUtils.mapActions([
+      'getDataDetail',
+      'getClusterMonotoring',
+      'getMonitoringData',
+      'getDataSummary',
+    ]),
   },
 }
 </script>

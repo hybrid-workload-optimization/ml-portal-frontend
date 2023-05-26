@@ -67,7 +67,7 @@ export default {
     return {
       searchValue: '',
       firstSelectMeta: {
-        requestFunc: request.getNamespacesAPIOnlyUsingGET,
+        requestFunc: request.getNamespacesUsingGET,
         parameters: { clusterIdx: this.$route.params.id },
         valueKey: 'clusterIdx',
       },
@@ -147,7 +147,7 @@ export default {
     getParameters() {
       return {
         clusterIdx: this.$route.params.id,
-        namespace: this.firstValue,
+        namespaceId: this.firstValue,
       }
     },
   },
@@ -205,7 +205,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/workload/deployment/${namespace}/${name}`,
+          `/cluster/detail/${this.clusterIdx}/Deployment/${namespace}/${name}`,
         )
       }
     },

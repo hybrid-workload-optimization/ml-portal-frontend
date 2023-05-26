@@ -77,7 +77,7 @@ export default {
         valueKey: 'projectIdx',
       },
       thirdSelectMeta: {
-        requestFunc: request.getNamespacesAPIOnlyUsingGET,
+        requestFunc: request.getNamespacesUsingGET,
         parameters: { clusterIdx: '' },
         valueKey: 'clusterIdx',
       },

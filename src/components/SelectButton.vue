@@ -107,7 +107,7 @@ export default {
         } else if (this.autoSelect) {
           // session storage의 id 값이 items에 없을 경우
           if (firstItem) {
-            sessionStorage.removeItem('thirdVal')
+            sessionStorage.removeItem('firstItem')
           }
           this.onChangeFirstSelect('')
         }
