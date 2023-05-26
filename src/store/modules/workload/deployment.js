@@ -247,7 +247,8 @@ const resource = {
     },
 
     async getDeploymentDetail({ commit }, payload) {
-      const response = await request.getDeploymentUsingGET_1(payload)
+      // const response = await request.getDeploymentUsingGET_1(payload)
+      const response = await request.getDeploymentUsingGET(payload)
       commit('changeDetailInfo', response)
     },
 

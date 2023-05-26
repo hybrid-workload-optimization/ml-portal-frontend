@@ -63,7 +63,7 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
-      statefulSetId: null,
+      daemonSetIdx: null,
       tab: null,
       isEncodingContent: true,
       tabNames: ['General', 'Relationship diagram'], // 탭 명칭들

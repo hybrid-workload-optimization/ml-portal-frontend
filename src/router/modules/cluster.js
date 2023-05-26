@@ -337,7 +337,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Deployment/:namespace/:name',
+        path: 'detail/:id/Deployment/:rid',
         name: 'Cluster Detail Deployment Detail',
         component: () =>
           import(

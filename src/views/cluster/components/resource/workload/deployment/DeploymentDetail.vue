@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       clusterIdx: null,
+      deploymentIdx: null,
       namespace: null,
       name: null,
       tab: null,
@@ -65,10 +66,13 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    console.log('11111111111')
     this.clusterIdx = this.$route.params.id
-    this.namespace = this.$route.params.namespace
-    this.name = this.$route.params.name
+    this.deploymentIdx = this.$route.params.rid
+    // this.namespace = this.$route.params.namespace
+    // this.name = this.$route.params.name
     await this.getData()
+    console.log('11111111111')
     console.log(this.deploymentDetailInfo)
     // mixin
     this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
@@ -77,7 +81,7 @@ export default {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
     titleData() {
       return {
-        title: this.deploymentDetailInfo.name,
+        title: this.deploymentDetailInfo.title,
       }
     },
   },
@@ -85,9 +89,9 @@ export default {
     ...deploymentMapUtils.mapActions([
       'getDeploymentDetail',
       'getPodList',
-      'deleteDeploymentApiOnly',
-      'getDeploymentYamlApiOnly',
-      'updateDeploymentApiOnly',
+      'deleteDeployment',
+      'getDeploymentYaml',
+      'updateDeployment',
     ]),
     ...yamlEditModalMapUtils.mapMutations(['openModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
@@ -97,9 +101,10 @@ export default {
     async getData() {
       try {
         await this.getDeploymentDetail({
-          clusterIdx: this.clusterIdx,
-          namespace: this.namespace,
-          name: this.name,
+          // clusterIdx: this.clusterIdx,
+          // namespace: this.namespace,
+          // name: this.name,
+          idx: this.deploymentIdx,
         })
         const { deploymentDetailInfo } = this
 
@@ -120,11 +125,11 @@ export default {
       //   text = this.deploymentDetailInfo.yaml
       // } else {
       try {
-        const response = await this.getDeploymentYamlApiOnly({
-          // idx: this.deploymentIdx,
-          clusterIdx: this.clusterIdx,
-          namespace: this.namespace,
-          name: this.name,
+        const response = await this.getDeploymentYaml({
+          idx: this.deploymentIdx,
+          // clusterIdx: this.clusterIdx,
+          // namespace: this.namespace,
+          // name: this.name,
         })
 
         if (response.status === 200) {
@@ -154,11 +159,11 @@ export default {
 
     async onClickDelConfirm() {
       try {
-        const response = await this.deleteDeploymentApiOnly({
-          // idx: this.deploymentIdx,
-          clusterIdx: this.clusterIdx,
-          namespace: this.namespace,
-          name: this.name,
+        const response = await this.deleteDeployment({
+          idx: this.deploymentIdx,
+          // clusterIdx: this.clusterIdx,
+          // namespace: this.namespace,
+          // name: this.name,
         })
 
         if (response.status === 200) {
@@ -187,13 +192,13 @@ export default {
 
     async onConfirmedFromEditModal(value) {
       const param = {
-        clusterIdx: this.clusterIdx,
-        namespace: this.namespace,
-        name: this.name,
+        idx: this.clusterIdx,
         yaml: value.encodedContent,
+        // namespace: this.namespace,
+        // name: this.name,
       }
       try {
-        const response = await this.updateDeploymentApiOnly(param)
+        const response = await this.updateDeployment(param)
         if (response.status === 200) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
