@@ -101,7 +101,6 @@ export default {
       this.$router.push('/cluster/list')
     }
     console.log('클러스터 데이터: ', this.dataDetail)
-    console.log(this.getTitle)
   },
   watch: {
     favoriteList: {
@@ -266,5 +265,9 @@ export default {
 }
 .material-icons-outlined {
   font-family: 'Material Icons Outlined';
+}
+
+.v-tabs-bar {
+  background-color: #f3f6f9 !important;
 }
 </style>

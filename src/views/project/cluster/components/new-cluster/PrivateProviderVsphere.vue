@@ -99,7 +99,11 @@
               ></label-with-text>
             </div>
           </template>
-          <label-with name="Master" :className="labelWithClass" v-if="!isBasic">
+          <label-with
+            name="Control Plane(Master)"
+            :className="labelWithClass"
+            v-if="!isBasic"
+          >
             <template v-slot:append-content>
               <div class="nodeInfoMasterClass">
                 <label-with-text

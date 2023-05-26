@@ -237,11 +237,10 @@ const resource = {
         page: 1,
         size: 100,
         clusterIdx: payload.clusterIdx,
-        namespace: payload.namespace,
+        namespaceIdx: payload.namespaceId,
       }
-
       const response = await api.getAllData(
-        request.getDeploymentListUsingGET_1,
+        request.getDeploymentListUsingGET,
         param,
       )
       commit('changeDataList', response)

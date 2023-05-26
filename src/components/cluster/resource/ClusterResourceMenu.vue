@@ -144,8 +144,6 @@ export default {
       newMenuList.unshift(this.defaultMenu)
 
       this.menuItems = newMenuList
-
-      console.log(newMenuList)
     },
   },
 }
