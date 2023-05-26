@@ -35,7 +35,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import ServiceGeneral from '@/views/networking/service/components/ServiceGeneral.vue'
+import ServiceGeneral from '@/views/cluster/components/resource/networking/service/components/ServiceGeneral.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
