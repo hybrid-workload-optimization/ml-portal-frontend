@@ -1,10 +1,18 @@
 <template>
   <div class="sp-list-content">
     <div class="search-wrapper">
-      <search
+      <!-- <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
         :buttonText="'New Node'"
+        :isDisabled="!isProjectAuth"
+        @input="onInputSearchValue"
+        @click="onClickButton"
+      >
+      </search> -->
+      <search
+        :title="'Total:'"
+        :todoCount="dataListSize.toString()"
         :isDisabled="!isProjectAuth"
         @input="onInputSearchValue"
         @click="onClickButton"

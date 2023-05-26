@@ -42,6 +42,7 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
+      clusterIdx: null,
       statefulSetId: null,
       tab: null,
       isEncodingContent: true,
@@ -53,6 +54,7 @@ export default {
     //
   },
   async mounted() {
+    this.clusterIdx = this.$route.params.id
     this.replicaSetIdx = this.$route.params.rid
     await this.getDetail({ replicaSetIdx: this.replicaSetIdx })
     if (this.detailInfo.clusterId && this.detailInfo.uid) {
@@ -136,7 +138,10 @@ export default {
 
           // 1초 후 리스트 화면으로 이동
           setTimeout(
-            () => this.$router.push('/workload/replica-set/list'),
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Replica Set`,
+              ),
             1000,
           )
         } else {

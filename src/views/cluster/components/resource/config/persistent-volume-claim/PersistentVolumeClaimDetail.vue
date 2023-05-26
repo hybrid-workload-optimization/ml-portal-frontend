@@ -204,10 +204,12 @@ export default {
         showSelect: false,
         itemKey: 'persistentVolumeClaimIdx',
       },
+      clusterIdx: null,
     }
   },
 
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.persistentVolumeClaimIdx = this.$route.params.rid
     await this.getDetail({
       persistentVolumeClaimIdx: this.persistentVolumeClaimIdx,
@@ -281,7 +283,10 @@ export default {
 
           // 1초 후 리스트 화면으로 이동
           setTimeout(
-            () => this.$router.push('/config/persistent-volume-claim/list'),
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Persistent Volume Claim`,
+              ),
             1000,
           )
         } else {

@@ -220,10 +220,12 @@ export default {
         { text: 'Memory', align: 'center', value: 'memory' },
         { text: 'Age', align: 'center', value: 'age' },
       ],
+      clusterIdx: null,
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.nodeId = this.$route.params.rid
     this.getData()
     this.checkProjectAuth()
@@ -301,10 +303,11 @@ export default {
       this.openConfirm(`${this.detailInfo.name} 을(를) 삭제하시겠습니까?`)
     },
     moveList() {
-      this.$router.push({
-        name: this.$route.name,
-        hash: '#Node',
-      })
+      // this.$router.push({
+      //   name: this.$route.name,
+      //   hash: '#Node',
+      // })
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/Node`)
     },
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
@@ -316,10 +319,11 @@ export default {
         // 1초 후 리스트 화면으로 이동
         setTimeout(
           () =>
-            this.$router.push({
-              name: this.$route.name,
-              hash: '#node',
-            }),
+            // this.$router.push({
+            //   name: this.$route.name,
+            //   hash: '#node',
+            // }),
+            this.$router.push(`/cluster/detail/${this.clusterIdx}/Node`),
           1000,
         )
       } catch (error) {
@@ -351,8 +355,11 @@ export default {
       )
     },
     moveToPodDetailPage(item) {
+      // this.$router.push(
+      //   `/workload/pod/detail/${this.dataDetail.clusterIdx}/${item.namespace}/${item.name}`,
+      // )
       this.$router.push(
-        `/workload/pod/detail/${this.dataDetail.clusterIdx}/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.dataDetail.clusterIdx}/Pod/${item.namespace}/${item.name}`,
       )
     },
   },

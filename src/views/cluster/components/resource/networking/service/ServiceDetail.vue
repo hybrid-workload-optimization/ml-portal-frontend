@@ -60,10 +60,12 @@ export default {
       tab: null,
       isEncodingContent: true,
       tabNames: ['General', 'Relationship diagram'], // 탭 명칭들
+      clusterIdx: null,
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.serviceId = this.$route.params.rid
     await this.getData()
 
@@ -156,7 +158,11 @@ export default {
           })
 
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/network/service/list'), 1000)
+          setTimeout(
+            () =>
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/Service`),
+            1000,
+          )
         } else {
           // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })

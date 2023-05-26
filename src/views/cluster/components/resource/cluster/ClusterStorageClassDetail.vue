@@ -191,10 +191,12 @@ export default {
           value: 'createdAt',
         },
       ],
+      clusterIdx: null,
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    this.clusterIdx = this.$route.params.id
     this.storageClassId = this.$route.params.rid
     await this.getDetail({ id: this.storageClassId })
     this.checkProjectAuth()
@@ -259,10 +261,11 @@ export default {
     },
 
     moveList() {
-      this.$router.push({
-        name: this.$route.name,
-        hash: '#Storage Class',
-      })
+      // this.$router.push({
+      //   name: this.$route.name,
+      //   hash: '#Storage Class',
+      // })
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/Storage Class`)
     },
 
     // [삭제 요청 확인창] 확인 클릭 시
@@ -277,10 +280,13 @@ export default {
         // 1초 후 리스트 화면으로 이동
         setTimeout(
           () =>
-            this.$router.push({
-              name: this.$route.name,
-              hash: '#storageClass',
-            }),
+            // this.$router.push({
+            //   name: this.$route.name,
+            //   hash: '#storageClass',
+            // }),
+            this.$router.push(
+              `/cluster/detail/${this.clusterIdx}/Storage Class`,
+            ),
           1000,
         )
       } catch (error) {

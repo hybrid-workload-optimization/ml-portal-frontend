@@ -67,6 +67,7 @@ export default {
       tab: null,
       isEncodingContent: true,
       tabNames: ['General', 'Relationship diagram'], // 탭 명칭들
+      clusterIdx: null,
     }
   },
 
@@ -74,6 +75,7 @@ export default {
     //
   },
   async mounted() {
+    this.clusterIdx = this.$route.params.id
     this.daemonSetIdx = this.$route.params.rid
     await this.getDetail({ daemonSetIdx: this.daemonSetIdx })
 
@@ -142,7 +144,13 @@ export default {
           this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
 
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/workload/daemon-set/list'), 1000)
+          setTimeout(
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Daemon Set`,
+              ),
+            1000,
+          )
         } else {
           // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })

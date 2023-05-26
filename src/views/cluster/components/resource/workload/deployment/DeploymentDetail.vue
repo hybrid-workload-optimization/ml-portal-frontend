@@ -160,7 +160,13 @@ export default {
             title: '리소스가 삭제 되었습니다.',
             type: 'info',
           })
-          setTimeout(() => this.$router.push('/workload/deployment/list'), 1000)
+          setTimeout(
+            () =>
+              this.$router.push(
+                `/cluster/detail/${this.clusterIdx}/Deployment`,
+              ),
+            1000,
+          )
         } else {
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
           console.log(response.data.message)
