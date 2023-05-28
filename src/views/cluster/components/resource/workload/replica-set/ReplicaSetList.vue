@@ -238,7 +238,7 @@ export default {
         // })
 
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Replica Set/${replicaSetIdx}`,
+          `/cluster/detail/${this.clusterIdx}/replica-set/${replicaSetIdx}`,
         )
       }
     },

@@ -194,7 +194,7 @@ export default {
         //   },
         //   query: { detail: true },
         // })
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Job/${idx}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/job/${idx}`)
       }
     },
     // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드

@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       formData: {
+        projectIdx: null,
         kubeConfig: this.editData ? this.editData.kubeConfig : '',
       },
       // Kube Config 연결 확인용
@@ -59,7 +60,7 @@ export default {
     }
   },
   created() {
-    // console.log(tag, 'called created')
+    console.log(tag, 'called created')
   },
   watch: {
     editData(value) {
@@ -103,6 +104,7 @@ export default {
       return true
     },
     onSave() {
+      this.formData.projectIdx = this.$route.params.id
       if (this.validateDataForm()) {
         this.setDataFormKubeConfig(this.formData)
         this.initDataFormKubespray()

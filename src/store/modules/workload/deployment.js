@@ -289,6 +289,7 @@ const resource = {
 
     async getPodList({ commit }, payload) {
       const response = await request.getPodListByOwnerUsingPOST(payload)
+      console.log(response)
       commit('changePodList', response)
     },
   },

@@ -86,7 +86,7 @@ const resource = [
 
       // Cluster > Resource List
       {
-        path: 'detail/:id/Overview',
+        path: 'detail/:id/overview',
         name: 'Cluster Detail Overview',
         component: () =>
           import('@/views/cluster/components/ClusterOverview.vue'),
@@ -95,7 +95,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Catalog',
+        path: 'detail/:id/catalog',
         name: 'Cluster Detail Catalog',
         component: () =>
           import('@/views/cluster/components/ClusterAddonCardList.vue'),
@@ -104,7 +104,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Node',
+        path: 'detail/:id/node',
         name: 'Cluster Detail Node',
         component: () =>
           import(
@@ -115,7 +115,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Namespace',
+        path: 'detail/:id/namespace',
         name: 'Cluster Detail Namespace',
         component: () =>
           import(
@@ -126,7 +126,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Persistent Volume',
+        path: 'detail/:id/persistent-volume',
         name: 'Cluster Detail Persistent Volume',
         component: () =>
           import(
@@ -137,7 +137,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Storage Class',
+        path: 'detail/:id/storage-class',
         name: 'Cluster Detail Storage Class',
         component: () =>
           import(
@@ -148,7 +148,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Deployment',
+        path: 'detail/:id/deployment',
         name: 'Cluster Detail Deployment',
         component: () =>
           import(
@@ -159,7 +159,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Stateful Set',
+        path: 'detail/:id/stateful-set',
         name: 'Cluster Detail Stateful Set',
         component: () =>
           import(
@@ -170,7 +170,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Pod',
+        path: 'detail/:id/pod',
         name: 'Cluster Detail Pod',
         component: () =>
           import(
@@ -181,7 +181,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Cron Job',
+        path: 'detail/:id/cron-job',
         name: 'Cluster Detail Cron Job',
         component: () =>
           import(
@@ -192,7 +192,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Job',
+        path: 'detail/:id/job',
         name: 'Cluster Detail Job',
         component: () =>
           import(
@@ -203,7 +203,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Replica Set',
+        path: 'detail/:id/replica-set',
         name: 'Cluster Detail Replica Set',
         component: () =>
           import(
@@ -214,7 +214,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Daemon Set',
+        path: 'detail/:id/daemon-set',
         name: 'Cluster Detail Daemon Set',
         component: () =>
           import(
@@ -225,7 +225,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Service',
+        path: 'detail/:id/service',
         name: 'Cluster Detail Service',
         component: () =>
           import(
@@ -236,7 +236,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Ingress',
+        path: 'detail/:id/ingress',
         name: 'Cluster Detail Ingress',
         component: () =>
           import(
@@ -247,7 +247,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Ingress Controller',
+        path: 'detail/:id/ingress-controller',
         name: 'Cluster Detail Ingress Controller',
         component: () =>
           import(
@@ -258,7 +258,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Persistent Volume Claim',
+        path: 'detail/:id/persistent-volume-claim',
         name: 'Cluster Detail Persistent Volume Claim',
         component: () =>
           import(
@@ -269,7 +269,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Config Map',
+        path: 'detail/:id/config-map',
         name: 'Cluster Detail Config Map',
         component: () =>
           import(
@@ -280,7 +280,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Secret',
+        path: 'detail/:id/secret',
         name: 'Cluster Detail Secret',
         component: () =>
           import(
@@ -293,7 +293,7 @@ const resource = [
 
       // Cluster > Resource > Resource Detail
       {
-        path: 'detail/:id/Node/:rid',
+        path: 'detail/:id/node/:rid',
         name: 'Cluster Detail Node Detail',
         component: () =>
           import(
@@ -304,7 +304,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Namespace/:rid',
+        path: 'detail/:id/namespace/:rid',
         name: 'Cluster Detail Namespace Detail',
         component: () =>
           import(
@@ -315,7 +315,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Persistent Volume/:rid',
+        path: 'detail/:id/persistent-volume/:rid',
         name: 'Cluster Detail Persistent Volume Detail',
         component: () =>
           import(
@@ -326,7 +326,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Storage Class/:rid',
+        path: 'detail/:id/storage-class/:rid',
         name: 'Cluster Detail Storage Class Detail',
         component: () =>
           import(
@@ -337,7 +337,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Deployment/:rid',
+        path: 'detail/:id/deployment/:rid',
         name: 'Cluster Detail Deployment Detail',
         component: () =>
           import(
@@ -348,7 +348,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Stateful Set/:rid',
+        path: 'detail/:id/stateful-set/:rid',
         name: 'Cluster Detail Stateful Set Detail',
         component: () =>
           import(
@@ -359,7 +359,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Pod/:namespace/:name',
+        path: 'detail/:id/pod/:namespace/:name',
         name: 'Cluster Detail Pod Detail',
         component: () =>
           import(
@@ -370,7 +370,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Cron Job/:rid',
+        path: 'detail/:id/cron-job/:rid',
         name: 'Cluster Detail Cron Job Detail',
         component: () =>
           import(
@@ -381,7 +381,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Job/:rid',
+        path: 'detail/:id/job/:rid',
         name: 'Cluster Detail Job Detail',
         component: () =>
           import(
@@ -392,7 +392,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Replica Set/:rid',
+        path: 'detail/:id/replica-set/:rid',
         name: 'Cluster Detail Replica Set Detail',
         component: () =>
           import(
@@ -403,7 +403,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Daemon Set/:rid',
+        path: 'detail/:id/daemon-set/:rid',
         name: 'Cluster Detail Daemon Set Detail',
         component: () =>
           import(
@@ -414,7 +414,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Service/:rid',
+        path: 'detail/:id/service/:rid',
         name: 'Cluster Detail Node Detail',
         component: () =>
           import(
@@ -425,7 +425,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Ingress/:rid',
+        path: 'detail/:id/ingress/:rid',
         name: 'Cluster Detail Ingress Detail',
         component: () =>
           import(
@@ -436,7 +436,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Persistent Volume Claim/:rid',
+        path: 'detail/:id/persistent-volume-claim/:rid',
         name: 'Cluster Detail Persistent Volume Claim Detail',
         component: () =>
           import(
@@ -447,7 +447,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Config Map/:rid',
+        path: 'detail/:id/config-map/:rid',
         name: 'Cluster Detail Config Map Detail',
         component: () =>
           import(
@@ -458,7 +458,7 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/Secret/:rid',
+        path: 'detail/:id/secret/:rid',
         name: 'Cluster Detail Secret Detail',
         component: () =>
           import(

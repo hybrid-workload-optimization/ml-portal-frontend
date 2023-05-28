@@ -223,7 +223,7 @@ export default {
           // 1초 후 리스트 화면으로 이동
           setTimeout(
             () =>
-              this.$router.push(`/cluster/detail/${this.clusterIdx}/Service`),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/secret`),
             1000,
           )
         } else {

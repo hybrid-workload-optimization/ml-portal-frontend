@@ -307,7 +307,7 @@ export default {
       //   name: this.$route.name,
       //   hash: '#Node',
       // })
-      this.$router.push(`/cluster/detail/${this.clusterIdx}/Node`)
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/node`)
     },
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
@@ -323,7 +323,7 @@ export default {
             //   name: this.$route.name,
             //   hash: '#node',
             // }),
-            this.$router.push(`/cluster/detail/${this.clusterIdx}/Node`),
+            this.$router.push(`/cluster/detail/${this.clusterIdx}/node`),
           1000,
         )
       } catch (error) {

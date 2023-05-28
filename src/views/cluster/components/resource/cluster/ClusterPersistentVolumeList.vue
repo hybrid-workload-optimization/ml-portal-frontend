@@ -203,7 +203,7 @@ export default {
         // })
 
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Persistent Volume/${id}`,
+          `/cluster/detail/${this.clusterIdx}/persistent-volume/${id}`,
         )
       }
     },

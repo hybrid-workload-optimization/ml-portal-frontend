@@ -208,7 +208,7 @@ export default {
           )
         } else if (data.provisioningStatus === 'FINISHED') {
           this.$router.push({
-            path: `/cluster/detail/${this.clusterIdx}/Overview`,
+            path: `/cluster/detail/${this.clusterIdx}/overview`,
             query: { projectIdx: this.projectIdx },
           })
         } else if (data.provisioningStatus === 'READY') {
@@ -220,7 +220,7 @@ export default {
         }
       } else {
         this.$router.push({
-          path: `/cluster/detail/${this.clusterIdx}/Overview`,
+          path: `/cluster/detail/${this.clusterIdx}/overview`,
           query: { projectIdx: this.projectIdx },
         })
       }
@@ -245,7 +245,7 @@ export default {
           )
         } else if (data.provisioningStatus === 'FINISHED') {
           const routeData = this.$router.resolve({
-            path: `/cluster/detail/${this.clusterIdx}/Overview`,
+            path: `/cluster/detail/${this.clusterIdx}/overview`,
             // hash: '#Overview',
           })
           window.open(routeData.href)
@@ -259,7 +259,7 @@ export default {
         }
       } else {
         const routeData = this.$router.resolve({
-          path: `/cluster/detail/${this.clusterIdx}/Overview`,
+          path: `/cluster/detail/${this.clusterIdx}/overview`,
           // hash: '#Overview',
         })
         window.open(routeData.href)

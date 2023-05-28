@@ -215,7 +215,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Pod/${namespace}/${name}`,
+          `/cluster/detail/${this.clusterIdx}/pod/${namespace}/${name}`,
         )
       }
     },

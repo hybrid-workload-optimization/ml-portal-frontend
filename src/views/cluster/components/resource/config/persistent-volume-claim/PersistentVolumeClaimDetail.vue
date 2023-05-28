@@ -285,7 +285,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Persistent Volume Claim`,
+                `/cluster/detail/${this.clusterIdx}/persistent-volume-claim`,
               ),
             1000,
           )

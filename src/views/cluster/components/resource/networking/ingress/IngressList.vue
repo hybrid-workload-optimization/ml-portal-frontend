@@ -220,7 +220,7 @@ export default {
         //   },
         //   query: { detail: true },
         // })
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Ingress/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/ingress/${id}`)
       }
     },
 

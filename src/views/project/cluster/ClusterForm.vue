@@ -8,7 +8,7 @@
 
     <input-part
       :editable="isEditMode"
-      :editData="editData"
+      :editData="dataForm"
       ref="clusterInfo"
     ></input-part>
 
@@ -19,16 +19,36 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items class="sp-cluster-register-page__tab-item" v-model="tab">
-      <v-tab-item v-for="item in tabItems" :key="item">
+      <!-- <v-tab-item>
         <new-cluster
           :editable="isEditMode"
           :editData="editData"
+          ref="provisioningType"
+          v-if="
+            selectedTabs === 'new cluster' ||
+            !dataForm.provisioningType === 'KUBECONFIG'
+          "
+        ></new-cluster>
+        <import-cluster
+          :editable="isEditMode"
+          :editData="editData"
+          ref="provisioningType"
+          v-if="
+            selectedTabs === 'import cluster' ||
+            dataForm.provisioningType === 'KUBECONFIG'
+          "
+        ></import-cluster>
+      </v-tab-item> -->
+      <v-tab-item v-for="item in tabItems" :key="item">
+        <new-cluster
+          :editable="isEditMode"
+          :editData="dataForm"
           ref="provisioningType"
           v-if="item === 'new cluster' || item === 'nodes'"
         ></new-cluster>
         <import-cluster
           :editable="isEditMode"
-          :editData="editData"
+          :editData="dataForm"
           ref="provisioningType"
           v-if="item === 'import cluster' || item === 'kube config'"
         ></import-cluster>
@@ -77,29 +97,21 @@ export default {
     editData: null,
     projcetIdx: null,
   }),
-  // created() {
-  //   this.initDataForm()
-
-  //   this.clusterIdx = this.$route.params.cid
-  //   this.projectIdx = this.$route.params.id
-
-  //   if (this.clusterIdx) {
-  //     // 수정 모드
-  //     this.isEditMode = true
-  //     this.callDataForm()
-  //   }
-  //   console.log(tag, 'isEditMode=', this.isEditMode)
-  // },
-  mounted() {
+  async created() {
     this.initDataForm()
-
     this.clusterIdx = this.$route.params.cid
     this.projectIdx = this.$route.params.id
 
     if (this.clusterIdx) {
       // 수정 모드
       this.isEditMode = true
-      this.callDataForm()
+      const response = await this.getDataForm({ clusterIdx: this.clusterIdx })
+      if (response) {
+        this.editData = response.data.result
+      }
+      // await this.getDataForm({ clusterIdx: this.clusterIdx })
+      // this.editData = this.dataForm
+      // this.callDataForm()
     }
     console.log(tag, 'isEditMode=', this.isEditMode)
   },
@@ -108,14 +120,20 @@ export default {
     ...clusterMapUtils.mapGetters(['provider']),
 
     ...loginUserMapUtils.mapState(['currentMenuInfo']),
-
+    // editData() {
+    //   return this.editData
+    // },
     clusterTitle() {
       return {
         title: this.isEditMode ? 'Edit Cluster' : 'New Cluster',
       }
     },
     tabItems() {
-      return this.isEditMode ? ['nodes'] : ['new cluster', 'import cluster']
+      return this.isEditMode
+        ? this.dataForm.provisioningType === 'KUBECONFIG'
+          ? ['kube config']
+          : ['nodes']
+        : ['new cluster', 'import cluster']
     },
   },
   methods: {
@@ -129,15 +147,20 @@ export default {
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
     async callDataForm() {
-      const response = await this.getDataForm({ clusterIdx: this.clusterIdx })
-      const { data } = response
-      const { result } = data
-      console.log('[getDataForm] response=', result)
-      if (result) {
-        this.editData = result
-        this.tab = result.provisioningType === 'KUBECONFIG' ? 1 : 0
-        console.log(tag, 'tab=', this.tab)
-      }
+      // const response = await this.getDataForm({ clusterIdx: this.clusterIdx })
+      // const { data } = response
+      // const { result } = data
+      // console.log('[getDataForm] response=', result)
+
+      // if (result) {
+      //   this.editData = result
+      //   this.tab = result.provisioningType === 'KUBECONFIG' ? 1 : 0
+      //   console.log(tag, 'tab=', this.tab)
+      // }
+
+      await this.getDataForm({ clusterIdx: this.clusterIdx })
+
+      this.editData = this.dataForm
     },
     onClickCancelConfirm() {
       if (this.isEditMode) {
@@ -175,28 +198,30 @@ export default {
       }
     },
     async onSaveByNew() {
+      console.log(this.dataForm)
       try {
         if (this.dataForm.provider === 'Kubernetes') {
           const response = await this.createData(this.dataForm)
           if (response.status === 200) {
             if (this.dataForm.provisioningType === 'KUBESPRAY') {
               this.openAlert({
-                title: 'Cluster 등록을 요청하였습니다.',
+                title: 'Cluster registration requested.',
                 type: 'info',
               })
             } else {
               this.openAlert({
-                title: 'Cluster 등록 되었습니다.',
+                title: 'Cluster is registered.',
                 type: 'info',
               })
             }
+            console.log(this.projectIdx)
             setTimeout(
-              () => this.$router.push(`/project/detail/${this.projcetIdx}`),
+              () => this.$router.push(`/project/detail/${this.projectIdx}`),
               1000,
             )
           } else {
             this.openAlert({
-              title: 'Cluster 등록을 실패했습니다.',
+              title: 'Cluster registration failed.',
               type: 'error',
             })
             console.log(response.data.message)
@@ -204,7 +229,7 @@ export default {
         }
       } catch (error) {
         this.openAlert({
-          title: 'Cluster 등록을 실패했습니다.',
+          title: 'Cluster registration failed.',
           type: 'error',
         })
         console.log(error)

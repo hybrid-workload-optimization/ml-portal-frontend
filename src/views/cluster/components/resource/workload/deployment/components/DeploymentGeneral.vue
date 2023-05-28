@@ -302,7 +302,9 @@ export default {
       },
     }
   },
-
+  mounted() {
+    console.log(this.podList)
+  },
   computed: {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
     ...deploymentMapUtils.mapGetters(['podList']),
@@ -313,7 +315,7 @@ export default {
       //   `/workload/pod/detail/${this.deploymentDetailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.deploymentDetailInfo.clusterIdx}/Pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.deploymentDetailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },

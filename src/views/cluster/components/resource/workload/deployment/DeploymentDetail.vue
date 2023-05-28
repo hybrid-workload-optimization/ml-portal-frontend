@@ -7,9 +7,9 @@
       @click-delete="onClickDelete"
     ></card-title>
 
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
-      <v-tab style="display: none" v-for="tabName in tabNames" :key="tabName">
+      <v-tab v-for="tabName in tabNames" :key="tabName">
         {{ tabName }}
       </v-tab>
     </v-tabs>
@@ -66,13 +66,11 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    console.log('11111111111')
     this.clusterIdx = this.$route.params.id
     this.deploymentIdx = this.$route.params.rid
     // this.namespace = this.$route.params.namespace
     // this.name = this.$route.params.name
     await this.getData()
-    console.log('11111111111')
     console.log(this.deploymentDetailInfo)
     // mixin
     this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
@@ -81,7 +79,7 @@ export default {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
     titleData() {
       return {
-        title: this.deploymentDetailInfo.title,
+        title: this.deploymentDetailInfo.name,
       }
     },
   },
@@ -174,7 +172,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Deployment`,
+                `/cluster/detail/${this.clusterIdx}/deployment`,
               ),
             1000,
           )

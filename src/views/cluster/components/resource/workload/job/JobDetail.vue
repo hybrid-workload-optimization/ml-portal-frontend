@@ -331,7 +331,7 @@ export default {
 
         // 1초 후 리스트 화면으로 이동
         setTimeout(
-          () => this.$router.push(`/cluster/detail/${this.clusterIdx}/Job`),
+          () => this.$router.push(`/cluster/detail/${this.clusterIdx}/job`),
           1000,
         )
       } catch (error) {
@@ -360,7 +360,7 @@ export default {
       //   `/workload/pod/detail/${this.detailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.detailInfo.clusterIdx}/Pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.detailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },

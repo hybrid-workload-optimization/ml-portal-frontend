@@ -238,7 +238,7 @@ export default {
         // })
 
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Stateful Set/${id}`,
+          `/cluster/detail/${this.clusterIdx}/stateful-set/${id}`,
         )
       }
     },

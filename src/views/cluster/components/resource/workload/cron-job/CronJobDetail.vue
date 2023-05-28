@@ -301,7 +301,7 @@ export default {
         // 1초 후 리스트 화면으로 이동
         setTimeout(
           () =>
-            this.$router.push(`/cluster/detail/${this.clusterIdx}/Cron Job`),
+            this.$router.push(`/cluster/detail/${this.clusterIdx}/cron-job`),
           1000,
         )
       } catch (error) {

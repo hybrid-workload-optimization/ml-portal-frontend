@@ -21,7 +21,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import ReplicaSetGeneral from '@/views/workload/replica-set/components/ReplicaSetGeneral.vue'
+import ReplicaSetGeneral from '@/views/cluster/components/resource/workload/replica-set/components/ReplicaSetGeneral.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
@@ -140,7 +140,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Replica Set`,
+                `/cluster/detail/${this.clusterIdx}/replica-set`,
               ),
             1000,
           )

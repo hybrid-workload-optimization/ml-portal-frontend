@@ -265,7 +265,7 @@ export default {
       //   name: this.$route.name,
       //   hash: '#Storage Class',
       // })
-      this.$router.push(`/cluster/detail/${this.clusterIdx}/Storage Class`)
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/storage-class`)
     },
 
     // [삭제 요청 확인창] 확인 클릭 시
@@ -285,7 +285,7 @@ export default {
             //   hash: '#storageClass',
             // }),
             this.$router.push(
-              `/cluster/detail/${this.clusterIdx}/Storage Class`,
+              `/cluster/detail/${this.clusterIdx}/storage-class`,
             ),
           1000,
         )

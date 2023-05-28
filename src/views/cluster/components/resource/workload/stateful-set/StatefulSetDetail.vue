@@ -8,7 +8,7 @@
     ></card-title>
 
     <!-- 상단 탭 명칭 설정 -->
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
       <v-tab v-for="tabName in tabNames" :key="tabName">
         {{ tabName }}
@@ -35,7 +35,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import StatefulSetGeneral from '@/views/workload/stateful-set/components/StatefulSetGeneral.vue'
+import StatefulSetGeneral from '@/views/cluster/components/resource/workload/stateful-set/components/StatefulSetGeneral.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
@@ -76,7 +76,7 @@ export default {
     ...statefulSetMapUtils.mapGetters(['detailInfo']), // 상세 정보 데이터 객체 반환(statefulSet.js)
     titleData() {
       return {
-        title: this.detailInfo.title,
+        title: this.detailInfo.name,
       }
     },
   },
@@ -163,7 +163,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Stateful Set`,
+                `/cluster/detail/${this.clusterIdx}/stateful-set`,
               ),
             1000,
           )

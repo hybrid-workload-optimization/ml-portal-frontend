@@ -202,7 +202,7 @@ export default {
       //   `/workload/pod/detail/${this.detailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.detailInfo.clusterIdx}/Pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.detailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },

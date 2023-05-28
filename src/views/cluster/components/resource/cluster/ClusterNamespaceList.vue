@@ -177,7 +177,7 @@ export default {
         //   query: { namespaceId: id, detail: true },
         // })
 
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Namespace/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/namespace/${id}`)
       }
     },
 

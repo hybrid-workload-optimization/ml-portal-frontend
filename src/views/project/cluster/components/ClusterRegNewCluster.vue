@@ -1,6 +1,10 @@
 <template>
   <div class="new-cluster-provider">
-    <private-provider v-if="provider === 'Kubernetes'" ref="privateProvider" />
+    <private-provider
+      v-if="provider === 'Kubernetes'"
+      ref="privateProvider"
+      :editData="editData"
+    />
     <private-provider-vsphere
       v-else-if="provider === 'VMware'"
       ref="privateProviderVsphere"
@@ -53,10 +57,9 @@ export default {
   data() {
     return {}
   },
-  mounted() {
+  created() {
     console.log(tag)
-    console.log(this.editData)
-    console.log(this.provider)
+    // console.log(this.provider)
   },
   methods: {
     onSave() {

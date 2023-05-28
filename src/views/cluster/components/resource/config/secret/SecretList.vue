@@ -236,7 +236,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Secret/${secretIdx}`,
+          `/cluster/detail/${this.clusterIdx}/secret/${secretIdx}`,
         )
       }
     },
