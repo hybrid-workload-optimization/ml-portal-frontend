@@ -38,7 +38,6 @@ export default {
   },
   watch: {
     url(newValue) {
-      console.log(newValue)
       this.monitoringUrl = newValue
     },
   },

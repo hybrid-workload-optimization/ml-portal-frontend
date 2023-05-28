@@ -194,7 +194,7 @@ export default {
         //   },
         //   query: { detail: true },
         // })
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Service/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/service/${id}`)
       }
     },
     async onConfirmedFromEditModal(value) {

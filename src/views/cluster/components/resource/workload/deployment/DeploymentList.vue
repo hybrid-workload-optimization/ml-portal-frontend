@@ -210,7 +210,7 @@ export default {
         // `/cluster/detail/${this.clusterIdx}/Deployment/${namespace}/${name}`,
         // )
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Deployment/${idx}`,
+          `/cluster/detail/${this.clusterIdx}/deployment/${idx}`,
         )
       }
     },

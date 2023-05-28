@@ -119,6 +119,7 @@ export default {
     provider: '',
     httpPort: '',
     httpsPort: '',
+    clusterIdx: null,
   }),
   computed: {
     ...multiSelectMapUtils.mapGetters(['secondValue']),
@@ -128,6 +129,7 @@ export default {
     },
   },
   mounted() {
+    this.clusterIdx = this.$route.params.id
     if (this.isEditMode) {
       this.setData()
     } else {
@@ -186,7 +188,7 @@ export default {
     async onChangeDefault() {
       if (this.isDefault) {
         const response = await this.checkIsExistDefault({
-          clusterIdx: this.secondValue,
+          clusterIdx: this.clusterIdx,
         })
         if (response) {
           this.isDefault = false
@@ -196,12 +198,13 @@ export default {
     async onSubmit() {
       if (!this.$refs.form.validate()) return
       const params = {
-        clusterIdx: Number(this.secondValue),
+        clusterIdx: Number(this.clusterIdx),
         isDefault: this.isDefault,
         replicas: Number(this.replicas),
         serviceType: this.serviceType,
         name: this.provider,
       }
+      console.log(params)
       if (this.serviceType === 'ExternalIPs') {
         params.externalIp = this.externalIp
           .map(item => item.ipAddress)
@@ -226,7 +229,7 @@ export default {
       this.httpPort = ''
       this.httpsPort = ''
       this.externalIp = [{ ipAddress: '' }]
-      this.getProviderList({ clusterIdx: this.secondValue })
+      this.getProviderList({ clusterIdx: this.clusterIdx })
       this.$refs.form.resetValidation()
     },
   },

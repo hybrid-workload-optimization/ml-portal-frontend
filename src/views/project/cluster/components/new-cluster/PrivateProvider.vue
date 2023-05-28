@@ -127,6 +127,7 @@ export default {
   data() {
     return {
       formData: {
+        projectIdx: null,
         provisioningUser: '',
         nodes: [
           {
@@ -157,12 +158,22 @@ export default {
       },
     }
   },
-  watch: {
-    editData(value) {
-      this.formData = value
-      this.formData.originalNodes = value.nodes.slice()
-    },
+  created() {
+    this.formData.projectIdx = this.$route.params.id
+    this.clusterIdx = this.$route.params.cid
+    if (this.clusterIdx) {
+      this.formData = this.editData
+      this.formData.originalNodes = this.editData.nodes.slice()
+    }
   },
+  // watch: {
+  //   editData(value) {
+  //     console.log(this.formData)
+  //     console.log(value)
+  //     this.formData = value
+  //     this.formData.originalNodes = value.nodes.slice()
+  //   },
+  // },
   methods: {
     ...clusterMapUtils.mapMutations(['setDataFormKubespray']),
     ...clusterMapUtils.mapMutations(['initDataFormKubeConfig']),

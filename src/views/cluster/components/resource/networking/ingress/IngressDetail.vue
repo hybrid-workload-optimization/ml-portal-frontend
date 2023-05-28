@@ -8,7 +8,7 @@
     ></card-title>
 
     <!-- 상단 탭 명칭 설정 -->
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
       <v-tab v-for="tabName in tabNames" :key="tabName">
         {{ tabName }}
@@ -76,7 +76,7 @@ export default {
     ...ingressMapUtils.mapGetters(['detailInfo']), // 상세 정보 데이터 객체 반환(ingress.js)
     titleData() {
       return {
-        title: this.detailInfo.title,
+        title: this.detailInfo.name,
       }
     },
   },
@@ -141,7 +141,7 @@ export default {
           // 1초 후 리스트 화면으로 이동
           setTimeout(
             () =>
-              this.$router.push(`/cluster/detail/${this.clusterIdx}/Ingress`),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/ingress`),
             1000,
           )
         } else {

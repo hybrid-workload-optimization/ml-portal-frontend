@@ -168,7 +168,7 @@ export default {
         //   query: { storageClassId: id, detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Storage Class/${id}`,
+          `/cluster/detail/${this.clusterIdx}/storage-class/${id}`,
         )
       }
     },

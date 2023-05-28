@@ -270,8 +270,4 @@ export default {
 .v-tabs-bar {
   background-color: #f3f6f9 !important;
 }
-
-.v-tabs {
-  display: none;
-}
 </style>

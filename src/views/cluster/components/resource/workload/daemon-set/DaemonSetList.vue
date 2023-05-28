@@ -250,7 +250,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Daemon Set/${daemonSetIdx}`,
+          `/cluster/detail/${this.clusterIdx}/daemon-set/${daemonSetIdx}`,
         )
       }
     },

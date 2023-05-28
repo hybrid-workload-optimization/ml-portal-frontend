@@ -104,10 +104,10 @@ import { createNamespacedHelpers } from 'vuex'
 import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
-import request from '@/lib/request'
+// import request from '@/lib/request'
 import Search from '@/components/molcule/DataTableSearch.vue'
 import Modal from '@/components/modals/Modal.vue'
-import NewIngressController from '@/views/networking/ingress/components/NewIngressController.vue'
+import NewIngressController from '@/views/cluster/components/resource/networking/ingress/components/NewIngressController.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
 
 const ingressControllerMapUtils = createNamespacedHelpers('ingressController')
@@ -129,13 +129,7 @@ export default {
     return {
       dialog: false,
       searchValue: '',
-
-      // 멑티셀렉트 컴포넌트에서 첫번째 셀렉트 리스트를 가지고 오기 위한 메타데이터
-      firstSelectMeta: {
-        requestFunc: request.getClustersUsingGET,
-        parameters: { projectIdx: '' },
-        valueKey: 'projectIdx',
-      },
+      noNeedSelect: true,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
         {

@@ -17,12 +17,22 @@
       />
     </div>
     <div class="multi-select__button-box">
-      <sp-button
+      <!-- <sp-button
         class="multi-select--deploy"
         elevation="0"
         dense
         outlined
         :disabled="btnDisabled || !isProjectAuth"
+        @click="onClickBtn"
+      >
+        {{ btnName }}
+      </sp-button> -->
+      <sp-button
+        class="multi-select--deploy"
+        elevation="0"
+        dense
+        outlined
+        :disabled="btnDisabled"
         @click="onClickBtn"
       >
         {{ btnName }}

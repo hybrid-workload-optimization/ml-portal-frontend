@@ -45,7 +45,7 @@ import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
-import DaemonSetGeneral from '@/views/workload/daemon-set/components/DaemonSetGeneral.vue'
+import DaemonSetGeneral from '@/views/cluster/components/resource/workload/daemon-set/components/DaemonSetGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const daemonSetMapUtils = createNamespacedHelpers('daemonSet')
@@ -147,7 +147,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Daemon Set`,
+                `/cluster/detail/${this.clusterIdx}/daemon-set`,
               ),
             1000,
           )

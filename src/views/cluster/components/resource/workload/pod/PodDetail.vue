@@ -336,7 +336,7 @@ export default {
 
         // 1초 후 리스트 화면으로 이동
         setTimeout(
-          () => this.$router.push(`/cluster/detail/${this.clusterIdx}/Pod`),
+          () => this.$router.push(`/cluster/detail/${this.clusterIdx}/pod`),
           1000,
         )
       } catch (error) {
@@ -351,12 +351,13 @@ export default {
         clusterIdx: params.id,
         yaml: value.encodedContent,
       }
+      console.log(param)
       try {
         await this.updatePod(param)
         this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
         this.getDetail({
           podName: this.podName,
-          clusterIdx: params.clusterIdx,
+          clusterIdx: params.id,
           namespace: params.namespace,
         })
       } catch (error) {

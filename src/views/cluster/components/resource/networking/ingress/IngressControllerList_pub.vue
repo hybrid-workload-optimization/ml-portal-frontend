@@ -233,7 +233,7 @@ export default {
       const { id } = data
       if (id) {
         // this.$router.push(`/network/ingress/detail/${id}`)
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Ingress/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/ingress/${id}`)
       }
     },
 

@@ -216,7 +216,7 @@ export default {
           setTimeout(
             () =>
               this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/Config Map`,
+                `/cluster/detail/${this.clusterIdx}/config-map`,
               ),
             1000,
           )

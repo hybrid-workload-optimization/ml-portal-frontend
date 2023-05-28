@@ -230,7 +230,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Config Map/${configMapIdx}`,
+          `/cluster/detail/${this.clusterIdx}/config-map/${configMapIdx}`,
         )
       }
     },

@@ -252,7 +252,7 @@ export default {
         //   query: { detail: true },
         // })
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/Persistent Volume Claim/${persistentVolumeClaimIdx}`,
+          `/cluster/detail/${this.clusterIdx}/persistent-volume-claim/${persistentVolumeClaimIdx}`,
         )
       }
     },

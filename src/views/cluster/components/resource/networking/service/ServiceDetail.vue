@@ -8,7 +8,7 @@
     ></card-title>
 
     <!-- 상단 탭 명칭 설정 -->
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
       <v-tab v-for="tabName in tabNames" :key="tabName">
         {{ tabName }}
@@ -76,7 +76,7 @@ export default {
     ...serviceMapUtils.mapGetters(['serviceDetailInfo']),
     titleData() {
       return {
-        title: this.serviceDetailInfo.title,
+        title: this.serviceDetailInfo.name,
       }
     },
   },
@@ -160,7 +160,7 @@ export default {
           // 1초 후 리스트 화면으로 이동
           setTimeout(
             () =>
-              this.$router.push(`/cluster/detail/${this.clusterIdx}/Service`),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/service`),
             1000,
           )
         } else {

@@ -190,7 +190,7 @@ export default {
         //   hash: this.$route.hash,
         //   query: { clusterNodeId: id, detail: true },
         // })
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/Node/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/node/${id}`)
       }
     },
     getChipColor(statusText) {

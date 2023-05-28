@@ -38,7 +38,11 @@
               <li
                 v-for="{ menuName, menuIdx } in subMenuList"
                 class="expand-list-item"
-                :class="{ active: selectedMenu === menuName }"
+                :class="{
+                  active:
+                    selectedMenu ===
+                    menuName.toLowerCase().replace(/\s+/g, '-'),
+                }"
                 :key="menuIdx"
                 @click="sendTabName(menuName)"
               >
@@ -76,7 +80,7 @@ export default {
         ],
       },
       panel: [],
-      isActive: 'Overview',
+      isActive: 'overview',
     }
   },
   computed: {
@@ -103,12 +107,12 @@ export default {
       //   path: `/cluster/detail/${this.$route.params.id}`,
       //   hash: resourceHash,
       // })
-
+      const convertTabName = tabName.toLowerCase().replace(/\s+/g, '-')
       this.$router.push({
-        path: `/cluster/detail/${this.$route.params.id}/${tabName}`,
+        path: `/cluster/detail/${this.$route.params.id}/${convertTabName}`,
       })
 
-      this.isActive = tabName
+      this.isActive = convertTabName
     },
     expandAll() {
       this.panel = [...Array(this.menuItems.length).keys()].map((k, i) => i)

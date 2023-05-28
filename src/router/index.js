@@ -74,7 +74,6 @@ router.beforeEach(async (to, from, next) => {
         }
 
         const menuStr = menuSplit.slice(0, splitIdx).join('/')
-
         if (
           item.menuUrl === to.path ||
           to.path.indexOf(menuStr) > -1 ||

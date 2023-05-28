@@ -268,6 +268,7 @@ const resource = {
       state.dataForm.originalNodes = []
     },
     setDataFormKubeConfig(state, payload) {
+      state.dataForm.projectIdx = payload.projectIdx
       state.dataForm.provisioningType = 'KUBECONFIG'
       state.dataForm.kubeConfig = payload.kubeConfig
     },
@@ -385,8 +386,22 @@ const resource = {
       commit('setDataSummary', response)
     },
     // 상세 정보 조회 요청 - 수정
-    async getDataForm(context, payload) {
+    async getDataForm({ commit }, payload) {
       const response = await request.getClusterUsingGET(payload)
+      const { provider } = response.data.result
+      const { provisioningType } = response.data.result
+      const { result } = response.data
+
+      commit('setDataFormClusterInfo', result)
+
+      if (provider === 'Kubernetes') {
+        if (provisioningType === 'KUBESPRAY') {
+          commit('setDataFormKubespray', result)
+        } else if (provisioningType === 'KUBECONFIG') {
+          commit('setDataFormKubeConfig', result)
+        }
+      }
+
       return response
     },
     // 등록 요청
@@ -419,7 +434,6 @@ const resource = {
         const response = await request.getClusterMonitoringAddonUsingGET(
           payload,
         )
-        console.log(response)
         commit('setMonitoringAddOn', response)
       } catch (error) {
         console.log(error)
@@ -530,7 +544,6 @@ const resource = {
     },
     async getTemplateList({ commit }, payload) {
       const { data } = await request.getTemplatesUsingGET(payload)
-      console.log(data)
       if (data.result) {
         commit('setTemplateList', data.result)
       } else {
@@ -572,7 +585,6 @@ const resource = {
       }
 
       params = { ...params, povisioningParam }
-      console.log(params)
 
       const { data } = await request.provisioningClusterUsingPOST({
         ...params,

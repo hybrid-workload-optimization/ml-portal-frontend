@@ -273,7 +273,7 @@ export default {
     },
 
     moveList() {
-      this.$router.push(`/cluster/detail/${this.clusterIdx}/Persistent Volume`)
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/persistent-volume`)
     },
 
     // [삭제 요청 확인창] 확인 클릭 시
@@ -293,7 +293,7 @@ export default {
             //   hash: '#persistentVolume',
             // }),
             this.$router.push(
-              `/cluster/detail/${this.clusterIdx}/Persistent Volume`,
+              `/cluster/detail/${this.clusterIdx}/persistent-volume`,
             ),
           1000,
         )

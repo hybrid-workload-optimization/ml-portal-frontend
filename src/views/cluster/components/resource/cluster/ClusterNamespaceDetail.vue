@@ -220,7 +220,7 @@ export default {
       //   name: this.$route.name,
       //   hash: '#Namespace',
       // })
-      this.$router.push(`/cluster/detail/${this.clusterIdx}/Namespace`)
+      this.$router.push(`/cluster/detail/${this.clusterIdx}/namespace`)
     },
 
     // [삭제 요청 확인창] 확인 클릭 시
@@ -237,7 +237,7 @@ export default {
             //   name: this.$route.name,
             //   hash: '#namespace',
             // }),
-            this.$router.push(`/cluster/detail/${this.clusterIdx}/Namespace`),
+            this.$router.push(`/cluster/detail/${this.clusterIdx}/namespace`),
           1000,
         )
       } catch (error) {

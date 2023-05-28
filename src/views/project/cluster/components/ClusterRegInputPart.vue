@@ -198,9 +198,6 @@ export default {
       },
     }
   },
-  async created() {
-    this.formData.projectIdx = this.$route.params.id
-  },
   watch: {
     editData(value) {
       this.formData = value
@@ -288,6 +285,7 @@ export default {
       return true
     },
     onSave() {
+      this.formData.projectIdx = this.$route.params.id
       if (this.validateDataForm()) {
         this.setDataFormClusterInfo(this.formData)
         return true
