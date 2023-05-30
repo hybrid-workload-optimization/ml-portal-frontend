@@ -42,6 +42,7 @@ import LabelWithText from '@/components/molcule/LabelWithText.vue'
 
 const mlMapUtils = createNamespacedHelpers('ml')
 const alertMapUtils = createNamespacedHelpers('alert')
+const projectMapUtils = createNamespacedHelpers('project')
 
 export default {
   components: {
@@ -93,6 +94,7 @@ export default {
     ...mlMapUtils.mapMutations(['initClusters']),
     ...mlMapUtils.mapActions(['updateClusterScale']),
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
+    ...projectMapUtils.mapActions(['getDetailClusterList']),
 
     // input number 에 숫자가 아닌 문자가 들어올경우 조건식으로 체크
     checkValue(e) {
@@ -128,7 +130,8 @@ export default {
             type: 'info',
           })
           // 1초 후 팝업 닫기
-          this.initClusters()
+          // this.initClusters()
+          this.dataDetailClusterList()
           setTimeout(() => this.popupClose(), 1000)
         } else {
           // // 수정 실패 시
@@ -144,7 +147,8 @@ export default {
             type: 'info',
           })
           // 1초 후 팝업 닫기
-          this.initClusters()
+          // this.initClusters()
+          this.dataDetailClusterList()
           setTimeout(() => this.popupClose(), 1000)
         }
       } catch (error) {
@@ -160,7 +164,8 @@ export default {
           type: 'info',
         })
         // 1초 후 팝업 닫기
-        this.initClusters()
+        // this.initClusters()
+        this.dataDetailClusterList()
         setTimeout(() => this.popupClose(), 1000)
       }
     },
