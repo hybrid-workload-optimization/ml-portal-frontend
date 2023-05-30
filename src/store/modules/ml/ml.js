@@ -215,7 +215,7 @@ const resource = {
     // ML Cluster Scale 조정 요청
     async updateClusterScale(context, payload) {
       // const response = await request.scaleUsingPOST(payload)
-      const response = await request.scaleUsingPOST_1(payload)
+      const response = await request.scaleUsingPOST_1({ payload, header: {} })
       return response
     },
 
