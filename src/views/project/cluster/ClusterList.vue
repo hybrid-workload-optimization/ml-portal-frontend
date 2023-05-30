@@ -301,15 +301,15 @@ export default {
 
     // [수정 버튼] 클릭 시
     onClickEdit(item) {
-      // this.clusterIdx = item.id
-      // this.$router.push(
-      //   `/project/detail/${this.projectIdx}/cluster/edit/${this.clusterIdx}`,
-      // )
+      this.clusterIdx = item.id
+      this.$router.push(
+        `/project/detail/${this.projectIdx}/cluster/edit/${this.clusterIdx}`,
+      )
       console.log(item)
-      this.vmData = item
-      this.$store.state.scaleIdx = item.id
-      this.$store.state.scaleNodeCount = item.nodeCount
-      this.openEditScaleModal()
+      // this.vmData = item
+      // this.$store.state.scaleIdx = item.id
+      // this.$store.state.scaleNodeCount = item.nodeCount
+      // this.openEditScaleModal()
     },
     onClickCloseLabelModal() {
       this.closeEditScaleModal()
