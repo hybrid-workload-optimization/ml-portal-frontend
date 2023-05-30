@@ -65,7 +65,7 @@ export default {
     onSave() {
       // 이벤트 전달
       if (this.provider === 'Kubernetes') {
-        return this.$refs.PrivateProvider.onSubmit()
+        return this.$refs.privateProvider.onSave()
       }
       if (this.provider === 'VMware') {
         return this.$refs.privateProviderVsphere.onSubmit()
