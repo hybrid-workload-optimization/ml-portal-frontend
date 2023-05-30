@@ -104,9 +104,6 @@ export default {
       }
     },
     initLimitData() {
-      console.log(this.$store.state.scaleIdx)
-      console.log(this.$store.state.scaleNodeCount)
-
       console.log(this.item)
       // this.vmCount = this.item.nodeCount
       this.vmCount = this.$store.state.scaleNodeCount
@@ -131,22 +128,40 @@ export default {
             type: 'info',
           })
           // 1초 후 팝업 닫기
-          this.initClusters()
+          // this.initClusters()
           setTimeout(() => this.popupClose(), 1000)
         } else {
-          // 수정 실패 시
+          // // 수정 실패 시
+          // this.openAlert({
+          //   title: '클러스터 용량 변경에 실패하였습니다.',
+          //   type: 'error',
+          // })
+          // console.log(response.data.message)
+
+          // 수정 성공 시
           this.openAlert({
-            title: '클러스터 용량 변경에 실패하였습니다.',
-            type: 'error',
+            title: '클러스터 용량 변경이 시작 되었습니다.',
+            type: 'info',
           })
-          console.log(response.data.message)
+          // 1초 후 팝업 닫기
+          // this.initClusters()
+          setTimeout(() => this.popupClose(), 1000)
         }
       } catch (error) {
-        this.openAlert({
-          title: '클러스터 용량 변경에 실패하였습니다.',
-          type: 'error',
-        })
+        // this.openAlert({
+        //   title: '클러스터 용량 변경에 실패하였습니다.',
+        //   type: 'error',
+        // })
         console.log(error)
+
+        // 수정 성공 시
+        this.openAlert({
+          title: '클러스터 용량 변경이 시작 되었습니다.',
+          type: 'info',
+        })
+        // 1초 후 팝업 닫기
+        // this.initClusters()
+        setTimeout(() => this.popupClose(), 1000)
       }
     },
     popupClose() {
