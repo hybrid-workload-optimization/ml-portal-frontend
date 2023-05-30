@@ -28,6 +28,21 @@
       </template>
     </modal> -->
 
+    <modal
+      class="popup-cluster"
+      title-name="Cluster 조정"
+      modal-width="500"
+      :dialog="isOpenEditScaleModal"
+      @close-modal="onClickCloseLabelModal"
+    >
+      <template v-slot:content>
+        <clusterscale-popup
+          @closePopup="onClickCloseLabelModal"
+          :item="vmData"
+        />
+      </template>
+    </modal>
+
     <!-- 삭제 요청 확인 창 -->
     <confirm @confirm-modal="onClickDelConfirm" />
   </div>
@@ -36,7 +51,9 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import ClusterDesignedList from '@/views/project/cluster/components/ClusterDesignedList.vue'
+import ClusterscalePopup from '@/views/project/cluster/components/popup/ClusterScalePopup.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
+import Modal from '@/components/modals/Modal.vue'
 
 // store > cluster > cluster.js
 const clusterMapUtils = createNamespacedHelpers('cluster')
@@ -44,10 +61,14 @@ const alertMapUtils = createNamespacedHelpers('alert')
 const projectMapUtils = createNamespacedHelpers('project')
 const confirmMapUtils = createNamespacedHelpers('confirm')
 
+const mlMapUtils = createNamespacedHelpers('ml')
+
 export default {
   components: {
     ClusterDesignedList,
+    ClusterscalePopup,
     Confirm,
+    Modal,
   },
   data() {
     return {
@@ -107,6 +128,7 @@ export default {
         itemKey: 'clusterIdx',
       },
       isLoading: false,
+      vmData: {},
     }
   },
 
@@ -119,6 +141,7 @@ export default {
     ...clusterMapUtils.mapState(['timeoutList']), // 목록
     ...clusterMapUtils.mapGetters(['dataList']), // 목록
     ...clusterMapUtils.mapGetters(['dataListSize']),
+    ...mlMapUtils.mapGetters(['isOpenEditScaleModal']),
     // ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
     // ...clusterMapUtils.mapGetters(['dataForm']), // 등록/수정
     ...projectMapUtils.mapGetters(['dataDetailClusterList', 'clusterSize']),
@@ -159,6 +182,7 @@ export default {
     ...projectMapUtils.mapActions(['getDataStatus']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
+    ...mlMapUtils.mapMutations(['openEditScaleModal', 'closeEditScaleModal']),
 
     startInterval() {
       if (this.dataDetailClusterList.length) {
@@ -277,10 +301,16 @@ export default {
 
     // [수정 버튼] 클릭 시
     onClickEdit(item) {
-      this.clusterIdx = item.id
-      this.$router.push(
-        `/project/detail/${this.projectIdx}/cluster/edit/${this.clusterIdx}`,
-      )
+      // this.clusterIdx = item.id
+      // this.$router.push(
+      //   `/project/detail/${this.projectIdx}/cluster/edit/${this.clusterIdx}`,
+      // )
+      console.log(item)
+      this.vmData = item
+      this.openEditScaleModal()
+    },
+    onClickCloseLabelModal() {
+      this.closeEditScaleModal()
     },
     onClickDelete(item) {
       console.log('delete click', item)

@@ -32,6 +32,7 @@ const resource = {
       provisioningLog: '',
       provisioningUser: '',
       projectIdx: '',
+      isOpenEditScaleModal: false,
     },
     dataForm: {
       displayClusterName: '',
@@ -107,6 +108,9 @@ const resource = {
     },
     templates(state) {
       return state.templateList
+    },
+    isOpenEditScaleModal(state) {
+      return state.isOpenEditScaleModal
     },
   },
   mutations: {
@@ -341,6 +345,12 @@ const resource = {
     },
     changeShowEditModal: (state, payload) => {
       state.isShowEditModal = payload
+    },
+    openEditScaleModal(state) {
+      state.isOpenEditScaleModal = true
+    },
+    closeEditScaleModal(state) {
+      state.isOpenEditScaleModal = false
     },
   },
   actions: {
