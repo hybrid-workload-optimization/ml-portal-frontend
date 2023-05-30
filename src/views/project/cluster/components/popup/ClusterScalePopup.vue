@@ -128,7 +128,7 @@ export default {
             type: 'info',
           })
           // 1초 후 팝업 닫기
-          // this.initClusters()
+          this.initClusters()
           setTimeout(() => this.popupClose(), 1000)
         } else {
           // // 수정 실패 시
@@ -144,7 +144,7 @@ export default {
             type: 'info',
           })
           // 1초 후 팝업 닫기
-          // this.initClusters()
+          this.initClusters()
           setTimeout(() => this.popupClose(), 1000)
         }
       } catch (error) {
@@ -160,7 +160,7 @@ export default {
           type: 'info',
         })
         // 1초 후 팝업 닫기
-        // this.initClusters()
+        this.initClusters()
         setTimeout(() => this.popupClose(), 1000)
       }
     },
