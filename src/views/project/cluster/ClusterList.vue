@@ -307,6 +307,8 @@ export default {
       // )
       console.log(item)
       this.vmData = item
+      this.$store.state.scaleIdx = item.id
+      this.$store.state.scaleNodeCount = item.nodeCount
       this.openEditScaleModal()
     },
     onClickCloseLabelModal() {
