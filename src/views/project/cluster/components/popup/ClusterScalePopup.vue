@@ -7,10 +7,11 @@
             <label-with-text
               id="vmCount"
               horizontal
-              name="VM Count"
+              name="Node Count"
               v-model="vmCount"
               @blur="checkValue"
               type="number"
+              :value="vmCount"
             ></label-with-text>
           </td>
         </tr>
@@ -46,7 +47,10 @@ export default {
   components: {
     LabelWithText,
   },
-  created() {
+  // created() {
+  //   this.initLimitData()
+  // },
+  mounted() {
     this.initLimitData()
   },
   data() {
@@ -92,6 +96,7 @@ export default {
 
     // input number 에 숫자가 아닌 문자가 들어올경우 조건식으로 체크
     checkValue(e) {
+      console.log(e)
       const regex = /[0-9]+$/
       if (!regex.test(e.data) && e.data !== null) {
         const value = document.getElementById('vmCount')
@@ -99,8 +104,13 @@ export default {
       }
     },
     initLimitData() {
+      console.log(this.$store.state.scaleIdx)
+      console.log(this.$store.state.scaleNodeCount)
+
       console.log(this.item)
-      this.vmCount = this.item.nodeCount
+      // this.vmCount = this.item.nodeCount
+      this.vmCount = this.$store.state.scaleNodeCount
+
       if (this.vmCount === null) {
         this.vmCount = 0
       }
@@ -111,8 +121,8 @@ export default {
       }
       try {
         const response = await this.updateClusterScale({
-          clusterIdx: this.item.id,
-          nodeCount: this.vmCount,
+          clusterIdx: Number(this.$store.state.scaleIdx),
+          nodeCount: Number(this.vmCount),
         })
         if (response.status === 200) {
           // 수정 성공 시

@@ -49,6 +49,12 @@ const resource = {
 
     cspAccountList: [],
     timeoutList: [],
+    vmType: {
+      id: null,
+      nodeCount: 0,
+    },
+    scaleIdx: null,
+    scaleNodeCount: 0,
   },
 
   getters: {
