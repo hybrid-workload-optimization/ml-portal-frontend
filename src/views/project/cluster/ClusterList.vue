@@ -313,6 +313,7 @@ export default {
     },
     onClickCloseLabelModal() {
       this.closeEditScaleModal()
+      this.$router.push(`/project/detail/${this.projectIdx}`)
     },
     onClickDelete(item) {
       console.log('delete click', item)

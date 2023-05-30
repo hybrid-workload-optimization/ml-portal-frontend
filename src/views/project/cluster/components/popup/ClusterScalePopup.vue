@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       vmCount: 0,
-
+      projectIdx: '',
       dataVMTypeList: [
         {
           text: 'Pretreatment',
@@ -89,7 +89,9 @@ export default {
       description: 'clusterInfo',
     },
   },
-  conputed: {},
+  created() {
+    this.projectIdx = this.$route.params.id
+  },
   methods: {
     ...mlMapUtils.mapMutations(['initClusters']),
     ...mlMapUtils.mapActions(['updateClusterScale']),
@@ -131,7 +133,6 @@ export default {
           })
           // 1초 후 팝업 닫기
           // this.initClusters()
-          this.dataDetailClusterList()
           setTimeout(() => this.popupClose(), 1000)
         } else {
           // // 수정 실패 시
@@ -148,7 +149,6 @@ export default {
           })
           // 1초 후 팝업 닫기
           // this.initClusters()
-          this.dataDetailClusterList()
           setTimeout(() => this.popupClose(), 1000)
         }
       } catch (error) {
@@ -165,7 +165,7 @@ export default {
         })
         // 1초 후 팝업 닫기
         // this.initClusters()
-        this.dataDetailClusterList()
+        // this.dataDetailClusterList()
         setTimeout(() => this.popupClose(), 1000)
       }
     },
