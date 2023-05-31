@@ -436,7 +436,9 @@ const resource = {
     },
     // (Kube Config) 연결 확인
     async checkConnection(context, payload) {
+      console.log(payload)
       const response = await request.isClusterConnectionUsingPOST(payload)
+      console.log(response)
       return response
     },
     async getClusterMonotoring({ commit }, payload) {
