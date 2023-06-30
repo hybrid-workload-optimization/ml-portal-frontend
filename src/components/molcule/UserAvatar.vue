@@ -36,6 +36,8 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import cookieHelper from '@/lib/cookieHelper'
+import { cookieName } from '@/common/consts'
 
 const loginUserMapUtils = createNamespacedHelpers('loginUser')
 
@@ -111,15 +113,36 @@ export default {
     // async requestLogout() {
     // await this.doLogout()
     // },
-    async requestLogout() {
-      if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
-        await this.doLogout()
-      } else {
-        document.getElementById('lg').submit()
-      }
-      // this.doLogout()
-      // window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
+    // async requestLogout() {
+    //   if (process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'dev') {
+    //     await this.doLogout()
+    //   } else {
+    //     document.getElementById('lg').submit()
+    //   }
+    //   // this.doLogout()
+    //   // window.location.replace(`${process.env.VUE_APP_BASE_API}/logout`)
+    // },
+    requestLogout() {
+      const baseUrl = process.env.BASE_URL
+      const afterUri = this.$route.path.substring(1)
+      const redirectUri = `${window.location.protocol}//${window.location.host}${baseUrl}${afterUri}`
+      const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
+
+      cookieHelper.removeCookie(cookieName.refresh_token)
+      cookieHelper.removeCookie(cookieName.access_token)
+
+      sessionStorage.removeItem('firstVal')
+      sessionStorage.removeItem('secondVal')
+      sessionStorage.removeItem('thirdVal')
+      sessionStorage.removeItem('menuList')
+      sessionStorage.removeItem('projectUserRole')
+
+      window.location.replace(
+        `${process.env.VUE_APP_BASE_API}/auth/logout?refreshToken=${refreshToken}&redirectUrl=${redirectUri}`,
+        '_self',
+      )
     },
+
     ...loginUserMapUtils.mapMutations(['changeShowEditModal']),
     ...loginUserMapUtils.mapActions(['doLogout']),
     openUserInfoEditModal() {
