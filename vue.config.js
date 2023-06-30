@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   publicPath:
-    process.env.NODE_ENV === 'k8s'
+    process.env.NODE_ENV === 'k8s' || process.env.NODE_ENV === 'nds'
       ? '/service/comp/'
       : process.env.NODE_ENV === 'sso'
       ? '/comp/'
@@ -31,6 +31,10 @@ module.exports = {
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
         pathRewrite: { '^/comp-b-svc': '/' },
+        changeOrigin: true,
+      },
+      '/api': {
+        target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
       },
       '/sse': {

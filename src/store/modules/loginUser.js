@@ -67,6 +67,18 @@ const resource = {
     },
   },
   actions: {
+    refreshTokenV2: async ({ dispatch }, payload) => {
+      try {
+        // get refresh
+        const refreshResult = await request.refreshTokenUsingPOST(payload)
+        // cookie setting
+        dispatch('initRefreshInfo', refreshResult.data)
+        return true
+      } catch (error) {
+        console.error(error)
+        return false
+      }
+    },
     refreshToken: async ({ commit, dispatch }, param) => {
       try {
         const path =
@@ -138,23 +150,19 @@ const resource = {
         return false
       }
     },
-    doLogin: async ({ dispatch }, payload) => {
+    doLogin: async ({ dispatch }) => {
       try {
-        // 개발 환경에서 토큰 설정
-        if (
-          process.env.NODE_ENV === 'local' ||
-          process.env.NODE_ENV === 'dev'
-        ) {
-          await dispatch('getAccessToken', payload)
-        }
         // get userId
         const loginResult = await request.getUserInfoUsingGET()
+        // const loginResult = await request.getAuthenticationUsingGET()
+        console.log(loginResult)
         // get userDetail
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,
         )
         dispatch('initUserInfo', userInfo.data.result)
         const { authority } = loginResult.data.result
+        // console.log(authority)
         if (authority) {
           sessionStorage.setItem(
             'menuList',
@@ -204,24 +212,34 @@ const resource = {
       // 즐겨찾기 데이터
       dispatch('getFavoriteInfo')
     },
-    initRefreshInfo: ({ commit }, params) => {
-      commit(
-        'setExpireTime',
-        // new Date().getTime() + 10 * 1000,
-        new Date().getTime() + params.expires_in * 1000,
-      )
-      commit(
-        'setRefreshTokenExpireTime',
-        // new Date().getTime() + 20 * 1000,
-        new Date().getTime() + params.refresh_expires_in * 1000,
-      )
+    initRefreshInfo: params => {
+      // commit(
+      //   'setExpireTime',
+      //   // new Date().getTime() + 10 * 1000,
+      //   new Date().getTime() + params.expires_in * 1000,
+      // )
+      // commit(
+      //   'setRefreshTokenExpireTime',
+      //   // new Date().getTime() + 20 * 1000,
+      //   new Date().getTime() + params.refresh_expires_in * 1000,
+      // )
       const refreshToken = params.refresh_token
-      const refreshTokenExpireMin = params.refresh_expires_in
+      const refreshTokenExpire = params.refresh_expires_at
+      const accessToken = params.access_token
+      const accessTokenExpire = params.expires_at
+
+      cookieHelper.setCookie(
+        'access_token',
+        accessToken,
+        accessTokenExpire,
+        accessTokenExpire,
+      )
 
       cookieHelper.setCookie(
         'refresh_token',
         refreshToken,
-        refreshTokenExpireMin,
+        refreshTokenExpire,
+        refreshTokenExpire,
       )
       // cookieHelper.setCookie(
       //   'username',
