@@ -212,12 +212,8 @@ const resource = {
       // 즐겨찾기 데이터
       dispatch('getFavoriteInfo')
     },
-    initRefreshInfo: params => {
-      // commit(
-      //   'setExpireTime',
-      //   // new Date().getTime() + 10 * 1000,
-      //   new Date().getTime() + params.expires_in * 1000,
-      // )
+    initRefreshInfo: ({ commit }, params) => {
+      commit('setExpireTime', 1000)
       // commit(
       //   'setRefreshTokenExpireTime',
       //   // new Date().getTime() + 20 * 1000,

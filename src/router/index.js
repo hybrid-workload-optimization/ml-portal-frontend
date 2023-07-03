@@ -230,19 +230,25 @@ router.beforeEach(async (to, from, next) => {
 
     // accessToken 만료
     if (!accessToken) {
+      console.log('No access token')
       // refreshToken 만료
       if (!refreshToken) {
-        console.log('no refresh fail')
+        console.log('No refresh token')
         next({ path: '/ssoLogin', query: { originUrl: to.path } })
       } else {
+        const param = {
+          refresh_token: refreshToken,
+        }
+
         const refreshResult = await store.dispatch(
           'loginUser/refreshTokenV2',
-          refreshToken,
+          param,
         )
         if (!refreshResult) {
           console.log('no refresh fail')
           next({ path: '/ssoLogin', query: { originUrl: to.path } })
         } else {
+          console.log('refresh complete')
           initSetting()
         }
       }

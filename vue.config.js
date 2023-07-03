@@ -33,6 +33,10 @@ module.exports = {
         pathRewrite: { '^/comp-b-svc': '/' },
         changeOrigin: true,
       },
+      '/auth': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+      },
       '/api': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
