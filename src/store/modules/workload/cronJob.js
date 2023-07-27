@@ -167,6 +167,19 @@ const resource = {
         })
       }
     },
+    async getDetailNew({ commit }, payload) {
+      try {
+        const response = await request.getDetailUsingPOST(payload)
+        console.log(response)
+        await commit('changeDetailInfo', response)
+      } catch (error) {
+        console.error(error)
+        commit('alert/openAlert', '데이터를 가져오는데 실패했습니다.', {
+          root: true,
+        })
+      }
+    },
+
     // CronJob yaml 정보 조회 요청
     async getCronJobYaml(context, payload) {
       const response = await request.getCronJobYamlUsingGET(payload)

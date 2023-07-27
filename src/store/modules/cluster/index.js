@@ -5,6 +5,7 @@ import clusterPersistentVolume from '@/store/modules/cluster/clusterPersistentVo
 import clusterStorageClass from '@/store/modules/cluster/clusterStorageClass'
 import clusters from '@/store/modules/cluster/clusters'
 import clusterAddOn from '@/store/modules/cluster/clusterAddOn'
+import clusterWorkload from '@/store/modules/cluster/clusterWorkload'
 
 export default {
   cluster,
@@ -14,4 +15,5 @@ export default {
   clusterStorageClass,
   clusters,
   clusterAddOn,
+  clusterWorkload,
 }

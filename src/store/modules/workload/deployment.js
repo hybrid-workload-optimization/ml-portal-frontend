@@ -24,6 +24,7 @@ const resource = {
       condition: [],
     },
     podList: [],
+    replicaSetList: [],
   },
   getters: {
     deploymentList(state) {
@@ -37,6 +38,9 @@ const resource = {
     },
     podList(state) {
       return state.podList
+    },
+    replicaSetList(state) {
+      return state.replicaSetList
     },
   },
   mutations: {
@@ -202,8 +206,7 @@ const resource = {
     // [파드 리스트 정보] 객체 생성
     changePodList(state, payload) {
       state.podList = []
-      const { data } = payload
-      const { result } = data
+      const result = payload
       const podList = []
       result.forEach(e => {
         const item = {
@@ -215,9 +218,9 @@ const resource = {
           status: e.status,
           createdAt: moment(e.createdAt).format('YYYY-MM-DD HH:mm:ss'),
         }
-        if (e.label) {
+        if (e.labels) {
           let count = 1
-          for (const [key, value] of Object.entries(e.label)) {
+          for (const [key, value] of Object.entries(e.labels)) {
             if (count > 1) {
               item.label += ', '
             }
@@ -229,6 +232,26 @@ const resource = {
         podList.push(item)
       })
       state.podList = podList
+    },
+    changeReplicaSetList(state, payload) {
+      console.log(payload)
+      state.replicaSetList = []
+      const result = payload
+      const replicaSetList = []
+      result.forEach(e => {
+        const item = {
+          uid: e.uid,
+          name: e.name,
+          image: e.image,
+          runningPod: e.runningPod,
+          desiredPod: e.desiredPod,
+        }
+
+        replicaSetList.push(item)
+      })
+      console.log(replicaSetList)
+      state.replicaSetList = replicaSetList
+      console.log(state.replicaSetList)
     },
   },
   actions: {
@@ -250,6 +273,17 @@ const resource = {
       // const response = await request.getDeploymentUsingGET_1(payload)
       const response = await request.getDeploymentUsingGET(payload)
       commit('changeDetailInfo', response)
+    },
+
+    async getDeploymentDetailNew({ commit }, payload) {
+      console.log(payload)
+      // const response = await request.getDeploymentUsingGET_1(payload)
+      const response = await request.getDetailUsingPOST(payload)
+      console.log(response)
+
+      commit('changeDetailInfo', response)
+      commit('changePodList', response.data.result.replicaSets[0].pods)
+      commit('changeReplicaSetList', response.data.result.replicaSets)
     },
 
     async getDeploymentYaml(context, payload) {

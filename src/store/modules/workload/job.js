@@ -143,13 +143,13 @@ const resource = {
     // [파드 리스트 정보] 객체 생성
     changePodList(state, payload) {
       state.podList = []
-      const { data } = payload
-      const { result } = data
+      // const { data } = payload
+      const result = payload
       const podList = []
 
       result.forEach(e => {
         const item = {
-          id: e.id,
+          uid: e.uid,
           name: e.name,
           namespace: e.namespace,
           label: '',
@@ -157,9 +157,9 @@ const resource = {
           status: e.status,
           createdAt: moment(e.createdAt).format('YYYY-MM-DD HH:mm:ss'),
         }
-        if (e.label) {
+        if (e.labels) {
           let count = 1
-          for (const [key, value] of Object.entries(e.label)) {
+          for (const [key, value] of Object.entries(e.labels)) {
             if (count > 1) {
               item.label += ', '
             }
@@ -202,6 +202,20 @@ const resource = {
         })
       }
     },
+    async getDetailNew({ commit }, payload) {
+      try {
+        const response = await request.getDetailUsingPOST(payload)
+        console.log(response)
+        await commit('changeDetailInfo', response)
+        await commit('changePodList', response.data.result.pods)
+      } catch (error) {
+        console.error(error)
+        commit('alert/openAlert', '데이터를 가져오는데 실패했습니다.', {
+          root: true,
+        })
+      }
+    },
+
     // job yaml 정보 조회 요청
     async getJobYaml(context, payload) {
       const response = await request.getJobYamlUsingGET(payload)

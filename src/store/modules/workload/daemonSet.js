@@ -180,6 +180,12 @@ const resource = {
       const response = await request.getDaemonSetUsingGET(payload)
       commit('changeDetailInfo', response)
     },
+    async getDetailNew({ commit }, payload) {
+      console.log('getDetail', payload)
+      const response = await request.getDetailUsingPOST(payload)
+      console.log(response)
+      commit('changeDetailInfo', response)
+    },
 
     // Daemon Set yaml 정보 조회 요청
     async getYaml(context, payload) {

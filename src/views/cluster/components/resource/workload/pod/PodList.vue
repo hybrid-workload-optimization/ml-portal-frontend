@@ -7,14 +7,26 @@
       @changeItem="onChangeItem"
     />
 
-    <search
+    <!-- <search
       v-if="dataListSize"
       class="top-search-wrapper"
       :title="'Total:'"
       :todoCount="dataListSize.toString()"
       @input="onInputSearchValue"
     >
-    </search>
+    </search> -->
+
+    <smart-search
+      :placeholder="search"
+      :items="headers"
+      :datas="dataListForTable"
+      :values="dataListForTable"
+      density="compact"
+      search-tag
+      @update:search="searchDatas"
+    >
+    </smart-search>
+
     <!-- 조회 내용이 존재할 때, 그리드 표시 -->
     <sp-table
       v-if="dataListSize"
@@ -46,7 +58,8 @@ import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
-import Search from '@/components/molcule/DataTableSearch.vue'
+// import Search from '@/components/molcule/DataTableSearch.vue'
+import SmartSearch from '@/components/SmartSearch.vue'
 import request from '@/lib/request'
 
 const podMapUtils = createNamespacedHelpers('pod')
@@ -60,7 +73,8 @@ export default {
     spTable,
     Empty,
     YamlEditModal,
-    Search,
+    // Search,
+    SmartSearch,
   },
   data() {
     return {

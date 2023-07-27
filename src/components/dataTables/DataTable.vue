@@ -12,7 +12,7 @@
       :show-select="optionsProp['show-select']"
       :item-key="optionsProp['item-key']"
       :headers="headers"
-      :items="datas"
+      :items="filterDatas"
       :search="search"
       :items-per-page="Number(itemsPerPage)"
       :no-data-text="noDataText"
@@ -68,6 +68,13 @@ const tag = '[dataTable]'
 
 export default {
   props: {
+    smartSearch: {
+      type: Array,
+      default: () => {
+        return []
+      },
+      description: 'Smart Search 검색 기능',
+    },
     headers: {
       type: Array,
       default: () => [],
@@ -129,6 +136,43 @@ export default {
     noDataText: 'Data to display does not exist.', // 표시할 데이터가 존재하지 않습니다. || 데이터를 가져오고 있습니다.
   }),
   computed: {
+    filterDatas() {
+      // and 조건
+      if (this.smartSearch.length) {
+        return this.datas.filter(item => {
+          let result = 0
+          this.smartSearch.forEach(data => {
+            if (!data.value && data.value !== false) return
+            if (
+              data.type &&
+              item[data.type]?.length &&
+              item[data.type].some(
+                typeObj =>
+                  typeObj.key === data.key &&
+                  typeObj.value.indexOf(data.value) > -1,
+              )
+            ) {
+              // 태그에 찾는 key value 값이 하나라고 있을 경우 true
+              result += 1
+            }
+            // console.log(item[data.key], data.value)
+            if (
+              !data.type &&
+              item[data.key]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(data.value.toString().toLowerCase()) > -1
+            ) {
+              result += 1
+            }
+          })
+          // 모두 일치할 때(AND)
+          if (result === this.smartSearch.length) return item
+          return false
+        })
+      }
+      return this.datas
+    },
     /*
         @brief 옵션 추가하고 싶다면 props로 받아서 추가하는 함수
         @date 2021/11/02
@@ -183,6 +227,12 @@ export default {
       },
     },
   },
+  watch: {
+    filterDatas(nv) {
+      this.setTotal(nv.length)
+    },
+  },
+
   mounted() {
     console.log(tag, 'mounted')
   },
@@ -235,7 +285,7 @@ export default {
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 }
 .sp-data-table {
   background-color: #f3f6f9 !important;

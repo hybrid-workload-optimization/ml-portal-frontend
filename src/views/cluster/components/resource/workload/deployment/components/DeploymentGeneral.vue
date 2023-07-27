@@ -145,6 +145,21 @@
 
     <div class="sp-detail-metadata">
       <div class="title-wrapper">
+        <span class="title-text">ReplicaSet</span>
+      </div>
+      <div class="table-wrapper scrollable-table-wrapper">
+        <sp-table
+          :headers="ReplicaSetHeaders"
+          :options="options"
+          :datas="replicaSetList"
+          scrollOnly
+          is-linked
+        />
+      </div>
+    </div>
+
+    <div class="sp-detail-metadata">
+      <div class="title-wrapper">
         <span class="title-text">Pod</span>
       </div>
       <div class="table-wrapper scrollable-table-wrapper">
@@ -250,6 +265,32 @@ export default {
           class: 'w-10',
         },
       ],
+      ReplicaSetHeaders: [
+        {
+          text: 'Name',
+          align: 'center',
+          value: 'name',
+          class: 'w-10',
+        },
+        {
+          text: 'Image',
+          align: 'center',
+          value: 'image',
+          class: 'w-10',
+        },
+        {
+          text: 'Running Pod',
+          align: 'center',
+          value: 'runningPod',
+          class: 'w-10',
+        },
+        {
+          text: 'DesiredPod',
+          align: 'center',
+          value: 'desiredPod',
+          class: 'w-10',
+        },
+      ],
       Podheaders: [
         {
           text: 'Name',
@@ -300,14 +341,17 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
+      clusterIdx: null,
     }
   },
   mounted() {
     console.log(this.podList)
+    console.log(this.replicaSetList)
+    this.clusterIdx = this.$route.params.id
   },
   computed: {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
-    ...deploymentMapUtils.mapGetters(['podList']),
+    ...deploymentMapUtils.mapGetters(['podList', 'replicaSetList']),
   },
   methods: {
     moveToPodDetailPage(item) {
@@ -315,7 +359,7 @@ export default {
       //   `/workload/pod/detail/${this.deploymentDetailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.deploymentDetailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },
