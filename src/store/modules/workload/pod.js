@@ -223,6 +223,21 @@ const resource = {
         })
       }
     },
+    async getDetailNew({ commit }, payload) {
+      try {
+        const response = await request.getDetailUsingPOST(payload)
+        // const pvcResponse = await request.getPodPersistentVolumeClaimUsingGET({
+        //   podName: payload.podName,
+        // })
+        await commit('changeDetailInfo', response)
+        // await commit('changePvcList', pvcResponse)
+      } catch (error) {
+        console.error(error)
+        commit('alert/openAlert', '데이터를 가져오는데 실패했습니다.', {
+          root: true,
+        })
+      }
+    },
     async getOwnerInfo({ commit }, { data }) {
       // 2022.05.09 Pod API 변경에 따라 사용x
       try {

@@ -9,9 +9,12 @@
     "dev": "npm run api-gen-dev && vue-cli-service serve --mode dev",
     "sso": "npm run api-gen-sso && vue-cli-service serve --mode sso",
     "k8s": "npm run api-gen-k8s && vue-cli-service serve --mode k8s",
+    "nds": "npm run api-gen-nds && vue-cli-service serve --mode nds",
+    
     "build-dev": "npm run api-gen-dev && vue-cli-service build --mode dev",
     "build-sso": "cross-env NODE_ENV=sso && npm run api-gen-sso && vue-cli-service build --mode sso",
     "build-k8s": "cross-env NODE_ENV=k8s && npm run api-gen-k8s && vue-cli-service build --mode k8s",
+    "build-nds": "cross-env NODE_ENV=nds && npm run api-gen-nds && vue-cli-service build --mode nds",
     "build-stg": "vue-cli-service build --mode stg",
     "build-prod": "cross-env NODE_ENV=prod && npm run api-gen-prod && vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
@@ -20,7 +23,8 @@
     "api-gen-stg": "cross-env API_GEN_ENV=stg node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js",
     "api-gen-prod": "cross-env API_GEN_ENV=prod node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js",
     "api-gen-sso": "cross-env API_GEN_ENV=sso node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js",
-    "api-gen-k8s": "cross-env API_GEN_ENV=k8s node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js"
+    "api-gen-k8s": "cross-env API_GEN_ENV=k8s node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js",
+    "api-gen-nds": "cross-env API_GEN_ENV=nds node .api-gen/api-gen.js && eslint --fix ./src/lib/request.js"
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",

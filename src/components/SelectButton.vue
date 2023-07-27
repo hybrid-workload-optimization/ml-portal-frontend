@@ -88,6 +88,7 @@ export default {
     ...selectButtonMapUtils.mapGetters(['firstValue', 'firstItems']),
   },
   async created() {
+    // this.btnAuthCheck()
     this.projectUserRole = this.$store.state.loginUser.projectUserRole
     this.currentMenuInfo = this.$store.state.loginUser.currentMenuInfo
     await this.initFirstItems()
@@ -102,6 +103,10 @@ export default {
   methods: {
     ...selectButtonMapUtils.mapMutations(['setFirstValue']),
     ...selectButtonMapUtils.mapActions(['requestGetFirstItems']),
+    btnAuthCheck() {
+      const { currentMenuInfo } = this.$store.state.loginUser
+      this.btnDisabled = currentMenuInfo.writableYn === 'N'
+    },
     async initFirstItems() {
       if (!this.firstSelectMeta) {
         return

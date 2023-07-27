@@ -1,0 +1,104 @@
+.list-card {
+  box-shadow: 0px 4px 16px #8a8a8a1a;
+  .custom-10 {
+    max-width: 10%;
+    padding: 12px;
+    text-align: center;
+  }
+  .card-title {
+    color: $title-color;
+    font-size: 24px;
+    font-weight: bold;
+    .aws {
+        color: $primary;
+    }
+    .gcp {
+        color: $basic-green;
+    }
+    .azure {
+        color: $color-azure;
+    }
+    .private {
+        color: $color-private;
+    }
+  }
+  .card-top-text {
+    color: rgba(26, 51, 80, 0.7);
+    font-size: 16px;
+    font-weight: bold;
+    .resource-number {
+        font-size: 24px;
+        color: rgba(26, 51, 80, 0.9);
+    }
+  }
+  .list-btn {
+    border: 2px solid $sub-title;
+    font-weight: bold;
+    color: $sub-title;
+    opacity: 0.8;
+    width: 100%;
+  }
+  .list-select {
+    border: 1px solid $sub-title;
+    font-weight: bold;
+    color: $sub-title;
+    opacity: 0.8;
+    width: 100%;
+  }
+  .status-chip {
+    color: white;
+    .v-chip__content {
+        color: #fff !important;
+    }
+  }
+  .cluster-chip {
+    color: white;
+    width: 52px;
+    .v-chip__content {
+        color: #fff !important;
+    }
+  }
+
+
+  .search-box {
+    width: 500px;
+    .v-field {
+      .v-field__outline__start {
+        flex: 0 0 28px;
+        border-radius:  28px 0 0 28px ;
+      }
+      .v-field__outline__end{
+        border-radius:  0 28px 28px 0;
+      }
+    }
+  }
+}
+
+/* data table style 변경 */
+.v-table,
+.v-table.v-table--fixed-header {
+  .v-table__wrapper {
+    > table > thead > tr > th {
+      background: #f5f7f8;
+    }
+
+    tbody tr:nth-of-type(even) {
+      background-color: #fbfbfb;
+    }
+    .v-data-table-header {
+      background-color: #F3F6F9 !important;
+    }
+    .v-data-table-column--align-center {
+      text-align: center !important;
+      .v-data-table-header__content {
+        justify-content: center;
+      }
+    }
+    .v-data-table-column--align-d-none {
+      display: none;
+    }
+  }
+}
+.v-data-table-footer {
+  font-size: 0.75rem;
+}

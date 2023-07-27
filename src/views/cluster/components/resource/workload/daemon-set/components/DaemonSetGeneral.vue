@@ -190,9 +190,12 @@ export default {
         showSelect: false,
         itemKey: 'daemonSetIdx',
       },
+      clusterIdx: null,
     }
   },
-
+  mounted() {
+    this.clusterIdx = this.$route.params.id
+  },
   computed: {
     ...daemonSetMapUtils.mapGetters(['detailInfo']),
   },
@@ -202,7 +205,7 @@ export default {
       //   `/workload/pod/detail/${this.detailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.detailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },

@@ -125,7 +125,7 @@ export default {
         const response = await this.checkConnection({
           kubeConfig: this.formData.kubeConfig,
         })
-
+        // console.log(response)
         if (response.status === 200) {
           if (response.data.result) {
             this.openAlert({

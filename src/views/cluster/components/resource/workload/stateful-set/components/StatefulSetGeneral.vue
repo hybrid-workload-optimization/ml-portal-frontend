@@ -202,9 +202,12 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
+      clusterIdx: null,
     }
   },
-
+  mounted() {
+    this.clusterIdx = this.$route.params.id
+  },
   computed: {
     ...statefulSetMapUtils.mapGetters(['detailInfo']), // 상세 정보 데이터 객체 반환(statefulSet.js)
     ...statefulSetMapUtils.mapGetters(['podList']), // 파드 리스트 객체 반환
@@ -215,7 +218,7 @@ export default {
       //   `/workload/pod/detail/${this.detailInfo.clusterIdx}/${item.namespace}/${item.name}`,
       // )
       this.$router.push(
-        `/cluster/detail/${this.detailInfo.clusterIdx}/pod/${item.namespace}/${item.name}`,
+        `/cluster/detail/${this.clusterIdx}/pod/${item.namespace}/${item.name}`,
       )
     },
   },

@@ -468,6 +468,196 @@ const resource = [
           isAuthRequired,
         },
       },
+
+      // workload tab
+      {
+        path: 'detail/:id/workload',
+        name: 'Cluster Workload list',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/workload/WorkloadList.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+
+      {
+        path: 'detail/:id/node/:namespace/:name',
+        name: 'Cluster Detail Node Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterNodeDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/namespace/:namespace/:name',
+        name: 'Cluster Detail Namespace Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/persistentVolume/:namespace/:name',
+        name: 'Cluster Detail Persistent Volume Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/storageClass/:namespace/:name',
+        name: 'Cluster Detail Storage Class Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterStorageClassDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/deployment/:namespace/:name',
+        name: 'Cluster Detail Deployment Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/deployment/DeploymentDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/statefulSet/:namespace/:name',
+        name: 'Cluster Detail Stateful Set Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/stateful-set/StatefulSetDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/pod/:namespace/:name',
+        name: 'Cluster Detail Pod Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/pod/PodDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/cronJob/:namespace/:name',
+        name: 'Cluster Detail Cron Job Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/cron-job/CronJobDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/job/:namespace/:name',
+        name: 'Cluster Detail Job Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/job/JobDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/replicaSet/:namespace/:name',
+        name: 'Cluster Detail Replica Set Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/replica-set/ReplicaSetDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/daemonSet/:namespace/:name',
+        name: 'Cluster Detail Daemon Set Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/workload/daemon-set/DaemonSetDetailWork.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/service/:namespace/:name',
+        name: 'Cluster Detail Node Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/networking/service/ServiceDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/ingress/:namespace/:name',
+        name: 'Cluster Detail Ingress Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/networking/ingress/IngressDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/persistentVolumeClaim/:namespace/:name',
+        name: 'Cluster Detail Persistent Volume Claim Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/config/persistent-volume-claim/PersistentVolumeClaimDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/configMap/:namespace/:name',
+        name: 'Cluster Detail Config Map Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/config/config-map/ConfigMapDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
+        path: 'detail/:id/secret/:namespace/:name',
+        name: 'Cluster Detail Secret Detail',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/config/secret/SecretDetail.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
     ],
   },
 ]

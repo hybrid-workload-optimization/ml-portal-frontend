@@ -144,6 +144,15 @@ export default {
         return false
       })
 
+      newMenuList.forEach(menu => {
+        if (menu.menuName === 'Workload') {
+          const workloadSubMenu = {
+            menuName: 'Workload',
+          }
+          menu.subMenuList.unshift(workloadSubMenu)
+        }
+      })
+
       // General > Overview, Catalog 메뉴 추가
       newMenuList.unshift(this.defaultMenu)
 

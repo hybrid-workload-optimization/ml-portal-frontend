@@ -147,13 +147,13 @@ const resource = {
     // [파드 리스트 정보] 객체 생성
     changePodList(state, payload) {
       state.podList = []
-      const { data } = payload
-      const { result } = data
+      // const { data } = payload
+      const result = payload
       const podList = []
 
       result.forEach(e => {
         const item = {
-          id: e.id,
+          id: e.uid,
           name: e.name,
           namespace: e.namespace,
           label: '',
@@ -161,9 +161,9 @@ const resource = {
           status: e.status,
           createdAt: moment(e.createdAt).format('YYYY-MM-DD HH:mm:ss'),
         }
-        if (e.label) {
+        if (e.labels) {
           let count = 1
-          for (const [key, value] of Object.entries(e.label)) {
+          for (const [key, value] of Object.entries(e.labels)) {
             if (count > 1) {
               item.label += ', '
             }
@@ -201,6 +201,12 @@ const resource = {
     async getDetail({ commit }, payload) {
       const response = await request.getStatefulSetUsingGET(payload)
       commit('changeDetailInfo', response)
+    },
+    async getDetailNew({ commit }, payload) {
+      const response = await request.getDetailUsingPOST(payload)
+      console.log(response)
+      commit('changeDetailInfo', response)
+      commit('changePodList', response.data.result.pods)
     },
     // 스테이트풀셋 yaml 정보 조회 요청
     async getStatefulSetYaml(context, payload) {
