@@ -95,6 +95,15 @@ const resource = [
         },
       },
       {
+        path: 'detail/:id/overview2',
+        name: 'Cluster Detail Overview2',
+        component: () =>
+          import('@/views/cluster/components/ClusterOverview2.vue'),
+        meta: {
+          isAuthRequired,
+        },
+      },
+      {
         path: 'detail/:id/catalog',
         name: 'Cluster Detail Catalog',
         component: () =>

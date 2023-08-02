@@ -75,6 +75,9 @@ export default {
             menuName: 'Overview',
           },
           {
+            menuName: 'Overview2',
+          },
+          {
             menuName: 'Catalog',
           },
         ],
