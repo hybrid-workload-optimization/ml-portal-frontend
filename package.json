@@ -10,7 +10,6 @@
     "sso": "npm run api-gen-sso && vue-cli-service serve --mode sso",
     "k8s": "npm run api-gen-k8s && vue-cli-service serve --mode k8s",
     "nds": "npm run api-gen-nds && vue-cli-service serve --mode nds",
-    
     "build-dev": "npm run api-gen-dev && vue-cli-service build --mode dev",
     "build-sso": "cross-env NODE_ENV=sso && npm run api-gen-sso && vue-cli-service build --mode sso",
     "build-k8s": "cross-env NODE_ENV=k8s && npm run api-gen-k8s && vue-cli-service build --mode k8s",
@@ -30,6 +29,7 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "apexcharts": "^3.27.3",
     "axios": "^0.24.0",
+    "chart.js": "^4.3.2",
     "core-js": "^3.6.5",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
@@ -40,8 +40,10 @@
     "v-click-outside": "^3.1.2",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
+    "vue-chartjs": "^5.2.0",
     "vue-cli-plugin-yaml": "^1.0.2",
     "vue-codemirror": "^4.0.6",
+    "vue-loader": "^17.2.2",
     "vue-router": "^3.2.0",
     "vue-uuid": "^3.0.0",
     "vuetify": "^2.4.0",
@@ -74,7 +76,7 @@
     "sass-loader": "^10.0.0",
     "swagger-js-codegen": "^1.13.0",
     "vue-cli-plugin-vuetify": "~2.4.5",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.0"
   },
   "gitHooks": {

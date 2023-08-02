@@ -65,6 +65,7 @@ const resource = {
     timeoutList: [],
     monitoringIframeUrl: '',
     isShowEditModal: false,
+    overviewData: {},
   },
   getters: {
     dataList(state) {
@@ -111,6 +112,9 @@ const resource = {
     },
     isOpenEditScaleModal(state) {
       return state.isOpenEditScaleModal
+    },
+    overviewData(state) {
+      return state.overviewData
     },
   },
   mutations: {
@@ -351,6 +355,11 @@ const resource = {
     },
     closeEditScaleModal(state) {
       state.isOpenEditScaleModal = false
+    },
+    setOverview(state, payload) {
+      const { data } = payload
+      const { result } = data
+      state.overviewData = result
     },
   },
   actions: {
@@ -623,6 +632,12 @@ const resource = {
       } else {
         commit('setMonitoringIframeUrl', null)
       }
+    },
+    async getDataOverview({ commit }, payload) {
+      console.log(payload)
+      const response = await request.getOverviewUsingGET(payload)
+      console.log(response)
+      commit('setOverview', response)
     },
   },
 }

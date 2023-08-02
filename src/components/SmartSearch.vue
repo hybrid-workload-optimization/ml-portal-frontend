@@ -269,14 +269,20 @@ export default {
     },
 
     setInputKey(value) {
+      console.log(value)
       const { findKey, findTitle } = this.onFindTitle(value)
+      console.log(findKey)
+      console.log(findTitle)
       this.selectedKeyItem = findKey
-      this.$emit('update:key', findKey)
+      this.$emit('update:search', findKey)
       this.searchValue = `${findTitle}:`
       this.isValueSearch = true
     },
 
     onEnter(e, value, type) {
+      console.log(e)
+      console.log(value)
+      console.log(this.searchValue)
       let inputValue = ''
       let searchValueSplit
       if (!this.searchValue) {
@@ -284,12 +290,15 @@ export default {
       } else {
         searchValueSplit = this.searchValue.split(':')
       }
+      console.log(searchValueSplit)
       // const searchValueSplit = this.searchValue.split(':')
-      const setValue =
-        searchValueSplit.length > 1 && searchValueSplit[1].trim()
-          ? this.searchValue.replace(`${searchValueSplit[0]}:`, '')
-          : value?.toString().trim()
-
+      // const setValue =
+      //   searchValueSplit.length > 1 && searchValueSplit[1].trim()
+      //     ? this.searchValue.replace(`${searchValueSplit[0]}:`, '')
+      //     : value?.toString().trim()
+      const setValue = 'Name'
+      console.log(setValue)
+      console.log(this.isValueSearch)
       if (!this.isValueSearch) {
         inputValue =
           searchValueSplit.length && searchValueSplit[0].trim()
@@ -300,6 +309,7 @@ export default {
           ? `${searchValueSplit[0]}: ${setValue}`
           : ''
       }
+      console.log(inputValue)
       if (this.isValueSearch && setValue) {
         const { findKey, findTitle } = this.onFindTitle(inputValue)
 
@@ -309,7 +319,6 @@ export default {
           key: findKey,
           type: this.isTagSearching ? 'tag' : null,
         }
-        console.log(addItem)
         this.valuesItem.push(addItem)
         this.$emit('update:search-input', this.valuesItem)
         this.$emit('update:target-item', addItem)
@@ -338,6 +347,7 @@ export default {
     },
 
     onUpdateInput(e) {
+      console.log(e)
       if (e.data === ':') {
         this.isValueSearch = true
         this.onEnter()

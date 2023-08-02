@@ -6,6 +6,7 @@ import clusterStorageClass from '@/store/modules/cluster/clusterStorageClass'
 import clusters from '@/store/modules/cluster/clusters'
 import clusterAddOn from '@/store/modules/cluster/clusterAddOn'
 import clusterWorkload from '@/store/modules/cluster/clusterWorkload'
+import overview from '@/store/modules/cluster/overview'
 
 export default {
   cluster,
@@ -16,4 +17,5 @@ export default {
   clusters,
   clusterAddOn,
   clusterWorkload,
+  overview,
 }
