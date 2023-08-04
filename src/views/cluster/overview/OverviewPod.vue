@@ -1,64 +1,52 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
-    <div class="overview__title-wrapper">
-      <div class="overview__title">
-        <span class="overview__title">Pod</span>
+    <div class="overview-header">Pod</div>
+
+    <div class="overview-content">
+      <div class="total-wrapper">
+        <div class="total-title">Total</div>
+        <div class="total-num">{{ data.countTotal }}</div>
       </div>
-    </div>
-    <div class="overview__contents-box" style="margin-top: 8px">
-      <div class="overview-wrapper">
-        <div class="overview__long-box overview-box">
-          <div class="overview-row-box">
-            <div class="overview-title">Total</div>
-            <div class="overview-num">103</div>
+      <div class="chart-wrapper">
+        <apexchart
+          type="donut"
+          width="300px"
+          height="200px"
+          :series="podData.series"
+          :options="podData.options"
+        />
+      </div>
+      <div class="chart-wrapper">
+        <apexchart
+          type="donut"
+          width="300px"
+          height="200px"
+          :series="nodeData.series"
+          :options="nodeData.options"
+        />
+      </div>
+
+      <div class="list-wrapper">
+        <div class="list-title">
+          30분 이내 재시작 ({{ data.podRestartList.length }})
+          <!-- <v-icon
+            class="expand-list-item-icon material-icons-outlined mb-1"
+            size="medium"
+            >mdi-triangle-down</v-icon
+          > -->
+        </div>
+        <div v-if="data.podRestartList.length > 0" class="list-content">
+          <div
+            class="list-item"
+            v-for="item in data.podRestartList"
+            :key="item.id"
+          >
+            <div class="list-item-title">{{ item.name }}</div>
+            <div class="list-item-date">{{ item.createAt }}</div>
           </div>
         </div>
-      </div>
-      <div class="overview-wrapper">
-        <donut-chart
-          :chart-data="chartData"
-          :donut-color="donutColor"
-          :donut-label="donutLabel"
-          :chartOptionProps="chartOptions"
-          :width="'170px'"
-          :height="'170px'"
-        />
-      </div>
-      <div class="overview-wrapper">
-        <donut-chart
-          :chart-data="chartData"
-          :donut-color="donutColor"
-          :donut-label="donutLabel"
-          :chartOptionProps="chartOptions"
-          :width="'170px'"
-          :height="'170px'"
-        />
-      </div>
-      <div class="overview-wrapper">
-        <div class="overview__long-box overview-box">
-          <div class="overview-row-box">
-            <div class="overview-title">30분 이내 재시작 (5)</div>
-          </div>
-          <div class="overview-row-box">
-            <div class="overview-title">new-pod-01-efefcc</div>
-            <div class="overview-num">11:21:15</div>
-          </div>
-          <div class="overview-row-box">
-            <div class="overview-title">new-pod-01-veefs</div>
-            <div class="overview-num">11:20:24</div>
-          </div>
-          <div class="overview-row-box">
-            <div class="overview-title">new-pod-01-eftyh</div>
-            <div class="overview-num">11:19:33</div>
-          </div>
-          <div class="overview-row-box">
-            <div class="overview-title">new-pod-01-bttg</div>
-            <div class="overview-num">11:18:42</div>
-          </div>
-          <div class="overview-row-box">
-            <div class="overview-title">new-pod-01-stekf</div>
-            <div class="overview-num">11:17:51</div>
-          </div>
+        <div v-else class="no-list-content">
+          <span class="no-data-msg">재시작 내역이 존재하지 않습니다.</span>
         </div>
       </div>
     </div>
@@ -66,26 +54,72 @@
 </template>
 
 <script>
-import DonutChart from '@/components/DonutChart.vue'
+const defaultOptions = {
+  // 도넛 차트 공통 스타일
+  legend: { show: true, position: 'right', offsetY: 18 },
+  dataLabels: { enabled: false },
+  plotOptions: {
+    pie: {
+      offsetY: 16,
+      donut: {
+        size: '47%',
+      },
+    },
+  },
+}
 
 export default {
-  components: {
-    DonutChart,
+  props: {
+    data: {
+      type: Object,
+    },
   },
   data() {
     return {
-      chartData: [
-        { name: 'Category 1', value: 30 },
-        { name: 'Category 2', value: 40 },
-        { name: 'Category 3', value: 20 },
-      ],
-      donutColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-      donutLabel: 'Total',
-      chartOptionProps: {
-        responsive: true,
-        maintainAspectRatio: false,
-        // 다른 도넛 차트 옵션 설정
+      podData: {
+        series: [], // 차트 데이터
+        options: {
+          title: {
+            text: 'Pod 가동률',
+            align: 'center',
+            style: { fontSize: '16px' },
+          },
+          labels: [],
+          colors: [
+            '#29AA54',
+            '#06ABEA',
+            '#FFCD56',
+            '#A4A9B2',
+            '#FF8000',
+            '#0078FF',
+          ],
+          ...defaultOptions,
+        },
       },
+      nodeData: {
+        series: [], // 차트 데이터
+        options: {
+          title: {
+            text: 'Node 별 배포 현황',
+            align: 'center',
+            style: { fontSize: '16px' },
+          },
+          labels: [],
+          colors: [
+            '#29AA54',
+            '#06ABEA',
+            '#FFCD56',
+            '#A4A9B2',
+            '#FF8000',
+            '#0078FF',
+          ],
+          ...defaultOptions,
+          legend: { offsetY: 42 },
+        },
+      },
+
+      operatingChartData: [],
+      deployChartData: [],
     }
   },
   computed: {
@@ -93,6 +127,54 @@ export default {
       return this.$store.state.sideNav.isMini
     },
   },
-  created() {},
+  created() {
+    console.log(this.data)
+    this.getOperatingChartData()
+    this.getDeployChartData()
+  },
+  mounted() {},
+  methods: {
+    getOperatingChartData() {
+      const valuesArray = Object.values(this.data.podOperatingRate)
+      const lengthsArray = valuesArray.map(value => value.length)
+
+      const keysArray = Object.keys(this.data.podOperatingRate)
+
+      this.podData.series = lengthsArray
+      this.podData.options.labels = keysArray
+    },
+    getDeployChartData() {
+      const valuesArray = Object.values(this.data.podDeployedByNode)
+      const lengthsArray = valuesArray.map(value => value.length)
+
+      const keysArray = Object.keys(this.data.podDeployedByNode)
+
+      this.nodeData.series = lengthsArray
+      this.nodeData.options.labels = keysArray
+    },
+  },
 }
 </script>
+
+<style lang="scss" scoped>
+.total-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 8px;
+  width: 180px;
+  height: 200px;
+  margin-right: -120px;
+
+  padding-left: 16px;
+  .total-title {
+    font-size: 14px;
+  }
+  .total-num {
+    font-size: 40px;
+  }
+}
+.chart-wrapper {
+  height: 200px;
+}
+</style>
