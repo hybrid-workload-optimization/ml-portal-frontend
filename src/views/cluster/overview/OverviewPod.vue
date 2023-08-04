@@ -15,8 +15,6 @@
           :series="podData.series"
           :options="podData.options"
         />
-      </div>
-      <div class="chart-wrapper">
         <apexchart
           type="donut"
           width="300px"
@@ -56,14 +54,11 @@
 <script>
 const defaultOptions = {
   // 도넛 차트 공통 스타일
-  legend: { show: true, position: 'right', offsetY: 18 },
+  legend: { show: true, position: 'right' },
   dataLabels: { enabled: false },
   plotOptions: {
     pie: {
-      offsetY: 16,
-      donut: {
-        size: '47%',
-      },
+      donut: { size: '50px' },
     },
   },
 }
@@ -78,6 +73,9 @@ export default {
     return {
       podData: {
         series: [], // 차트 데이터
+        chart: {
+          height: '200px',
+        },
         options: {
           title: {
             text: 'Pod 가동률',
@@ -94,6 +92,13 @@ export default {
             '#0078FF',
           ],
           ...defaultOptions,
+          plotOptions: {
+            pie: {
+              offsetY: 42,
+              donut: { size: '50' },
+              customScale: 1.55,
+            },
+          },
         },
       },
       nodeData: {
@@ -114,12 +119,10 @@ export default {
             '#0078FF',
           ],
           ...defaultOptions,
-          legend: { offsetY: 42 },
         },
       },
-
-      operatingChartData: [],
-      deployChartData: [],
+      // operatingChartData: [],
+      // deployChartData: [],
     }
   },
   computed: {
@@ -146,9 +149,7 @@ export default {
     getDeployChartData() {
       const valuesArray = Object.values(this.data.podDeployedByNode)
       const lengthsArray = valuesArray.map(value => value.length)
-
       const keysArray = Object.keys(this.data.podDeployedByNode)
-
       this.nodeData.series = lengthsArray
       this.nodeData.options.labels = keysArray
     },
@@ -157,6 +158,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep {
+  .overview-content {
+    height: 200px;
+  }
+}
 .total-wrapper {
   display: flex;
   flex-direction: column;
@@ -165,7 +171,6 @@ export default {
   width: 180px;
   height: 200px;
   margin-right: -120px;
-
   padding-left: 16px;
   .total-title {
     font-size: 14px;
@@ -175,6 +180,15 @@ export default {
   }
 }
 .chart-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: calc(100% - (180px + 420px));
   height: 200px;
+
+  & > div {
+    width: 300px;
+    height: 200px;
+  }
 }
 </style>

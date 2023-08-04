@@ -17,11 +17,14 @@
           :items-per-page="9999"
           is-linked
           @click:row="moveToDetailPage"
+          :height="245"
+          dense
         >
           <template v-slot:status_custom="slotProps">
             <sp-chip
               :color="getChipEachColor(slotProps.item.status)"
               class="status-chip"
+              small
             >
               {{ getStatusText(slotProps.item.status) }}
             </sp-chip>
@@ -125,10 +128,10 @@ export default {
         ...item,
         role: item.role[0],
         cpuUsage: `${item.usageDto.cpuRequestsFraction}%
-                  (${item.usageDto.cpuRequests / 1000}Core / 
+                  (${item.usageDto.cpuRequests / 1000}Core /
                     ${item.usageDto.cpuCapacity / 1000}Core)`,
         memoryUsage: `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
-                  (${this.bytesToGB(item.usageDto.memoryRequests)}G / 
+                  (${this.bytesToGB(item.usageDto.memoryRequests)}G /
                   ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
       }))
     },
@@ -201,4 +204,13 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+::v-deep {
+  .theme--light.v-data-table.v-data-table--fixed-header thead th {
+    background-color: #eee !important;
+  }
+  .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
+    background-color: #fff !important;
+  }
+}
+</style>

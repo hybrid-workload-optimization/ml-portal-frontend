@@ -33,7 +33,7 @@
         <div class="chart-wrapper">
           <apexchart
             type="donut"
-            width="300px"
+            width="380px"
             height="auto"
             :series="workloadData.series"
             :options="workloadData.options"
@@ -70,14 +70,12 @@
 <script>
 const defaultOptions = {
   // 도넛 차트 공통 스타일
-  legend: { show: true, position: 'right', offsetY: 18 },
+  legend: { show: true, position: 'right', offsetY: 6 },
   dataLabels: { enabled: false },
   plotOptions: {
     pie: {
       offsetY: 16,
-      donut: {
-        size: '47%',
-      },
+      donut: { size: '50' },
     },
   },
 }
@@ -122,8 +120,6 @@ export default {
     },
   },
   created() {
-    console.log(this.data)
-
     this.getChartData()
   },
   mounted() {
@@ -197,11 +193,14 @@ export default {
 }
 
 .chart-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 70%;
-  height: 100%;
+  height: 200px;
+
+  ::v-deep {
+    & div {
+      margin: 0 auto;
+    }
+  }
 }
 
 .overview__contents-box {
