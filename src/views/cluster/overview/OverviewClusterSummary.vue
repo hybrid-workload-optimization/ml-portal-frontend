@@ -6,63 +6,59 @@
   >
     <div class="overview-header">Cluster 요약</div>
 
-    <div class="overview-content">
+    <div class="overview-content-start">
       <div class="summary-wrapper">
-        <div class="summary-left">
-          <div class="summary-item">
-            <div class="summary-title">Provider</div>
-            <div class="list-value">{{ data.provider }}</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title">Region</div>
-            <div class="list-value" v-if="data.region">
-              {{ data.region }}
-            </div>
-            <div class="list-value" v-else>-</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title">Version</div>
-            <div class="list-value">{{ data.vision }}</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title">Status</div>
-            <div class="list-value">{{ data.status }}</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title">Created</div>
-            <div class="list-value">{{ data.createAt }}</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title">Provisioner</div>
-            <div class="list-value">{{ data.createBy }}</div>
-          </div>
+        <div class="summary-item">
+          <div class="summary-title">Provider</div>
+          <div class="list-value">{{ data.provider }}</div>
         </div>
-
-        <div class="summary-right">
-          <div class="summary-item">
-            <div class="summary-title">VPC CIDR</div>
-            <div class="list-value" v-if="data.vpcCidr">{{ data.vpcCidr }}</div>
-            <div class="list-value" v-else>-</div>
+        <div class="summary-item">
+          <div class="summary-title">Region</div>
+          <div class="list-value" v-if="data.region">
+            {{ data.region }}
           </div>
-          <div class="summary-item">
-            <div class="summary-title">Service CIDR</div>
-            <div class="list-value" v-if="data.serviceCidr">
-              {{ data.serviceCidr }}
-            </div>
-            <div class="list-value" v-else>-</div>
+          <div class="list-value" v-else>-</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Version</div>
+          <div class="list-value">{{ data.vision }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Status</div>
+          <div class="list-value">{{ data.status }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Created</div>
+          <div class="list-value">{{ data.createAt }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Provisioner</div>
+          <div class="list-value">{{ data.createBy }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">VPC CIDR</div>
+          <div class="list-value" v-if="data.vpcCidr">{{ data.vpcCidr }}</div>
+          <div class="list-value" v-else>-</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Service CIDR</div>
+          <div class="list-value" v-if="data.serviceCidr">
+            {{ data.serviceCidr }}
           </div>
-          <div class="summary-item">
-            <div class="summary-title">Pod CIDR</div>
-            <div class="list-value" v-if="data.podCidr">{{ data.podCidr }}</div>
-            <div class="list-value" v-else>-</div>
-          </div>
+          <div class="list-value" v-else>-</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-title">Pod CIDR</div>
+          <div class="list-value" v-if="data.podCidr">{{ data.podCidr }}</div>
+          <div class="list-value" v-else>-</div>
         </div>
       </div>
+
       <div class="chart-wrapper">
-        <div class="overview-chart-wrapper" style="width: 300px">
+        <div class="overview-chart-wrapper">
           <apexchart
             type="donut"
-            height="190px"
+            height="210px"
             :series="totalCpuData.series"
             :options="totalCpuData.options"
           />
@@ -72,10 +68,10 @@
           >
         </div>
 
-        <div class="overview-chart-wrapper" style="width: 300px">
+        <div class="overview-chart-wrapper">
           <apexchart
             type="donut"
-            height="190px"
+            height="210"
             :series="totalMem.series"
             :options="totalMem.options"
           />
@@ -84,10 +80,10 @@
             {{ bytesToGB(data.memoryTotal) }}GB</span
           >
         </div>
-        <div class="overview-chart-wrapper" style="width: 300px">
+        <div class="overview-chart-wrapper">
           <apexchart
             type="donut"
-            height="190px"
+            height="210px"
             :series="totalStorage.series"
             :options="totalStorage.options"
           />
@@ -131,7 +127,7 @@ const defaultOptions = {
   plotOptions: {
     pie: {
       donut: {
-        size: '47%',
+        size: '50',
         labels: {
           show: true,
           total: {
@@ -149,6 +145,7 @@ const defaultOptions = {
           name: { show: false, color: '#36A2EB' },
         },
       },
+      customScale: 1,
     },
   },
 }
@@ -254,27 +251,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overview-content-start {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .summary-wrapper {
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  width: 25%;
-  height: 200px;
-
-  .summary-left,
-  .summary-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 8px;
-  }
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2px;
+  width: 24%;
+  min-width: 320px;
 
   .summary-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 64px;
+    gap: 24px;
 
     .summary-title {
       width: 130px;
@@ -284,11 +279,11 @@ export default {
 
 .chart-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  width: 65%;
+  width: 56%;
   height: 232px;
-  margin-top: -32px;
+  margin-top: -16px;
 
   .donut-bottom-txt {
     color: $sp-grey-400;
@@ -300,44 +295,33 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 15%;
+  width: 20%;
   height: 232px;
-  margin-top: -32px;
+  margin-top: -16px;
   gap: 8px;
 
   .list-item {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
-    gap: 12px;
+    width: 100%;
+    gap: 32px;
   }
   .list-title {
     color: $sp-grey-400;
+    width: 156px;
   }
   .list-value {
-    width: 56px;
     font-size: 24px;
   }
 }
 
 .cluster-summary-wrapper {
-  .overview__contents-box {
-    align-items: flex-start !important;
-    padding: 0;
-  }
   .overview-wrapper {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     padding-top: 8px !important;
-  }
-  .overview__long-box.overview-box {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 8px;
-
-    padding: 0 !important;
   }
 
   .list-value {
@@ -348,6 +332,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 33%;
   }
 
   .overview-box-right {

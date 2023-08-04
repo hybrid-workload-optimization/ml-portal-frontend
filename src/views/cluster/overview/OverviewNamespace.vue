@@ -1,44 +1,53 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
     <div class="overview-header">Namespace</div>
-    <div class="sp-list-content" style="height: 400px">
+    <div class="sp-list-content">
       <!-- 조회 내용이 존재할 때, 그리드 표시 -->
-      <sp-table
-        v-if="data"
-        :headers="headers"
-        :datas="data"
-        :options="options"
-        :search="searchValue"
-        :custom-slot-info="customSlotInfo"
-        :scrollOnly="true"
-        :items-per-page="9999"
-        :hide-default-footer="true"
-        is-linked
-        @click:row="moveToDetailPage"
-      >
-        <template v-slot:status_custom="slotProps">
-          <sp-chip
-            :color="getChipEachColor(slotProps.item.status)"
-            class="status-chip"
+      <div class="sp-list-content">
+        <!-- 조회 내용이 존재할 때, 그리드 표시 -->
+        <div class="table-wrapper">
+          <sp-table
+            v-if="data"
+            hide-default-header
+            :headers="headers"
+            :datas="data"
+            :options="options"
+            :search="searchValue"
+            :custom-slot-info="customSlotInfo"
+            :scrollOnly="true"
+            :items-per-page="9999"
+            :hide-default-footer="true"
+            is-linked
+            :height="245"
+            dense
+            @click:row="moveToDetailPage"
           >
-            {{ getStatusText(slotProps.item.status) }}
-          </sp-chip>
-        </template>
-      </sp-table>
+            <template v-slot:status_custom="slotProps">
+              <sp-chip
+                small
+                :color="getChipEachColor(slotProps.item.status)"
+                class="status-chip"
+                ><span style=""></span>
+                {{ getStatusText(slotProps.item.status) }}
+              </sp-chip>
+            </template>
+          </sp-table>
 
-      <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
-      <empty
-        v-else
-        title="clusterNamespace가 존재하지 않습니다."
-        description=""
-      />
+          <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
+          <empty
+            v-else
+            title="clusterNamespace가 존재하지 않습니다."
+            description=""
+          />
+        </div>
+      </div>
     </div>
   </sp-card>
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
 import spTable from '@/components/dataTables/DataTable.vue'
+import { createNamespacedHelpers } from 'vuex'
 import Empty from '@/components/Empty.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
@@ -60,13 +69,11 @@ const customSlotInfo = [{ name: 'status', slotName: 'status' }]
 
 export default {
   components: {
-    spTable,
     Empty,
+    spTable,
   },
   props: {
-    data: {
-      type: Array,
-    },
+    data: { type: Array },
   },
   mixins: [checkProjectAuth],
   data() {
@@ -204,4 +211,15 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.sp-list-content {
+  ::v-deep {
+    .theme--light.v-data-table.v-data-table--fixed-header thead th {
+      background-color: #eee !important;
+    }
+    .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
+      background-color: #fff !important;
+    }
+  }
+}
+</style>

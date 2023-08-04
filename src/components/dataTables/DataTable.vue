@@ -11,6 +11,7 @@
       :hide-default-header="optionsProp['hide-default-header']"
       :show-select="optionsProp['show-select']"
       :item-key="optionsProp['item-key']"
+      :dense="dense"
       :headers="headers"
       :items="filterDatas"
       :search="search"
@@ -21,6 +22,7 @@
       v-model="changeSelected"
       @click:row="onClickRow"
       fixed-header
+      :height="height"
     >
       <!-- 글자 수 15글자 넘어가면 말줄임표 및 툴팁 적용 -->
       <template
@@ -125,6 +127,15 @@ export default {
       type: Boolean,
       default: false,
       description: '연결할 path 값 유무',
+    },
+    dense: {
+      type: Boolean,
+      default: false,
+      description: 'Size',
+    },
+    height: {
+      type: Number,
+      default: undefined,
     },
   },
   data: () => ({

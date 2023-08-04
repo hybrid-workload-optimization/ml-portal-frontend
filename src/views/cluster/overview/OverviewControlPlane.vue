@@ -59,15 +59,13 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 50%;
-  height: 200px;
-
   .list-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
     width: 50%;
-    height: auto;
+    height: 48px;
   }
 }
 </style>

@@ -172,5 +172,9 @@ export default {
       }
     }
   }
+
+  .v-data-table-header tr > th {
+    background: #fff !important;
+  }
 }
 </style>
