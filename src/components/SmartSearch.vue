@@ -73,7 +73,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Input key:value',
+      default: '   Input key:value',
     },
     values: {
       type: Array,

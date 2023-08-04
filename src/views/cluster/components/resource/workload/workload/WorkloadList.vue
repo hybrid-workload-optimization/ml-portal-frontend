@@ -1,6 +1,6 @@
 <template>
   <div class="sp-list-content">
-    <div class="search-wrapper">
+    <div class="search-wrapper workload-search">
       <!-- <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
@@ -217,4 +217,29 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.workload-search {
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  .search-wrapper {
+    width: 300px !important;
+    margin-right: 15px;
+  }
+  .sp-smart-search {
+    width: 300px !important;
+    text-decoration: none !important;
+    .v-input {
+      padding-top: 5px;
+    }
+    .v-input__slot {
+      border: thin solid rgba(75, 85, 102, 0.5);
+      height: 20px;
+    }
+  }
+
+  .v-input__slot:before {
+    border: none !important;
+  }
+}
+</style>
