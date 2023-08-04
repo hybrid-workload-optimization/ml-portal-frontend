@@ -1,20 +1,20 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
-    <div class="overview__title-wrapper">
-      <div class="overview__title">
-        <span class="overview__title">Nodes (Cluster Autoscaler = On/Off)</span>
-      </div>
+    <div class="overview-header">
+      Nodes<span class="color-red"> (Cluster Autoscaler = On/Off)</span>
     </div>
     <div class="sp-list-content">
       <!-- 조회 내용이 존재할 때, 그리드 표시 -->
       <div class="table-wrapper">
         <sp-table
-          v-if="dataListSize"
+          v-if="data"
           :headers="headers"
-          :datas="dataList"
+          :datas="processedData"
           :options="options"
           :search="searchValue"
           :custom-slot-info="customSlotInfo"
+          :scrollOnly="true"
+          :items-per-page="9999"
           is-linked
           @click:row="moveToDetailPage"
         >
@@ -50,54 +50,43 @@ const clusterNodeMapUtils = createNamespacedHelpers('clusterNode')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 // const alertMapUtils = createNamespacedHelpers('alert')
 
+// 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
+const headers = [
+  { text: 'Name', value: 'name', width: 180 },
+  { text: 'IP', align: 'center', value: 'ip' },
+  { text: 'Role', align: 'center', value: 'role', width: 150 },
+  { text: 'Status', align: 'center', value: 'status' },
+  { text: 'Pod', align: 'center', value: 'podStatus' },
+  {
+    text: 'CPU(Request/Allocatable)',
+    align: 'center',
+    value: 'cpuUsage',
+    width: 300,
+  },
+  {
+    text: 'Memory(Request/Allocatable)',
+    align: 'center',
+    value: 'memoryUsage',
+    width: 300,
+  },
+]
+const customSlotInfo = [{ name: 'status', slotName: 'status' }]
+
 export default {
   components: {
     spTable,
     Empty,
   },
+  props: {
+    data: {
+      type: Array,
+    },
+  },
   mixins: [checkProjectAuth],
   data() {
     return {
       searchValue: '',
-
-      // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
-      headers: [
-        {
-          text: 'Host name',
-          // align: 'center',
-          value: 'name',
-        },
-        {
-          text: 'IP',
-          align: 'center',
-          value: 'ip',
-        },
-        {
-          text: 'Role',
-          align: 'center',
-          value: 'role',
-        },
-        {
-          text: 'Status',
-          align: 'center',
-          value: 'status',
-        },
-        {
-          text: 'K8S Version',
-          align: 'center',
-          value: 'k8sVersion',
-        },
-        {
-          text: 'Allocated CPU',
-          align: 'center',
-          value: 'allocatedCpu',
-        },
-        {
-          text: 'Allocated Memory',
-          align: 'center',
-          value: 'allocatedMemory',
-        },
-      ],
+      headers,
       // 그리드 설정 값
       options: {
         hideFooter: false,
@@ -111,7 +100,8 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-      customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      customDatas: [],
+      customSlotInfo,
     }
   },
   async created() {
@@ -119,6 +109,7 @@ export default {
     await this.getListData()
     this.checkProjectAuth(this.dataDetail.projectIdx)
     this.isLoading = false
+    console.log(this.data)
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']),
@@ -128,6 +119,18 @@ export default {
     },
     getStatusText() {
       return status => (status ? 'Power on' : 'Power off')
+    },
+    processedData() {
+      return this.data.map(item => ({
+        ...item,
+        role: item.role[0],
+        cpuUsage: `${item.usageDto.cpuRequestsFraction}%
+                  (${item.usageDto.cpuRequests / 1000}Core / 
+                    ${item.usageDto.cpuCapacity / 1000}Core)`,
+        memoryUsage: `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
+                  (${this.bytesToGB(item.usageDto.memoryRequests)}G / 
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
+      }))
     },
   },
   methods: {
@@ -185,6 +188,11 @@ export default {
         Off: '#1A3350',
       }
       return STATUS[status]
+    },
+
+    bytesToGB(bytes) {
+      const GB = bytes / (1024 * 1024 * 1024)
+      return parseFloat(GB.toFixed(1)) // 소수점 이하 두 자리까지 표시
     },
   },
   beforeDestroy() {

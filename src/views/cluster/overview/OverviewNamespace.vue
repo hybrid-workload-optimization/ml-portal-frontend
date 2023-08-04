@@ -1,40 +1,37 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
-    <div class="overview__title-wrapper">
-      <div class="overview__title">
-        <span class="overview__title">Namespace</span>
-      </div>
-    </div>
-    <div class="sp-list-content">
-      <div class="table-wrapper">
-        <!-- 조회 내용이 존재할 때, 그리드 표시 -->
-        <sp-table
-          v-if="dataListSize"
-          :headers="headers"
-          :datas="dataList"
-          :options="options"
-          :search="searchValue"
-          :custom-slot-info="customSlotInfo"
-          is-linked
-          @click:row="moveToDetailPage"
-        >
-          <template v-slot:status_custom="slotProps">
-            <sp-chip
-              :color="getChipEachColor(slotProps.item.status)"
-              class="status-chip"
-            >
-              {{ getStatusText(slotProps.item.status) }}
-            </sp-chip>
-          </template>
-        </sp-table>
+    <div class="overview-header">Namespace</div>
+    <div class="sp-list-content" style="height: 400px">
+      <!-- 조회 내용이 존재할 때, 그리드 표시 -->
+      <sp-table
+        v-if="data"
+        :headers="headers"
+        :datas="data"
+        :options="options"
+        :search="searchValue"
+        :custom-slot-info="customSlotInfo"
+        :scrollOnly="true"
+        :items-per-page="9999"
+        :hide-default-footer="true"
+        is-linked
+        @click:row="moveToDetailPage"
+      >
+        <template v-slot:status_custom="slotProps">
+          <sp-chip
+            :color="getChipEachColor(slotProps.item.status)"
+            class="status-chip"
+          >
+            {{ getStatusText(slotProps.item.status) }}
+          </sp-chip>
+        </template>
+      </sp-table>
 
-        <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
-        <empty
-          v-else
-          title="clusterNamespace가 존재하지 않습니다."
-          description=""
-        />
-      </div>
+      <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
+      <empty
+        v-else
+        title="clusterNamespace가 존재하지 않습니다."
+        description=""
+      />
     </div>
   </sp-card>
 </template>
@@ -50,10 +47,26 @@ const clusterMapUtils = createNamespacedHelpers('cluster')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
+const headers = [
+  { text: 'Name', align: 'left', value: 'name', width: 200 },
+  { text: 'Status', align: 'center', value: 'status' },
+  { text: 'Pod', align: 'center', value: 'podStatus', width: 150 },
+  { text: 'CPU Request', align: 'center', value: 'cpuRequest' },
+  { text: 'Memory Request', align: 'center', value: 'memRequest' },
+  { text: 'CPU Limit', align: 'center', value: 'cpuLimit' },
+  { text: 'Memory Limit', align: 'center', value: 'memLimit' },
+]
+const customSlotInfo = [{ name: 'status', slotName: 'status' }]
+
 export default {
   components: {
     spTable,
     Empty,
+  },
+  props: {
+    data: {
+      type: Array,
+    },
   },
   mixins: [checkProjectAuth],
   data() {
@@ -61,28 +74,7 @@ export default {
       searchValue: '',
 
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
-      headers: [
-        {
-          text: 'Name',
-          align: 'left',
-          value: 'name',
-        },
-        {
-          text: 'Lables',
-          align: 'left',
-          value: 'label',
-        },
-        {
-          text: 'Status',
-          align: 'center',
-          value: 'status',
-        },
-        {
-          text: 'Created At',
-          align: 'center',
-          value: 'createdAt',
-        },
-      ],
+      headers,
       // 그리드 설정 값
       options: {
         hideFooter: false,
@@ -96,12 +88,13 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-      customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      customSlotInfo,
     }
   },
   created() {
     this.checkProjectAuth()
     this.getListData()
+    console.log(this.data)
   },
   computed: {
     ...clusterNamespaceMapUtils.mapGetters(['dataList', 'dataListSize']),
@@ -111,6 +104,14 @@ export default {
     },
     getStatusText() {
       return status => (status !== 'Active' ? 'Inactive' : status)
+    },
+    processedData() {
+      return this.data.map(item => ({
+        ...item,
+        role: item.role[0],
+        cpuUsage: `(${item.usageDto.cpuRequests}Core / ${item.usageDto.cpuCapacity}Core)`,
+        memoryUsage: `(${item.usageDto.memoryRequests}G / ${item.usageDto.memoryCapacity}G)`,
+      }))
     },
   },
   methods: {
