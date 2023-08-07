@@ -209,6 +209,9 @@ export default {
   .theme--light.v-data-table.v-data-table--fixed-header thead th {
     background-color: #eee !important;
   }
+  .sp-data-table .v-data-table__wrapper {
+    background-color: #fff !important;
+  }
   .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
     background-color: #fff !important;
   }

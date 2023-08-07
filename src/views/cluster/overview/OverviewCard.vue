@@ -1,5 +1,17 @@
 <template>
   <div>
+    <div class="reload-wrapper">
+      <sp-image
+        class="reload-list__image"
+        contain
+        lazySrc="icon-reload.png"
+        src="icon-reload.png"
+        width="18"
+        @click="reloadData"
+      ></sp-image>
+      <span>마지막 업데이트 : {{ currentDateTime }}</span>
+    </div>
+
     <overview-cluster-summary
       v-if="dataClusterSummary"
       :data="dataClusterSummary"
@@ -49,6 +61,7 @@ export default {
       nodes: [],
       podSummary: {},
       workloadSummary: {},
+      currentDateTime: '',
     }
   },
   computed: {
@@ -81,6 +94,8 @@ export default {
     this.isLoading = false
     this.dataSet()
     console.log(this.overviewData)
+
+    this.getDateTime()
   },
   methods: {
     ...clusterMapUtils.mapActions(['getDataOverview']),
@@ -98,6 +113,26 @@ export default {
       this.nodes = data.nodes
       this.podSummary = data.podSummary
       this.workloadSummary = data.workloadSummary
+    },
+    getDateTime() {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const seconds = String(now.getSeconds()).padStart(2, '0')
+
+      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+    },
+    async reloadData() {
+      this.isLoading = true
+      await this.getDataDetail()
+      this.isLoading = false
+      this.dataSet()
+      console.log(this.overviewData)
+
+      this.getDateTime()
     },
   },
 }
@@ -175,6 +210,15 @@ export default {
 
   .v-data-table-header tr > th {
     background: #fff !important;
+  }
+}
+
+.reload-wrapper {
+  float: right;
+  .reload-list__image {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
   }
 }
 </style>

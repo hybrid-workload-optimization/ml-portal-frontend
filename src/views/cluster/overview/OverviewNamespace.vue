@@ -10,7 +10,7 @@
             v-if="data"
             hide-default-header
             :headers="headers"
-            :datas="data"
+            :datas="processedData"
             :options="options"
             :search="searchValue"
             :custom-slot-info="customSlotInfo"
@@ -60,10 +60,10 @@ const headers = [
   { text: 'Name', align: 'left', value: 'name', width: 200 },
   { text: 'Status', align: 'center', value: 'status' },
   { text: 'Pod', align: 'center', value: 'podStatus', width: 150 },
-  { text: 'CPU Request', align: 'center', value: 'cpuRequest' },
-  { text: 'Memory Request', align: 'center', value: 'memRequest' },
+  { text: 'CPU Request', align: 'center', value: 'cpuUsage' },
+  { text: 'Memory Request', align: 'center', value: 'memoryUsage' },
   { text: 'CPU Limit', align: 'center', value: 'cpuLimit' },
-  { text: 'Memory Limit', align: 'center', value: 'memLimit' },
+  { text: 'Memory Limit', align: 'center', value: 'memoryLimit' },
 ]
 const customSlotInfo = [{ name: 'status', slotName: 'status' }]
 
@@ -115,9 +115,18 @@ export default {
     processedData() {
       return this.data.map(item => ({
         ...item,
-        role: item.role[0],
-        cpuUsage: `(${item.usageDto.cpuRequests}Core / ${item.usageDto.cpuCapacity}Core)`,
-        memoryUsage: `(${item.usageDto.memoryRequests}G / ${item.usageDto.memoryCapacity}G)`,
+        cpuUsage: `${item.usageDto.cpuRequestsFraction}%
+                  (${item.usageDto.cpuRequests / 1000}Core /
+                    ${item.usageDto.cpuCapacity / 1000}Core)`,
+        memoryUsage: `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
+                  (${this.bytesToGB(item.usageDto.memoryRequests)}G /
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
+        cpuLimit: `${item.usageDto.cpuLimitsFraction}%
+                  (${item.usageDto.cpuLimits / 1000}Core /
+                    ${item.usageDto.cpuCapacity / 1000}Core)`,
+        memoryLimit: `${item.usageDto.memoryLimitsFraction.toFixed(1)}%
+                  (${this.bytesToGB(item.usageDto.memoryLimits)}G /
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
       }))
     },
   },
@@ -203,6 +212,10 @@ export default {
         Off: '#1A3350',
       }
       return STATUS[status]
+    },
+    bytesToGB(bytes) {
+      const GB = bytes / (1024 * 1024 * 1024)
+      return parseFloat(GB.toFixed(1)) // 소수점 이하 두 자리까지 표시
     },
   },
   beforeDestroy() {

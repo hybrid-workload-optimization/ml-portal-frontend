@@ -10,6 +10,7 @@
         @click="onClickButton"
       >
       </search> -->
+
       <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
@@ -17,6 +18,13 @@
         @click="onClickButton"
       >
       </search>
+
+      <smart-search
+        :items="headers"
+        :datas="dataList"
+        density="compact"
+        @update:search="searchDatas"
+      ></smart-search>
 
       <!-- <smart-search
         :placeholder="0$t('instance.placeholder.search')"
@@ -26,13 +34,6 @@
         search-tag
         @update:search="searchDatas"
       ></smart-search> -->
-
-      <smart-search
-        :items="headers"
-        :datas="dataList"
-        density="compact"
-        @update:search="searchDatas"
-      ></smart-search>
     </div>
 
     <!-- 조회 내용이 존재할 때, 그리드 표시 -->
@@ -224,7 +225,7 @@ export default {
 <style lang="scss">
 .workload-search {
   display: flex;
-  justify-content: center; /* 수평 가운데 정렬 */
+  // justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
   .search-wrapper {
     width: 300px !important;
