@@ -137,6 +137,11 @@ export default {
       type: Number,
       default: undefined,
     },
+    setTotal: {
+      type: Function,
+      default: () => {},
+      description: '전체 개수 초기화(필터링 적용)',
+    },
   },
   data: () => ({
     selected: [],
