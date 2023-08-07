@@ -43,6 +43,7 @@
         :datas="dataList"
         :options="options"
         :search="searchValue"
+        :smart-search="smartSearchDatas"
         :custom-slot-info="customSlotInfo"
         is-linked
         @click:row="moveToDetailPage"
@@ -89,8 +90,8 @@ export default {
   },
   data() {
     return {
+      smartSearchDatas: [],
       searchValue: '',
-      searchDatas: [],
       searchTag: true,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
@@ -160,7 +161,10 @@ export default {
   methods: {
     ...workloadMapUtils.mapActions(['getDataList']),
     // ...alertMapUtils.mapMutations(['openAlert']),
-
+    searchDatas(e) {
+      console.log(e)
+      this.smartSearchDatas = e
+    },
     // 서치 박스의 버튼 클릭 시 호출됨
     onClickButton() {
       this.$router.push(`/cluster/edit/${this.$route.params.id}`)

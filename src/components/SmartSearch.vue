@@ -37,10 +37,10 @@
     </v-autocomplete>
     <v-chip-group>
       <v-chip
-        closable
         v-for="(item, index) in valuesItem"
         :key="'smart-search__value--' + index"
         @click:close="onDeleteSearchItem(index)"
+        close
         ><strong>{{ item.text }}</strong> : {{ item.value }}</v-chip
       >
     </v-chip-group>
@@ -104,6 +104,11 @@ export default {
       default: false,
       description:
         'tag 검색 기능을 사용할지에 대한 여부. true일 경우 datas의 모든 tag 값들을 items에 추가한다.',
+    },
+  },
+  watch: {
+    isValueSearch(val) {
+      if (val) this.activeMenu()
     },
   },
   data() {
@@ -172,6 +177,12 @@ export default {
     },
   },
   methods: {
+    activeMenu() {
+      setTimeout(() => {
+        this.$refs.autoComp.focus()
+        this.$refs.autoComp.activateMenu()
+      }, 0)
+    },
     onClear() {
       this.searchValue = ''
       this.isValueSearch = false
@@ -179,11 +190,9 @@ export default {
     },
 
     updateModelValue(event) {
-      console.log(event)
       if (!event) {
         this.onClear()
-      }
-      this.searchValue = event
+      } else this.searchValue = event
     },
 
     filterTagDatas(type) {
@@ -226,12 +235,10 @@ export default {
         indexOfTargetText = searchText.trim().toLowerCase()
       }
 
-      if (typeof itemText?.value === 'string') {
-        return itemText.value.toLowerCase().indexOf(indexOfTargetText) > -1
+      if (typeof itemText === 'string') {
+        return itemText.toLowerCase().indexOf(indexOfTargetText) > -1
       }
-      return (
-        itemText?.value?.value.toLowerCase().indexOf(indexOfTargetText) > -1
-      )
+      return itemText.toLowerCase().indexOf(indexOfTargetText) > -1
     },
 
     onFindTitle(text) {
@@ -269,50 +276,59 @@ export default {
     },
 
     setInputKey(value) {
-      console.log(value)
       const { findKey, findTitle } = this.onFindTitle(value)
-      console.log(findKey)
-      console.log(findTitle)
+      /*
+      if (!result || type === 'tag') {
+        // items 목록에 없는 값을 입력 시 return
+        onClear()
+        return false
+      }
+      */
+      // 선택된 key 정보 저장
       this.selectedKeyItem = findKey
-      this.$emit('update:search', findKey)
+      this.$emit('update:key', findKey)
       this.searchValue = `${findTitle}:`
       this.isValueSearch = true
     },
 
     onEnter(e, value, type) {
-      console.log(e)
-      console.log(value)
-      console.log(this.searchValue)
       let inputValue = ''
-      let searchValueSplit
-      if (!this.searchValue) {
-        searchValueSplit = value.split(':')
-      } else {
-        searchValueSplit = this.searchValue.split(':')
-      }
-      console.log(searchValueSplit)
-      // const searchValueSplit = this.searchValue.split(':')
-      // const setValue =
-      //   searchValueSplit.length > 1 && searchValueSplit[1].trim()
-      //     ? this.searchValue.replace(`${searchValueSplit[0]}:`, '')
-      //     : value?.toString().trim()
-      const setValue = 'Name'
-      console.log(setValue)
-      console.log(this.isValueSearch)
+      // value 값
+      const searchValueSplit = this.searchValue.split(':')
+      const setValue =
+        searchValueSplit.length > 1 && searchValueSplit[1].trim()
+          ? this.searchValue.replace(`${this.searchValue.split(':')[0]}:`, '')
+          : value?.toString().trim()
       if (!this.isValueSearch) {
         inputValue =
           searchValueSplit.length && searchValueSplit[0].trim()
             ? searchValueSplit[0]
             : value
       } else {
+        // 키보드 이벤트 시 예외처리
         inputValue = searchValueSplit.length
           ? `${searchValueSplit[0]}: ${setValue}`
           : ''
       }
-      console.log(inputValue)
+      // console.log(setValue)
+      if (!this.isValueSearch) {
+        inputValue =
+          searchValueSplit.length && searchValueSplit[0].trim()
+            ? searchValueSplit[0]
+            : value
+      } else {
+        // 키보드 이벤트 시 예외처리
+        inputValue = searchValueSplit.length
+          ? `${searchValueSplit[0]}: ${setValue}`
+          : ''
+      }
+
+      // key 값이 있을 때
       if (this.isValueSearch && setValue) {
+        // key가 존재하는 값인지 확인
         const { findKey, findTitle } = this.onFindTitle(inputValue)
 
+        // 선택된 key, value, title 정보 저장
         const addItem = {
           text: findTitle,
           value: setValue.trim(),
@@ -320,14 +336,14 @@ export default {
           type: this.isTagSearching ? 'tag' : null,
         }
         this.valuesItem.push(addItem)
-        this.$emit('update:search-input', this.valuesItem)
-        this.$emit('update:target-item', addItem)
-
-        setTimeout(() => {
-          this.menuProps.closeOnClick = false
-          this.menuProps.closeOnContentClick = false
-        }, 500)
-
+        this.$emit('update:search', [addItem])
+        this.$emit('update:search-input', this.valuesItem) // 변경된 검색 데이터 목록
+        this.$emit('update:target-item', addItem) // 추가된 아이템 이벤트
+        // 이벤트 delay => 너무 빨라서 select items 목록이 안닫힘
+        // setTimeout(() => {
+        //   this.menuProps.closeOnClick = false
+        //   this.menuProps.closeOnContentClick = false
+        // }, 500)
         this.onClear()
         return
       }
@@ -357,6 +373,7 @@ export default {
     onDeleteSearchItem(index) {
       this.$emit('update:target-item', this.valuesItem[index])
       this.valuesItem.splice(index, 1)
+      this.$emit('update:search', this.valuesItem)
       this.$emit('update:search-input', this.valuesItem)
     },
   },
