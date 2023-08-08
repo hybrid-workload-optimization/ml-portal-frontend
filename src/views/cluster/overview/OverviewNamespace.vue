@@ -115,18 +115,30 @@ export default {
     processedData() {
       return this.data.map(item => ({
         ...item,
-        cpuUsage: `${item.usageDto.cpuRequestsFraction}%
+        cpuUsage:
+          item.usageDto != null
+            ? `${item.usageDto.cpuRequestsFraction}%
                   (${item.usageDto.cpuRequests / 1000}Core /
-                    ${item.usageDto.cpuCapacity / 1000}Core)`,
-        memoryUsage: `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
+                    ${item.usageDto.cpuCapacity / 1000}Core)`
+            : '-',
+        memoryUsage:
+          item.usageDto != null
+            ? `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
                   (${this.bytesToGB(item.usageDto.memoryRequests)}G /
-                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
-        cpuLimit: `${item.usageDto.cpuLimitsFraction}%
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`
+            : '-',
+        cpuLimit:
+          item.usageDto != null
+            ? `${item.usageDto.cpuLimitsFraction}%
                   (${item.usageDto.cpuLimits / 1000}Core /
-                    ${item.usageDto.cpuCapacity / 1000}Core)`,
-        memoryLimit: `${item.usageDto.memoryLimitsFraction.toFixed(1)}%
+                    ${item.usageDto.cpuCapacity / 1000}Core)`
+            : '-',
+        memoryLimit:
+          item.usageDto != null
+            ? `${item.usageDto.memoryLimitsFraction.toFixed(1)}%
                   (${this.bytesToGB(item.usageDto.memoryLimits)}G /
-                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`
+            : '-',
       }))
     },
   },

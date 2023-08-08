@@ -35,7 +35,7 @@
           <div class="summary-title">Provisioner</div>
           <div class="list-value">{{ data.createBy }}</div>
         </div>
-        <div class="summary-item">
+        <!-- <div class="summary-item">
           <div class="summary-title">VPC CIDR</div>
           <div class="list-value" v-if="data.vpcCidr">{{ data.vpcCidr }}</div>
           <div class="list-value" v-else>-</div>
@@ -51,7 +51,7 @@
           <div class="summary-title">Pod CIDR</div>
           <div class="list-value" v-if="data.podCidr">{{ data.podCidr }}</div>
           <div class="list-value" v-else>-</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="chart-wrapper">
@@ -146,6 +146,7 @@ const defaultOptions = {
         },
       },
       customScale: 1,
+      // expandOnClick: false,
     },
   },
 }
@@ -168,6 +169,13 @@ export default {
             style: { fontSize: '18px' },
           },
           colors: ['#EA1606', '#29AA54'],
+          tooltip: {
+            y: {
+              formatter(value) {
+                return `${value} Core`
+              },
+            },
+          },
           ...defaultOptions,
         },
       },
@@ -183,6 +191,13 @@ export default {
           },
           colors: ['#29AA54', '#FFCD56'],
           legend: { show: false },
+          tooltip: {
+            y: {
+              formatter(value) {
+                return `${value} GB`
+              },
+            },
+          },
           ...defaultOptions,
         },
       },
@@ -199,6 +214,13 @@ export default {
           },
           colors: ['#29AA54', '#FFCD56'],
           legend: { show: false },
+          tooltip: {
+            y: {
+              formatter(value) {
+                return `${value} GB`
+              },
+            },
+          },
           ...defaultOptions,
         },
       },
@@ -261,8 +283,9 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 2px;
+  gap: 10px;
   width: 24%;
+  margin-top: 10px;
   min-width: 320px;
 
   .summary-item {
@@ -326,6 +349,7 @@ export default {
 
   .list-value {
     white-space: nowrap;
+    font-weight: 600;
   }
   .overview-chart-wrapper {
     display: flex;

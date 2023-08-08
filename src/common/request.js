@@ -189,8 +189,7 @@ service.interceptors.response.use(
         .push({ path: '/ssoLogin', query: { originUrl: originPage } })
         .catch(() => {})
     } else if (response && response.status === 400) {
-      vm.$router.push('/devLogin').catch(() => {})
-
+      // vm.$router.push('/devLogin').catch(() => {})
       // 토큰 만료 및 검증 실패에 대한 임시 코드
       // cors error -> login 페이지 이동
       // 추후 401 error -> login 페이지 이동으로 변경 예정
@@ -199,6 +198,10 @@ service.interceptors.response.use(
       // vm.$router
       // .push({ path: '/ssoLogin', query: { originPath: originPage } })
       // .catch(() => {})
+      const originPage = vm.$route.path
+      vm.$router
+        .push({ path: '/ssoLogin', query: { originUrl: originPage } })
+        .catch(() => {})
     } else {
       errorDesc = errorMsg
     }

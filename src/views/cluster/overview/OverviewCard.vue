@@ -210,6 +210,10 @@ export default {
 
   .v-data-table-header tr > th {
     background: #fff !important;
+    height: 42px !important;
+  }
+  tbody tr > td {
+    height: 42px !important;
   }
 }
 
