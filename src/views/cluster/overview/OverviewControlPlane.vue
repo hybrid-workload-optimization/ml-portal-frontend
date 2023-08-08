@@ -65,7 +65,7 @@ export default {
     align-items: center;
     gap: 8px;
     width: 50%;
-    height: 48px;
+    height: 40px;
   }
 }
 </style>

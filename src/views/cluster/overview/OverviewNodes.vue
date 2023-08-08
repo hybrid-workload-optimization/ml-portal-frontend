@@ -1,7 +1,8 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
     <div class="overview-header">
-      Nodes<span class="color-red"> (Cluster Autoscaler = On/Off)</span>
+      Nodes
+      <!-- <span class="color-red"> (Cluster Autoscaler = On/Off)</span> -->
     </div>
     <div class="sp-list-content">
       <!-- 조회 내용이 존재할 때, 그리드 표시 -->

@@ -150,6 +150,7 @@ export default {
       const valuesArray = Object.values(this.data.podDeployedByNode)
       const lengthsArray = valuesArray.map(value => value.length)
       const keysArray = Object.keys(this.data.podDeployedByNode)
+      console.log(keysArray)
       this.nodeData.series = lengthsArray
       this.nodeData.options.labels = keysArray
     },
