@@ -34,7 +34,7 @@
           <apexchart
             type="donut"
             width="380px"
-            height="auto"
+            height="200px"
             :series="workloadData.series"
             :options="workloadData.options"
           />
