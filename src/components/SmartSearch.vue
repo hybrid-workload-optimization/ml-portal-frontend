@@ -72,7 +72,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '   Input key:value',
+      default: '   속성 검색',
     },
     values: {
       type: Array,

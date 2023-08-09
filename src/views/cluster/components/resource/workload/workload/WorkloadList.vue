@@ -51,13 +51,41 @@
         is-linked
         @click:row="moveToDetailPage"
       >
-        <template v-slot:status_custom="slotProps">
-          <sp-chip
-            :color="getChipEachColor(slotProps.item.status)"
+        <template v-slot:health_custom="slotProps">
+          <!-- <sp-chip
+            :color="getChipEachColor(slotProps.item.health)"
             class="status-chip"
           >
-            {{ getStatusText(slotProps.item.status) }}
-          </sp-chip>
+            {{ getStatusText(slotProps.item.health) }}
+          </sp-chip> -->
+          <div class="workload__health-wrapper">
+            <div class="workload__image-wrapper">
+              <sp-image
+                v-if="slotProps.item.health === 'Healthy'"
+                contain
+                lazySrc="icon_healthy.svg"
+                src="icon_healthy.svg"
+                width="22"
+              />
+
+              <sp-image
+                v-if="slotProps.item.health === 'Unhealthy'"
+                contain
+                lazySrc="icon_unhealthy.svg"
+                src="icon_unhealthy.svg"
+                width="22"
+              />
+              <sp-image
+                v-if="slotProps.item.health === 'Unknown'"
+                contain
+                lazySrc="free-icon-warning-6897039.png"
+                src="free-icon-warning-6897039.png"
+                width="22"
+              />
+            </div>
+
+            <span>{{ slotProps.item.health }}</span>
+          </div>
         </template>
       </sp-table>
 
@@ -142,7 +170,7 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-      customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      customSlotInfo: [{ name: 'health', slotName: 'health' }],
       clusterIdx: null,
     }
   },
@@ -218,9 +246,9 @@ export default {
       return STATUS[status]
     },
   },
-  beforeDestroy() {
-    this.initClusterNodeDataList()
-  },
+  // beforeDestroy() {
+  // this.initClusterNodeDataList()
+  // },
 }
 </script>
 
@@ -243,6 +271,14 @@ export default {
 
   .v-input__slot:before {
     border: none !important;
+  }
+}
+
+.workload__health-wrapper {
+  display: inline-flex;
+  align-items: center;
+  .workload__image-wrapper {
+    margin-right: 5px;
   }
 }
 </style>
