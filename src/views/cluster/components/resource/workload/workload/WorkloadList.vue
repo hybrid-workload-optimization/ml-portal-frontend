@@ -133,17 +133,17 @@ export default {
         },
         {
           text: 'Namespace',
-          align: 'center',
+          // align: 'center',
           value: 'namespace',
         },
         {
           text: 'Kind',
-          align: 'center',
+          // align: 'center',
           value: 'kind',
         },
         {
           text: 'Health',
-          align: 'center',
+          // align: 'center',
           value: 'health',
         },
         {
