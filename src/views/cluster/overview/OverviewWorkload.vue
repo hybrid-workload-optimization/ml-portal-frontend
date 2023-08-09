@@ -129,14 +129,10 @@ export default {
   },
   methods: {
     getChartData() {
-      // const parseData = Object.keys(this.data).map(key => ({
-      //   name: key,
-      //   value: this.data[key].length,
-      // }))
-
-      const keysArray = Object.keys(this.data)
-
-      const valuesArray = Object.values(this.data)
+      const filterData = { ...this.data }
+      delete filterData.todayDeployedWorkload
+      const keysArray = Object.keys(filterData)
+      const valuesArray = Object.values(filterData)
       const lengthsArray = valuesArray.map(value => value.length)
 
       this.workloadData.series = lengthsArray
