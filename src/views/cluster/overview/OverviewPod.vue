@@ -10,14 +10,12 @@
       <div class="chart-wrapper">
         <apexchart
           type="donut"
-          width="300px"
           height="200px"
           :series="podData.series"
           :options="podData.options"
         />
         <apexchart
           type="donut"
-          width="300px"
           height="200px"
           :series="nodeData.series"
           :options="nodeData.options"
@@ -54,11 +52,11 @@
 <script>
 const defaultOptions = {
   // 도넛 차트 공통 스타일
-  legend: { show: true, position: 'right' },
+  legend: { show: true, position: 'right', width: 150 },
   dataLabels: { enabled: false },
   plotOptions: {
     pie: {
-      donut: { size: '50px' },
+      donut: { size: '50%' },
     },
   },
 }
@@ -73,9 +71,6 @@ export default {
     return {
       podData: {
         series: [], // 차트 데이터
-        chart: {
-          height: '200px',
-        },
         options: {
           title: {
             text: 'Pod 가동률',
@@ -92,13 +87,6 @@ export default {
             '#0078FF',
           ],
           ...defaultOptions,
-          plotOptions: {
-            pie: {
-              offsetY: 42,
-              donut: { size: '50' },
-              customScale: 1.55,
-            },
-          },
         },
       },
       nodeData: {
@@ -169,9 +157,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   margin-bottom: 8px;
-  width: 180px;
+  width: 120px;
   height: 200px;
-  margin-right: -120px;
+  margin-right: -80px;
   padding-left: 16px;
   .total-title {
     font-size: 14px;
@@ -182,14 +170,37 @@ export default {
 }
 .chart-wrapper {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  width: calc(100% - (180px + 420px));
+  width: calc(100% - (120px + 400px));
   height: 200px;
 
   & > div {
-    width: 300px;
+    min-width: 280px;
+    width: 100%;
+    max-width: 360px;
     height: 200px;
+  }
+
+  ::v-deep {
+    .apexcharts-legend-series {
+      white-space: nowrap;
+    }
+    .apexcharts-legend-text {
+      display: inline-block;
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .apexcharts-legend {
+      /* & .apexcharts-legend-text {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 120px;
+      } */
+    }
   }
 }
 </style>

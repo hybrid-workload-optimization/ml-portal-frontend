@@ -17,14 +17,16 @@
         @input="onInputSearchValue"
         @click="onClickButton"
       >
+        <template v-slot:smartSearch>
+          <smart-search
+            width="330"
+            :items="headers"
+            :datas="dataList"
+            density="compact"
+            @update:search="searchDatas"
+          />
+        </template>
       </search>
-
-      <smart-search
-        :items="headers"
-        :datas="dataList"
-        density="compact"
-        @update:search="searchDatas"
-      ></smart-search>
 
       <!-- <smart-search
         :placeholder="0$t('instance.placeholder.search')"
@@ -227,12 +229,8 @@ export default {
   display: flex;
   // justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
-  .search-wrapper {
-    width: 300px !important;
-    margin-right: 15px;
-  }
+
   .sp-smart-search {
-    width: 300px !important;
     text-decoration: none !important;
     .v-input {
       padding-top: 5px;

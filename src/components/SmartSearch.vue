@@ -19,19 +19,18 @@
     >
       <template v-slot:item="{ item }">
         <template v-if="item.subheader">
-          <!-- <v-list-subheader>{{ item.subheader }}</v-list-subheader> -->
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.subheader }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <hr />
+          <v-list-item
+            class="item-subheader"
+            style="border-bottom: 1px solid #eee"
+            >{{ item.subheader }}</v-list-item
+          >
         </template>
 
         <v-list-item v-else @click="onEnter($event, item.text, item.type)">
-          <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
+          {{ item.text }}
+          <!-- <v-list-item-content>
+            <v-list-item-title></v-list-item-title>
+          </v-list-item-content> -->
         </v-list-item>
       </template>
     </v-autocomplete>
@@ -381,12 +380,6 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin set-text($font-weight, $font-size, $color) {
-  font-weight: $font-weight;
-  font-size: $font-size;
-  color: $color;
-}
-
 .sp-autocomplete {
   &.v-input--readonly,
   &.v-input--disabled {
@@ -398,7 +391,7 @@ export default {
     min-height: 35px !important;
 
     .v-field {
-      font-size: toRem(13);
+      font-size: 16px;
       padding-inline-end: 0 !important;
       .v-input__prepend-inner {
         padding: 16px 15px !important;
@@ -413,17 +406,7 @@ export default {
         border: 1px solid $sp-box-border;
         border-radius: 5px;
       }
-      .v-icon {
-        @include set-text(
-          bold,
-          20,
-          rgba($color: $sp-sky-blue-500, $alpha: 0.5)
-        );
-        margin-right: 12px;
-      }
-      ::placeholder {
-        font-size: toRem(13);
-      }
+
       .v-text-field__slot {
         padding-right: 12px;
         input {
@@ -431,6 +414,10 @@ export default {
         }
       }
     }
+  }
+
+  .v-select__selections {
+    padding: 0 6px;
   }
 
   &.border {
