@@ -34,7 +34,7 @@
           <apexchart
             type="donut"
             width="380px"
-            height="200px"
+            height="180px"
             :series="workloadData.series"
             :options="workloadData.options"
           />
@@ -190,7 +190,7 @@ export default {
 
 .chart-wrapper {
   width: 70%;
-  height: 200px;
+  height: 180px !important;
 
   ::v-deep {
     & div {
