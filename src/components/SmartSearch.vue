@@ -335,7 +335,7 @@ export default {
           type: this.isTagSearching ? 'tag' : null,
         }
         this.valuesItem.push(addItem)
-        this.$emit('update:search', [addItem])
+        this.$emit('update:search', this.valuesItem)
         this.$emit('update:search-input', this.valuesItem) // 변경된 검색 데이터 목록
         this.$emit('update:target-item', addItem) // 추가된 아이템 이벤트
         // 이벤트 delay => 너무 빨라서 select items 목록이 안닫힘
