@@ -182,6 +182,7 @@ export default {
               result += 1
             }
           })
+
           // 모두 일치할 때(AND)
           if (result === this.smartSearch.length) return item
           return false

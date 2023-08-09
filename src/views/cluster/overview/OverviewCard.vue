@@ -161,7 +161,7 @@ export default {
 
   .list-wrapper {
     min-width: 300px;
-    max-width: 420px;
+    max-width: 400px;
     width: 100%;
     height: 200px;
 
