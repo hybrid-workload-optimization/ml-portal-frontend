@@ -28,12 +28,23 @@
         >
           <v-expansion-panel-header>
             <template v-slot:actions>
-              <v-icon class="expand-icon">$expand</v-icon>
+              <v-icon
+                class="custom-expand-icon"
+                v-if="menuName === 'Workload'"
+              ></v-icon>
+              <v-icon class="expand-icon" v-else>$expand</v-icon>
             </template>
-            <span class="expand-header">{{ menuName }}</span>
+
+            <span
+              v-if="menuName === 'Workload'"
+              @click="workloadDetail()"
+              class="expand-header custom-header"
+              >{{ menuName }}</span
+            >
+            <span v-else class="expand-header">{{ menuName }}</span>
           </v-expansion-panel-header>
 
-          <v-expansion-panel-content>
+          <v-expansion-panel-content v-if="menuName !== 'Workload'">
             <ul class="expand-list">
               <li
                 v-for="{ menuName, menuIdx } in subMenuList"
@@ -73,9 +84,6 @@ export default {
         subMenuList: [
           {
             menuName: 'Overview',
-          },
-          {
-            menuName: 'Overview2',
           },
           {
             menuName: 'Catalog',
@@ -147,19 +155,24 @@ export default {
         return false
       })
 
-      newMenuList.forEach(menu => {
-        if (menu.menuName === 'Workload') {
-          const workloadSubMenu = {
-            menuName: 'Workload',
-          }
-          menu.subMenuList.unshift(workloadSubMenu)
-        }
-      })
-
+      // newMenuList.forEach(menu => {
+      //   if (menu.menuName === 'Workload') {
+      //     const workloadSubMenu = {
+      //       menuName: 'Workload',
+      //     }
+      //     menu.subMenuList.unshift(workloadSubMenu)
+      //   }
+      // })
       // General > Overview, Catalog 메뉴 추가
       newMenuList.unshift(this.defaultMenu)
 
+      console.log(newMenuList)
+
       this.menuItems = newMenuList
+    },
+    workloadDetail() {
+      const clusterIdx = this.$route.params.id
+      this.$router.push(`/cluster/detail/${clusterIdx}/workload`)
     },
   },
 }
@@ -204,6 +217,9 @@ export default {
   order: 0;
 }
 
+.custom-expand-icon {
+  display: none !important;
+}
 .bottom-footer {
   bottom: 20px;
   position: fixed;

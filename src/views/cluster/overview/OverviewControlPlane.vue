@@ -58,7 +58,7 @@ export default {
 .content-left {
   display: flex;
   flex-wrap: wrap;
-  width: 50%;
+  width: 100%;
   .list-item {
     display: flex;
     justify-content: flex-start;

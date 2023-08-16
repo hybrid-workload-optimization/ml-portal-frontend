@@ -169,14 +169,17 @@ export default {
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { id } = data
+      const clusterIdx = this.$route.params.id
+      const { uid, name } = data
 
-      if (id) {
-        this.$router.replace({
-          name: this.$route.name,
-          hash: '#node',
-          query: { clusterNodeId: id, detail: true },
-        })
+      if (uid) {
+        // this.$router.replace({
+        //   name: this.$route.name,
+        //   hash: '#node',
+        //   query: { clusterNodeId: id, detail: true },
+        // })
+
+        this.$router.push(`/cluster/detail/${clusterIdx}/node/v2/${name}`)
       }
     },
     getChipColor(statusText) {
@@ -213,8 +216,8 @@ export default {
   .sp-data-table .v-data-table__wrapper {
     background-color: #fff !important;
   }
-  .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
-    background-color: #fff !important;
-  }
+  // .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
+  // background-color: #fff !important;
+  // }
 }
 </style>

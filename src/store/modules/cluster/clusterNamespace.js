@@ -133,6 +133,13 @@ const resource = {
       )
       commit('changeDetailInfo', response)
     },
+    //  상세 정보 조회 요청
+    async getDetailV2({ commit }, payload) {
+      console.log(payload)
+      const response = await request.getNamespaceDetailUsingGET(payload)
+      console.log(response)
+      commit('changeDetailInfo', response)
+    },
     //  yaml 정보 조회 요청
     async getClusterNamespaceYaml(context, payload) {
       const response = await request.getNamespaceYamlUsingGET(payload)
