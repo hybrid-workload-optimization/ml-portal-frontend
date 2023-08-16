@@ -17,6 +17,26 @@
         @input="onInputSearchValue"
         @click="onClickButton"
       >
+        <template v-slot:new-group>
+          <div class="reload-wrapper">
+            <select-button
+              :btnName="'New Workload'"
+              @clickBtn="openYamlEditor"
+              @changeItem="onChangeItem"
+              style="margin-bottom: 10px"
+            />
+            <sp-image
+              class="reload-list__image"
+              contain
+              lazySrc="icon-reload.png"
+              src="icon-reload.png"
+              width="18"
+              @click="reloadData"
+            ></sp-image>
+            <span>마지막 업데이트 : {{ currentDateTime }}</span>
+          </div>
+        </template>
+
         <template v-slot:smartSearch>
           <smart-search
             width="330"
@@ -95,22 +115,33 @@
         title="clusterNode가 존재하지 않습니다."
         description=""
       />
+
+      <!-- yaml 에디터 모달 -->
+      <yaml-edit-modal
+        @confirmed="onConfirmedFromEditModal"
+        class="yarm-edit-modal"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import Search from '@/components/molcule/DataTableSearch.vue'
+import Search from '@/components/molcule/DataTableSearch2.vue'
 import { createNamespacedHelpers } from 'vuex'
+import SelectButton from '@/components/SelectButton.vue'
+import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import SmartSearch from '@/components/SmartSearch.vue'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
-// const alertMapUtils = createNamespacedHelpers('alert')
+const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
+const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
+    SelectButton,
+    YamlEditModal,
     Search,
     SmartSearch,
     spTable,
@@ -172,6 +203,7 @@ export default {
       },
       customSlotInfo: [{ name: 'health', slotName: 'health' }],
       clusterIdx: null,
+      currentDateTime: '',
     }
   },
   async created() {
@@ -179,6 +211,8 @@ export default {
     this.clusterIdx = this.$route.params.id
     await this.getListData()
     this.isLoading = false
+
+    this.getDateTime()
   },
   computed: {
     ...workloadMapUtils.mapGetters(['dataList', 'dataListSize']),
@@ -190,8 +224,10 @@ export default {
     },
   },
   methods: {
-    ...workloadMapUtils.mapActions(['getDataList']),
-    // ...alertMapUtils.mapMutations(['openAlert']),
+    ...workloadMapUtils.mapActions(['getDataList', 'createWorkload']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...alertMapUtils.mapMutations(['openAlert']),
+
     searchDatas(e) {
       console.log(e)
       this.smartSearchDatas = e
@@ -245,6 +281,63 @@ export default {
       }
       return STATUS[status]
     },
+    openYamlEditor() {
+      this.openModal({
+        editType: 'create',
+        isEncoding: false,
+        content: '',
+        title: 'New Workload',
+        resourceType: 'workload',
+      })
+    },
+    async onChangeItem() {
+      await this.getListData()
+      this.isLoading = false
+    },
+    async reloadData() {
+      await this.getListData()
+      this.isLoading = false
+
+      this.getDateTime()
+    },
+    getDateTime() {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const seconds = String(now.getSeconds()).padStart(2, '0')
+
+      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+    },
+    async onConfirmedFromEditModal(value) {
+      const idx = this.$route.params.id
+      const { encodedContent } = value
+
+      try {
+        const param = {
+          clusterIdx: idx,
+          yaml: encodedContent,
+        }
+
+        const response = await this.createWorkload(param)
+
+        if (response.status === 201 || response.status === 200) {
+          this.openAlert({
+            title: '리소스가 생성 되었습니다.',
+            type: 'info',
+          })
+          this.getListData()
+        } else {
+          this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
+          console.error(response.data.message)
+        }
+      } catch (error) {
+        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
+        console.error(error)
+      }
+    },
   },
   // beforeDestroy() {
   // this.initClusterNodeDataList()
@@ -279,6 +372,14 @@ export default {
   align-items: center;
   .workload__image-wrapper {
     margin-right: 5px;
+  }
+}
+.reload-wrapper {
+  float: right;
+  .reload-list__image {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
   }
 }
 </style>

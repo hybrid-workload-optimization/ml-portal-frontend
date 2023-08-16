@@ -1,5 +1,5 @@
 <template>
-  <div class="sp-data-table-search">
+  <div class="sp-data-table-search2">
     <div class="common-table-col">
       <v-card-text class="card-message d-flex align-center pa-0">
         <slot name="title"></slot>
@@ -9,53 +9,64 @@
           <span v-if="subTitle"> {{ subTitle }}</span>
         </div>
       </v-card-text>
+      <div class="title-right" style="width: 100%">
+        <slot name="new-group"></slot>
+      </div>
     </div>
     <div class="search-wrapper">
-      <slot name="btn-group"></slot>
-      <sp-input
-        placeholder="Enter keywords to search for"
-        append-icon="mdi-magnify"
-        single-line
-        @input="onInputSearch"
-        :value="search"
-        dense
-        solo
-        flat
-        height="35px"
-        hide-details
-        class="search"
-        v-if="!multiple"
-      ></sp-input>
-      <v-combobox
-        label="Enter keywords to search for"
-        placeholder="Enter keywords to search for"
-        chips
-        deletable-chips
-        class="search"
-        append-icon="arrow_drop_down"
-        multiple
-        height="35px"
-        :value="searchChips"
-        :items="multiData"
-        @change="onChangeSearch"
-        v-if="multiple"
-        outlined
-        dense
-        rounded
-        single-line
-        hide-details="auto"
-      />
+      <div class="search-left">
+        <slot name="smartSearch"></slot>
+      </div>
+      <div class="search-right">
+        <slot name="btn-group"></slot>
+        <div class="sp-input-wrapper">
+          <sp-input
+            placeholder="Enter keywords to search for"
+            append-icon="mdi-magnify"
+            single-line
+            @input="onInputSearch"
+            :value="search"
+            dense
+            solo
+            flat
+            width="330px"
+            height="35px"
+            hide-details
+            class="search"
+            v-if="!multiple"
+          ></sp-input>
+          <v-combobox
+            label="Enter keywords to search for"
+            placeholder="Enter keywords to search for"
+            chips
+            deletable-chips
+            class="search"
+            append-icon="arrow_drop_down"
+            multiple
+            height="35px"
+            :value="searchChips"
+            :items="multiData"
+            @change="onChangeSearch"
+            v-if="multiple"
+            outlined
+            dense
+            rounded
+            single-line
+            hide-details="auto"
+          />
+        </div>
 
-      <sp-button
-        class="search-wrapper--button"
-        dense
-        elevation="0"
-        v-if="buttonText"
-        :disabled="isDisabled"
-        @click="onClickButton"
-      >
-        {{ buttonText }}
-      </sp-button>
+        <sp-button
+          class="search-wrapper--button"
+          dense
+          elevation="0"
+          v-if="buttonText"
+          :disabled="isDisabled"
+          @click="onClickButton"
+        >
+          {{ buttonText }}
+        </sp-button>
+      </div>
       <slot name="extend"></slot>
     </div>
   </div>
@@ -130,11 +141,20 @@ export default {
 
 <style lang="scss">
 @import '@/styles/_mixin.scss';
-.sp-data-table-search {
+.sp-data-table-search2 {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  .common-table-col {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+  }
 
   .card-message {
     @include set-text(bold, 16, rgba($color: $sp-title, $alpha: 0.7));
@@ -144,8 +164,24 @@ export default {
   }
   .search-wrapper {
     display: flex;
-    width: 40%;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+
+    & > .search-left {
+      width: 70% !important;
+    }
+    & .search-right {
+      width: 30%;
+      padding-top: 8px;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .sp-input-wrapper {
+      width: 330px !important;
+    }
 
     .search {
       // border-radius: 50px;

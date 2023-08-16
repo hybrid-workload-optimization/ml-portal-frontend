@@ -185,13 +185,17 @@ export default {
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { id } = data
-      if (id) {
-        this.$router.push({
-          name: this.$route.name,
-          hash: '#namespace',
-          query: { namespaceId: id, detail: true },
-        })
+      const clusterIdx = this.$route.params.id
+      const { uid, name } = data
+
+      if (uid) {
+        // this.$router.push({
+        //   name: this.$route.name,
+        //   hash: '#namespace',
+        //   query: { namespaceId: id, detail: true },
+        // })
+
+        this.$router.push(`/cluster/detail/${clusterIdx}/namespace/v2/${name}`)
       }
     },
 
@@ -242,9 +246,9 @@ export default {
     .theme--light.v-data-table.v-data-table--fixed-header thead th {
       background-color: #eee !important;
     }
-    .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
-      background-color: #fff !important;
-    }
+    // .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
+    //   background-color: #fff !important;
+    // }
   }
 }
 </style>
