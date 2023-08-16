@@ -26,22 +26,24 @@
           :key="menuIdx"
           style="background: #fff; color: #3f4254"
         >
-          <v-expansion-panel-header>
+          <span
+            v-if="menuName === 'Workload'"
+            style="
+              padding: 14px 16px 14px 24px;
+              font-size: 20px;
+              cursor: pointer;
+              display: inline-block;
+            "
+            @click="workloadDetail()"
+          >
+            Workload
+          </span>
+          <v-expansion-panel-header v-if="menuName !== 'Workload'">
             <template v-slot:actions>
-              <v-icon
-                class="custom-expand-icon"
-                v-if="menuName === 'Workload'"
-              ></v-icon>
-              <v-icon class="expand-icon" v-else>$expand</v-icon>
+              <v-icon class="expand-icon">$expand</v-icon>
             </template>
 
-            <span
-              v-if="menuName === 'Workload'"
-              @click="workloadDetail()"
-              class="expand-header custom-header"
-              >{{ menuName }}</span
-            >
-            <span v-else class="expand-header">{{ menuName }}</span>
+            <span class="expand-header">{{ menuName }}</span>
           </v-expansion-panel-header>
 
           <v-expansion-panel-content v-if="menuName !== 'Workload'">
