@@ -17,7 +17,6 @@
         @click="onClickButton"
       >
       </search>
-
       <!-- <smart-search
         :placeholder="0$t('instance.placeholder.search')"
         :items="headers"
@@ -182,6 +181,7 @@ export default {
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
       const { uid, kind, name, namespace } = data
+      console.log('workload list item:', data)
       const kindLow = kind.charAt(0).toLowerCase() + kind.slice(1)
       if (uid) {
         // this.$router.replace({
@@ -212,7 +212,7 @@ export default {
     },
   },
   beforeDestroy() {
-    this.initClusterNodeDataList()
+    // this.initClusterNodeDataList()
   },
 }
 </script>

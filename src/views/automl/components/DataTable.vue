@@ -289,7 +289,7 @@ export default {
     },
 
     onMouseOverText(event) {
-      console.log(tag, 'onMouseOverText')
+      // console.log(tag, 'onMouseOverText')
       const spanWidth = event.target.offsetWidth
       const tdWidth =
         event.target.parentElement.offsetWidth - this.paddingWidth * 2
@@ -302,7 +302,7 @@ export default {
       }
     },
     onMouseLeaveText() {
-      console.log(tag, 'onMouseLeaveText')
+      // console.log(tag, 'onMouseLeaveText')
       this.isOpenTooltipId = false
     },
 

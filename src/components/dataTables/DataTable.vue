@@ -126,6 +126,11 @@ export default {
       default: false,
       description: '연결할 path 값 유무',
     },
+    setTotal: {
+      type: Function,
+      default: () => {},
+      description: '전체 개수 초기화(필터링 적용)',
+    },
   },
   data: () => ({
     selected: [],
@@ -181,7 +186,7 @@ export default {
         @param
     */
     optionsProp() {
-      console.log(tag, 'optionsProp')
+      // console.log(tag, 'optionsProp')
       return {
         'hide-default-footer': true,
         'hide-default-header': this.options.hideHeader,
@@ -204,7 +209,7 @@ export default {
         @param
       */
       get() {
-        console.log(tag, 'changeSelected/get')
+        // console.log(tag, 'changeSelected/get')
 
         let selected = []
         if (this.selectedItems?.length) {
@@ -234,19 +239,19 @@ export default {
   },
 
   mounted() {
-    console.log(tag, 'mounted')
+    // console.log(tag, 'mounted')
   },
   updated() {
-    console.log(tag, 'updated', this.datas)
+    // console.log(tag, 'updated', this.datas)
   },
   methods: {
     onClickRow(data) {
-      console.log(tag, 'onClickRow')
+      // console.log(tag, 'onClickRow')
       this.$emit('click:row', data)
     },
 
     onMouseOverText(event) {
-      console.log(tag, 'onMouseOverText')
+      // console.log(tag, 'onMouseOverText')
       const spanWidth = event.target.offsetWidth
       const tdWidth =
         event.target.parentElement.offsetWidth - this.paddingWidth * 2
@@ -256,7 +261,7 @@ export default {
       }
     },
     onMouseLeaveText() {
-      console.log(tag, 'onMouseLeaveText')
+      // console.log(tag, 'onMouseLeaveText')
       this.isOpenTooltipId = false
     },
 

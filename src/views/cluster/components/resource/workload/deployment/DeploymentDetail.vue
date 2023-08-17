@@ -66,6 +66,7 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
+    console.log(123123)
     this.clusterIdx = this.$route.params.id
     this.deploymentIdx = this.$route.params.rid
     // this.namespace = this.$route.params.namespace

@@ -345,8 +345,8 @@ export default {
     }
   },
   mounted() {
-    console.log(this.podList)
-    console.log(this.replicaSetList)
+    // console.log(this.podList)
+    // console.log(this.replicaSetList)
     this.clusterIdx = this.$route.params.id
   },
   computed: {

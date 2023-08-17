@@ -374,7 +374,7 @@ export default {
           - event: EventTarget(이벤트 값)
     */
     onBlurText(event) {
-      console.log(tag, 'onBlurText')
+      // console.log(tag, 'onBlurText')
       this.$emit('blur', event)
     },
     /*
@@ -396,7 +396,7 @@ export default {
           - event: EventTarget(이벤트 값)
     */
     onClickText(event) {
-      console.log(tag, 'onClickText')
+      // console.log(tag, 'onClickText')
       this.$emit('click', event)
     },
     /*

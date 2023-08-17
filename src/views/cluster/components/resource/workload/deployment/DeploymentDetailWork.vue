@@ -5,7 +5,7 @@
       :showButtons="isProjectAuth"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
-    ></card-title>
+    />
 
     <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
@@ -122,6 +122,7 @@ export default {
     },
 
     async onClickEdit() {
+      console.log('onClickEdit')
       let text = ''
       // if (this.deploymentDetailInfo.yaml) {
       //   text = this.deploymentDetailInfo.yaml
@@ -154,6 +155,7 @@ export default {
     },
 
     onClickDelete() {
+      console.log('onClickDelete')
       this.openConfirm(
         `${this.deploymentDetailInfo.name} 을(를) 삭제하시겠습니까?`,
       )

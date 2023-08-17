@@ -108,7 +108,7 @@ import UserAvatar from '@/components/molcule/UserAvatar.vue'
 import { createNamespacedHelpers } from 'vuex'
 import vClickOutside from 'v-click-outside'
 
-const tag = '[Subheader]'
+// const tag = '[Subheader]'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
 
@@ -141,7 +141,7 @@ export default {
     // ...mapGetters(loginInfo, ["isLogin", "isUser"]),
     // ...mapState(loginInfo, ["userName", "accessRoleName", "lastLoginTime"]),
     getPageName() {
-      console.log(tag, 'getPageName')
+      // console.log(tag, 'getPageName')
       return this.pagePath?.title
     },
     ...loginUserMapUtil.mapState([
@@ -251,7 +251,6 @@ export default {
     height: 55px;
     display: flex;
     flex: 0 0 40%;
-    max-width: 40%;
     justify-content: flex-end;
     align-items: center;
     .button-wrapper {
@@ -317,7 +316,6 @@ export default {
   .right-nav-wrapper {
     .user-name-wrapper {
       line-height: 0.7;
-      width: 110px;
     }
   }
 }

@@ -69,6 +69,7 @@ export default {
     return {
       menuItems: [],
       defaultMenu: {
+        menuOrder: 4,
         menuName: 'General',
         subMenuList: [
           {
@@ -84,6 +85,7 @@ export default {
       },
       panel: [],
       isActive: 'overview',
+      mini: false,
     }
   },
   computed: {
@@ -101,6 +103,7 @@ export default {
     this.isActive = currentMenu
     this.initMenu()
     this.expandAll()
+    console.log(this)
   },
   methods: {
     sendTabName(tabName) {
@@ -147,17 +150,17 @@ export default {
         return false
       })
 
-      newMenuList.forEach(menu => {
-        if (menu.menuName === 'Workload') {
-          const workloadSubMenu = {
-            menuName: 'Workload',
-          }
-          menu.subMenuList.unshift(workloadSubMenu)
-        }
-      })
-
-      // General > Overview, Catalog 메뉴 추가
+      const workloadSubMenu = { menuName: 'Workload' }
       newMenuList.unshift(this.defaultMenu)
+
+      const workloadMenu = newMenuList.find(
+        menu => menu.menuName === workloadSubMenu.menuName,
+      )
+      if (workloadMenu) {
+        if (workloadMenu.subMenuList === null) workloadMenu.subMenuList = []
+        workloadMenu.subMenuList.unshift(workloadSubMenu)
+      }
+      // General > Overview, Catalog 메뉴 추가
 
       this.menuItems = newMenuList
     },

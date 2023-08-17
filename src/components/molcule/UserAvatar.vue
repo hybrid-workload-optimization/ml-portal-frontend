@@ -164,6 +164,8 @@ export default {
     margin-right: 15px;
     font-weight: bold;
     text-align: right;
+    white-space: nowrap;
+
     .user-name {
       text-align: right;
     }

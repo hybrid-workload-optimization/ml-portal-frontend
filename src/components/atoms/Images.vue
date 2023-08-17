@@ -197,10 +197,10 @@ export default {
     },
   },
   methods: {
-    /*  
+    /*
         @brief 에러 발생 함수
         @date 2021/11/09
-        @return 
+        @return
         @param
           - event: EventTarget(이벤트 값)
     */
@@ -208,35 +208,35 @@ export default {
       console.log(tag, 'onError')
       this.$emit('error', event)
     },
-    /*  
+    /*
         @brief 이미지 로드가 완료 되었을 때 호출 되는 함수
         @date 2021/11/09
-        @return 
+        @return
         @param
           - event: EventTarget(이벤트 값)
     */
     onLoad() {
-      console.log(tag, 'onLoad')
+      // console.log(tag, 'onLoad')
     },
-    /*  
+    /*
         @brief 이미지 로드가 시작될 떄 호출되는 함수
         @date 2021/11/09
-        @return 
+        @return
         @param
           - event: EventTarget(이벤트 값)
     */
     onLoadStart() {
-      console.log(tag, 'onLoadStart')
+      // console.log(tag, 'onLoadStart')
     },
-    /*  
+    /*
         @brief 클릭 이벤트 함수
         @date 2021/11/08
-        @return 
+        @return
         @param
           - event: EventTarget(이벤트 값)
     */
     onClickButton(event) {
-      console.log(tag, 'onClickButton')
+      // console.log(tag, 'onClickButton')
       this.$emit('click', event)
     },
   },
