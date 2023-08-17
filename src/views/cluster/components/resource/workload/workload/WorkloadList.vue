@@ -1,6 +1,6 @@
 <template>
   <div class="sp-list-content">
-    <div class="search-wrapper">
+    <div class="search-wrapper workload-search">
       <!-- <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
@@ -10,12 +10,42 @@
         @click="onClickButton"
       >
       </search> -->
+
       <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
         @input="onInputSearchValue"
         @click="onClickButton"
       >
+        <template v-slot:new-group>
+          <div class="reload-wrapper">
+            <select-button
+              :btnName="'New Workload'"
+              @clickBtn="openYamlEditor"
+              @changeItem="onChangeItem"
+              style="margin-bottom: 10px"
+            />
+            <sp-image
+              class="reload-list__image"
+              contain
+              lazySrc="icon-reload.png"
+              src="icon-reload.png"
+              width="18"
+              @click="reloadData"
+            ></sp-image>
+            <span>마지막 업데이트 : {{ currentDateTime }}</span>
+          </div>
+        </template>
+
+        <template v-slot:smartSearch>
+          <smart-search
+            width="330"
+            :items="headers"
+            :datas="dataList"
+            density="compact"
+            @update:search="searchDatas"
+          />
+        </template>
       </search>
       <!-- <smart-search
         :placeholder="0$t('instance.placeholder.search')"
@@ -25,13 +55,6 @@
         search-tag
         @update:search="searchDatas"
       ></smart-search> -->
-
-      <smart-search
-        :items="headers"
-        :datas="dataList"
-        density="compact"
-        @update:search="searchDatas"
-      ></smart-search>
     </div>
 
     <!-- 조회 내용이 존재할 때, 그리드 표시 -->
@@ -42,17 +65,46 @@
         :datas="dataList"
         :options="options"
         :search="searchValue"
+        :smart-search="smartSearchDatas"
         :custom-slot-info="customSlotInfo"
         is-linked
         @click:row="moveToDetailPage"
       >
-        <template v-slot:status_custom="slotProps">
-          <sp-chip
-            :color="getChipEachColor(slotProps.item.status)"
+        <template v-slot:health_custom="slotProps">
+          <!-- <sp-chip
+            :color="getChipEachColor(slotProps.item.health)"
             class="status-chip"
           >
-            {{ getStatusText(slotProps.item.status) }}
-          </sp-chip>
+            {{ getStatusText(slotProps.item.health) }}
+          </sp-chip> -->
+          <div class="workload__health-wrapper">
+            <div class="workload__image-wrapper">
+              <sp-image
+                v-if="slotProps.item.health === 'Healthy'"
+                contain
+                lazySrc="icon_healthy.svg"
+                src="icon_healthy.svg"
+                width="22"
+              />
+
+              <sp-image
+                v-if="slotProps.item.health === 'Unhealthy'"
+                contain
+                lazySrc="icon_unhealthy.svg"
+                src="icon_unhealthy.svg"
+                width="22"
+              />
+              <sp-image
+                v-if="slotProps.item.health === 'Unknown'"
+                contain
+                lazySrc="free-icon-warning-6897039.png"
+                src="free-icon-warning-6897039.png"
+                width="22"
+              />
+            </div>
+
+            <span>{{ slotProps.item.health }}</span>
+          </div>
         </template>
       </sp-table>
 
@@ -62,22 +114,33 @@
         title="clusterNode가 존재하지 않습니다."
         description=""
       />
+
+      <!-- yaml 에디터 모달 -->
+      <yaml-edit-modal
+        @confirmed="onConfirmedFromEditModal"
+        class="yarm-edit-modal"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import Search from '@/components/molcule/DataTableSearch.vue'
+import Search from '@/components/molcule/DataTableSearch2.vue'
 import { createNamespacedHelpers } from 'vuex'
+import SelectButton from '@/components/SelectButton.vue'
+import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import SmartSearch from '@/components/SmartSearch.vue'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
-// const alertMapUtils = createNamespacedHelpers('alert')
+const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
+const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
+    SelectButton,
+    YamlEditModal,
     Search,
     SmartSearch,
     spTable,
@@ -88,8 +151,8 @@ export default {
   },
   data() {
     return {
+      smartSearchDatas: [],
       searchValue: '',
-      searchDatas: [],
       searchTag: true,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
@@ -100,17 +163,17 @@ export default {
         },
         {
           text: 'Namespace',
-          align: 'center',
+          // align: 'center',
           value: 'namespace',
         },
         {
           text: 'Kind',
-          align: 'center',
+          // align: 'center',
           value: 'kind',
         },
         {
           text: 'Health',
-          align: 'center',
+          // align: 'center',
           value: 'health',
         },
         {
@@ -137,8 +200,9 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-      customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      customSlotInfo: [{ name: 'health', slotName: 'health' }],
       clusterIdx: null,
+      currentDateTime: '',
     }
   },
   async created() {
@@ -146,6 +210,8 @@ export default {
     this.clusterIdx = this.$route.params.id
     await this.getListData()
     this.isLoading = false
+
+    this.getDateTime()
   },
   computed: {
     ...workloadMapUtils.mapGetters(['dataList', 'dataListSize']),
@@ -157,9 +223,14 @@ export default {
     },
   },
   methods: {
-    ...workloadMapUtils.mapActions(['getDataList']),
-    // ...alertMapUtils.mapMutations(['openAlert']),
+    ...workloadMapUtils.mapActions(['getDataList', 'createWorkload']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...alertMapUtils.mapMutations(['openAlert']),
 
+    searchDatas(e) {
+      console.log(e)
+      this.smartSearchDatas = e
+    },
     // 서치 박스의 버튼 클릭 시 호출됨
     onClickButton() {
       this.$router.push(`/cluster/edit/${this.$route.params.id}`)
@@ -210,11 +281,105 @@ export default {
       }
       return STATUS[status]
     },
+    openYamlEditor() {
+      this.openModal({
+        editType: 'create',
+        isEncoding: false,
+        content: '',
+        title: 'New Workload',
+        resourceType: 'workload',
+      })
+    },
+    async onChangeItem() {
+      await this.getListData()
+      this.isLoading = false
+    },
+    async reloadData() {
+      await this.getListData()
+      this.isLoading = false
+
+      this.getDateTime()
+    },
+    getDateTime() {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const seconds = String(now.getSeconds()).padStart(2, '0')
+
+      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+    },
+    async onConfirmedFromEditModal(value) {
+      const idx = this.$route.params.id
+      const { encodedContent } = value
+
+      try {
+        const param = {
+          clusterIdx: idx,
+          yaml: encodedContent,
+        }
+
+        const response = await this.createWorkload(param)
+
+        if (response.status === 201 || response.status === 200) {
+          this.openAlert({
+            title: '리소스가 생성 되었습니다.',
+            type: 'info',
+          })
+          this.getListData()
+        } else {
+          this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
+          console.error(response.data.message)
+        }
+      } catch (error) {
+        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
+        console.error(error)
+      }
+    },
   },
-  beforeDestroy() {
-    // this.initClusterNodeDataList()
-  },
+  // beforeDestroy() {
+  // this.initClusterNodeDataList()
+  // },
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.workload-search {
+  display: flex;
+  // justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+
+  .sp-smart-search {
+    text-decoration: none !important;
+    .v-input {
+      padding-top: 5px;
+    }
+    .v-input__slot {
+      border: thin solid rgba(75, 85, 102, 0.5);
+      height: 20px;
+    }
+  }
+
+  .v-input__slot:before {
+    border: none !important;
+  }
+}
+
+.workload__health-wrapper {
+  display: inline-flex;
+  align-items: center;
+  .workload__image-wrapper {
+    margin-right: 5px;
+  }
+}
+.reload-wrapper {
+  float: right;
+  .reload-list__image {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+</style>

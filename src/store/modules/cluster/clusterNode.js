@@ -300,12 +300,72 @@ const resource = {
         state.chartDto = result.chartDto
       }
     },
+    changeDetailInfoV2(state, payload) {
+      state.detailInfo = {}
+
+      const { data } = payload
+      const { result } = data
+      if (result) {
+        state.detailInfo.name = result.name
+        state.detailInfo.ip = result.ip
+        state.detailInfo.uid = result.uid
+        state.detailInfo.status = result.status
+        state.detailInfo.k8sVersion = result.k8sVersion
+        state.detailInfo.allocatedCpu = result.allocatedCpu
+        state.detailInfo.allocatedMemory = result.allocatedMemory
+        state.detailInfo.createdAt = moment(result.createdAt).format(
+          'YYYY-MM-DD HH:mm:ss',
+        )
+        state.detailInfo.podCidr = result.podCidr
+        state.detailInfo.osImage = result.osImage
+        state.detailInfo.kernelVersion = result.kernelVersion
+        state.detailInfo.architecture = result.architecture
+        state.detailInfo.kubeletVersion = result.kubeletVersion
+        state.detailInfo.kubeproxyVersion = result.kubeproxyVersion
+        state.detailInfo.clusterIdx = result.clusterIdx
+        state.detailInfo.clusterId = result.clusterId
+        if (result.annotation) {
+          state.detailInfo.annotation = []
+          for (const [key, value] of Object.entries(result.annotation)) {
+            state.detailInfo.annotation.push(`${key}:${value}`)
+          }
+        }
+        if (result.label) {
+          state.detailInfo.label = []
+          for (const [key, value] of Object.entries(result.label)) {
+            state.detailInfo.label.push(`${key}:${value}`)
+          }
+        }
+        if (result.condition) {
+          state.detailInfo.condition = []
+          for (const [key, value] of Object.entries(result.condition)) {
+            state.detailInfo.condition.push(`${key}:${value}`)
+          }
+        }
+        state.detailInfo.role = result.role.length ? result.role.join(', ') : ''
+
+        state.resourceInfo = {
+          name: result.name,
+          ip: result.ip,
+          podCidr: result.podCidr,
+        }
+        state.systemInfo = {
+          osImage: result.osImage,
+          kernelVersion: result.kernelVersion,
+          architecture: result.architecture,
+          kubeletVersion: result.kubeletVersion,
+          kubeproxyVersion: result.kubeproxyVersion,
+        }
+        state.conditions = result.conditions
+        state.chartDto = result.usageDto
+      }
+    },
 
     // [파드 리스트 정보] 객체 생성
     changePodList(state, payload) {
       state.podList = []
       const { data } = payload
-      const { result } = data
+      const result = data.result.pods
       const podList = []
       console.log('podList ::', result)
       result.forEach(e => {
@@ -352,8 +412,17 @@ const resource = {
     // 상세 정보 조회 요청
     async getDetail({ commit }, payload) {
       const response = await request.getClusterNodeDetailUsingGET(payload)
+      console.log(response)
       commit('changeDetailInfo', response)
     },
+    async getDetailV2({ commit }, payload) {
+      console.log(payload)
+      const response = await request.getNodeDetailUsingGET(payload)
+      console.log(response)
+      commit('changeDetailInfoV2', response)
+      commit('changePodList', response)
+    },
+
     // yaml 정보 조회 요청
     async getClusterNodeYaml(context, payload) {
       const response = await request.getStaefulSetYamlUsingGET(payload)

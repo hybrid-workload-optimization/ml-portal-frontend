@@ -11,6 +11,7 @@
       :hide-default-header="optionsProp['hide-default-header']"
       :show-select="optionsProp['show-select']"
       :item-key="optionsProp['item-key']"
+      :dense="dense"
       :headers="headers"
       :items="filterDatas"
       :search="search"
@@ -21,6 +22,7 @@
       v-model="changeSelected"
       @click:row="onClickRow"
       fixed-header
+      :height="height"
     >
       <!-- 글자 수 15글자 넘어가면 말줄임표 및 툴팁 적용 -->
       <template
@@ -126,6 +128,15 @@ export default {
       default: false,
       description: '연결할 path 값 유무',
     },
+    dense: {
+      type: Boolean,
+      default: false,
+      description: 'Size',
+    },
+    height: {
+      type: Number,
+      default: undefined,
+    },
     setTotal: {
       type: Function,
       default: () => {},
@@ -143,40 +154,51 @@ export default {
   computed: {
     filterDatas() {
       // and 조건
-      if (this.smartSearch.length) {
-        return this.datas.filter(item => {
-          let result = 0
-          this.smartSearch.forEach(data => {
-            if (!data.value && data.value !== false) return
-            if (
-              data.type &&
-              item[data.type]?.length &&
-              item[data.type].some(
-                typeObj =>
-                  typeObj.key === data.key &&
-                  typeObj.value.indexOf(data.value) > -1,
-              )
-            ) {
-              // 태그에 찾는 key value 값이 하나라고 있을 경우 true
-              result += 1
-            }
-            // console.log(item[data.key], data.value)
-            if (
-              !data.type &&
-              item[data.key]
-                ?.toString()
-                .toLowerCase()
-                .indexOf(data.value.toString().toLowerCase()) > -1
-            ) {
-              result += 1
-            }
-          })
-          // 모두 일치할 때(AND)
-          if (result === this.smartSearch.length) return item
-          return false
-        })
-      }
-      return this.datas
+      // if (this.smartSearch.length) {
+      //   return this.datas.filter(item => {
+      //     let result = 0
+      //     this.smartSearch.forEach(data => {
+      //       if (!data.value && data.value !== false) return
+      //       if (
+      //         data.type &&
+      //         item[data.type]?.length &&
+      //         item[data.type].some(
+      //           typeObj =>
+      //             typeObj.key === data.key &&
+      //             typeObj.value.indexOf(data.value) > -1,
+      //         )
+      //       ) {
+      //         // 태그에 찾는 key value 값이 하나라고 있을 경우 true
+      //         result += 1
+      //       }
+      //       // console.log(item[data.key], data.value)
+      //       if (
+      //         !data.type &&
+      //         item[data.key]
+      //           ?.toString()
+      //           .toLowerCase()
+      //           .indexOf(data.value.toString().toLowerCase()) > -1
+      //       ) {
+      //         result += 1
+      //       }
+      //     })
+
+      //     // 모두 일치할 때(AND)
+      //     if (result === this.smartSearch.length) return item
+      //     return false
+      //   })
+      // }
+      // return this.datas
+      if (this.smartSearch.length === 0) return this.datas
+      const filteredList = this.datas.filter(data => {
+        const isCorrect = this.smartSearch.every(
+          option =>
+            data[option.key] === option.value ||
+            data[option.key].toString() === option.value.toString(),
+        )
+        return isCorrect // 전체 조건에 맞는지 여부
+      })
+      return filteredList
     },
     /*
         @brief 옵션 추가하고 싶다면 props로 받아서 추가하는 함수

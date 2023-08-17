@@ -14,9 +14,6 @@
             <cluster-overview
               v-if="selectResource === 'Overview' && !$route.query.detail"
             />
-            <cluster-overview2
-              v-if="selectResource === 'Overview2' && !$route.query.detail"
-            />
 
             <cluster-catalog
               v-else-if="selectResource === 'Catalog' && !$route.query.detail"
@@ -159,7 +156,6 @@
 </template>
 <script>
 import ClusterOverview from '@/views/cluster/components/ClusterOverview.vue'
-import ClusterOverview2 from '@/views/cluster/components/ClusterOverview2.vue'
 import ClusterCatalog from '@/views/cluster/components/ClusterAddonCardList.vue'
 
 import ClusterNode from '@/views/cluster/components/resource/cluster/ClusterNodeList.vue'
@@ -210,7 +206,6 @@ export default {
   components: {
     ClusterResourceNav,
     ClusterOverview,
-    ClusterOverview2,
     ClusterCatalog,
     ClusterNode,
     ClusterNodeDetail,
@@ -290,7 +285,6 @@ export default {
         this.selectLabel = 'Config'
       } else if (
         this.selectResource === 'Overview' ||
-        this.selectResource === 'Overview2' ||
         this.selectResource === 'Catalog'
       ) {
         this.selectLabel = 'General'

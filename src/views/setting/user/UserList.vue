@@ -36,25 +36,14 @@
         <SignupForm />
       </template>
     </modal> -->
-    <smart-search
-      :placeholder="search"
-      :items="headers"
-      :datas="dataListForTable"
-      :values="dataListForTable"
-      density="compact"
-      search-tag
-      @update:search="searchDatas"
-    >
-    </smart-search>
-
-    <!-- <search
+    <search
       v-if="dataListSize"
       class="search-wrapper"
       :title="'Total:'"
       :todoCount="dataListSize.toString()"
       @input="onInputSearchValue"
     >
-    </search> -->
+    </search>
 
     <sp-table
       v-if="dataListSize"
@@ -91,8 +80,7 @@ import request from '@/lib/request'
 import Empty from '@/components/Empty.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 // import Modal from '@/components/modals/Modal.vue'
-// import Search from '@/components/molcule/DataTableSearch.vue'
-import SmartSearch from '@/components/SmartSearch.vue'
+import Search from '@/components/molcule/DataTableSearch.vue'
 import { form } from '@/utils/mixins/form'
 import encrypt from '@/lib/encrypt'
 
@@ -105,8 +93,7 @@ const loginUserMapUtils = createNamespacedHelpers('loginUser')
 
 export default {
   components: {
-    // Search,
-    SmartSearch,
+    Search,
     // Alert,
     // Modal,
     spTable,

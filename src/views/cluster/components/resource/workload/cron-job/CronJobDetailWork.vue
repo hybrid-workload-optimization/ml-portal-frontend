@@ -123,7 +123,6 @@ import LabelWith from '@/components/molcule/LabelWith.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
-const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const cronJobMapUtils = createNamespacedHelpers('cronJob')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -255,8 +254,8 @@ export default {
     },
   },
   methods: {
-    ...workloadMapUtils.mapActions(['getDetailNew']),
     ...cronJobMapUtils.mapActions([
+      'getDetailNew',
       // 'getDetail',
       'deleteCronJob',
       'getCronJobYaml',

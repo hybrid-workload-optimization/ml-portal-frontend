@@ -1,11 +1,35 @@
 <template>
   <div>
-    <overview-cluster-summary></overview-cluster-summary>
-    <overview-control-plane></overview-control-plane>
-    <overview-nodes></overview-nodes>
-    <overview-namespace></overview-namespace>
-    <overview-workload></overview-workload>
-    <overview-pod></overview-pod>
+    <div class="reload-wrapper">
+      <sp-image
+        class="reload-list__image"
+        contain
+        lazySrc="icon-reload.png"
+        src="icon-reload.png"
+        width="18"
+        @click="reloadData"
+      ></sp-image>
+      <span>마지막 업데이트 : {{ currentDateTime }}</span>
+    </div>
+
+    <overview-cluster-summary
+      v-if="dataClusterSummary"
+      :data="dataClusterSummary"
+    ></overview-cluster-summary>
+    <overview-control-plane
+      v-if="dataControlPlaneComponent"
+      :data="dataControlPlaneComponent"
+    ></overview-control-plane>
+    <overview-nodes v-if="dataNodes" :data="dataNodes"></overview-nodes>
+    <overview-namespace
+      v-if="dataNamespaces"
+      :data="dataNamespaces"
+    ></overview-namespace>
+    <overview-workload
+      v-if="dataWorkloadSummary"
+      :data="dataWorkloadSummary"
+    ></overview-workload>
+    <overview-pod v-if="dataPodSummary" :data="dataPodSummary"></overview-pod>
   </div>
 </template>
 
@@ -31,22 +55,35 @@ export default {
   },
   data() {
     return {
-      chartData: [
-        { name: 'Category 1', value: 30 },
-        { name: 'Category 2', value: 40 },
-        { name: 'Category 3', value: 20 },
-      ],
-      donutColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-      donutLabel: 'Total',
-      chartOptionProps: {
-        responsive: true,
-        maintainAspectRatio: false,
-        // 다른 도넛 차트 옵션 설정
-      },
+      clusterSummary: {},
+      controlPlaneComponent: [],
+      namespaces: [],
+      nodes: [],
+      podSummary: {},
+      workloadSummary: {},
+      currentDateTime: '',
     }
   },
   computed: {
     ...clusterMapUtils.mapGetters(['overviewData']),
+    dataClusterSummary() {
+      return this.overviewData.clusterSummary
+    },
+    dataControlPlaneComponent() {
+      return this.overviewData.controlPlaneComponent
+    },
+    dataNamespaces() {
+      return this.overviewData.namespaces
+    },
+    dataNodes() {
+      return this.overviewData.nodes
+    },
+    dataPodSummary() {
+      return this.overviewData.podSummary
+    },
+    dataWorkloadSummary() {
+      return this.overviewData.workloadSummary
+    },
     isMini() {
       return this.$store.state.sideNav.isMini
     },
@@ -55,7 +92,10 @@ export default {
     this.isLoading = true
     await this.getDataDetail()
     this.isLoading = false
+    this.dataSet()
     console.log(this.overviewData)
+
+    this.getDateTime()
   },
   methods: {
     ...clusterMapUtils.mapActions(['getDataOverview']),
@@ -65,6 +105,35 @@ export default {
       }
       await this.getDataOverview(param)
     },
+    dataSet() {
+      const data = this.overviewData
+      this.clusterSummary = data.clusterSummary
+      this.controlPlaneComponent = data.controlPlaneComponent
+      this.namespaces = data.namespaces
+      this.nodes = data.nodes
+      this.podSummary = data.podSummary
+      this.workloadSummary = data.workloadSummary
+    },
+    getDateTime() {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const hours = String(now.getHours()).padStart(2, '0')
+      const minutes = String(now.getMinutes()).padStart(2, '0')
+      const seconds = String(now.getSeconds()).padStart(2, '0')
+
+      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+    },
+    async reloadData() {
+      this.isLoading = true
+      await this.getDataDetail()
+      this.isLoading = false
+      this.dataSet()
+      console.log(this.overviewData)
+
+      this.getDateTime()
+    },
   },
 }
 </script>
@@ -72,159 +141,88 @@ export default {
 <style lang="scss">
 @import '@/styles/_mixin.scss';
 .sp-overview {
-  $this: 'overview';
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-bottom: 1.5%;
-  // width: 18.8%;
-  // margin-right: 1.5%;
-  // margin-bottom: 1.5%;
-  // white-space: nowrap;
-
-  // &:nth-child(5n) {
-  // margin-right: 0;
-  // }
-
-  // &.isMini {
-  //   width: 15.4%;
-  //   margin-right: 1.5%;
-  //   &:nth-child(6n) {
-  //     margin-right: 0;
-  //   }
-  // }
-
-  // .card-body {
-  //   padding: 0 !important;
-  // }
-
-  // height: 150px;
-  // max-height: 150px;
+  margin-bottom: 24px;
   border: 1px solid rgba($color: $sp-box-border, $alpha: 1) !important;
   background: rgba($color: #fff, $alpha: 1) !important;
 
-  .#{$this}__header-box {
+  .overview-header {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 8px;
+  }
+  .overview-content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    padding-top: 20px;
-    .#{$this}__tag-box {
-      display: flex;
-      align-items: center;
+    align-items: flex-start;
+  }
 
-      .#{$this}__tag {
-        @include set-text(500, 11, rgba($color: #fff, $alpha: 1));
-        padding: 0 15px;
-        height: 21px;
-        margin-right: 5px;
-        &.NEW {
-          background: $sp-cerise !important;
-        }
-        &.Owner {
-          background: $sp-blue-400 !important;
-        }
-      }
-    }
-    .#{$this}--more {
-      .v-btn__content {
-        padding: 0;
-        margin: 0;
-      }
-      background: transparent;
-      padding: 0;
-      height: 0;
-      min-width: 0;
-    }
-  }
-  .#{$this}__contents-box {
+  .list-wrapper {
+    min-width: 300px;
+    max-width: 400px;
     width: 100%;
-    padding-top: 11px;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow-x: auto;
-    // flex-wrap: wrap;
-    max-height: 1000px;
-    .#{$this}__title-wrapper {
-      align-self: flex-start;
-      width: 100%;
+    height: 200px;
+
+    .list-title {
+      font-size: 16px;
+      font-weight: bold;
+      padding-bottom: 8px;
     }
-    .#{$this}__title {
-      @include set-text(bold, 16, rgba($color: $sp-title, $alpha: 1));
-      cursor: pointer;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .#{$this}-wrapper {
-      padding-top: 10px;
-      .apexcharts-legend {
-        display: none !important;
-      }
-      .#{$this}__long-box {
-        width: 100%;
+
+    .list-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      height: 168px;
+      overflow-y: auto;
+      .list-item {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
-        align-items: flex-start;
-        // border-bottom: 1px solid rgba($color: $sp-box-border, $alpha: 1);
-        padding: 11px 2px;
-        &:first-child {
-          // border-top: 1px solid rgba($color: $sp-box-border, $alpha: 1);
+        align-items: center;
+        .list-item-title {
+          width: calc(100% - 70px);
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
-        &.#{$this}-box {
-          .#{$this}-row-box {
-            // width: 48%;
-            display: flex;
-            align-items: center;
-            float: left;
-            margin-right: 10px;
-          }
-          .#{$this}-title {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-            @include set-text(500, 10, rgba($color: $sp-title, $alpha: 1));
-            .#{$this}__cluster__image-wrapper {
-              width: 18px;
-              height: 18px;
-              margin-right: 10px;
-            }
-          }
-          .#{$this}__description {
-            @include set-text(400, 14, rgba($color: $sp-title, $alpha: 1));
-            text-overflow: ellipsis;
-            overflow: hidden;
-            height: 30px;
-            width: 100%;
-          }
-          .#{$this}-num {
-            @include set-text(bold, 12, rgba($color: $sp-title, $alpha: 1));
-          }
+        .list-item-date {
+          width: 70px;
+          text-align: right;
+          padding-right: 4px;
         }
+      }
+    }
+    .no-list-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 168px;
+      border: 1px dashed $sp-grey-400;
+
+      .no-data-msg {
+        white-space: nowrap;
       }
     }
   }
-  .#{$this}__footer-box {
-    margin-top: 22px;
-    padding-bottom: 13px;
-    padding-top: 10px;
-    border-top: 1px solid rgba($color: $sp-box-border, $alpha: 1);
-    .#{$this}__names-wrapper {
-      padding: 0 20px;
-      .#{$this}__owner {
-        @include set-text(500, 13, rgba($color: $sp-title, $alpha: 1));
-      }
-      .#{$this}__authority-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        @include set-text(500, 11, rgba($color: $sp-title, $alpha: 0.75));
-      }
-    }
+
+  .v-data-table-header tr > th {
+    background: #fff !important;
+    height: 42px !important;
+  }
+  tbody tr > td {
+    height: 42px !important;
   }
 }
 
-.v-list-item {
-  min-height: 25px;
+.reload-wrapper {
+  float: right;
+  .reload-list__image {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+  }
 }
 </style>

@@ -1,47 +1,53 @@
 <template>
   <sp-card class="sp-overview" :class="{ isMini }" elevation="0">
-    <div class="overview__title-wrapper">
-      <div class="overview__title">
-        <span class="overview__title">Namespace</span>
-      </div>
-    </div>
+    <div class="overview-header">Namespace</div>
     <div class="sp-list-content">
-      <div class="table-wrapper">
+      <!-- 조회 내용이 존재할 때, 그리드 표시 -->
+      <div class="sp-list-content">
         <!-- 조회 내용이 존재할 때, 그리드 표시 -->
-        <sp-table
-          v-if="dataListSize"
-          :headers="headers"
-          :datas="dataList"
-          :options="options"
-          :search="searchValue"
-          :custom-slot-info="customSlotInfo"
-          is-linked
-          @click:row="moveToDetailPage"
-        >
-          <template v-slot:status_custom="slotProps">
-            <sp-chip
-              :color="getChipEachColor(slotProps.item.status)"
-              class="status-chip"
-            >
-              {{ getStatusText(slotProps.item.status) }}
-            </sp-chip>
-          </template>
-        </sp-table>
+        <div class="table-wrapper">
+          <sp-table
+            v-if="data"
+            hide-default-header
+            :headers="headers"
+            :datas="processedData"
+            :options="options"
+            :search="searchValue"
+            :custom-slot-info="customSlotInfo"
+            :scrollOnly="true"
+            :items-per-page="9999"
+            :hide-default-footer="true"
+            is-linked
+            :height="245"
+            dense
+            @click:row="moveToDetailPage"
+          >
+            <template v-slot:status_custom="slotProps">
+              <sp-chip
+                small
+                :color="getChipEachColor(slotProps.item.status)"
+                class="status-chip"
+                ><span style=""></span>
+                {{ getStatusText(slotProps.item.status) }}
+              </sp-chip>
+            </template>
+          </sp-table>
 
-        <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
-        <empty
-          v-else
-          title="clusterNamespace가 존재하지 않습니다."
-          description=""
-        />
+          <!-- 조회 내용이 존재하지 않을 때, 내용 표시(optionl) -->
+          <empty
+            v-else
+            title="clusterNamespace가 존재하지 않습니다."
+            description=""
+          />
+        </div>
       </div>
     </div>
   </sp-card>
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
 import spTable from '@/components/dataTables/DataTable.vue'
+import { createNamespacedHelpers } from 'vuex'
 import Empty from '@/components/Empty.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
@@ -50,10 +56,24 @@ const clusterMapUtils = createNamespacedHelpers('cluster')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
+const headers = [
+  { text: 'Name', align: 'left', value: 'name', width: 200 },
+  { text: 'Status', align: 'center', value: 'status' },
+  { text: 'Pod', align: 'center', value: 'podStatus', width: 150 },
+  { text: 'CPU Request', align: 'center', value: 'cpuUsage' },
+  { text: 'Memory Request', align: 'center', value: 'memoryUsage' },
+  { text: 'CPU Limit', align: 'center', value: 'cpuLimit' },
+  { text: 'Memory Limit', align: 'center', value: 'memoryLimit' },
+]
+const customSlotInfo = [{ name: 'status', slotName: 'status' }]
+
 export default {
   components: {
-    spTable,
     Empty,
+    spTable,
+  },
+  props: {
+    data: { type: Array },
   },
   mixins: [checkProjectAuth],
   data() {
@@ -61,28 +81,7 @@ export default {
       searchValue: '',
 
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
-      headers: [
-        {
-          text: 'Name',
-          align: 'left',
-          value: 'name',
-        },
-        {
-          text: 'Lables',
-          align: 'left',
-          value: 'label',
-        },
-        {
-          text: 'Status',
-          align: 'center',
-          value: 'status',
-        },
-        {
-          text: 'Created At',
-          align: 'center',
-          value: 'createdAt',
-        },
-      ],
+      headers,
       // 그리드 설정 값
       options: {
         hideFooter: false,
@@ -96,12 +95,13 @@ export default {
         showSelect: false,
         itemKey: 'id',
       },
-      customSlotInfo: [{ name: 'status', slotName: 'status' }],
+      customSlotInfo,
     }
   },
   created() {
     this.checkProjectAuth()
     this.getListData()
+    console.log(this.data)
   },
   computed: {
     ...clusterNamespaceMapUtils.mapGetters(['dataList', 'dataListSize']),
@@ -111,6 +111,35 @@ export default {
     },
     getStatusText() {
       return status => (status !== 'Active' ? 'Inactive' : status)
+    },
+    processedData() {
+      return this.data.map(item => ({
+        ...item,
+        cpuUsage:
+          item.usageDto != null
+            ? `${item.usageDto.cpuRequestsFraction}%
+                  (${item.usageDto.cpuRequests / 1000}Core /
+                    ${item.usageDto.cpuCapacity / 1000}Core)`
+            : '-',
+        memoryUsage:
+          item.usageDto != null
+            ? `${item.usageDto.memoryRequestsFraction.toFixed(1)}%
+                  (${this.bytesToGB(item.usageDto.memoryRequests)}G /
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`
+            : '-',
+        cpuLimit:
+          item.usageDto != null
+            ? `${item.usageDto.cpuLimitsFraction}%
+                  (${item.usageDto.cpuLimits / 1000}Core /
+                    ${item.usageDto.cpuCapacity / 1000}Core)`
+            : '-',
+        memoryLimit:
+          item.usageDto != null
+            ? `${item.usageDto.memoryLimitsFraction.toFixed(1)}%
+                  (${this.bytesToGB(item.usageDto.memoryLimits)}G /
+                  ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`
+            : '-',
+      }))
     },
   },
   methods: {
@@ -156,13 +185,17 @@ export default {
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { id } = data
-      if (id) {
-        this.$router.push({
-          name: this.$route.name,
-          hash: '#namespace',
-          query: { namespaceId: id, detail: true },
-        })
+      const clusterIdx = this.$route.params.id
+      const { uid, name } = data
+
+      if (uid) {
+        // this.$router.push({
+        //   name: this.$route.name,
+        //   hash: '#namespace',
+        //   query: { namespaceId: id, detail: true },
+        // })
+
+        this.$router.push(`/cluster/detail/${clusterIdx}/namespace/v2/${name}`)
       }
     },
 
@@ -196,6 +229,10 @@ export default {
       }
       return STATUS[status]
     },
+    bytesToGB(bytes) {
+      const GB = bytes / (1024 * 1024 * 1024)
+      return parseFloat(GB.toFixed(1)) // 소수점 이하 두 자리까지 표시
+    },
   },
   beforeDestroy() {
     this.initModalContent()
@@ -203,4 +240,15 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.sp-list-content {
+  ::v-deep {
+    .theme--light.v-data-table.v-data-table--fixed-header thead th {
+      background-color: #eee !important;
+    }
+    // .sp-data-table .v-data-table__wrapper tbody tr:nth-child(odd) {
+    //   background-color: #fff !important;
+    // }
+  }
+}
+</style>
