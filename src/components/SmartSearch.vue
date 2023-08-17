@@ -19,28 +19,27 @@
     >
       <template v-slot:item="{ item }">
         <template v-if="item.subheader">
-          <!-- <v-list-subheader>{{ item.subheader }}</v-list-subheader> -->
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.subheader }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <hr />
+          <v-list-item
+            class="item-subheader"
+            style="border-bottom: 1px solid #eee"
+            >{{ item.subheader }}</v-list-item
+          >
         </template>
 
         <v-list-item v-else @click="onEnter($event, item.text, item.type)">
-          <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
+          {{ item.text }}
+          <!-- <v-list-item-content>
+            <v-list-item-title></v-list-item-title>
+          </v-list-item-content> -->
         </v-list-item>
       </template>
     </v-autocomplete>
     <v-chip-group>
       <v-chip
-        closable
         v-for="(item, index) in valuesItem"
         :key="'smart-search__value--' + index"
         @click:close="onDeleteSearchItem(index)"
+        close
         ><strong>{{ item.text }}</strong> : {{ item.value }}</v-chip
       >
     </v-chip-group>
@@ -73,7 +72,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Input key:value',
+      default: '   속성 검색',
     },
     values: {
       type: Array,
@@ -104,6 +103,11 @@ export default {
       default: false,
       description:
         'tag 검색 기능을 사용할지에 대한 여부. true일 경우 datas의 모든 tag 값들을 items에 추가한다.',
+    },
+  },
+  watch: {
+    isValueSearch(val) {
+      if (val) this.activeMenu()
     },
   },
   data() {
@@ -172,6 +176,12 @@ export default {
     },
   },
   methods: {
+    activeMenu() {
+      setTimeout(() => {
+        this.$refs.autoComp.focus()
+        this.$refs.autoComp.activateMenu()
+      }, 0)
+    },
     onClear() {
       this.searchValue = ''
       this.isValueSearch = false
@@ -182,8 +192,7 @@ export default {
       // console.log(event)
       if (!event) {
         this.onClear()
-      }
-      this.searchValue = event
+      } else this.searchValue = event
     },
 
     filterTagDatas(type) {
@@ -226,12 +235,10 @@ export default {
         indexOfTargetText = searchText.trim().toLowerCase()
       }
 
-      if (typeof itemText?.value === 'string') {
-        return itemText.value.toLowerCase().indexOf(indexOfTargetText) > -1
+      if (typeof itemText === 'string') {
+        return itemText.toLowerCase().indexOf(indexOfTargetText) > -1
       }
-      return (
-        itemText?.value?.value.toLowerCase().indexOf(indexOfTargetText) > -1
-      )
+      return itemText.toLowerCase().indexOf(indexOfTargetText) > -1
     },
 
     onFindTitle(text) {
@@ -269,50 +276,59 @@ export default {
     },
 
     setInputKey(value) {
-      console.log(value)
       const { findKey, findTitle } = this.onFindTitle(value)
-      console.log(findKey)
-      console.log(findTitle)
+      /*
+      if (!result || type === 'tag') {
+        // items 목록에 없는 값을 입력 시 return
+        onClear()
+        return false
+      }
+      */
+      // 선택된 key 정보 저장
       this.selectedKeyItem = findKey
-      this.$emit('update:search', findKey)
+      this.$emit('update:key', findKey)
       this.searchValue = `${findTitle}:`
       this.isValueSearch = true
     },
 
     onEnter(e, value, type) {
-      console.log(e)
-      console.log(value)
-      console.log(this.searchValue)
       let inputValue = ''
-      let searchValueSplit
-      if (!this.searchValue) {
-        searchValueSplit = value.split(':')
-      } else {
-        searchValueSplit = this.searchValue.split(':')
-      }
-      console.log(searchValueSplit)
-      // const searchValueSplit = this.searchValue.split(':')
-      // const setValue =
-      //   searchValueSplit.length > 1 && searchValueSplit[1].trim()
-      //     ? this.searchValue.replace(`${searchValueSplit[0]}:`, '')
-      //     : value?.toString().trim()
-      const setValue = 'Name'
-      console.log(setValue)
-      console.log(this.isValueSearch)
+      // value 값
+      const searchValueSplit = this.searchValue.split(':')
+      const setValue =
+        searchValueSplit.length > 1 && searchValueSplit[1].trim()
+          ? this.searchValue.replace(`${this.searchValue.split(':')[0]}:`, '')
+          : value?.toString().trim()
       if (!this.isValueSearch) {
         inputValue =
           searchValueSplit.length && searchValueSplit[0].trim()
             ? searchValueSplit[0]
             : value
       } else {
+        // 키보드 이벤트 시 예외처리
         inputValue = searchValueSplit.length
           ? `${searchValueSplit[0]}: ${setValue}`
           : ''
       }
-      console.log(inputValue)
+      // console.log(setValue)
+      if (!this.isValueSearch) {
+        inputValue =
+          searchValueSplit.length && searchValueSplit[0].trim()
+            ? searchValueSplit[0]
+            : value
+      } else {
+        // 키보드 이벤트 시 예외처리
+        inputValue = searchValueSplit.length
+          ? `${searchValueSplit[0]}: ${setValue}`
+          : ''
+      }
+
+      // key 값이 있을 때
       if (this.isValueSearch && setValue) {
+        // key가 존재하는 값인지 확인
         const { findKey, findTitle } = this.onFindTitle(inputValue)
 
+        // 선택된 key, value, title 정보 저장
         const addItem = {
           text: findTitle,
           value: setValue.trim(),
@@ -320,14 +336,14 @@ export default {
           type: this.isTagSearching ? 'tag' : null,
         }
         this.valuesItem.push(addItem)
-        this.$emit('update:search-input', this.valuesItem)
-        this.$emit('update:target-item', addItem)
-
-        setTimeout(() => {
-          this.menuProps.closeOnClick = false
-          this.menuProps.closeOnContentClick = false
-        }, 500)
-
+        this.$emit('update:search', this.valuesItem)
+        this.$emit('update:search-input', this.valuesItem) // 변경된 검색 데이터 목록
+        this.$emit('update:target-item', addItem) // 추가된 아이템 이벤트
+        // 이벤트 delay => 너무 빨라서 select items 목록이 안닫힘
+        // setTimeout(() => {
+        //   this.menuProps.closeOnClick = false
+        //   this.menuProps.closeOnContentClick = false
+        // }, 500)
         this.onClear()
         return
       }
@@ -357,6 +373,7 @@ export default {
     onDeleteSearchItem(index) {
       this.$emit('update:target-item', this.valuesItem[index])
       this.valuesItem.splice(index, 1)
+      this.$emit('update:search', this.valuesItem)
       this.$emit('update:search-input', this.valuesItem)
     },
   },
@@ -364,12 +381,6 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin set-text($font-weight, $font-size, $color) {
-  font-weight: $font-weight;
-  font-size: $font-size;
-  color: $color;
-}
-
 .sp-autocomplete {
   &.v-input--readonly,
   &.v-input--disabled {
@@ -381,7 +392,7 @@ export default {
     min-height: 35px !important;
 
     .v-field {
-      font-size: toRem(13);
+      font-size: 16px;
       padding-inline-end: 0 !important;
       .v-input__prepend-inner {
         padding: 16px 15px !important;
@@ -396,17 +407,7 @@ export default {
         border: 1px solid $sp-box-border;
         border-radius: 5px;
       }
-      .v-icon {
-        @include set-text(
-          bold,
-          20,
-          rgba($color: $sp-sky-blue-500, $alpha: 0.5)
-        );
-        margin-right: 12px;
-      }
-      ::placeholder {
-        font-size: toRem(13);
-      }
+
       .v-text-field__slot {
         padding-right: 12px;
         input {
@@ -414,6 +415,10 @@ export default {
         }
       }
     }
+  }
+
+  .v-select__selections {
+    padding: 0 6px;
   }
 
   &.border {

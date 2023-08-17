@@ -71,6 +71,7 @@ const resource = {
       try {
         // get refresh
         const refreshResult = await request.refreshTokenUsingPOST(payload)
+        console.log(refreshResult)
         // cookie setting
         dispatch('initRefreshInfo', refreshResult.data)
         return true
@@ -223,7 +224,6 @@ const resource = {
       const refreshTokenExpire = params.refresh_expires_at
       const accessToken = params.access_token
       const accessTokenExpire = params.expires_at
-
       cookieHelper.setCookie(
         'access_token',
         accessToken,

@@ -27,7 +27,7 @@ service.interceptors.request.use(
       3. 토큰, 갱신토큰 둘다 없을경우 로그인 페이지로 이동
     */
     numberOfCallPending += 1
-    // const reqUrl = config.url.split('?')[0]
+    const reqUrl = config.url.split('?')[0]
     // const { method } = config
     // 개발 환경에서 토큰 셋팅
 
@@ -46,7 +46,7 @@ service.interceptors.request.use(
     // 개발 환경에서 토큰 셋팅
     // const reqTimestamp = new Date().getTime()
     const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
-    const accessToken = cookieHelper.getCookie(cookieName.access_token)
+    let accessToken = cookieHelper.getCookie(cookieName.access_token)
 
     // if (
     //   reqUrl === '/comp-b-svc/api/v1/access-manage/user-info' ||
@@ -127,6 +127,35 @@ service.interceptors.request.use(
     //   reqTimestamp,
     // )
 
+    // accessToken 만료
+    if (!accessToken && !reqUrl.includes('/refresh_token')) {
+      console.log('No access token')
+      // refreshToken 만료
+      if (!refreshToken) {
+        console.log('No refresh token')
+        vm.$router
+          .push({ path: '/ssoLogin', query: { originUrl: reqUrl } })
+          .catch(() => {})
+      } else {
+        const param = {
+          refresh_token: refreshToken,
+        }
+
+        const refreshResult = await vm.$store.dispatch(
+          'loginUser/refreshTokenV2',
+          param,
+        )
+        if (!refreshResult) {
+          console.log('no refresh fail')
+          vm.$router
+            .push({ path: '/ssoLogin', query: { originUrl: reqUrl } })
+            .catch(() => {})
+        } else {
+          accessToken = cookieHelper.getCookie(cookieName.access_token)
+          console.log('refresh complete')
+        }
+      }
+    }
     // console.log('[headers]::', config.headers)
     // config.headers['access-token'] = encryptedToken
     config.headers.Authorization = accessToken
@@ -189,8 +218,7 @@ service.interceptors.response.use(
         .push({ path: '/ssoLogin', query: { originUrl: originPage } })
         .catch(() => {})
     } else if (response && response.status === 400) {
-      vm.$router.push('/devLogin').catch(() => {})
-
+      // vm.$router.push('/devLogin').catch(() => {})
       // 토큰 만료 및 검증 실패에 대한 임시 코드
       // cors error -> login 페이지 이동
       // 추후 401 error -> login 페이지 이동으로 변경 예정
@@ -199,6 +227,10 @@ service.interceptors.response.use(
       // vm.$router
       // .push({ path: '/ssoLogin', query: { originPath: originPage } })
       // .catch(() => {})
+      const originPage = vm.$route.path
+      vm.$router
+        .push({ path: '/ssoLogin', query: { originUrl: originPage } })
+        .catch(() => {})
     } else {
       errorDesc = errorMsg
     }

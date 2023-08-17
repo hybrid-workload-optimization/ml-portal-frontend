@@ -26,14 +26,27 @@
           :key="menuIdx"
           style="background: #fff; color: #3f4254"
         >
-          <v-expansion-panel-header>
+          <span
+            v-if="menuName === 'Workload'"
+            style="
+              padding: 14px 16px 14px 24px;
+              font-size: 20px;
+              cursor: pointer;
+              display: inline-block;
+            "
+            @click="workloadDetail()"
+          >
+            Workload
+          </span>
+          <v-expansion-panel-header v-if="menuName !== 'Workload'">
             <template v-slot:actions>
               <v-icon class="expand-icon">$expand</v-icon>
             </template>
+
             <span class="expand-header">{{ menuName }}</span>
           </v-expansion-panel-header>
 
-          <v-expansion-panel-content>
+          <v-expansion-panel-content v-if="menuName !== 'Workload'">
             <ul class="expand-list">
               <li
                 v-for="{ menuName, menuIdx } in subMenuList"
@@ -74,9 +87,6 @@ export default {
         subMenuList: [
           {
             menuName: 'Overview',
-          },
-          {
-            menuName: 'Overview2',
           },
           {
             menuName: 'Catalog',
@@ -161,8 +171,12 @@ export default {
         workloadMenu.subMenuList.unshift(workloadSubMenu)
       }
       // General > Overview, Catalog 메뉴 추가
-
+      newMenuList.unshift(this.defaultMenu)
       this.menuItems = newMenuList
+    },
+    workloadDetail() {
+      const clusterIdx = this.$route.params.id
+      this.$router.push(`/cluster/detail/${clusterIdx}/workload`)
     },
   },
 }
@@ -207,6 +221,9 @@ export default {
   order: 0;
 }
 
+.custom-expand-icon {
+  display: none !important;
+}
 .bottom-footer {
   bottom: 20px;
   position: fixed;

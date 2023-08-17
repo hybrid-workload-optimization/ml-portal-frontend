@@ -95,15 +95,6 @@ const resource = [
         },
       },
       {
-        path: 'detail/:id/overview2',
-        name: 'Cluster Detail Overview2',
-        component: () =>
-          import('@/views/cluster/components/ClusterOverview2.vue'),
-        meta: {
-          isAuthRequired,
-        },
-      },
-      {
         path: 'detail/:id/catalog',
         name: 'Cluster Detail Catalog',
         component: () =>
@@ -294,6 +285,30 @@ const resource = [
         component: () =>
           import(
             '@/views/cluster/components/resource/config/secret/SecretList.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+
+      {
+        path: 'detail/:id/node/v2/:nodeName',
+        name: 'Cluster Detail Node Detail2',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterNodeDetail2.vue'
+          ),
+        meta: {
+          isAuthRequired,
+        },
+      },
+
+      {
+        path: 'detail/:id/namespace/v2/:namespace',
+        name: 'Cluster Detail Namespace Detail2',
+        component: () =>
+          import(
+            '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail2.vue'
           ),
         meta: {
           isAuthRequired,

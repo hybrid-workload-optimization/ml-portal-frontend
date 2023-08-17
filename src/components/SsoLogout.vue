@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <form id="lg" :action="logoutUrl" method="post"></form>
-  </div>
+  <div></div>
 </template>
 
 <script>
+import cookieHelper from '@/lib/cookieHelper'
+import { cookieName } from '@/common/consts'
+
 export default {
   data() {
     return {
@@ -16,7 +17,24 @@ export default {
   },
   methods: {
     requestLogout() {
-      document.getElementById('lg').submit()
+      const baseUrl = process.env.BASE_URL
+      const afterUri = this.$route.path.substring(1)
+      const redirectUri = `${window.location.protocol}//${window.location.host}${baseUrl}${afterUri}`
+      const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
+
+      cookieHelper.removeCookie(cookieName.refresh_token)
+      cookieHelper.removeCookie(cookieName.access_token)
+
+      sessionStorage.removeItem('firstVal')
+      sessionStorage.removeItem('secondVal')
+      sessionStorage.removeItem('thirdVal')
+      sessionStorage.removeItem('menuList')
+      sessionStorage.removeItem('projectUserRole')
+
+      window.location.replace(
+        `${process.env.VUE_APP_BASE_API}/auth/logout?refreshToken=${refreshToken}&redirectUrl=${redirectUri}`,
+        '_self',
+      )
     },
   },
 }
