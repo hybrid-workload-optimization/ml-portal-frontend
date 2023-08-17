@@ -212,17 +212,18 @@ const resource = {
     },
     // Replica Set 상세 정보 조회 요청
     async getDetail({ commit }, payload) {
-      console.log('getDetail', payload)
-      const response = await request.getReplicaSetUsingGET(payload)
-      commit('changeDetailInfo', response)
-      console.log('response', response)
-    },
-    async getDetailNew({ commit }, payload) {
-      console.log('getDetail', payload)
+      // console.log('getDetail', payload)
       const response = await request.getDetailUsingPOST(payload)
       commit('changeDetailInfo', response)
-      console.log('response', response)
+      // console.log('response', response)
     },
+    // async getDetailNew({ commit }, payload) {
+    //   console.log('getDetail', payload)
+    //   const response = await request.getReplicaSetUsingGET(payload)
+    //   commit('changeDetailInfo', response)
+    //   console.log('response', response)
+    // },
+
     // Replica Set yaml 정보 조회 요청
     async getYaml(context, payload) {
       const response = await request.getReplicaSetYamlUsingGET(payload)

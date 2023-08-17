@@ -73,7 +73,7 @@ export default {
     }
     this.$refs.spTable.onDataBinding()
     await this.getNodeList(param)
-    this.$refs.spTable.setNoDataText()
+    // this.$refs.spTable.setNoDataText()
   },
   methods: {
     ...dashboardMapUtils.mapActions(['getNodeList']),

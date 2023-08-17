@@ -179,7 +179,7 @@ export default {
     },
 
     updateModelValue(event) {
-      console.log(event)
+      // console.log(event)
       if (!event) {
         this.onClear()
       }

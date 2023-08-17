@@ -463,9 +463,9 @@ export default {
         @param
           - event: EventTarget(이벤트 값)
     */
-    onClickAppendIcon(event) {
+    onClickAppendIcon() {
       console.log(tag, 'onClickAppendIcon')
-      console.log(event)
+      // console.log(event)
       // this.$emit('click', event)
     },
     /*
@@ -520,7 +520,7 @@ export default {
           - event: EventTarget(이벤트 값)
     */
     onFocus(event) {
-      console.log(tag, 'onFocus')
+      // console.log(tag, 'onFocus')
       this.$emit('focus', event)
     },
     /*

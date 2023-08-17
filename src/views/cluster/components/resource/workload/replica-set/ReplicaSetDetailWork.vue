@@ -7,7 +7,6 @@
       @click-delete="onClickDelete"
     ></card-title>
     <replica-set-general />
-
     <!-- 삭제 요청 확인 창 -->
     <confirm
       @confirm-modal="onClickDelConfirm"
@@ -58,10 +57,11 @@ export default {
   },
   async mounted() {
     this.clusterIdx = this.$route.params.id
-    // this.replicaSetIdx = this.$route.params.rid
+    this.replicaSetIdx = this.$route.params.rid
     this.namespace = this.$route.params.namespace
     this.name = this.$route.params.name
-    await this.getDetailNew({
+    console.log(this.$route.params)
+    await this.getDetail({
       clusterIdx: this.clusterIdx,
       namespace: this.namespace,
       name: this.name,

@@ -74,9 +74,10 @@ router.beforeEach(async (to, from, next) => {
   function getViewablePath() {
     if (to.meta.isAuthRequired) {
       const { flatMenuList } = store.state.loginUser
+      // console.log(flatMenuList)
       let menuItem = {}
       const viewablePath = flatMenuList.findIndex(item => {
-        const menuSplit = item.menuUrl.split('/')
+        const menuSplit = item.menuUrl?.split('/')
 
         let splitIdx
         if (

@@ -74,6 +74,7 @@ const resource = {
       const { data } = payload
       const { result } = data
       const deploymentList = []
+
       result.content.forEach(e => {
         if (!e.podReady) {
           e.podReady = 0
@@ -109,23 +110,24 @@ const resource = {
     },
 
     changeDetailInfo(state, payload) {
-      state.detailInfo = {
-        projectIdx: '',
-        resourceInfo: {
-          strategy: '-',
-          selector: [],
-        },
-        rollingUpdateStrategy: {
-          maxSurge: '',
-          maxUnavailable: '',
-        },
-        podState: {
-          updated: '',
-          replicas: '',
-          ready: '',
-        },
-        condition: [],
-      }
+      // console.log('changeDetailInfo', payload)
+      // state.detailInfo = {
+      //   projectIdx: '',
+      //   resourceInfo: {
+      //     strategy: '-',
+      //     selector: [],
+      //   },
+      //   rollingUpdateStrategy: {
+      //     maxSurge: '',
+      //     maxUnavailable: '',
+      //   },
+      //   podState: {
+      //     updated: '',
+      //     replicas: '',
+      //     ready: '',
+      //   },
+      //   condition: [],
+      // }
 
       const { data } = payload
       const { result } = data
@@ -133,7 +135,7 @@ const resource = {
         state.detailInfo.idx = result.idx
         state.detailInfo.title = `${result.clusterName} / ${result.name}`
         state.detailInfo.name = result.name
-        state.detailInfo.namespace = result.namespaceName
+        state.detailInfo.namespace = result.namespace
         state.detailInfo.uid = result.uid
         state.detailInfo.image = result.image
         state.detailInfo.createdAt = moment(result.createdAt).format(
