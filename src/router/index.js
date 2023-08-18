@@ -201,13 +201,13 @@ router.beforeEach(async (to, from, next) => {
     const refreshTokenExpiresAt = decodeToken.refresh_expires_at
 
     cookieHelper.setCookie(
-      'access_token',
+      cookieName.access_token,
       accessToken,
       accessTokenExpiresAt,
       accessTokenExpiresAt,
     )
     cookieHelper.setCookie(
-      'refresh_token',
+      cookieName.refresh_token,
       refreshToken,
       refreshTokenExpiresAt,
       refreshTokenExpiresAt,
