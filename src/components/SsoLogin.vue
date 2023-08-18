@@ -44,6 +44,8 @@ export default {
       const redirectUri = `${window.location.protocol}//${window.location.host}${baseUrl}${afterUri}`
       // const originUri = this.$route.query.originPath
       console.log(afterUri)
+      //
+      // `${process.env.VUE_APP_BASE_API}/comp-b-svc/auth/login?redirectUrl=${redirectUri}`,
       window.location.replace(
         `${process.env.VUE_APP_BASE_API}/auth/login?redirectUrl=${redirectUri}`,
         '_self',
