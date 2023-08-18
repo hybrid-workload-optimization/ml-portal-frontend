@@ -30,6 +30,21 @@ const resource = {
       { name: 'Power off', value: 0 },
     ],
     nodeList: [],
+    dashboardData: {
+      clusterCount: 0,
+      clusterSummaryList: [],
+      controlPlaneCount: 0,
+      controlPlaneReadyCount: 0,
+      controlPlaneUtilization: 0,
+      nodeCount: 0,
+      nodeUtilizationState: 'Good',
+      restartWithinTenMinutes: 0,
+      totalUtilization: 0,
+      workerCount: 0,
+      workerReadyCount: 0,
+      workerUtilization: 0,
+      workloadCount: 0,
+    },
   },
   getters: {
     nodeState(state) {
@@ -90,6 +105,9 @@ const resource = {
     },
     nodeList(state) {
       return state.nodeList
+    },
+    dashboardData(state) {
+      return state.dashboardData
     },
   },
   mutations: {
@@ -160,6 +178,11 @@ const resource = {
         state.nodeList = dataList
       }
     },
+    changeDashboardData(state, payload) {
+      const { data } = payload
+      const { result } = data || {}
+      state.dashboardData = result
+    },
   },
   actions: {
     // 노드 상태 정보 조회 요청
@@ -172,6 +195,11 @@ const resource = {
     async getNodeList({ commit }, payload) {
       const response = await request.getNodeListUsingGET(payload)
       commit('changeNodeList', response)
+    },
+    // 노드 리스트 조회 요청
+    async getDashboardData({ commit }, payload) {
+      const response = await request.getDashboardGeneralUsingGET(payload)
+      commit('changeDashboardData', response)
     },
   },
 }

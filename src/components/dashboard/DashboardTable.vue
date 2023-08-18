@@ -79,7 +79,7 @@ export default {
     ...dashboardMapUtils.mapActions(['getNodeList']),
 
     getChipColor(statusText) {
-      console.log('Status Text: ', statusText)
+      // console.log('Status Text: ', statusText)
       let status = ''
       if (statusText) {
         status = 'On'

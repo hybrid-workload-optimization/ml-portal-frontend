@@ -136,6 +136,9 @@ export default {
                   ${this.bytesToGB(item.usageDto.memoryCapacity)}G)`,
       }))
     },
+    isMini() {
+      return this.$store.state.sideNav.isMini
+    },
   },
   methods: {
     ...clusterNodeMapUtils.mapActions(['getList']),

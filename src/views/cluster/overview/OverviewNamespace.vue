@@ -141,6 +141,10 @@ export default {
             : '-',
       }))
     },
+
+    isMini() {
+      return this.$store.state.sideNav.isMini
+    },
   },
   methods: {
     ...clusterNamespaceMapUtils.mapMutations(['initClusterNamespaceDataList']),
