@@ -3,11 +3,14 @@
     <multi-select
       class="margin-bottom-20"
       :firstSelectMeta="firstSelectMeta"
-      :secondSelectMeta="secodSelectMeta"
       @changeItem="onChangeItem"
     />
+    <!-- :secondSelectMeta="secodSelectMeta" -->
     <dashboard-card></dashboard-card>
-    <dashboard-table></dashboard-table>
+    <dashboard-cluster-overview
+      :data="dashboardData.clusterSummaryList"
+    ></dashboard-cluster-overview>
+    <!-- <dashboard-table></dashboard-table> -->
   </div>
 </template>
 
@@ -15,7 +18,8 @@
 import { createNamespacedHelpers } from 'vuex'
 import request from '@/lib/request'
 import DashboardCard from '@/components/dashboard/DashboardCard.vue'
-import DashboardTable from '@/components/dashboard/DashboardTable.vue'
+import DashboardClusterOverview from '@/components/dashboard/DashboardClusterOverview.vue'
+// import DashboardTable from '@/components/dashboard/DashboardTable.vue'
 import MultiSelect from '@/components/MultiSelectForDashboard.vue'
 
 const dashboardMapUtils = createNamespacedHelpers('dashboard')
@@ -24,7 +28,8 @@ export default {
   components: {
     MultiSelect,
     DashboardCard,
-    DashboardTable,
+    DashboardClusterOverview,
+    // DashboardTable,
   },
   data() {
     return {
@@ -40,38 +45,133 @@ export default {
       },
     }
   },
+  mounted() {},
 
   created() {
-    const param = {
-      firstValue: null,
-      clusterIdx: null,
-    }
-    this.getData(param)
+    // const param = {
+    //   firstValue: null,
+    //   clusterIdx: null,
+    // }
+    // this.getData(param)
   },
 
   computed: {
-    ...dashboardMapUtils.mapGetters(['nodeState', 'nodeList']),
+    ...dashboardMapUtils.mapGetters(['dashboardData']),
   },
 
   methods: {
-    ...dashboardMapUtils.mapActions(['getNodeState', 'getNodeList']),
+    ...dashboardMapUtils.mapActions([
+      'getNodeState',
+      'getNodeList',
+      'getDashboardData',
+    ]),
 
     onChangeItem(value) {
       this.getData(value)
     },
 
-    async getData(value) {
+    async getData({ firstValue: projectIdx }) {
       // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
-      const param = {
-        projectIdx: value.firstValue,
-        clusterIdx: value.secondValue,
-      }
-
-      await this.getNodeState(param)
-      await this.getNodeList(param)
+      // const param = {
+      //   projectIdx: value.firstValue,
+      //   clusterIdx: value.secondValue,
+      // }
+      await this.getDashboardData({ projectIdx })
+      // await this.getNodeState(param)
+      // await this.getNodeList(param)
     },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/styles/_mixin.scss';
+
+::v-deep {
+  .sp-overview {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 24px;
+    border: 1px solid rgba($color: $sp-box-border, $alpha: 1) !important;
+    background: rgba($color: #fff, $alpha: 1) !important;
+
+    .overview-header {
+      font-size: 16px;
+      font-weight: bold;
+      padding-bottom: 8px;
+    }
+    .overview-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .list-wrapper {
+      min-width: 300px;
+      max-width: 400px;
+      width: 100%;
+      height: 200px;
+
+      .list-title {
+        font-size: 16px;
+        font-weight: bold;
+        padding-bottom: 8px;
+      }
+
+      .list-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        height: 168px;
+        overflow-y: auto;
+        .list-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .list-item-title {
+            width: calc(100% - 70px);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          .list-item-date {
+            width: 70px;
+            text-align: right;
+            padding-right: 4px;
+          }
+        }
+      }
+      .no-list-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 168px;
+        border: 1px dashed $sp-grey-400;
+
+        .no-data-msg {
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .v-data-table-header tr > th {
+      background: #fff !important;
+      height: 42px !important;
+    }
+    tbody tr > td {
+      height: 42px !important;
+    }
+  }
+
+  .reload-wrapper {
+    float: right;
+    .reload-list__image {
+      display: inline-block;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+</style>

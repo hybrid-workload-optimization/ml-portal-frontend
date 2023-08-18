@@ -156,7 +156,7 @@ const resource = {
         // get userId
         const loginResult = await request.getUserInfoUsingGET()
         // const loginResult = await request.getAuthenticationUsingGET()
-        console.log(loginResult)
+        // console.log(loginResult)
         // get userDetail
         const userInfo = await request.getUserDetailUsingGET(
           loginResult.data.result.user,

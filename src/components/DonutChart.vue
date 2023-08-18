@@ -63,7 +63,7 @@ export default {
       })
     },
     updateChart() {
-      console.log('차트 업데이트', this.chartOptionProps.plotOptions)
+      // console.log('차트 업데이트', this.chartOptionProps.plotOptions)
       const seriesData = this.getSeriesData(this.chartData)
       const seriesName = this.getSeriesName(this.chartData)
 

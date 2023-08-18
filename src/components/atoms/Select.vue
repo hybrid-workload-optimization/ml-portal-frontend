@@ -431,7 +431,7 @@ export default {
           - event: EventTarget(이벤트 값)
     */
     onBlurSelect(event) {
-      console.log(tag, 'onBlurSelect')
+      // console.log(tag, 'onBlurSelect')
       this.$emit('blur', event)
     },
     /*
@@ -453,7 +453,7 @@ export default {
           - event: EventTarget(이벤트 값)
     */
     onClickSelect(event) {
-      console.log(tag, 'onClickSelect')
+      // console.log(tag, 'onClickSelect')
       this.$emit('click', event)
     },
     /*
