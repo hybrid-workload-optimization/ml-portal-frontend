@@ -67,25 +67,25 @@ export default {
   computed: {
     ...clusterMapUtils.mapGetters(['overviewData']),
     dataClusterSummary() {
-      return this.overviewData.clusterSummary
+      return this.overviewData?.clusterSummary
     },
     dataControlPlaneComponent() {
-      return this.overviewData.controlPlaneComponent
+      return this.overviewData?.controlPlaneComponent
     },
     dataNamespaces() {
-      return this.overviewData.namespaces
+      return this.overviewData?.namespaces
     },
     dataNodes() {
-      return this.overviewData.nodes
+      return this.overviewData?.nodes
     },
     dataPodSummary() {
-      return this.overviewData.podSummary
+      return this.overviewData?.podSummary
     },
     dataWorkloadSummary() {
-      return this.overviewData.workloadSummary
+      return this.overviewData?.workloadSummary
     },
     isMini() {
-      return this.$store.state.sideNav.isMini
+      return this.$store.state?.sideNav?.isMini
     },
   },
   async mounted() {
@@ -106,13 +106,14 @@ export default {
       await this.getDataOverview(param)
     },
     dataSet() {
+      console.log(this.overviewData)
       const data = this.overviewData
-      this.clusterSummary = data.clusterSummary
-      this.controlPlaneComponent = data.controlPlaneComponent
-      this.namespaces = data.namespaces
-      this.nodes = data.nodes
-      this.podSummary = data.podSummary
-      this.workloadSummary = data.workloadSummary
+      this.clusterSummary = data?.clusterSummary
+      this.controlPlaneComponent = data?.controlPlaneComponent
+      this.namespaces = data?.namespaces
+      this.nodes = data?.nodes
+      this.podSummary = data?.podSummary
+      this.workloadSummary = data?.workloadSummary
     },
     getDateTime() {
       const now = new Date()

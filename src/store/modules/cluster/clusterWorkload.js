@@ -75,10 +75,14 @@ const resource = {
       }
     },
     // Workload 생성 요청
-    async createWorkload(context, payload) {
+    async createWorkload(payload) {
       console.log(payload)
       const response = await request.applyUsingPOST_1(payload)
-      console.log(response)
+      return response
+    },
+    // Workload 삭제
+    async deleteWorkload(payload) {
+      const response = await request.applyUsingPOST_1(payload)
       return response
     },
   },

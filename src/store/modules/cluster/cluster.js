@@ -208,7 +208,7 @@ const resource = {
     setDataDetail(state, payload) {
       const { data } = payload
       const { result } = data
-      console.log('result', result)
+      // console.log('result', result)
       if (result) {
         // main information
         state.dataDetail.clusterIdx = result.clusterIdx
@@ -636,7 +636,6 @@ const resource = {
     async getDataOverview({ commit }, payload) {
       console.log(payload)
       const response = await request.getOverviewUsingGET(payload)
-      console.log(response)
       commit('setOverview', response)
     },
   },

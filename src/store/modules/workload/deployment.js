@@ -236,7 +236,6 @@ const resource = {
       state.podList = podList
     },
     changeReplicaSetList(state, payload) {
-      console.log(payload)
       state.replicaSetList = []
       const result = payload
       const replicaSetList = []
@@ -251,9 +250,7 @@ const resource = {
 
         replicaSetList.push(item)
       })
-      console.log(replicaSetList)
       state.replicaSetList = replicaSetList
-      console.log(state.replicaSetList)
     },
   },
   actions: {
@@ -278,10 +275,10 @@ const resource = {
     },
 
     async getDeploymentDetailNew({ commit }, payload) {
-      console.log(payload)
+      // console.log(payload)
       // const response = await request.getDeploymentUsingGET_1(payload)
       const response = await request.getDetailUsingPOST(payload)
-      console.log(response)
+      // console.log(response)
 
       commit('changeDetailInfo', response)
       commit('changePodList', response.data.result.replicaSets[0].pods)
@@ -289,7 +286,7 @@ const resource = {
     },
 
     async getDeploymentYaml(context, payload) {
-      const response = await request.getDeploymentYamlUsingGET(payload)
+      const response = await request.getYamlUsingPOST(payload)
       return response
     },
 

@@ -113,7 +113,6 @@ export default {
     this.isActive = currentMenu
     this.initMenu()
     this.expandAll()
-    console.log(this)
   },
   methods: {
     sendTabName(tabName) {
@@ -171,7 +170,7 @@ export default {
         workloadMenu.subMenuList.unshift(workloadSubMenu)
       }
       // General > Overview, Catalog 메뉴 추가
-      newMenuList.unshift(this.defaultMenu)
+
       this.menuItems = newMenuList
     },
     workloadDetail() {

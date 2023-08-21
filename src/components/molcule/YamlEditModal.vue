@@ -212,7 +212,7 @@ $this: 'popup';
     .yaml-editor {
       .sp-editor__code-box {
         .CodeMirror-gutter-wrapper {
-          left: -30px !important;
+          left: -38px !important;
         }
         .CodeMirror-gutters {
           left: 0 !important;
