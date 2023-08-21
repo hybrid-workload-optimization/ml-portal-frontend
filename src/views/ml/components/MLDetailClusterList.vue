@@ -254,7 +254,7 @@ export default {
         return 'icon_vm-ware.svg'
       }
       if (value.toLowerCase() === 'aks') {
-        return 'icon_azer.svg'
+        return 'icon_azuer.svg'
       }
       if (value.toLowerCase() === 'gcp') {
         return 'icon_cloud.svg'

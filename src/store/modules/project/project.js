@@ -375,7 +375,7 @@ const resource = {
         }
         // TODO -> provider 넘어오는 데이터 확인후 수정
         else if (e.provider.toLowerCase() === 'azure') {
-          item.img = 'icon_azer.svg'
+          item.img = 'icon_azuer.svg'
         } else if (e.provider.toLowerCase() === 'gcp') {
           item.img = 'icon_cloud.svg'
         } else if (e.provider.toLowerCase() === 'aws') {

@@ -6,10 +6,8 @@
       @changeItem="onChangeItem"
     />
     <!-- :secondSelectMeta="secodSelectMeta" -->
-    <dashboard-card></dashboard-card>
-    <dashboard-cluster-overview
-      :data="dashboardData.clusterSummaryList"
-    ></dashboard-cluster-overview>
+    <dashboard-card />
+    <dashboard-cluster-overview />
     <!-- <dashboard-table></dashboard-table> -->
   </div>
 </template>
@@ -23,6 +21,7 @@ import DashboardClusterOverview from '@/components/dashboard/DashboardClusterOve
 import MultiSelect from '@/components/MultiSelectForDashboard.vue'
 
 const dashboardMapUtils = createNamespacedHelpers('dashboard')
+const multiSelectMapUtils = createNamespacedHelpers('multiSelect')
 
 export default {
   components: {
@@ -38,14 +37,14 @@ export default {
         requestFunc: request.getProjectsUsingGET,
       },
       // 멑티셀렉트 컴포넌트에서 두번째 셀렉트 리스트를 가지고 오기 위한 메타데이터
-      secodSelectMeta: {
-        requestFunc: request.getClustersUsingGET,
-        parameters: { projectIdx: '' },
-        valueKey: 'projectIdx',
-      },
+      // secodSelectMeta: {
+      //   requestFunc: request.getClustersUsingGET,
+      //   parameters: { projectIdx: '' },
+      //   valueKey: 'projectIdx',
+      // },
     }
   },
-  mounted() {},
+  watch: {},
 
   created() {
     // const param = {
@@ -57,9 +56,11 @@ export default {
 
   computed: {
     ...dashboardMapUtils.mapGetters(['dashboardData']),
+    ...multiSelectMapUtils.mapGetters(['firstValue']),
   },
 
   methods: {
+    ...multiSelectMapUtils.mapMutations(['setFirstValue']),
     ...dashboardMapUtils.mapActions([
       'getNodeState',
       'getNodeList',
@@ -67,18 +68,20 @@ export default {
     ]),
 
     onChangeItem(value) {
+      console.log(value)
       this.getData(value)
     },
 
     async getData({ firstValue: projectIdx }) {
       // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
-      // const param = {
-      //   projectIdx: value.firstValue,
-      //   clusterIdx: value.secondValue,
-      // }
+      const param = {
+        projectIdx,
+        // clusterIdx: value.secondValue,
+      }
       await this.getDashboardData({ projectIdx })
-      // await this.getNodeState(param)
+      await this.getNodeState(param)
       // await this.getNodeList(param)
+      console.log(this.dashboardData)
     },
   },
 }
@@ -86,6 +89,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_mixin.scss';
+
+.sp-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 ::v-deep {
   .sp-overview {
