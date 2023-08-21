@@ -41,6 +41,7 @@ import DeploymentGeneral from '@/views/cluster/components/resource/workload/depl
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const deploymentMapUtils = createNamespacedHelpers('deployment')
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
@@ -55,10 +56,6 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
-      clusterIdx: null,
-      deploymentIdx: null,
-      namespace: null,
-      name: null,
       kind: 'deployment',
       tab: null,
       isEncodingContent: true,
@@ -67,22 +64,24 @@ export default {
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.clusterIdx = this.$route.params.id
-    // this.deploymentIdx = this.$route.params.rid
-    this.namespace = this.$route.params.namespace
-    this.name = this.$route.params.name
-
     await this.getData()
-    console.log(this.deploymentDetailInfo)
+    // console.log(this.deploymentDetailInfo)
     // mixin
     this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
   },
   computed: {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
     titleData() {
-      return {
-        title: this.deploymentDetailInfo.name,
-      }
+      return { title: this.deploymentDetailInfo.name }
+    },
+    clusterIdx() {
+      return this.$route.params?.id || null
+    },
+    namespace() {
+      return this.$route.params?.namespace || null
+    },
+    name() {
+      return this.$route.params?.name || null
     },
   },
   methods: {
@@ -94,6 +93,7 @@ export default {
       'getDeploymentYaml',
       'updateDeployment',
     ]),
+    ...workloadMapUtils.mapActions(['createWorkload, deleteWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
@@ -103,10 +103,9 @@ export default {
       try {
         await this.getDeploymentDetailNew({
           clusterIdx: this.clusterIdx,
-          namespace: this.namespace,
-          name: this.name,
           kind: this.kind,
-          // idx: this.deploymentIdx,
+          name: this.name,
+          namespace: this.namespace,
         })
         // const { deploymentDetailInfo } = this
 
@@ -124,17 +123,15 @@ export default {
     async onClickEdit() {
       console.log('onClickEdit')
       let text = ''
-      // if (this.deploymentDetailInfo.yaml) {
-      //   text = this.deploymentDetailInfo.yaml
-      // } else {
-      try {
-        const response = await this.getDeploymentYaml({
-          idx: this.deploymentIdx,
-          // clusterIdx: this.clusterIdx,
-          // namespace: this.namespace,
-          // name: this.name,
-        })
 
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
+      try {
+        const response = await this.getDeploymentYaml(params)
         if (response.status === 200) {
           text = response.data.result
         } else {
@@ -162,13 +159,14 @@ export default {
     },
 
     async onClickDelConfirm() {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
       try {
-        const response = await this.deleteDeployment({
-          idx: this.deploymentIdx,
-          // clusterIdx: this.clusterIdx,
-          // namespace: this.namespace,
-          // name: this.name,
-        })
+        const response = await this.deleteWorkload(params)
 
         if (response.status === 200) {
           this.openAlert({
@@ -194,15 +192,13 @@ export default {
 
     onClickDelCancel() {},
 
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        idx: this.deploymentIdx,
-        yaml: value.encodedContent,
-        // namespace: this.namespace,
-        // name: this.name,
+    async onConfirmedFromEditModal({ encodedContent }) {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        yaml: encodedContent,
       }
       try {
-        const response = await this.updateDeployment(param)
+        const response = await this.createWorkload(params)
         if (response.status === 200) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
@@ -211,11 +207,11 @@ export default {
           this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.log(response.data.message)
+          console.error(response.data.message)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-        console.log(error)
+        console.error(error)
       }
     },
   },
