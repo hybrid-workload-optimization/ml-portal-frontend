@@ -111,7 +111,7 @@ const ProjectClusters = {
     },
     {
       id: getUuidV1(),
-      img: 'icon_azer.svg',
+      img: 'icon_azuer.svg',
       name: 'GKE-04',
       department: 'Cloud 사업본부',
       team: 'P-Cloud 3팀',

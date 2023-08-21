@@ -94,6 +94,18 @@ export default {
       this.requestGetFirstItems(this.firstSelectMeta)
     }
   },
+  watch: {
+    // 리스트 받아오면 가장 첫 번째 요소 자동 선택
+    firstItems(newItem) {
+      if (newItem.length === 0) return
+      const { value } = newItem[0]
+      this.setFirstValue(value)
+      if (this.secondSelectMeta) {
+        console.log('value:', value)
+        this.requestGetSecondItems(this.secondSelectMeta)
+      }
+    },
+  },
   data() {
     return {}
   },
