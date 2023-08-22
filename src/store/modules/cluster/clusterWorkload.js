@@ -83,7 +83,7 @@ const resource = {
     // Workload 삭제
     async deleteWorkload(state, payload) {
       console.log('Workload 삭제 요청', payload)
-      const response = await request.applyUsingPOST_1(payload)
+      const response = await request.deleteUsingDELETE_3(payload)
       return response
     },
   },
