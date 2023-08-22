@@ -42,7 +42,6 @@ service.interceptors.request.use(
     //   vm.$store.commit('loading/showLoading')
     //   return config
     // }
-
     // 개발 환경에서 토큰 셋팅
     // const reqTimestamp = new Date().getTime()
     const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
@@ -52,11 +51,13 @@ service.interceptors.request.use(
     //   reqUrl === '/comp-b-svc/api/v1/access-manage/user-info' ||
     //   reqUrl.includes('/comp-b-svc/api/v1/user-manage/users/')
     // ) {
-    //   config.headers.Authorization = accessToken
+    //   // config.headers.Authorization = accessToken
+
+    //   // reqUrl = '/comp-b-svc/api/v2/access-manage/user-info'
     //   return config
     // }
     // if (
-    //   reqUrl === '/auth/realms/strato-platform/protocol/openid-connect/token'
+    //   reqUrl === '/auth/realms/strato-platform/protocosl/openid-connect/token'
     // ) {
     //   return config
     // }

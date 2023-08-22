@@ -36,6 +36,7 @@
                     :lazySrc="item.img"
                     :src="item.img"
                   />
+                  {{ test(item) }}
                 </div>
                 <div class="project-list__title-wrapper">
                   <div class="project-list__title">{{ item.clusterName }}</div>
@@ -247,6 +248,9 @@ export default {
     },
   },
   methods: {
+    test(val) {
+      console.log(val)
+    },
     onChangeSearch(value) {
       console.log(tag, 'onChangeSearch')
       this.$emit('input', value)

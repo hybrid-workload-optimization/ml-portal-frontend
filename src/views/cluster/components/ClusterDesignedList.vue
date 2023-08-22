@@ -119,6 +119,7 @@ import Search from '@/components/molcule/DataTableSearch.vue'
 import ProjectListTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import { createNamespacedHelpers } from 'vuex'
+import { getStatusImage } from '@/lib/common'
 
 const clusterMapUtils = createNamespacedHelpers('cluster')
 const loginUserMapUtils = createNamespacedHelpers('loginUser')
@@ -160,35 +161,11 @@ export default {
   computed: {
     ...clusterMapUtils.mapGetters(['dataListSize']),
     ...loginUserMapUtils.mapState(['currentMenuInfo']),
-    setImageState() {
-      // eslint-disable-next-line consistent-return
-      return state => {
-        switch (state) {
-          case 'Deploying':
-            return 'icon_loading.gif'
-          case 'Unhealthy':
-            return 'icon_unhealthy.svg'
-          case 'Healthy':
-            return 'icon_healthy.svg'
-          case 'Fail':
-            return 'icon_unhealthy.svg'
-          case 'Error':
-            return 'icon_unhealthy.svg'
-          case 'Waiting':
-            return 'icon_waiting.svg'
-          case 'Deleting':
-            return 'icon_loading.gif'
-          case 'Scale in':
-            return 'icon_loading.gif'
-          case 'Scale out':
-            return 'icon_loading.gif'
-          default:
-            break
-        }
-      }
-    },
   },
   methods: {
+    setImageState(state) {
+      return getStatusImage(state)
+    },
     onChangeSearch(value) {
       console.log(tag, 'onChangeSearch')
       this.$emit('input', value)

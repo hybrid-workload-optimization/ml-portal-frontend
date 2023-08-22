@@ -276,6 +276,7 @@ export default {
     },
     items: {
       type: Array,
+      default: [],
       description:
         '객체의 배열 또는 문자열의 배열이 될 수 있습니다. 개체를 사용할 때 텍스트, 값 및 비활성화된 키를 찾습니다. item-text, item-value 및 item-disabled 소품을 사용하여 변경할 수 있습니다.',
     },
