@@ -175,9 +175,7 @@ export default {
           })
           setTimeout(
             () =>
-              this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/deployment`,
-              ),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/workload`),
             1000,
           )
         } else {
@@ -197,7 +195,6 @@ export default {
         clusterIdx: this.clusterIdx,
         yaml: data.encodedContent,
       }
-      console.log(params)
       try {
         const response = await this.createWorkload(params)
         console.log(response)
