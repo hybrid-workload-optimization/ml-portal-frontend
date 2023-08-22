@@ -19,11 +19,11 @@
           <div class="overview-content-start">
             <div class="summary-wrapper">
               <div class="summary-left">
-                <img
-                  width="45"
-                  height="45"
-                  :src="getProviderImage(item.provider)"
-                  alt="provider logo"
+                <sp-image
+                  class="project-list__image"
+                  contain
+                  :lazySrc="getIcon(item.provider)"
+                  :src="getIcon(item.provider)"
                 />
               </div>
               <div class="summary-right">
@@ -34,14 +34,15 @@
                     </b>
                     <div class="summary-status">
                       <sp-image
+                        v-if="item.healthy"
                         contain
                         class="healthy-image"
                         width="22px"
                         height="22px"
-                        :lazySrc="setImageState(item.status)"
-                        :src="setImageState(item.status)"
+                        :lazySrc="setImageState(item.healthy.status)"
+                        :src="setImageState(item.healthy.status)"
                       />
-                      {{ item.status }}
+                      {{ item.healthy.status }}
                     </div>
                   </div>
 
@@ -149,9 +150,7 @@
 <script>
 import * as _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import iconAzuer from '@/assets/images/icon_azuer.svg'
-import iconVmare from '@/assets/images/icon_vm-ware.png'
-import iconK8s from '@/assets/images/icon_k8s.svg'
+import { getProviderIcon, getStatusImage } from '@/lib/common'
 
 const dashboardMapUtils = createNamespacedHelpers('dashboard')
 
@@ -309,35 +308,10 @@ export default {
       return parseFloat(GB.toFixed(1)) // 소수점 이하 두 자리까지 표시
     },
     setImageState(state) {
-      switch (state) {
-        case 'Deploying':
-          return 'icon_loading.gif'
-        case 'Unhealthy':
-          return 'icon_unhealthy.svg'
-        case 'Healthy':
-          return 'icon_healthy.svg'
-        case 'Fail':
-          return 'icon_unhealthy.svg'
-        case 'Error':
-          return 'icon_unhealthy.svg'
-        case 'Waiting':
-        case 'FINISHED':
-          return 'icon_healthy.svg'
-        case 'Deleting':
-          return 'icon_loading.gif'
-        case 'Scale in':
-          return 'icon_loading.gif'
-        case 'Scale out':
-          return 'icon_loading.gif'
-        default:
-          return ''
-      }
+      return getStatusImage(state)
     },
-    getProviderImage(provider) {
-      if (provider === 'Azuer') return iconAzuer
-      if (provider === 'VMware') return iconVmare
-      if (provider === 'Kubernetes') return iconK8s
-      return ''
+    getIcon(provider) {
+      return getProviderIcon(provider)
     },
   },
 }
@@ -465,7 +439,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20px;
   }
   .overview-wrapper {
     display: flex;

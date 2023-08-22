@@ -1,10 +1,17 @@
 <template>
   <div class="sp-dashboard">
-    <multi-select
-      class="margin-bottom-20"
-      :firstSelectMeta="firstSelectMeta"
-      @changeItem="onChangeItem"
-    />
+    <div class="dashboard-select-wrap">
+      <div class="dashboard-select">
+        <Select
+          :value="selectItem"
+          :items="selectList"
+          @input="onChangeItem"
+          dense
+          outlined
+          hideDetails
+        />
+      </div>
+    </div>
     <!-- :secondSelectMeta="secodSelectMeta" -->
     <dashboard-card />
     <dashboard-cluster-overview />
@@ -14,74 +21,69 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import request from '@/lib/request'
 import DashboardCard from '@/components/dashboard/DashboardCard.vue'
 import DashboardClusterOverview from '@/components/dashboard/DashboardClusterOverview.vue'
+import Select from '@/components/atoms/Select.vue'
+import request from '@/lib/request'
 // import DashboardTable from '@/components/dashboard/DashboardTable.vue'
-import MultiSelect from '@/components/MultiSelectForDashboard.vue'
+// import MultiSelect from '@/components/MultiSelectForDashboard.vue'
 
 const dashboardMapUtils = createNamespacedHelpers('dashboard')
-const multiSelectMapUtils = createNamespacedHelpers('multiSelect')
+
+const sessionKey = 'dashboard-select'
 
 export default {
   components: {
-    MultiSelect,
     DashboardCard,
     DashboardClusterOverview,
+    Select,
     // DashboardTable,
   },
   data() {
     return {
-      // 멑티셀렉트 컴포넌트에서 첫번째 셀렉트 리스트를 가지고 오기 위한 메타데이터
-      firstSelectMeta: {
-        requestFunc: request.getProjectsUsingGET,
-      },
-      // 멑티셀렉트 컴포넌트에서 두번째 셀렉트 리스트를 가지고 오기 위한 메타데이터
-      // secodSelectMeta: {
-      //   requestFunc: request.getClustersUsingGET,
-      //   parameters: { projectIdx: '' },
-      //   valueKey: 'projectIdx',
-      // },
+      selectList: [],
     }
   },
-  watch: {},
-
-  created() {
-    // const param = {
-    //   firstValue: null,
-    //   clusterIdx: null,
-    // }
-    // this.getData(param)
+  mounted() {
+    this.getSelectItems()
   },
 
   computed: {
-    ...dashboardMapUtils.mapGetters(['dashboardData']),
-    ...multiSelectMapUtils.mapGetters(['firstValue']),
+    ...dashboardMapUtils.mapGetters(['dashboardData', 'selectItem']),
   },
 
   methods: {
-    ...multiSelectMapUtils.mapMutations(['setFirstValue']),
-    ...dashboardMapUtils.mapActions([
-      'getNodeState',
-      'getNodeList',
-      'getDashboardData',
-    ]),
-
-    onChangeItem(value) {
-      console.log(value)
-      this.getData(value)
-    },
-
-    async getData({ firstValue: projectIdx }) {
-      // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
-      const param = {
-        projectIdx,
-        // clusterIdx: value.secondValue,
+    ...dashboardMapUtils.mapActions(['getDashboardData', 'setSelectItem']),
+    async getSelectItems() {
+      // 셀렉트 박스 목록 호출
+      try {
+        this.selectList = []
+        const { data } = await request.getProjectsUsingGET()
+        this.selectList = data?.result || []
+        this.initSelectItem()
+      } catch (e) {
+        console.error(e)
       }
-      await this.getDashboardData({ projectIdx })
-      await this.getNodeState(param)
-      // await this.getNodeList(param)
-      console.log(this.dashboardData)
+    },
+    async onChangeItem(projectIdx) {
+      sessionStorage.setItem(sessionKey, projectIdx)
+      this.setSelectItem(projectIdx)
+      await this.getData(this.selectItem)
+    },
+    async initSelectItem() {
+      const getItem = sessionStorage.getItem(sessionKey)
+      if (!getItem) this.setSelectItem(this.selectList[0].value)
+      else {
+        const target = this.selectList.find(item => item.value === getItem)
+        if (target) this.setSelectItem(getItem)
+        else this.setSelectItem(this.selectList[0].value)
+      }
+      await this.getData(this.selectItem)
+    },
+    async getData(projectIdx) {
+      // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
+      const param = { projectIdx }
+      await this.getDashboardData(param)
     },
   },
 }
@@ -94,6 +96,20 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  .dashboard-select-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    & .dashboard-select {
+      width: 270px !important;
+      margin-bottom: 16px;
+    }
+    .v-input.sp-select {
+      background: #fff !important;
+    }
+  }
 }
 
 ::v-deep {

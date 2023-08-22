@@ -225,14 +225,14 @@ const resource = {
       const accessToken = params.access_token
       const accessTokenExpire = params.expires_at
       cookieHelper.setCookie(
-        'access_token',
+        cookieName.access_token,
         accessToken,
         accessTokenExpire,
         accessTokenExpire,
       )
 
       cookieHelper.setCookie(
-        'refresh_token',
+        cookieName.refresh_token,
         refreshToken,
         refreshTokenExpire,
         refreshTokenExpire,

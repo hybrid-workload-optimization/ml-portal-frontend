@@ -4,49 +4,54 @@
       <div class="card-left">
         <resource-box
           class="resource-box"
-          title="Node"
-          :value="nodeState.nodeCount.toString()"
-          outlined
-          minHeight="0"
-          height="133px"
-          elevation="0"
-        ></resource-box>
-        <resource-box
-          class="resource-box"
-          title="Service Group"
-          :value="nodeState.projectCount.toString()"
-          outlined
-          minHeight="0"
-          height="133px"
-          elevation="0"
-        ></resource-box>
-        <resource-box
-          class="resource-box"
           title="Cluster"
-          :value="nodeState.clusterCount.toString()"
+          :value="dashboardData.clusterCount.toString()"
           outlined
           minHeight="0"
           height="133px"
           elevation="0"
+          isBlocked
+        ></resource-box>
+        <resource-box
+          class="resource-box"
+          title="Node"
+          :value="dashboardData.nodeCount.toString()"
+          outlined
+          minHeight="0"
+          height="133px"
+          elevation="0"
+          isBlocked
+        ></resource-box>
+        <resource-box
+          class="resource-box"
+          title="Workload"
+          :value="dashboardData.workloadCount.toString()"
+          outlined
+          minHeight="0"
+          height="133px"
+          elevation="0"
+          isBlocked
         ></resource-box>
 
         <resource-box
           class="status-box"
           title="Node Status"
-          :value="nodeState.nodeUtilizationState"
+          :value="dashboardData.nodeUtilizationState"
           outlined
           minHeight="0"
           height="133px"
           elevation="0"
+          isBlocked
         ></resource-box>
         <resource-box
           class="status-box"
           title="Restart within 10 minutes"
-          :value="nodeState.restartWithinTenMinutes.toString()"
+          :value="dashboardData.restartWithinTenMinutes.toString()"
           outlined
           minHeight="0"
           height="133px"
           elevation="0"
+          isBlocked
         ></resource-box>
       </div>
 
@@ -68,20 +73,15 @@
         <div class="status-wrapper">
           <div class="status-display">
             <span class="status-title">Total</span>
-            <span class="status-value">{{ nodeState.nodeCount }}</span>
+            <span class="status-value">{{ dashboardData.nodeCount }}</span>
           </div>
           <div class="status-display">
             <span class="status-title">Power on</span>
-            <span class="status-value">{{
-              nodeState.masterReadyCount + nodeState.workerReadyCount
-            }}</span>
+            <span class="status-value">{{ this.nodeData[0].value }}</span>
           </div>
           <div class="status-display">
             <span class="status-title">Power Off</span>
-            <span class="status-value">{{
-              nodeState.nodeCount -
-              (nodeState.masterReadyCount + nodeState.workerReadyCount)
-            }}</span>
+            <span class="status-value">{{ this.nodeData[1].value }}</span>
           </div>
         </div>
       </div>
@@ -90,11 +90,11 @@
       <div class="card-right">
         <div class="right-left">
           <div class="title-wrapper">
-            <div class="title-text">Master utilization rate</div>
+            <div class="title-text">Control Plane utilization rate</div>
           </div>
           <div class="chart-wrapper">
             <donut-chart
-              :chart-data="masterData"
+              :chart-data="controlPlanData"
               :donut-color="masterColor"
               :chart-option-props="masterChartOption"
               width="125px"
@@ -104,8 +104,10 @@
           </div>
           <div class="status-wrapper">
             <div class="status-display">
-              <span class="status-value">{{ nodeState.masterCount }}</span>
-              <span class="status-title">Master</span>
+              <span class="status-value">{{
+                dashboardData.controlPlaneCount
+              }}</span>
+              <span class="status-title">Control Plane</span>
             </div>
           </div>
         </div>
@@ -127,7 +129,7 @@
           </div>
           <div class="status-wrapper">
             <div class="status-display">
-              <span class="status-value">{{ nodeState.workerCount }}</span>
+              <span class="status-value">{{ dashboardData.workerCount }}</span>
               <span class="status-title">Worker</span>
             </div>
           </div>
@@ -161,21 +163,46 @@ export default {
 
     resourceData: dashboardTopData.resourceData,
     statusData: dashboardTopData.statusData,
-    // nodeData: dashboardTopData.nodeData,
-    // masterData: dashboardTopData.masterData,
-    // workerData: dashboardTopData.workerData,
     nodeColor: dashboardTopData.nodeColor,
     masterColor: dashboardTopData.masterColor,
     workerColor: dashboardTopData.workerColor,
+    controlPlanData: [
+      { name: 'Power on', value: 0 },
+      { name: 'Power off', value: 0 },
+    ],
+    workerData: [
+      { name: 'Power on', value: 0 },
+      { name: 'Power off', value: 0 },
+    ],
+    nodeData: [
+      { name: 'Power on', value: 0 },
+      { name: 'Power off', value: 0 },
+    ],
   }),
+
   computed: {
-    ...dashboardMapUtils.mapGetters(['nodeState']),
-    ...dashboardMapUtils.mapGetters(['nodeData']),
-    ...dashboardMapUtils.mapGetters(['masterData']),
-    ...dashboardMapUtils.mapGetters(['workerData']),
+    ...dashboardMapUtils.mapGetters(['dashboardData']),
   },
+  watch: {
+    // 차트 데이터 업데이트
+    dashboardData(newData) {
+      this.nodeData[0].value =
+        newData.controlPlaneReadyCount + newData.workerReadyCount
+      this.nodeData[1].value =
+        newData.nodeCount -
+        (newData.controlPlaneReadyCount + newData.workerReadyCount)
+
+      this.controlPlanData[0].value = newData.controlPlaneReadyCount
+      this.controlPlanData[1].value =
+        newData.controlPlaneCount - newData.controlPlaneReadyCount
+
+      this.workerData[0].value = newData.workerReadyCount
+      this.workerData[1].value = newData.workerCount - newData.workerReadyCount
+    },
+  },
+
   methods: {
-    // Node 기동상태에 따른 텍스트 컬러 변경 (Good or Poor)
+    ...dashboardMapUtils.mapActions(['getDashboardData']),
     changeNodeStatusColor() {
       const statusBox = document.querySelector('.status-box')
       const statusValue = statusBox.querySelector('.value-wrapper')
@@ -189,10 +216,11 @@ export default {
   },
   mounted() {
     this.changeNodeStatusColor()
+    // console.log(this.dashboardData)
   },
   created() {
     if (window.innerWidth <= '1336') {
-      this.chartOption.plotOptions.pie.customScale = 0.8
+      this.chartOption.plotOptions.pie.customScale = 0.85
     }
   },
 }
@@ -253,10 +281,10 @@ export default {
       }
     }
     .card-center {
-      width: 35%;
+      width: 30%;
       display: inline-flex;
       flex-flow: row wrap;
-      padding-left: 6%;
+      padding-left: 5%;
       .title-wrapper {
         width: 100%;
         display: block;
@@ -266,6 +294,7 @@ export default {
           font-weight: bold;
           font-family: $sub-font;
           color: $sp-title;
+          white-space: nowrap;
         }
       }
       .chart-wrapper {
@@ -283,7 +312,7 @@ export default {
     .card-right {
       display: inline-flex;
       text-align: center;
-      width: 30%;
+      width: 35%;
       flex-flow: row wrap;
       .right-left {
         width: 50%;
@@ -294,8 +323,9 @@ export default {
       .title-wrapper {
         display: block;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
         .title-text {
+          white-space: nowrap;
           font: {
             family: $sub-font;
             size: toRem(16);
@@ -306,7 +336,7 @@ export default {
       }
       .chart-wrapper {
         text-align: -webkit-center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
       }
       .status-wrapper {
         text-align: center;
@@ -347,10 +377,11 @@ export default {
         }
       }
       .card-center {
-        width: 35%;
+        width: 30%;
         padding-left: 20px;
         .title-wrapper {
           .title-text {
+            white-space: nowrap;
             font-size: toRem(19);
           }
         }
