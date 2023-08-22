@@ -93,7 +93,7 @@ export default {
       'getDeploymentYaml',
       'updateDeployment',
     ]),
-    ...workloadMapUtils.mapActions(['createWorkload, deleteWorkload']),
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
@@ -192,13 +192,15 @@ export default {
 
     onClickDelCancel() {},
 
-    async onConfirmedFromEditModal({ encodedContent }) {
+    async onConfirmedFromEditModal(data) {
       const params = {
         clusterIdx: this.clusterIdx,
-        yaml: encodedContent,
+        yaml: data.encodedContent,
       }
+      console.log(params)
       try {
         const response = await this.createWorkload(params)
+        console.log(response)
         if (response.status === 200) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
