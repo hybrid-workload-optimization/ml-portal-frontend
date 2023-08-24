@@ -5,6 +5,7 @@ import deployment from '@/store/modules/workload/deployment'
 import job from '@/store/modules/workload/job'
 import cronJob from '@/store/modules/workload/cronJob'
 import daemonSet from '@/store/modules/workload/daemonSet'
+import yaml from '@/store/modules/workload/yaml'
 
 export default {
   statefulSet,
@@ -14,4 +15,5 @@ export default {
   job,
   cronJob,
   daemonSet,
+  yaml,
 }

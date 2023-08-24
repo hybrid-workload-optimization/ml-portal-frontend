@@ -26,6 +26,8 @@ import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
+const yamlMapUtils = createNamespacedHelpers('yaml')
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const replicaSetMapUtils = createNamespacedHelpers('replicaSet')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -49,33 +51,12 @@ export default {
       kind: 'replicaSet',
       namespace: '',
       name: '',
+      yamlStr: '',
     }
   },
 
-  created() {
-    //
-  },
   async mounted() {
-    this.clusterIdx = this.$route.params.id
-    this.replicaSetIdx = this.$route.params.rid
-    this.namespace = this.$route.params.namespace
-    this.name = this.$route.params.name
-    console.log(this.$route.params)
-    await this.getDetail({
-      clusterIdx: this.clusterIdx,
-      namespace: this.namespace,
-      name: this.name,
-      kind: this.kind,
-    })
-    if (this.detailInfo.clusterId && this.detailInfo.uid) {
-      const params = {
-        clusterId: this.detailInfo.clusterId,
-        namespaceName: this.detailInfo.namespace,
-        ownerUid: this.detailInfo.uid,
-      }
-      this.getPodList(params)
-    }
-
+    this.getData()
     // mixin
     this.checkProjectAuth(this.detailInfo.projectIdx)
   },
@@ -88,6 +69,8 @@ export default {
     },
   },
   methods: {
+    ...yamlMapUtils.mapActions(['getWorklistYaml']),
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...replicaSetMapUtils.mapActions(['getDetail', 'getPodList']), // 상세 정보 조회 요청(replicaSet.js)
     ...replicaSetMapUtils.mapActions(['deleteReplicaSet']), // Replica Set 삭제 요청(replicaSet.js)
     ...replicaSetMapUtils.mapActions(['getYaml']), // Replica Set yaml 조회 요청(replicaSet.js)
@@ -99,33 +82,51 @@ export default {
 
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
+    async getData() {
+      this.clusterIdx = this.$route.params.id
+      this.replicaSetIdx = this.$route.params.rid
+      this.namespace = this.$route.params.namespace
+      this.name = this.$route.params.name
+
+      await this.getDetail({
+        clusterIdx: this.clusterIdx,
+        namespace: this.namespace,
+        name: this.name,
+        kind: this.kind,
+      })
+      if (this.detailInfo.clusterId && this.detailInfo.uid) {
+        const params = {
+          clusterId: this.detailInfo.clusterId,
+          namespaceName: this.detailInfo.namespace,
+          ownerUid: this.detailInfo.uid,
+        }
+        this.getPodList(params)
+      }
+    },
+
     // [수정 버튼] 클릭 시
     async onClickEdit() {
-      let text = ''
-      // if (this.detailInfo.yaml) {
-      //   text = this.detailInfo.yaml
-      // } else {
-      try {
-        const response = await this.getYaml({
-          replicaSetIdx: this.replicaSetIdx,
-        })
+      console.log('onClickEdit')
 
-        if (response.status === 200) {
-          text = response.data.result
-        } else {
-          console.log(response.data.message)
-        }
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
+
+      try {
+        this.yamlStr = await this.getWorklistYaml(params)
       } catch (error) {
         console.log(error)
       }
-      // }
 
       this.openModal({
         editType: 'update',
         isEncoding: true,
-        content: text,
+        content: this.yamlStr,
         readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
-        title: 'Edit Replica Set',
+        title: 'Edit Deployment',
       })
     },
 
@@ -136,26 +137,26 @@ export default {
 
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
       try {
-        // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteReplicaSet({
-          replicaSetIdx: this.replicaSetIdx,
-        })
+        const response = await this.deleteWorkload(params)
 
         if (response.status === 200) {
-          // 삭제 성공 시
-          this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
-
-          // 1초 후 리스트 화면으로 이동
+          this.openAlert({
+            title: '리소스가 삭제 되었습니다.',
+            type: 'info',
+          })
           setTimeout(
             () =>
-              this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/replica-set`,
-              ),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/workload`),
             1000,
           )
         } else {
-          // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
           console.log(response.data.message)
         }
@@ -169,24 +170,27 @@ export default {
     onClickDelCancel() {},
 
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        replicaSetIdx: this.replicaSetIdx,
-        yaml: value.encodedContent,
+    async onConfirmedFromEditModal(data) {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        yaml: data.encodedContent,
       }
       try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.updateReplicaSet(param)
+        const response = await this.createWorkload(params)
+        console.log(response)
         if (response.status === 200) {
-          this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
-          this.getDetail({ replicaSetIdx: this.replicaSetIdx })
+          this.openAlert({
+            title: '리소스가 수정 되었습니다.',
+            type: 'info',
+          })
+          this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.log(response.data.message)
+          console.error(response.data.message)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-        console.log(error)
+        console.error(error)
       }
     },
   },
