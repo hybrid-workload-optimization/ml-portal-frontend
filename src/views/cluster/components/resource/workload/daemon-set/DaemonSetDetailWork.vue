@@ -48,6 +48,8 @@ import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import DaemonSetGeneral from '@/views/cluster/components/resource/workload/daemon-set/components/DaemonSetGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
+const yamlMapUtils = createNamespacedHelpers('yaml')
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const daemonSetMapUtils = createNamespacedHelpers('daemonSet')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -71,6 +73,7 @@ export default {
       kind: 'daemonSet',
       namespace: '',
       name: '',
+      yamlStr: '',
     }
   },
 
@@ -78,17 +81,7 @@ export default {
     //
   },
   async mounted() {
-    this.clusterIdx = this.$route.params.id
-    // this.daemonSetIdx = this.$route.params.rid
-    this.namespace = this.$route.params.namespace
-    this.name = this.$route.params.name
-    await this.getDetailNew({
-      clusterIdx: this.clusterIdx,
-      namespace: this.namespace,
-      name: this.name,
-      kind: this.kind,
-    })
-
+    this.getData()
     // mixin
     this.checkProjectAuth(this.detailInfo.projectIdx)
   },
@@ -102,6 +95,8 @@ export default {
     },
   },
   methods: {
+    ...yamlMapUtils.mapActions(['getWorklistYaml']),
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...daemonSetMapUtils.mapActions(['getDetail', 'getDetailNew']),
     ...daemonSetMapUtils.mapActions(['getYaml']),
     ...daemonSetMapUtils.mapActions(['updateDaemonSet']),
@@ -111,28 +106,42 @@ export default {
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
+    async getData() {
+      this.clusterIdx = this.$route.params.id
+      // this.daemonSetIdx = this.$route.params.rid
+      this.namespace = this.$route.params.namespace
+      this.name = this.$route.params.name
+      await this.getDetailNew({
+        clusterIdx: this.clusterIdx,
+        namespace: this.namespace,
+        name: this.name,
+        kind: this.kind,
+      })
+    },
+
     // [수정 버튼] 클릭 시
     async onClickEdit() {
-      let text = ''
-      // if (this.detailInfo.yaml) {
-      //   text = this.detailInfo.yaml
-      // } else {
+      console.log('onClickEdit')
+
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
+
       try {
-        const response = await this.getYaml({
-          daemonSetIdx: this.daemonSetIdx,
-        })
-        text = response.data.result
+        this.yamlStr = await this.getWorklistYaml(params)
       } catch (error) {
         console.log(error)
       }
-      // }
 
       this.openModal({
         editType: 'update',
         isEncoding: true,
-        content: text,
+        content: this.yamlStr,
         readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
-        title: 'Edit Daemon Set',
+        title: 'Edit Deployment',
       })
     },
 
@@ -143,30 +152,32 @@ export default {
 
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
       try {
-        // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteDaemonSet({
-          daemonSetIdx: this.daemonSetIdx,
-        })
+        const response = await this.deleteWorkload(params)
 
         if (response.status === 200) {
-          // 삭제 성공 시
-          this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
-
-          // 1초 후 리스트 화면으로 이동
+          this.openAlert({
+            title: '리소스가 삭제 되었습니다.',
+            type: 'info',
+          })
           setTimeout(
             () =>
-              this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/daemon-set`,
-              ),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/workload`),
             1000,
           )
         } else {
-          // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
+          console.log(response.data.message)
         }
       } catch (error) {
         this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
+        console.log(error)
       }
     },
 
@@ -174,23 +185,27 @@ export default {
     onClickDelCancel() {},
 
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        daemonSetIdx: this.daemonSetIdx,
-        yaml: value.encodedContent,
+    async onConfirmedFromEditModal(data) {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        yaml: data.encodedContent,
       }
-
       try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.updateDaemonSet(param)
+        const response = await this.createWorkload(params)
+        console.log(response)
         if (response.status === 200) {
-          this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
-          this.getDetail({ daemonSetIdx: this.daemonSetIdx })
+          this.openAlert({
+            title: '리소스가 수정 되었습니다.',
+            type: 'info',
+          })
+          this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+          console.error(response.data.message)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+        console.error(error)
       }
     },
   },

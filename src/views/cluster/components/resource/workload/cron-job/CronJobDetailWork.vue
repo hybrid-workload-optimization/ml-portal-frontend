@@ -123,6 +123,8 @@ import LabelWith from '@/components/molcule/LabelWith.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
+const yamlMapUtils = createNamespacedHelpers('yaml')
 const cronJobMapUtils = createNamespacedHelpers('cronJob')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -224,20 +226,12 @@ export default {
       kind: 'cronJob',
       namespace: '',
       name: '',
+      yamlStr: '',
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
-    this.clusterIdx = this.$route.params.id
-    this.namespace = this.$route.params.namespace
-    this.name = this.$route.params.name
-
-    await this.getDetailNew({
-      clusterIdx: this.clusterIdx,
-      kind: this.kind,
-      namespace: this.namespace,
-      name: this.name,
-    })
+    this.getData()
     // mixin
     this.checkProjectAuth(this.detailInfo.projectIdx)
   },
@@ -254,6 +248,7 @@ export default {
     },
   },
   methods: {
+    ...yamlMapUtils.mapActions(['getWorklistYaml']),
     ...cronJobMapUtils.mapActions([
       'getDetailNew',
       // 'getDetail',
@@ -261,38 +256,48 @@ export default {
       'getCronJobYaml',
       'updateCronJob',
     ]),
-
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
     // [수정 버튼] 클릭 시
-    async onClickEdit() {
-      let text = ''
-      // if (this.detailInfo.yaml) {
-      //   text = this.detailInfo.yaml
-      // } else {
-      try {
-        const response = await this.getCronJobYaml({
-          idx: this.cronJobId,
-        })
 
-        if (response.status === 200) {
-          text = response.data.result
-        } else {
-          console.log(response.data.message)
-        }
+    async getData() {
+      this.clusterIdx = this.$route.params.id
+      this.namespace = this.$route.params.namespace
+      this.name = this.$route.params.name
+
+      await this.getDetailNew({
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        namespace: this.namespace,
+        name: this.name,
+      })
+    },
+
+    async onClickEdit() {
+      console.log('onClickEdit')
+
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
+
+      try {
+        this.yamlStr = await this.getWorklistYaml(params)
       } catch (error) {
         console.log(error)
       }
-      // }
 
       this.openModal({
         editType: 'update',
         isEncoding: true,
-        content: text,
+        content: this.yamlStr,
         readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
-        title: 'Edit CronJob',
+        title: 'Edit Deployment',
       })
     },
 
@@ -303,35 +308,57 @@ export default {
 
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
       try {
-        // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteCronJob({ idx: this.cronJobId })
-        this.openAlert({ title: '리소스가 삭제 되었습니다.', type: 'info' })
+        const response = await this.deleteWorkload(params)
 
-        // 1초 후 리스트 화면으로 이동
-        setTimeout(
-          () =>
-            this.$router.push(`/cluster/detail/${this.clusterIdx}/cron-job`),
-          1000,
-        )
+        if (response.status === 200) {
+          this.openAlert({
+            title: '리소스가 삭제 되었습니다.',
+            type: 'info',
+          })
+          setTimeout(
+            () =>
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/workload`),
+            1000,
+          )
+        } else {
+          this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
+          console.log(response.data.message)
+        }
       } catch (error) {
         this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
+        console.log(error)
       }
     },
 
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        idx: this.cronJobId,
-        yaml: value.encodedContent,
+    async onConfirmedFromEditModal(data) {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        yaml: data.encodedContent,
       }
       try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.updateCronJob(param)
-        this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
-        this.getDetail({ idx: this.cronJobId })
+        const response = await this.createWorkload(params)
+        console.log(response)
+        if (response.status === 200) {
+          this.openAlert({
+            title: '리소스가 수정 되었습니다.',
+            type: 'info',
+          })
+          this.getData()
+        } else {
+          this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+          console.error(response.data.message)
+        }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+        console.error(error)
       }
     },
   },

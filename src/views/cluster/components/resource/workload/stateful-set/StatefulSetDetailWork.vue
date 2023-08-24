@@ -41,10 +41,12 @@ import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
+const yamlMapUtils = createNamespacedHelpers('yaml')
 const statefulSetMapUtils = createNamespacedHelpers('statefulSet')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 
 export default {
   components: {
@@ -64,6 +66,7 @@ export default {
       kind: 'statefulSet',
       namespace: '',
       name: '',
+      yamlStr: '',
     }
   },
   // 컴포넌트 생성 후 호출됨
@@ -86,12 +89,13 @@ export default {
     },
   },
   methods: {
+    ...yamlMapUtils.mapActions(['getWorklistYaml']),
     ...statefulSetMapUtils.mapActions(['getDetailNew']), // 상세 정보 조회 요청(statefulSet.js)
     ...statefulSetMapUtils.mapActions(['getPodList']), // 파드 리스트 정보 조회 요청(statefulSet.js)
     ...statefulSetMapUtils.mapActions(['deleteStatefulSet']), // 스테이트풀셋 삭제 요청(statefulSet.js)
     ...statefulSetMapUtils.mapActions(['getStatefulSetYaml']), // 스테이트풀셋 yaml 조회 요청(statefulSet.js)
     ...statefulSetMapUtils.mapActions(['updateStatefulSet']), // 스테이트풀셋 업데이트 요청(statefulSet.js)
-
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
@@ -121,31 +125,27 @@ export default {
     },
     // [수정 버튼] 클릭 시
     async onClickEdit() {
-      let text = ''
-      // if (this.detailInfo.yaml) {
-      //   text = this.detailInfo.yaml
-      // } else {
-      try {
-        const response = await this.getStatefulSetYaml({
-          id: this.statefulSetId,
-        })
+      console.log('onClickEdit')
 
-        if (response.status === 200) {
-          text = response.data.result
-        } else {
-          console.log(response.data.message)
-        }
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
+
+      try {
+        this.yamlStr = await this.getWorklistYaml(params)
       } catch (error) {
         console.log(error)
       }
-      // }
 
       this.openModal({
         editType: 'update',
         isEncoding: true,
-        content: text,
+        content: this.yamlStr,
         readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
-        title: 'Edit Stateful Set',
+        title: 'Edit Deployment',
       })
     },
 
@@ -156,29 +156,26 @@ export default {
 
     // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        kind: this.kind,
+        name: this.name,
+        namespace: this.namespace,
+      }
       try {
-        // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteStatefulSet({
-          id: this.statefulSetId,
-        })
+        const response = await this.deleteWorkload(params)
 
         if (response.status === 200) {
-          // 삭제 성공 시
           this.openAlert({
             title: '리소스가 삭제 되었습니다.',
             type: 'info',
           })
-
-          // 1초 후 리스트 화면으로 이동
           setTimeout(
             () =>
-              this.$router.push(
-                `/cluster/detail/${this.clusterIdx}/stateful-set`,
-              ),
+              this.$router.push(`/cluster/detail/${this.clusterIdx}/workload`),
             1000,
           )
         } else {
-          // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
           console.log(response.data.message)
         }
@@ -192,14 +189,14 @@ export default {
     onClickDelCancel() {},
 
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        id: this.statefulSetId,
-        yaml: value.encodedContent,
+    async onConfirmedFromEditModal(data) {
+      const params = {
+        clusterIdx: this.clusterIdx,
+        yaml: data.encodedContent,
       }
       try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.updateStatefulSet(param)
+        const response = await this.createWorkload(params)
+        console.log(response)
         if (response.status === 200) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
@@ -208,11 +205,11 @@ export default {
           this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.log(response.data.message)
+          console.error(response.data.message)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-        console.log(error)
+        console.error(error)
       }
     },
   },

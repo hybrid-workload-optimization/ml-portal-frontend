@@ -40,8 +40,9 @@ import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import DeploymentGeneral from '@/views/cluster/components/resource/workload/deployment/components/DeploymentGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
-const deploymentMapUtils = createNamespacedHelpers('deployment')
+const yamlMapUtils = createNamespacedHelpers('yaml')
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
+const deploymentMapUtils = createNamespacedHelpers('deployment')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
@@ -85,15 +86,15 @@ export default {
     },
   },
   methods: {
+    ...yamlMapUtils.mapActions(['getWorklistYaml']),
+    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...deploymentMapUtils.mapActions([
       'getDeploymentDetailNew',
       'getDeploymentDetail',
       'getPodList',
       'deleteDeployment',
-      'getDeploymentYaml',
       'updateDeployment',
     ]),
-    ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
@@ -122,7 +123,6 @@ export default {
 
     async onClickEdit() {
       console.log('onClickEdit')
-      let text = ''
 
       const params = {
         clusterIdx: this.clusterIdx,
@@ -130,22 +130,17 @@ export default {
         name: this.name,
         namespace: this.namespace,
       }
+
       try {
-        const response = await this.getDeploymentYaml(params)
-        if (response.status === 200) {
-          text = response.data.result
-        } else {
-          console.log(response.data.message)
-        }
+        this.yamlStr = await this.getWorklistYaml(params)
       } catch (error) {
         console.log(error)
       }
-      // }
 
       this.openModal({
         editType: 'update',
         isEncoding: true,
-        content: text,
+        content: this.yamlStr,
         readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
         title: 'Edit Deployment',
       })
