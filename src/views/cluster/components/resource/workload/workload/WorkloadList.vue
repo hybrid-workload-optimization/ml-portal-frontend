@@ -18,21 +18,15 @@
         @click="onClickButton"
       >
         <template v-slot:new-group>
+          <select-button
+            :btnName="'New Workload'"
+            @clickBtn="openYamlEditor"
+            @changeItem="onChangeItem"
+            style="margin-bottom: 10px"
+          />
+
           <div class="reload-wrapper">
-            <select-button
-              :btnName="'New Workload'"
-              @clickBtn="openYamlEditor"
-              @changeItem="onChangeItem"
-              style="margin-bottom: 10px"
-            />
-            <sp-image
-              class="reload-list__image"
-              contain
-              lazySrc="icon-reload.png"
-              src="icon-reload.png"
-              width="18"
-              @click="reloadData"
-            ></sp-image>
+            <v-icon @click="reloadData" color="black">mdi-refresh</v-icon>
             <span>마지막 업데이트 : {{ currentDateTime }}</span>
           </div>
         </template>
@@ -375,11 +369,9 @@ export default {
   }
 }
 .reload-wrapper {
-  float: right;
-  .reload-list__image {
-    display: inline-block;
-    margin-right: 10px;
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
 }
 </style>

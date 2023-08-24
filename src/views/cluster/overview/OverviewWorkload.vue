@@ -126,9 +126,17 @@ export default {
     // 현재 날짜를 가져와서 today 데이터에 저장합니다.
     const date = new Date()
     this.today = this.formatDate(date) // 날짜를 원하는 형식으로 포맷팅해도 됩니다.
+    setTimeout(() => {
+      this.data.todayDeployedWorkload.push({
+        kind: 'kindkindkind',
+        name: 'namenamenamenamenamename',
+        createAt: 'Thu Aug 24 2023 16:59:14 GMT+0900 (한국 표준시)',
+      })
+    }, 3000)
   },
   methods: {
     getChartData() {
+      console.log(this.data.todayDeployedWorkload)
       const filterData = { ...this.data }
       delete filterData.todayDeployedWorkload
       const keysArray = Object.keys(filterData)

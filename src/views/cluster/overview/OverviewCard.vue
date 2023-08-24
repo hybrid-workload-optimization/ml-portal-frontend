@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="reload-wrapper">
-      <sp-image
-        class="reload-list__image"
-        contain
-        lazySrc="icon-reload.png"
-        src="icon-reload.png"
-        width="18"
-        @click="reloadData"
-      ></sp-image>
+      <v-icon @click="reloadData" color="black">mdi-refresh</v-icon>
       <span>마지막 업데이트 : {{ currentDateTime }}</span>
     </div>
 
@@ -41,6 +34,7 @@ import OverviewNodes from '@/views/cluster/overview/OverviewNodes.vue'
 import OverviewNamespace from '@/views/cluster/overview/OverviewNamespace.vue'
 import OverviewWorkload from '@/views/cluster/overview/OverviewWorkload.vue'
 import OverviewPod from '@/views/cluster/overview/OverviewPod.vue'
+import { getNowDate } from '@/lib/date'
 
 const clusterMapUtils = createNamespacedHelpers('cluster')
 
@@ -116,15 +110,15 @@ export default {
       this.workloadSummary = data?.workloadSummary
     },
     getDateTime() {
-      const now = new Date()
-      const year = now.getFullYear()
-      const month = String(now.getMonth() + 1).padStart(2, '0')
-      const day = String(now.getDate()).padStart(2, '0')
-      const hours = String(now.getHours()).padStart(2, '0')
-      const minutes = String(now.getMinutes()).padStart(2, '0')
-      const seconds = String(now.getSeconds()).padStart(2, '0')
+      // const now = new Date()
+      // const year = now.getFullYear()
+      // const month = String(now.getMonth() + 1).padStart(2, '0')
+      // const day = String(now.getDate()).padStart(2, '0')
+      // const hours = String(now.getHours()).padStart(2, '0')
+      // const minutes = String(now.getMinutes()).padStart(2, '0')
+      // const seconds = String(now.getSeconds()).padStart(2, '0')
 
-      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+      this.currentDateTime = getNowDate()
     },
     async reloadData() {
       this.isLoading = true
@@ -190,6 +184,7 @@ export default {
           overflow: hidden;
         }
         .list-item-date {
+          white-space: nowrap;
           width: 70px;
           text-align: right;
           padding-right: 4px;
@@ -219,11 +214,10 @@ export default {
 }
 
 .reload-wrapper {
-  float: right;
-  .reload-list__image {
-    display: inline-block;
-    margin-right: 10px;
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 </style>

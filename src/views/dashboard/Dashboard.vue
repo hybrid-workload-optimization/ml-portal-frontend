@@ -11,6 +11,12 @@
           hideDetails
         />
       </div>
+      <div class="reload-wrapper">
+        <v-icon @click="getData(tempProjectIdx)" color="black"
+          >mdi-refresh</v-icon
+        >
+        <span>마지막 업데이트 : {{ currentDateTime }}</span>
+      </div>
     </div>
     <!-- :secondSelectMeta="secodSelectMeta" -->
     <dashboard-card />
@@ -25,6 +31,7 @@ import DashboardCard from '@/components/dashboard/DashboardCard.vue'
 import DashboardClusterOverview from '@/components/dashboard/DashboardClusterOverview.vue'
 import Select from '@/components/atoms/Select.vue'
 import request from '@/lib/request'
+import { getNowDate } from '@/lib/date'
 // import DashboardTable from '@/components/dashboard/DashboardTable.vue'
 // import MultiSelect from '@/components/MultiSelectForDashboard.vue'
 
@@ -42,6 +49,8 @@ export default {
   data() {
     return {
       selectList: [],
+      currentDateTime: '',
+      tempProjectIdx: sessionStorage.getItem(sessionKey),
     }
   },
   mounted() {
@@ -67,23 +76,27 @@ export default {
     },
     async onChangeItem(projectIdx) {
       sessionStorage.setItem(sessionKey, projectIdx)
+      this.tempProjectIdx = projectIdx
       this.setSelectItem(projectIdx)
       await this.getData(this.selectItem)
     },
     async initSelectItem() {
-      const getItem = sessionStorage.getItem(sessionKey)
-      if (!getItem) this.setSelectItem(this.selectList[0].value)
-      else {
-        const target = this.selectList.find(item => item.value === getItem)
-        if (target) this.setSelectItem(getItem)
+      if (this.tempProjectIdx === null) {
+        this.tempProjectIdx = this.selectList[0].value
+        this.setSelectItem(this.selectList[0].value)
+      } else {
+        const target = this.selectList.find(
+          item => item.value === this.tempProjectIdx,
+        )
+        if (target) this.setSelectItem(this.tempProjectIdx)
         else this.setSelectItem(this.selectList[0].value)
       }
       await this.getData(this.selectItem)
     },
     async getData(projectIdx) {
-      // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
       const param = { projectIdx }
       await this.getDashboardData(param)
+      this.currentDateTime = getNowDate()
     },
   },
 }
@@ -99,8 +112,9 @@ export default {
 
   .dashboard-select-wrap {
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
 
     & .dashboard-select {
       width: 270px !important;
@@ -191,12 +205,10 @@ export default {
   }
 
   .reload-wrapper {
-    float: right;
-    .reload-list__image {
-      display: inline-block;
-      margin-right: 10px;
-      cursor: pointer;
-    }
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
   }
 }
 </style>
