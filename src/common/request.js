@@ -142,7 +142,6 @@ service.interceptors.request.use(
           refresh_token: refreshToken,
         }
 
-        delete config.headers.Authorization
         const refreshResult = await vm.$store.dispatch(
           'loginUser/refreshTokenV2',
           param,
@@ -164,6 +163,10 @@ service.interceptors.request.use(
     // config.headers.timestamp = reqTimestamp
     vm.$store.commit('loading/showLoading')
 
+    // 리프레쉬 토큰으로 액세스토큰 재발급 시 Authorization 값 삭제
+    if (config.url.includes('/auth/refresh_token')) {
+      delete config.headers.Authorization
+    }
     return config
   },
   error => {
