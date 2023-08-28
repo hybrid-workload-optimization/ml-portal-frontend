@@ -281,6 +281,7 @@ const resource = {
       // console.log(response)
 
       commit('changeDetailInfo', response)
+      if (response.data.result === null) return
       commit('changePodList', response.data.result.replicaSets[0].pods)
       commit('changeReplicaSetList', response.data.result.replicaSets)
     },

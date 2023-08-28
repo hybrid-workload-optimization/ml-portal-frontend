@@ -6,6 +6,7 @@ const resource = {
   state: {
     dataList: [],
     detailInfo: {},
+    errorMessage: null,
   },
   getters: {
     dataList(state) {
@@ -16,6 +17,9 @@ const resource = {
     },
     detailInfo(state) {
       return state.detailInfo
+    },
+    errorMessage(state) {
+      return state.errorMessage
     },
   },
   mutations: {
@@ -37,6 +41,13 @@ const resource = {
       const { data } = payload
       const { result } = data
       state.detailInfo = result
+    },
+    setErrorMessage(state, payload) {
+      console.log(payload)
+      state.errorMessage = payload
+    },
+    clearErrorMessage(state) {
+      state.errorMessage = null
     },
   },
   actions: {
@@ -75,9 +86,14 @@ const resource = {
       }
     },
     // Workload 생성 요청
-    async createWorkload(state, payload) {
+    async createWorkload({ commit }, payload) {
       console.log('Workload 생성 요청', payload)
       const response = await request.applyUsingPOST_1(payload)
+      // 에러인 경우 에러메세지 저장, 아닌경우 null 저장
+      if (response.data.result.success === false)
+        commit('setErrorMessage', response.data.result.errorMessage)
+      else commit('setErrorMessage', null)
+
       return response
     },
     // Workload 삭제
@@ -85,6 +101,9 @@ const resource = {
       console.log('Workload 삭제 요청', payload)
       const response = await request.deleteUsingDELETE_3(payload)
       return response
+    },
+    clearErrorMsg({ commit }) {
+      commit('clearErrorMessage')
     },
   },
 }
