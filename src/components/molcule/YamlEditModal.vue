@@ -95,6 +95,7 @@ export default {
     return {
       // title: '',
       btnSave: 'Create',
+      errorMessage: '',
     }
   },
   created() {},

@@ -128,7 +128,7 @@ export default {
       publicProvider: ['AWS', 'Naver', 'GCP', 'Azure'],
       // 입력 폼 데이터 저장용
       formData: {
-        projectIdx: null,
+        projectIdx: this.$route.params.id,
         clusterIdx: null,
         clusterName: '',
         provider: '',
