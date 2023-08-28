@@ -288,7 +288,7 @@ export default {
       'getPodState',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
@@ -380,6 +380,7 @@ export default {
             title: '리소스가 수정 되었습니다.',
             type: 'info',
           })
+          this.closeModal()
           this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })

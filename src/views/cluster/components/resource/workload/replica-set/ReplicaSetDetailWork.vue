@@ -76,7 +76,7 @@ export default {
     ...replicaSetMapUtils.mapActions(['getYaml']), // Replica Set yaml 조회 요청(replicaSet.js)
     ...replicaSetMapUtils.mapActions(['updateReplicaSet']), // Replica Set 업데이트 요청(replicaSet.js)
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
@@ -176,17 +176,17 @@ export default {
         yaml: data.encodedContent,
       }
       try {
-        const response = await this.createWorkload(params)
-        console.log(response)
-        if (response.status === 200) {
+        const { data: resData } = await this.createWorkload(params)
+        if (resData.result.success) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
             type: 'info',
           })
+          this.closeModal()
           this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.error(response.data.message)
+          console.error(resData)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })

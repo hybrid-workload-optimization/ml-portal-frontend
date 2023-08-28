@@ -3,6 +3,7 @@
     <div class="sp-editor__code-box">
       <codemirror
         v-model="content2"
+        :style="{ height: height + 'px' }"
         :options="editorOptions"
         :mode="editMode === 'json' ? 'application/json' : 'text/x-yaml'"
         @ready="onCmReady"
@@ -43,6 +44,11 @@ export default {
       type: Boolean,
       default: false,
       description: '에디터 읽기전용 모드 설정',
+    },
+    height: {
+      type: Number,
+      default: 500,
+      description: '높이(px)',
     },
   },
   data() {
@@ -105,7 +111,7 @@ export default {
 
 <style lang="scss">
 .CodeMirror {
-  height: 400px;
+  /* height: 400px; */
 }
 .CodeMirror pre {
   white-space: pre-wrap;

@@ -11,7 +11,12 @@
   >
     <!-- 컨텐츠 -->
     <template v-slot:content>
-      <editor @input="setContent" :content="yamlContent" class="yaml-editor" />
+      <editor
+        @input="setContent"
+        :content="yamlContent"
+        class="yaml-editor"
+        :height="500"
+      />
       <v-textarea
         v-if="errorMessage"
         filled
@@ -65,6 +70,7 @@ import VAlert from '@/components/molcule/Alert.vue'
 import { teamplate } from '@/utils/template'
 // import yamljs from 'yamljs'
 
+const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
@@ -95,11 +101,11 @@ export default {
     return {
       // title: '',
       btnSave: 'Create',
-      errorMessage: '',
     }
   },
   created() {},
   computed: {
+    ...workloadMapUtils.mapGetters(['errorMessage']),
     ...yamlEditModalMapUtils.mapGetters(['resourceType']),
     ...yamlEditModalMapUtils.mapGetters(['title']),
     ...yamlEditModalMapUtils.mapGetters(['yamlContent']), // 저장된 content 내용 가져오기(yamlEditModal.js)
@@ -135,6 +141,9 @@ export default {
       return false
     },
   },
+  mounted() {
+    console.log(this.errorMessage)
+  },
   watch: {
     isOpenModal(value) {
       if (value) {
@@ -151,6 +160,7 @@ export default {
     },
   },
   methods: {
+    ...workloadMapUtils.mapActions(['clearErrorMsg']),
     ...yamlEditModalMapUtils.mapMutations(['changeFirstSelectVal']), // firstSelectVal 값 변경
     ...yamlEditModalMapUtils.mapMutations(['changeContent']), // 저장된 content 내용 변경(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapMutations(['closeModal']), // yaml에디트 모달창 닫기(yamlEditModal.js)
@@ -162,6 +172,7 @@ export default {
       this.changeContent(value)
     },
     onClickCloseModal() {
+      this.clearErrorMsg()
       this.closeModal()
     },
     async onClickSaveModal() {
@@ -208,7 +219,7 @@ export default {
 $this: 'popup';
 .yaml-popup-card {
   .card-body {
-    max-height: 900px;
+    max-height: 1000px;
     overflow-y: scroll;
     &::-webkit-scrollbar {
       width: $scroll-width;
@@ -252,6 +263,9 @@ $this: 'popup';
     margin-left: 10px;
     border-radius: 5px;
   }
+}
+.CodeMirror {
+  height: 100% !important;
 }
 
 // .CodeMirror-sizer {

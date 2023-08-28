@@ -95,7 +95,7 @@ export default {
       'deleteDeployment',
       'updateDeployment',
     ]),
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
 
@@ -191,17 +191,17 @@ export default {
         yaml: data.encodedContent,
       }
       try {
-        const response = await this.createWorkload(params)
-        console.log(response)
-        if (response.status === 200) {
+        const { data: resData } = await this.createWorkload(params)
+        if (resData.result.success) {
           this.openAlert({
             title: '리소스가 수정 되었습니다.',
             type: 'info',
           })
+          this.closeModal()
           this.getData()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.error(response.data.message)
+          console.error(resData)
         }
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
