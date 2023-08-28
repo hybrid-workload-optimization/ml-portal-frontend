@@ -2,14 +2,15 @@ import request from '@/lib/request'
 
 const resource = {
   namespaced: true,
-  state: {},
-  getters: {},
-  mutations: {
-    changeYaml(state, payload) {
-      const { data } = payload
-      state.yaml = data.result
+  state: {
+    errorMessage: null,
+  },
+  getters: {
+    errorMessage(state) {
+      return state.errorMessage
     },
   },
+  mutations: {},
   actions: {
     async getWorklistYaml(state, payload) {
       const { data } = await request.getYamlUsingPOST(payload)

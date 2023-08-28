@@ -3,6 +3,7 @@
     popup-card-class="yaml-popup-card"
     :title-name="title"
     modal-width="900"
+    body-height="1000"
     :dialog="isOpenModal"
     @close-modal="onClickCloseModal"
     @click-template="onClickTemplate"
@@ -11,6 +12,15 @@
     <!-- 컨텐츠 -->
     <template v-slot:content>
       <editor @input="setContent" :content="yamlContent" class="yaml-editor" />
+      <v-textarea
+        v-if="errorMessage"
+        filled
+        background-color="red lighten-2"
+        class="mt-1"
+        readonly
+        :value="errorMessage"
+        hide-details
+      ></v-textarea>
     </template>
 
     <!-- 하단 -->
@@ -153,7 +163,7 @@ export default {
     onClickCloseModal() {
       this.closeModal()
     },
-    onClickSaveModal() {
+    async onClickSaveModal() {
       if (this.editType === 'update') {
         if (this.readOnlyKeys && this.readOnlyKeys.length > 0) {
           const isDiff = diff.yamlDiffData(
@@ -180,7 +190,7 @@ export default {
       //   value.firstSelectVal = this.firstSelectVal
       // }
       this.$emit('confirmed', value)
-      this.closeModal()
+      // this.closeModal()
     },
     onChangeFirstSelect(value) {
       this.changeFirstSelectVal(value)
@@ -197,7 +207,7 @@ export default {
 $this: 'popup';
 .yaml-popup-card {
   .card-body {
-    max-height: 600px;
+    max-height: 900px;
     overflow-y: scroll;
     &::-webkit-scrollbar {
       width: $scroll-width;

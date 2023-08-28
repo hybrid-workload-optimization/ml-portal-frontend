@@ -218,7 +218,7 @@ export default {
   },
   methods: {
     ...workloadMapUtils.mapActions(['getDataList', 'createWorkload']),
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     searchDatas(e) {
@@ -317,15 +317,22 @@ export default {
 
         const response = await this.createWorkload(param)
 
-        if (response.status === 201 || response.status === 200) {
+        if (
+          (response.status === 201 || response.status === 200) &&
+          response.data?.result?.success
+        ) {
           this.openAlert({
             title: '리소스가 생성 되었습니다.',
             type: 'info',
           })
+          this.closeModal()
           this.getListData()
         } else {
-          this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-          console.error(response.data.message)
+          this.openAlert({
+            title: '생성 실패했습니다.',
+            type: 'error',
+          })
+          console.error(response.data.result.errorMessage)
         }
       } catch (error) {
         this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
