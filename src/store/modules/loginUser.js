@@ -71,7 +71,6 @@ const resource = {
       try {
         // get refresh
         const refreshResult = await request.refreshTokenUsingPOST(payload)
-        console.log(refreshResult)
         // cookie setting
         dispatch('initRefreshInfo', refreshResult.data)
         return true
