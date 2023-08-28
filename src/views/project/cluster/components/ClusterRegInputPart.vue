@@ -201,6 +201,7 @@ export default {
   watch: {
     editData(value) {
       this.formData = value
+      console.log(value)
     },
   },
   computed: {
@@ -238,7 +239,7 @@ export default {
     },
     async getCspAccounts() {
       const param = {
-        projectIdx: this.formData.projectIdx,
+        projectIdx: this.$route.params.id,
         provider: this.formData.provider,
       }
       await this.getServiceGroupCSPAccountList(param)
