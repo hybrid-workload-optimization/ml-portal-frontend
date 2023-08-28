@@ -237,9 +237,7 @@ router.beforeEach(async (to, from, next) => {
         console.log('No refresh token')
         next({ path: '/ssoLogin', query: { originUrl: to.path } })
       } else {
-        const param = {
-          refresh_token: refreshToken,
-        }
+        const param = { refresh_token: refreshToken }
 
         const refreshResult = await store.dispatch(
           'loginUser/refreshTokenV2',
