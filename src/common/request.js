@@ -142,6 +142,7 @@ service.interceptors.request.use(
           refresh_token: refreshToken,
         }
 
+        delete config.headers.Authorization
         const refreshResult = await vm.$store.dispatch(
           'loginUser/refreshTokenV2',
           param,
