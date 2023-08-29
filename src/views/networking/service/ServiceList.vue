@@ -160,7 +160,7 @@ export default {
     ...serviceMapUtils.mapMutations(['initServiceState']),
     ...serviceMapUtils.mapMutations(['initServiceDataList']),
     ...serviceMapUtils.mapActions(['getServiceList', 'createService']),
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     onInputSearchValue(value) {
@@ -213,6 +213,7 @@ export default {
             }
             this.getListData(val)
           }
+          this.closeModal()
         } else {
           this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
           console.error(response.data.message)

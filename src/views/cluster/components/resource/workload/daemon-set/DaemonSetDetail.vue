@@ -97,7 +97,7 @@ export default {
     ...daemonSetMapUtils.mapActions(['updateDaemonSet']),
     ...daemonSetMapUtils.mapActions(['deleteDaemonSet']),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
@@ -176,6 +176,7 @@ export default {
         if (response.status === 200) {
           this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
           this.getDetail({ daemonSetIdx: this.daemonSetIdx })
+          this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
         }

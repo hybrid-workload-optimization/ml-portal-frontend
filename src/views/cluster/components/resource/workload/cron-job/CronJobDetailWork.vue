@@ -258,7 +258,7 @@ export default {
     ]),
     ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
-    ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
+    ...alertMapUtils.mapMutations(['openAlert', 'closeModal']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
     // [수정 버튼] 클릭 시

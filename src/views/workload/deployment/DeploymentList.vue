@@ -174,7 +174,7 @@ export default {
       'initDeploymentList',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     onClickButton() {
@@ -233,6 +233,7 @@ export default {
         if (this.secondValue || this.thirdValue) {
           this.getListData()
         }
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
         console.error(error)

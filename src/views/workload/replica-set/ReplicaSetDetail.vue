@@ -81,7 +81,7 @@ export default {
     ...replicaSetMapUtils.mapActions(['getYaml']), // Replica Set yaml 조회 요청(replicaSet.js)
     ...replicaSetMapUtils.mapActions(['updateReplicaSet']), // Replica Set 업데이트 요청(replicaSet.js)
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
@@ -165,6 +165,7 @@ export default {
         if (response.status === 200) {
           this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
           this.getDetail({ replicaSetIdx: this.replicaSetIdx })
+          this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
           console.log(response.data.message)

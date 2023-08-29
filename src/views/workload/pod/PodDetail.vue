@@ -284,7 +284,7 @@ export default {
       'updatePod',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
@@ -354,6 +354,7 @@ export default {
           clusterIdx: params.clusterIdx,
           namespace: params.namespace,
         })
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
       }

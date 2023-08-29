@@ -186,7 +186,7 @@ export default {
       'initIngressDataList',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -244,6 +244,7 @@ export default {
 
         this.openAlert({ title: '리소스가 생성 되었습니다.', type: 'info' })
         this.getListData()
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
         console.error(error)

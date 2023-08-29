@@ -121,7 +121,11 @@ export default {
       'createClusterStorageClass',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'initModalContent']),
+    ...yamlEditModalMapUtils.mapMutations([
+      'openModal',
+      'closeModal',
+      'initModalContent',
+    ]),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -185,6 +189,7 @@ export default {
         await this.createClusterStorageClass(param)
         this.openAlert({ title: '생성 성공했습니다.', type: 'info' })
         this.getListData()
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
       }
