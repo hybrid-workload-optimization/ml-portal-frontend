@@ -53,7 +53,7 @@ const router = new VueRouter({
   },
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeResolve(async (to, from, next) => {
   // login 안했을경우 login 페이지로 이동
   console.log('[to]', to)
 
@@ -74,7 +74,7 @@ router.beforeEach(async (to, from, next) => {
   function getViewablePath() {
     if (to.meta.isAuthRequired) {
       const { flatMenuList } = store.state.loginUser
-      // console.log(flatMenuList)
+
       let menuItem = {}
       const viewablePath = flatMenuList.findIndex(item => {
         const menuSplit = item.menuUrl?.split('/')
@@ -89,15 +89,6 @@ router.beforeEach(async (to, from, next) => {
           splitIdx = menuSplit.length - 1
         }
         const menuStr = menuSplit.slice(0, splitIdx).join('/')
-
-        // console.log(item.menuUrl)
-        // let resourceMenuStr
-        // // 클러스터 리소스 메뉴
-        // if (to.path.includes('/cluster/detail')) {
-        //   resourceMenuStr = resourceMenuCheck(item)
-        // }
-
-        // console.log(resourceMenuStr)
 
         if (
           item.menuUrl === to.path ||
@@ -178,6 +169,7 @@ router.beforeEach(async (to, from, next) => {
         defaultUserRole: menuList,
         projectUserRole,
       })
+
       const flatMenulList = setFlatMenuList(menuList)
       store.commit('loginUser/setFlatMenuList', flatMenulList)
 
@@ -243,6 +235,7 @@ router.beforeEach(async (to, from, next) => {
           'loginUser/refreshTokenV2',
           param,
         )
+
         if (!refreshResult) {
           console.log('no refresh fail')
           next({ path: '/ssoLogin', query: { originUrl: to.path } })

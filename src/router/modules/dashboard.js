@@ -3,12 +3,11 @@ import { isAuthRequired } from '@/App'
 const resource = [
   {
     path: '/dashboard',
-    name: 'Dashboard Layout',
     component: () => import('@/views/Main'),
     children: [
       {
         path: '',
-        name: 'Dashboard',
+        name: 'dashboard',
         component: () => import('@/views/dashboard/Dashboard'),
         meta: {
           isAuthRequired,

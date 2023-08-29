@@ -3,7 +3,6 @@ import { isAuthRequired } from '@/App'
 const resource = [
   {
     path: '/sample',
-    name: 'SampleLayout',
     component: () => import('@/views/SampleLayout.vue'),
     children: [
       {
