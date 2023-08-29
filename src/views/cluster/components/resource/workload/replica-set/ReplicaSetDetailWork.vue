@@ -182,8 +182,8 @@ export default {
             title: '리소스가 수정 되었습니다.',
             type: 'info',
           })
-          this.closeModal()
           this.getData()
+          this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
           console.error(resData)

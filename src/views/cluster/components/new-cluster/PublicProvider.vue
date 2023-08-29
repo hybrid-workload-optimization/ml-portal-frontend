@@ -841,7 +841,9 @@ export default {
       this.setPublicNewClusterForm(this.saveData)
       const result = await this.createPublicCluster()
       if (result) {
-        setTimeout(() => this.$router.push('/cluster/list'), 1000)
+        setTimeout(() => {
+          this.$router.push(`/project/detail/${this.$route.params.id}`)
+        }, 1000)
       }
       return true
     },

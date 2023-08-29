@@ -221,7 +221,11 @@ export default {
       'updateClusterStorageClass',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'initModalContent']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations([
+      'openModal',
+      'closeModal',
+      'initModalContent',
+    ]), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
@@ -309,6 +313,7 @@ export default {
         await this.updateClusterStorageClass(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
         this.getDetail({ id: this.storageClassId })
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
       }

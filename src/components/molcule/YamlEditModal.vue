@@ -165,8 +165,7 @@ export default {
     ...yamlEditModalMapUtils.mapMutations(['changeContent']), // 저장된 content 내용 변경(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapMutations(['closeModal']), // yaml에디트 모달창 닫기(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapActions(['requestGetFirstSelectItems']), // 첫번째 셀렉트 박스 리스트 가져오기
-    ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
-    ...alertMapUtils.mapMutations(['openAlert', 'closeAlert']),
+    ...alertMapUtils.mapMutations(['openAlert', 'closeAlert']), // alert 오픈
 
     setContent(value) {
       this.changeContent(value)

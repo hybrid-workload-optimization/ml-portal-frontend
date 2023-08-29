@@ -188,7 +188,7 @@ export default {
     ...podMapUtils.mapMutations(['initPodState', 'initPodDataList']),
     ...podMapUtils.mapActions(['getList', 'createPod']),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     onInputSearchValue(value) {
@@ -245,6 +245,7 @@ export default {
         await this.createPod(param)
         this.openAlert({ title: '리소스가 생성 되었습니다.', type: 'info' })
         this.getListData()
+        this.closeModal()
       } catch (error) {
         this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
       }

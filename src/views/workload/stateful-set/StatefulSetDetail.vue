@@ -85,7 +85,7 @@ export default {
     ...statefulSetMapUtils.mapActions(['getStatefulSetYaml']), // 스테이트풀셋 yaml 조회 요청(statefulSet.js)
     ...statefulSetMapUtils.mapActions(['updateStatefulSet']), // 스테이트풀셋 업데이트 요청(statefulSet.js)
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
@@ -191,6 +191,7 @@ export default {
             type: 'info',
           })
           this.getData()
+          this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
           console.log(response.data.message)

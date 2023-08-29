@@ -181,7 +181,7 @@ export default {
     ...secretUtils.mapMutations(['initSecretState']), // state 데이터 초기화
     ...secretUtils.mapMutations(['initSecretList']), // 데이터 리스트 초기화
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -260,6 +260,7 @@ export default {
             type: 'info',
           })
           this.getListData()
+          this.closeModal()
         } else {
           this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
           console.log(response.data.message)

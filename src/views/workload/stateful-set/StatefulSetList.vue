@@ -205,7 +205,7 @@ export default {
     ...statefulSetMapUtils.mapMutations(['initStatefulSetState']), // state 데이터 초기화(statefulSetList.js)
     ...statefulSetMapUtils.mapMutations(['initStatefulSetDataList']), // 데이터 리스트 초기화
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     // 서치 박스 입력값 변경 시 호출됨
@@ -269,6 +269,7 @@ export default {
           if (this.secondValue || this.thirdValue) {
             this.getListData()
           }
+          this.closeModal()
         } else {
           this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
           console.error(response.data.message)

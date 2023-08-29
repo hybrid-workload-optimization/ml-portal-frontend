@@ -130,7 +130,11 @@ export default {
       'createClusterNamespace',
     ]),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'initModalContent']),
+    ...yamlEditModalMapUtils.mapMutations([
+      'openModal',
+      'closeModal',
+      'initModalContent',
+    ]),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨

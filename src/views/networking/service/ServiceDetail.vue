@@ -84,7 +84,7 @@ export default {
     ...serviceMapUtils.mapActions(['deleteService']),
     ...serviceMapUtils.mapActions(['getServiceYaml']),
     ...serviceMapUtils.mapActions(['updateService']),
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
 
@@ -184,6 +184,7 @@ export default {
             type: 'info',
           })
           this.getData()
+          this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
           console.log(response.data.message)

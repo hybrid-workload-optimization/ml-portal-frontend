@@ -141,7 +141,7 @@ export default {
     ...clusterNodeMapUtils.mapActions(['getList']),
     ...clusterNodeMapUtils.mapMutations(['initClusterNodeDataList']),
 
-    ...yamlEditModalMapUtils.mapMutations(['openModal']),
+    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     // ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨
