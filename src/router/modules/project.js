@@ -17,7 +17,7 @@ const resource = [
       // },
       {
         path: 'list',
-        name: 'Project Card',
+        name: 'projectCard',
         component: () => import('@/views/project/ProjectListWithCard'),
         meta: {
           isAuthRequired,
@@ -25,7 +25,7 @@ const resource = [
       },
       {
         path: 'edit/:id',
-        name: 'Project Edit',
+        name: 'projectEdit',
         component: () => import('@/views/project/ProjectEdit'),
         meta: {
           isAuthRequired,
@@ -33,7 +33,7 @@ const resource = [
       },
       {
         path: 'detail/:id',
-        name: 'Project Detail',
+        name: 'projectDetail',
         component: () => import('@/views/project/ProjectDetail'),
         meta: {
           isAuthRequired,
@@ -41,7 +41,7 @@ const resource = [
       },
       {
         path: 'detail/:id/cluster/new',
-        name: 'Project Cluster New',
+        name: 'projectClusterNew',
         component: () => import('@/views/project/cluster/ClusterForm'),
         meta: {
           isAuthRequired,
@@ -49,7 +49,7 @@ const resource = [
       },
       {
         path: 'detail/:id/cluster/edit/:cid',
-        name: 'Project Cluster New',
+        name: 'ProjectClusteEdit',
         component: () => import('@/views/project/cluster/ClusterForm'),
         meta: {
           isAuthRequired,
@@ -57,7 +57,7 @@ const resource = [
       },
       {
         path: 'new',
-        name: 'Project New',
+        name: 'projectNew',
         component: () => import('@/views/project/ProjectNew'),
         meta: {
           isAuthRequired,
@@ -65,7 +65,7 @@ const resource = [
       },
       {
         path: 'project',
-        name: 'Project Layout',
+        name: 'projectLayout',
         component: () => import('@/views/project/ProjectLayout'),
         meta: {
           isAuthRequired,

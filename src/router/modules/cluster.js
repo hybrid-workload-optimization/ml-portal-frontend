@@ -3,13 +3,12 @@ import { isAuthRequired } from '@/App'
 const resource = [
   {
     path: '/cluster',
-    name: 'Cluster Layout',
     component: () => import('@/views/Main'),
     redirect: '/cluster/list',
     children: [
       {
         path: 'list',
-        name: 'Cluster',
+        name: 'clusterList',
         component: () => import('@/views/cluster/ClusterList'),
         meta: {
           isAuthRequired,
@@ -25,7 +24,7 @@ const resource = [
       // },
       {
         path: 'new',
-        name: 'Cluster New',
+        name: 'clusterNew',
         component: () => import('@/views/cluster/ClusterForm'),
         meta: {
           isAuthRequired,
@@ -33,7 +32,7 @@ const resource = [
       },
       {
         path: 'edit/:id',
-        name: 'Cluster Edit',
+        name: 'clusterEdit',
         component: () => import('@/views/cluster/ClusterForm'),
         meta: {
           isAuthRequired,
@@ -41,7 +40,7 @@ const resource = [
       },
       {
         path: 'provisioning/:id/:provisioningStatus',
-        name: 'Cluster Provisioning',
+        name: 'clusterProvisioning',
         component: () => import('@/views/cluster/ClusterProvisioning'),
         meta: {
           isAuthRequired,
@@ -49,7 +48,7 @@ const resource = [
       },
       {
         path: 'log/:id/:clusterName/:workJobIdx',
-        name: 'Cluster Provisioning Log',
+        name: 'provisioningLog',
         component: () => import('@/views/cluster/ClusterLog.vue'),
         meta: {
           isAuthRequired,
@@ -74,7 +73,7 @@ const resource = [
 
       {
         path: 'detail/:id/pod/:type/:namespace/:name',
-        name: 'WorkloadPod Log2',
+        name: 'workloadPodLog2',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/pod/components/PodLog.vue'
@@ -87,7 +86,7 @@ const resource = [
       // Cluster > Resource List
       {
         path: 'detail/:id/overview',
-        name: 'Cluster Detail Overview',
+        name: 'detailOverview',
         component: () =>
           import('@/views/cluster/components/ClusterOverview.vue'),
         meta: {
@@ -96,7 +95,7 @@ const resource = [
       },
       {
         path: 'detail/:id/catalog',
-        name: 'Cluster Detail Catalog',
+        name: 'detailCatalog',
         component: () =>
           import('@/views/cluster/components/ClusterAddonCardList.vue'),
         meta: {
@@ -149,7 +148,7 @@ const resource = [
       },
       {
         path: 'detail/:id/deployment',
-        name: 'Cluster Detail Deployment',
+        name: 'detailDeployment',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/deployment/DeploymentList.vue'
@@ -160,7 +159,7 @@ const resource = [
       },
       {
         path: 'detail/:id/stateful-set',
-        name: 'Cluster Detail Stateful Set',
+        name: 'detailStatefulSet',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/stateful-set/StatefulSetList.vue'
@@ -171,7 +170,7 @@ const resource = [
       },
       {
         path: 'detail/:id/pod',
-        name: 'Cluster Detail Pod',
+        name: 'detailPod',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/pod/PodList.vue'
@@ -182,7 +181,7 @@ const resource = [
       },
       {
         path: 'detail/:id/cron-job',
-        name: 'Cluster Detail Cron Job',
+        name: 'detailCronJob',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/cron-job/CronJobList.vue'
@@ -204,7 +203,7 @@ const resource = [
       },
       {
         path: 'detail/:id/replica-set',
-        name: 'Cluster Detail Replica Set',
+        name: 'replicaSet',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/replica-set/ReplicaSetList.vue'
@@ -215,7 +214,7 @@ const resource = [
       },
       {
         path: 'detail/:id/daemon-set',
-        name: 'Cluster Detail Daemon Set',
+        name: 'daemonSet',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/daemon-set/DaemonSetList.vue'
@@ -226,7 +225,7 @@ const resource = [
       },
       {
         path: 'detail/:id/service',
-        name: 'Cluster Detail Service',
+        name: 'detailService',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/service/ServiceList.vue'
@@ -237,7 +236,7 @@ const resource = [
       },
       {
         path: 'detail/:id/ingress',
-        name: 'Cluster Detail Ingress',
+        name: 'detailIngress',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/ingress/IngressList.vue'
@@ -248,7 +247,7 @@ const resource = [
       },
       {
         path: 'detail/:id/ingress-controller',
-        name: 'Cluster Detail Ingress Controller',
+        name: 'ingressController',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/ingress-controller/IngressControllerList.vue'
@@ -293,7 +292,7 @@ const resource = [
 
       {
         path: 'detail/:id/node/v2/:nodeName',
-        name: 'Cluster Detail Node Detail2',
+        name: 'nodeDetail2',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterNodeDetail2.vue'
@@ -305,7 +304,7 @@ const resource = [
 
       {
         path: 'detail/:id/namespace/v2/:namespace',
-        name: 'Cluster Detail Namespace Detail2',
+        name: 'namespaceDetail2',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail2.vue'
@@ -318,7 +317,7 @@ const resource = [
       // Cluster > Resource > Resource Detail
       {
         path: 'detail/:id/node/:rid',
-        name: 'Cluster Detail Node Detail',
+        name: 'nodeDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterNodeDetail.vue'
@@ -329,7 +328,7 @@ const resource = [
       },
       {
         path: 'detail/:id/namespace/:rid',
-        name: 'Cluster Detail Namespace Detail',
+        name: 'namespaceDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail.vue'
@@ -340,7 +339,7 @@ const resource = [
       },
       {
         path: 'detail/:id/persistent-volume/:rid',
-        name: 'Cluster Detail Persistent Volume Detail',
+        name: 'persistentVolumeDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeDetail.vue'
@@ -351,7 +350,7 @@ const resource = [
       },
       {
         path: 'detail/:id/storage-class/:rid',
-        name: 'Cluster Detail Storage Class Detail',
+        name: 'storageClassDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/cluster/ClusterStorageClassDetail.vue'
@@ -362,7 +361,7 @@ const resource = [
       },
       {
         path: 'detail/:id/deployment/:rid',
-        name: 'Cluster Detail Deployment Detail',
+        name: 'deploymentDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/deployment/DeploymentDetail.vue'
@@ -373,7 +372,7 @@ const resource = [
       },
       {
         path: 'detail/:id/stateful-set/:rid',
-        name: 'Cluster Detail Stateful Set Detail',
+        name: 'statefulSetDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/stateful-set/StatefulSetDetail.vue'
@@ -384,7 +383,7 @@ const resource = [
       },
       {
         path: 'detail/:id/pod/:namespace/:name',
-        name: 'Cluster Detail Pod Detail',
+        name: 'podDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/pod/PodDetail.vue'
@@ -395,7 +394,7 @@ const resource = [
       },
       {
         path: 'detail/:id/cron-job/:rid',
-        name: 'Cluster Detail Cron Job Detail',
+        name: 'cronJobDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/cron-job/CronJobDetail.vue'
@@ -406,7 +405,7 @@ const resource = [
       },
       {
         path: 'detail/:id/job/:rid',
-        name: 'Cluster Detail Job Detail',
+        name: 'jobDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/job/JobDetail.vue'
@@ -417,7 +416,7 @@ const resource = [
       },
       {
         path: 'detail/:id/replica-set/:rid',
-        name: 'Cluster Detail Replica Set Detail',
+        name: 'replicaSetDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/replica-set/ReplicaSetDetail.vue'
@@ -428,7 +427,7 @@ const resource = [
       },
       {
         path: 'detail/:id/daemon-set/:rid',
-        name: 'Cluster Detail Daemon Set Detail',
+        name: 'DaemonSetDetail',
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/daemon-set/DaemonSetDetail.vue'
@@ -439,7 +438,7 @@ const resource = [
       },
       {
         path: 'detail/:id/service/:rid',
-        name: 'Cluster Detail Node Detail',
+        name: 'nodeDetailService',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/service/ServiceDetail.vue'
@@ -450,7 +449,7 @@ const resource = [
       },
       {
         path: 'detail/:id/ingress/:rid',
-        name: 'Cluster Detail Ingress Detail',
+        name: 'IngressDetailRid',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/ingress/IngressDetail.vue'
@@ -461,7 +460,7 @@ const resource = [
       },
       {
         path: 'detail/:id/persistent-volume-claim/:rid',
-        name: 'Cluster Detail Persistent Volume Claim Detail',
+        name: '[ersistentVolumeClaimDetailRid',
         component: () =>
           import(
             '@/views/cluster/components/resource/config/persistent-volume-claim/PersistentVolumeClaimDetail.vue'
@@ -472,7 +471,7 @@ const resource = [
       },
       {
         path: 'detail/:id/config-map/:rid',
-        name: 'Cluster Detail Config Map Detail',
+        name: 'configMapDetailRid',
         component: () =>
           import(
             '@/views/cluster/components/resource/config/config-map/ConfigMapDetail.vue'
@@ -629,7 +628,7 @@ const resource = [
       },
       {
         path: 'detail/:id/service/:namespace/:name',
-        name: 'Cluster Detail Node Detail',
+        name: 'nodeDetailName',
         component: () =>
           import(
             '@/views/cluster/components/resource/networking/service/ServiceDetail.vue'
@@ -673,7 +672,7 @@ const resource = [
       },
       {
         path: 'detail/:id/secret/:namespace/:name',
-        name: 'Cluster Detail Secret Detail',
+        name: 'secretDetailName',
         component: () =>
           import(
             '@/views/cluster/components/resource/config/secret/SecretDetail.vue'

@@ -73,6 +73,11 @@ const resource = {
         const refreshResult = await request.refreshTokenUsingPOST(payload)
         // cookie setting
         dispatch('initRefreshInfo', refreshResult.data)
+        const loginResult = await request.getUserInfoUsingGET()
+        const userInfo = await request.getUserDetailUsingGET(
+          loginResult.data.result.user,
+        )
+        dispatch('initUserInfo', userInfo.data.result)
         return true
       } catch (error) {
         console.error(error)
