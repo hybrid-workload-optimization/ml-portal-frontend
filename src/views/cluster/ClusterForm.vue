@@ -78,7 +78,6 @@ export default {
   }),
   created() {
     this.initDataForm()
-
     this.clusterIdx = this.$route.params.id
 
     if (this.clusterIdx) {
@@ -126,9 +125,9 @@ export default {
     },
     onClickCancelConfirm() {
       if (this.isEditMode) {
-        this.$router.push(`/cluster/detail/${this.clusterIdx}`)
+        this.$router.push(`/project/detail/${this.clusterIdx}`)
       } else {
-        this.$router.push('/cluster/list')
+        this.$router.push('/project/detail')
       }
     },
     validateSave() {
@@ -176,7 +175,9 @@ export default {
                 type: 'info',
               })
             }
-            setTimeout(() => this.$router.push('/cluster/list'), 1000)
+            setTimeout(() => {
+              this.$router.push(`/project/detail/${this.projectIdx}`)
+            }, 1000)
           } else {
             this.openAlert({
               title: 'Cluster 등록을 실패했습니다.',
@@ -200,7 +201,7 @@ export default {
         if (response.status === 200) {
           this.openAlert({ title: 'Cluster가 수정 되었습니다.', type: 'info' })
           setTimeout(
-            () => this.$router.push(`/cluster/detail/${this.clusterIdx}`),
+            () => this.$router.push(`/project/detail/${this.clusterIdx}`),
             1000,
           )
         } else {
