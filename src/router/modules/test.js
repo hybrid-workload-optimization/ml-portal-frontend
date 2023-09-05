@@ -2,8 +2,8 @@ import { isAuthRequired } from '@/App'
 
 const resource = [
   {
-    path: '/service/comp',
-    name: 'Test',
+    path: '/comp',
+    name: 'Main',
     component: () => import('@/views/Main'),
     redirect: '/cluster/list',
     children: [
