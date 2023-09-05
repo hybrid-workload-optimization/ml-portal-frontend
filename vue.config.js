@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   publicPath:
     process.env.NODE_ENV === 'k8s' || process.env.NODE_ENV === 'nds'
-      ? '/comp/'
+      ? '/service/comp/'
       : process.env.NODE_ENV === 'sso'
       ? '/comp/'
       : '/',
