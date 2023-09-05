@@ -2,7 +2,7 @@ import { isAuthRequired } from '@/App'
 
 const resource = [
   {
-    path: '/service/comp',
+    path: '/comp',
     name: 'Main',
     component: () => import('@/views/Main'),
     redirect: '/cluster/list',

@@ -147,7 +147,7 @@ export default {
         //   },
         // })
         this.sse = new EventSource(
-          `/comp-b-svc/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
+          `${process.env.VUE_APP_SERVICE_NAME}/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
         )
 
         this.sse.onerror = e => {
