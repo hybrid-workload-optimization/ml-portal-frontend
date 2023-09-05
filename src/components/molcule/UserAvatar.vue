@@ -138,7 +138,7 @@ export default {
       sessionStorage.removeItem('projectUserRole')
 
       window.location.replace(
-        `${process.env.VUE_APP_BASE_API}/auth/logout?refreshToken=${refreshToken}&redirectUrl=${redirectUri}`,
+        `${process.env.VUE_APP_USER_API}/auth/logout?refreshToken=${refreshToken}&redirectUrl=${redirectUri}`,
         '_self',
       )
     },
