@@ -23,7 +23,7 @@
       :dialog="isOpenPopup"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <cluster-detail :clusterId="clusterId" />
       </template>
     </modal> -->
@@ -35,7 +35,7 @@
       :dialog="isOpenEditScaleModal"
       @close-modal="onClickCloseLabelModal"
     >
-      <template v-slot:content>
+      <template #content>
         <clusterscale-popup
           @closePopup="onClickCloseLabelModal"
           :item="vmData"

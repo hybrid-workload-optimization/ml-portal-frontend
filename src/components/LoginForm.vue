@@ -24,7 +24,7 @@
           filled
           @input="onChangeEmail"
         >
-          <template v-slot:prepend-inner-content>
+          <template #prepend-inner-content>
             <sp-image contain lazySrc="email.svg" src="email.svg" />
           </template>
         </sp-input>
@@ -45,7 +45,7 @@
           filled
           @change="onChangePassword"
         >
-          <template v-slot:prepend-inner-content>
+          <template #prepend-inner-content>
             <sp-image contain lazySrc="password.svg" src="password.svg" />
           </template>
         </sp-input>
@@ -94,7 +94,7 @@
       @open-Alert="onClickOpenAlert"
       @close-Alert="onClickCloseAlert"
     >
-      <template v-slot:alert-icon>
+      <template #alert-icon>
         <v-icon color="#fff">error_outline</v-icon>
       </template>
     </alert>

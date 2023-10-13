@@ -21,7 +21,7 @@
           :height="245"
           dense
         >
-          <template v-slot:status_custom="slotProps">
+          <template #status_custom="slotProps">
             <sp-chip
               :color="getChipEachColor(slotProps.item.status)"
               class="status-chip"

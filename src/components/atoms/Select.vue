@@ -69,25 +69,25 @@
     @update:error="onUpdateError"
     @update:list-index="onUpdateListIndex"
   >
-    <template v-slot:label>
+    <template #label>
       <slot name="label"></slot>
     </template>
-    <template v-slot:prepend>
+    <template #prepend>
       <slot name="prepend-content"></slot>
     </template>
-    <template v-slot:prepend-inner>
+    <template #prepend-inner>
       <slot name="prepend-inner-content"></slot>
     </template>
-    <template v-slot:prepend-item>
+    <template #prepend-item>
       <slot name="prepend-item"></slot>
     </template>
-    <template v-slot:append>
+    <template #append>
       <slot name="append-content"></slot>
     </template>
-    <template v-slot:append-outer>
+    <template #append-outer>
       <slot name="append-outer-content"></slot>
     </template>
-    <template v-slot:append-item>
+    <template #append-item>
       <slot name="append-item"></slot>
     </template>
   </v-select>

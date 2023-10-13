@@ -1,6 +1,6 @@
 <template>
   <v-app class="sp-app-layout" :class="{ ...className }" id="app">
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
   </v-app>

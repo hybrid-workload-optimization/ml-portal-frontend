@@ -15,10 +15,10 @@
         <span class="title-text">{{ getPageName }}</span>
       </div>
       <sp-breadcrumbs v-if="pagePath" :items="pagePath['subTitle']" large>
-        <template v-slot:divider>
+        <template #divider>
           <v-icon>chevron_right</v-icon>
         </template>
-        <template v-slot:item="slotProps">
+        <template #item="slotProps">
           <v-breadcrumbs-item>
             <v-icon
               class="material-icons-outlined"
@@ -76,7 +76,7 @@
         :accessRoleName="userInfo ? userInfo.userRole.userRoleName : ''"
         class="ml-12"
       >
-        <template v-slot:badge>
+        <template #badge>
           <v-badge
             bordered
             bottom

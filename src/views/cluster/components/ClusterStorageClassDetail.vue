@@ -49,7 +49,7 @@
 
           <!-- Annotations -->
           <label-with name="Annotations" horizontal>
-            <template v-slot:append-content>
+            <template #append-content>
               <sp-chip
                 v-for="(value, key) in detailInfo.annotation"
                 :key="key + value"
@@ -67,7 +67,7 @@
         <div class="info-table">
           <template v-for="(head, index) in resourceInfoTitle">
             <label-with :name="head.text" :key="index">
-              <template v-slot:append-content>
+              <template #append-content>
                 {{ resourceInfo[head.value] || '-' }}
               </template>
             </label-with>

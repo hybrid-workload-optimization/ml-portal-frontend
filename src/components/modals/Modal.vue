@@ -6,7 +6,7 @@
     @click:outside="onClickOutSide"
     @keydown="onKeyDownESC"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <slot name="buttons" v-on="on"></slot>
     </template>
     <sp-card
@@ -30,7 +30,7 @@
         },
       }"
     >
-      <template v-slot:header>
+      <template #header>
         <div class="button-wrapper">
           <sp-button
             v-if="isTemplateBtn"

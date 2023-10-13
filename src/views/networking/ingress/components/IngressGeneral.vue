@@ -53,9 +53,8 @@
           scroll-only
           :itemsPerPage="ruleList.length"
         >
-          <template slot="endpoint_custom" slot-scope="item">
+          <template #endpoint_custom="item">
             <sp-button
-              slot="buttons"
               elevation="0"
               color="primary"
               dense
@@ -78,10 +77,10 @@
         @close-modal="onClickCloseEndPointModal"
       >
         <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-        <template v-slot:content>
+        <template #content>
           <end-point />
         </template>
-        <template v-slot:footer>
+        <template #footer>
           <div class="popup-end-point__button-wrapper">
             <sp-button
               class="popup-end-point--button cancel"

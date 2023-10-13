@@ -8,13 +8,13 @@
     :large="large"
     :light="light"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
-    <template v-slot:divider>
+    <template #divider>
       <slot name="divider"></slot>
     </template>
-    <template v-slot:item="{ item }">
+    <template #item="{ item }">
       <slot name="item" :item="item"> </slot>
     </template>
   </v-breadcrumbs>

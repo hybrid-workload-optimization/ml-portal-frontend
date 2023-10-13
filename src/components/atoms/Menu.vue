@@ -48,10 +48,10 @@
     :z-index="zIndex"
     @input="onChangeMenu"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
-    <template v-slot:activator="item">
+    <template #activator="item">
       <slot name="item" :item="item"> </slot>
     </template>
   </v-menu>
@@ -306,10 +306,10 @@ export default {
     },
   },
   methods: {
-    /*  
+    /*
         @brief onChange 이벤트 함수
         @date 2021/11/08
-        @return 
+        @return
         @param
           - event: EventTarget(이벤트 값)
     */

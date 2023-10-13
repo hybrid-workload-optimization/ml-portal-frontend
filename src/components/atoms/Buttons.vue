@@ -53,10 +53,10 @@
     :x-small="xSmall"
     @click="onClickButton"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
-    <template v-slot:loader>
+    <template #loader>
       <slot name="loader"></slot>
     </template>
   </v-btn>

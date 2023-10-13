@@ -44,13 +44,13 @@
     :width="width"
     @mouseleave="onMouseLeave"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
-    <template v-slot:extension v-if="extended">
+    <template #extension v-if="extended">
       <slot name="extension"></slot>
     </template>
-    <template v-slot:img="{ props }">
+    <template #img="{ props }">
       <slot name="img" :items="props"> </slot>
     </template>
   </v-app-bar>

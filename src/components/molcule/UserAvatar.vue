@@ -2,7 +2,7 @@
   <div class="nav-my-row">
     <div class="user-name-wrapper">
       <sp-menu>
-        <template v-slot:item="slotProps">
+        <template #item="slotProps">
           <div
             class="user-name"
             :class="{ fontWhite }"

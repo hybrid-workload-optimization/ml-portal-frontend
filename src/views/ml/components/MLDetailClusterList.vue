@@ -18,7 +18,7 @@
         :itemsPerPage="5"
         isCustomBody
       >
-        <template v-slot:body="{ item }">
+        <template #body="{ item }">
           <tr class="cluster-list__item-wrapper">
             <td class="cluster-list__name-wrapper">
               <div class="cluster-list__image-title-wrapper">
@@ -152,7 +152,7 @@
       :dialog="isOpenEditScaleModal"
       @close-modal="onClickCloseLabelModal"
     >
-      <template v-slot:content>
+      <template #content>
         <clusterscale-popup
           @closePopup="onClickCloseLabelModal"
           :item="vmData"

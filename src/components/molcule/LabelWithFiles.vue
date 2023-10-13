@@ -27,10 +27,10 @@
       :value="value"
       @change="event => $emit('on-change', event)"
     >
-      <template v-if="chips" v-slot:selection="{ index, text }">
+      <template v-if="chips" #selection="{ index, text }">
         <slot name="selection" :item="{ index, text }"></slot>
       </template>
-      <template v-if="prependInner" v-slot:prepend-inner>
+      <template v-if="prependInner" #prepend-inner>
         <slot name="prepend-inner">
           <sp-button
             class="backgroundColor"

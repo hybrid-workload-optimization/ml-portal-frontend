@@ -53,17 +53,17 @@
       </div>
       <div class="info-table">
         <label-with :name="'Status'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ detailInfo.status || '-' }}
           </template>
         </label-with>
         <label-with :name="'Storage Class'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ detailInfo.storageClass || '-' }}
           </template>
         </label-with>
         <label-with :name="'Access Type'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ detailInfo.accessType || '-' }}
           </template>
         </label-with>

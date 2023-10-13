@@ -17,7 +17,7 @@
       @update:search-input="updateModelValue"
       @keyup.enter.stop="onEnter"
     >
-      <template v-slot:item="{ item }">
+      <template #item="{ item }">
         <template v-if="item.subheader">
           <v-list-item
             class="item-subheader"

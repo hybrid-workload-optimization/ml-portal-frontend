@@ -10,7 +10,7 @@
     :isTemplateBtn="isTemplateBtn"
   >
     <!-- 컨텐츠 -->
-    <template v-slot:content>
+    <template #content>
       <editor
         @input="setContent"
         :content="yamlContent"
@@ -29,7 +29,7 @@
     </template>
 
     <!-- 하단 -->
-    <template v-slot:footer>
+    <template #footer>
       <div class="popup__button-wrapper">
         <sp-button
           class="cancel-button"

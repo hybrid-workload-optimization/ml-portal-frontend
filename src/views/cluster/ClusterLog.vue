@@ -1,7 +1,7 @@
 <template>
   <div class="sp-cluster-log-detail">
     <card-title :titleData="getTitle" :showButtons="false">
-      <template v-slot:additional-buttons>
+      <template #additional-buttons>
         <sp-button
           outlined
           class="close-button title-button"

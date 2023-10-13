@@ -1,7 +1,7 @@
 <template>
   <div class="sp-authority-group">
     <sp-card headered label="권한 그룹" outlined elevation="0">
-      <!-- <template v-slot:header v-if="isWritable">
+      <!-- <template #header v-if="isWritable">
         <sp-button
           outlined
           elevation="0"
@@ -61,7 +61,7 @@
         :dialog="confirm"
         @close-modal="onClickCloseModal"
       >
-        <template v-slot:content>
+        <template #content>
           <div class="confirm-wrapper">
             <authority-delete-item
               @close-modal="onClickCloseModal"
@@ -84,7 +84,7 @@
         :dialog="addEditPopup"
         @close-modal="onClickCloseModal"
       >
-        <template v-slot:content>
+        <template #content>
           <div class="add-edit-wrapper">
             <authority-add-edit-popup
               @close-modal="onClickCloseModal"

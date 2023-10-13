@@ -14,7 +14,7 @@
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
     >
-      <template v-slot:additional-buttons>
+      <template #additional-buttons>
         <sp-button class="list-button" outlined @click="onClickBack"
           >List</sp-button
         >

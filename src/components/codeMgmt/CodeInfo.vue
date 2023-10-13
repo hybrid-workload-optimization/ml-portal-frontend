@@ -10,7 +10,7 @@
       headered
       elevation="0"
     >
-      <template v-slot:header>
+      <template #header>
         <div class="code-mgmt-code-info__button-wrapper">
           <sp-button
             outlined
@@ -184,12 +184,12 @@
       :dialog="isOpen"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <div class="code-mgmt-code-info__modal-text-wrapper">
           선택한 공통 코드를 삭제하시겠습니까?
         </div>
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="code-mgmt-code-info__modal-button-wrapper">
           <sp-button
             class="code-mgmt-code-info__modal--button cancel"

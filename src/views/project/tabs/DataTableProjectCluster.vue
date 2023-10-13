@@ -23,7 +23,7 @@
           :custom-slot-info="data.customSlotInfo"
           @get-checked-box-item="getCheckedBoxItem"
         >
-          <template v-slot:job_custom="{ item }">
+          <template #job_custom="{ item }">
             <slot name="job_custom" :item="item"></slot>
           </template>
         </service-table>

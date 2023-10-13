@@ -46,7 +46,7 @@
 
         <!-- Labels -->
         <label-with name="Labels" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip v-for="label in detailInfo.label" :key="label">{{
               label
             }}</sp-chip>

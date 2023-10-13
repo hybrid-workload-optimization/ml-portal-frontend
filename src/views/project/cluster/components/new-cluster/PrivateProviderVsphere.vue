@@ -2,7 +2,7 @@
   <div class="new-vSphere-cluster-wrapper">
     <v-form ref="clusterInfoForm">
       <line-button-title title="Cluster Info">
-        <template v-slot:content>
+        <template #content>
           <label-with-select
             name="Template"
             :className="labelWithSelectClass"
@@ -23,7 +23,7 @@
             required
           ></label-with-text>
           <!-- <label-with-group name="Ip Pool" :className="labelWithGroupClass">
-            <template v-slot:append-content>
+            <template #append-content>
               <label-with-text
                 name="Start"
                 :className="labelWithInnerTextClass"
@@ -46,7 +46,7 @@
         </template>
       </line-button-title>
       <line-button-title title="Node Info" style="padding-top: 5px !important">
-        <template v-slot:content>
+        <template #content>
           <template>
             <v-radio-group
               v-model="isBasic"
@@ -104,7 +104,7 @@
             :className="labelWithClass"
             v-if="!isBasic"
           >
-            <template v-slot:append-content>
+            <template #append-content>
               <div class="nodeInfoMasterClass">
                 <label-with-text
                   name="CPU(Core)"
@@ -146,7 +146,7 @@
             </template>
           </label-with>
           <label-with name="Worker" :className="labelWithClass" v-if="!isBasic">
-            <template v-slot:append-content>
+            <template #append-content>
               <div class="nodeInfoWorkerClass">
                 <label-with-text
                   name="CPU(Core)"

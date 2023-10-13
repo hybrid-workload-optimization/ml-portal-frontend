@@ -36,7 +36,7 @@
       @input="onChangeValueInput"
       @blur="onBlurValueInput"
     >
-      <template v-slot:append-content>
+      <template #append-content>
         <slot name="button"></slot>
       </template>
     </sp-input>

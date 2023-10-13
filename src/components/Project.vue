@@ -6,7 +6,7 @@
         <sp-chip v-if="isOwner" class="project__tag Owner"> Owner </sp-chip>
       </div>
       <sp-menu left min-width="150px" max-width="200px">
-        <template v-slot:item="slotProps">
+        <template #item="slotProps">
           <sp-button
             v-bind="slotProps.item.attrs"
             v-on="slotProps.item.on"

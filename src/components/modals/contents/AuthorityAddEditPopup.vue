@@ -38,7 +38,7 @@
     <v-snackbar v-model="snackbar" top>
       {{ duplicateCheckMessage }}
 
-      <template v-slot:action="{ attrs }">
+      <template #action="{ attrs }">
         <sp-button v-bind="attrs" @click="snackbar = false">Close</sp-button>
       </template>
     </v-snackbar>
