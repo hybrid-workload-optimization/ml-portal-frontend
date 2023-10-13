@@ -45,7 +45,7 @@
     @input="onChangeInput"
     @update:active="onUpdateActive"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
   </v-chip>

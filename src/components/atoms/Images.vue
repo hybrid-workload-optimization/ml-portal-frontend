@@ -30,10 +30,10 @@
     @loadstart="onLoadStart"
     @click="onClickButton"
   >
-    <template v-slot:default>
+    <template #default>
       <slot name="default"></slot>
     </template>
-    <template v-slot:placeholder>
+    <template #placeholder>
       <slot name="placeholder"></slot>
     </template>
   </v-img>

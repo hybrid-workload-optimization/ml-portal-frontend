@@ -1,4 +1,4 @@
-<template v-slot:content>
+<template #content>
   <div class="popup-ml__title-wrapper">
     <div>
       <div class="popup-ml__title">

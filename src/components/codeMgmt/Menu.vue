@@ -48,7 +48,7 @@
         >
           <v-expansion-panel v-for="(data, index) in codeGroups" :key="index">
             <v-expansion-panel-header>
-              <template v-slot:actions>
+              <template #actions>
                 <div class="code-mgmt-menu__expansion-group-wrapper">
                   <v-icon class="expand-icon" v-show="data.codeList.length">
                     $expand

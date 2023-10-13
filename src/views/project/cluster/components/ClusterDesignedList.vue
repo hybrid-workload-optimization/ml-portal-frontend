@@ -22,7 +22,7 @@
         isCustomBody
         isLinked
       >
-        <template v-slot:body="{ item }">
+        <template #body="{ item }">
           <tr class="project-list__item-wrapper">
             <td
               class="project-list__name-wrapper"
@@ -51,7 +51,7 @@
               @click="onClickNewWindow(item)"
             >
               <v-tooltip bottom class="project-list__tooltip" color="#F4B740">
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <div
                     v-if="item.status === 'Unhealthy'"
                     class="project-list__state-box"

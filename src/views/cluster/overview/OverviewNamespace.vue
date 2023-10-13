@@ -22,7 +22,7 @@
             dense
             @click:row="moveToDetailPage"
           >
-            <template v-slot:status_custom="slotProps">
+            <template #status_custom="slotProps">
               <sp-chip
                 small
                 :color="getChipEachColor(slotProps.item.status)"

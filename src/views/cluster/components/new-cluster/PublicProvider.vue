@@ -2,7 +2,7 @@
   <div class="new-cluster-wrapper">
     <v-form ref="clusterInfoForm">
       <line-button-title title="Cluster Info">
-        <template v-slot:content>
+        <template #content>
           <label-with-select
             name="Region"
             :className="labelWithSelectClass"
@@ -52,7 +52,7 @@
         </template>
       </line-button-title>
       <line-button-title title="Node Pool Info">
-        <template v-slot:content>
+        <template #content>
           <label-with-text
             name="Node Pool Name"
             :className="labelWithTextClass"
@@ -139,9 +139,9 @@
         title="Network Info"
         v-if="!['AWS', 'Naver'].includes(cloudType)"
       >
-        <template v-slot:content>
+        <template #content>
           <label-with name="Network Setting">
-            <template v-slot:append-content>
+            <template #append-content>
               <v-radio-group
                 v-model="isNewNetwork"
                 row

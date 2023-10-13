@@ -1,7 +1,7 @@
 <template>
   <div class="sp-authority-user">
     <sp-card headered label="사용자" outlined elevation="0">
-      <!-- <template v-slot:header v-if="isWritable">
+      <!-- <template #header v-if="isWritable">
         <sp-button
           outlined
           elevation="0"
@@ -53,7 +53,7 @@
       :dialog="dialog"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <div class="service-wrapper">
           <service-add-approver
             :table-data="userList"
@@ -64,7 +64,7 @@
           />
         </div>
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-authority__button-wrapper">
           <sp-button
             class="popup-authority--button cancel"

@@ -6,7 +6,7 @@
         name="등록자"
         isBlock
       >
-        <template v-slot:append-content>
+        <template #append-content>
           {{ createdUserId }}
         </template>
       </label-with>
@@ -15,7 +15,7 @@
         name="등록일자"
         isBlock
       >
-        <template v-slot:append-content>
+        <template #append-content>
           {{ createdAt }}
         </template>
       </label-with>
@@ -26,7 +26,7 @@
         name="수정자"
         isBlock
       >
-        <template v-slot:append-content>
+        <template #append-content>
           {{ updateUserId }}
         </template>
       </label-with>
@@ -35,7 +35,7 @@
         name="수정일자"
         isBlock
       >
-        <template v-slot:append-content>
+        <template #append-content>
           {{ updatedAt }}
         </template>
       </label-with>

@@ -14,7 +14,7 @@
         is-linked
         @click:row="moveToDetailPage"
       >
-        <template v-slot:status_custom="slotProps">
+        <template #status_custom="slotProps">
           <sp-chip
             :color="getChipEachColor(slotProps.item.status)"
             class="status-chip"
@@ -24,13 +24,13 @@
         </template>
 
         <!-- 데이터 테이블 내에 가로형 차트 삽입 22.03.31 요청사항 -->
-        <template v-slot:cpu_custom="slotProps">
+        <template #cpu_custom="slotProps">
           <bar-chart
             :usage-percentage="slotProps.item.cpu"
             color="#29AA54"
           ></bar-chart>
         </template>
-        <template v-slot:memory_custom="slotProps">
+        <template #memory_custom="slotProps">
           <bar-chart
             :usage-percentage="slotProps.item.memory"
             color="#FF8000"

@@ -8,7 +8,7 @@
     >
       <h2 class="card-title">{{ titleData.title }}</h2>
       <v-tooltip bottom v-if="titleData.status === 'Unhealthy'" color="#F4B740">
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <div class="healthy-status" v-on="on">
             <sp-image
               class="healthy-image"
@@ -64,7 +64,7 @@
         bottom
         v-if="titleData.description && titleData.description.length > 50"
       >
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <span class="left-label" v-on="on">{{
             lessenText(titleData.description)
           }}</span>

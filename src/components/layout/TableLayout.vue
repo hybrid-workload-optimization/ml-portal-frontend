@@ -39,7 +39,7 @@
         :hide-no-data="!search"
         hide-selected
       >
-        <template v-slot:no-data>
+        <template #no-data>
           <v-list-item>
             <span class="subheading">Create</span>
             <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>
@@ -47,7 +47,7 @@
             </v-chip>
           </v-list-item>
         </template>
-        <template v-slot:selection="{ attrs, item, parent, selected }">
+        <template #selection="{ attrs, item, parent, selected }">
           <v-chip
             v-if="item === Object(item)"
             v-bind="attrs"
@@ -62,7 +62,7 @@
             <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
           </v-chip>
         </template>
-        <template v-slot:item="{ index, item }">
+        <template #item="{ index, item }">
           <v-text-field
             v-if="editing === item"
             v-model="editing.text"
@@ -98,7 +98,7 @@
       :custom-slot-info="dataTable.customSlotInfo"
       :items-per-page="10"
     >
-      <template v-slot:status_custom="slotProps">
+      <template #status_custom="slotProps">
         <sp-chip
           :color="getChipEachColor(slotProps.item.status)"
           class="status-chip"
@@ -106,7 +106,7 @@
           {{ slotProps.item.status }}
         </sp-chip>
       </template>
-      <template v-slot:management_custom="slotProps">
+      <template #management_custom="slotProps">
         <sp-chip outlined class="management-chip">
           {{ slotProps.item.management }}
         </sp-chip>

@@ -10,7 +10,7 @@
         :get-checked-box-item="onClickCheckedBoxAsIsItem"
         @click-delete-member="onClickDeleteAsIsMember"
       >
-        <!-- <template v-slot:job_custom="{ item }">
+        <!-- <template #job_custom="{ item }">
           {{ item.job }}
         </template> -->
       </member>
@@ -43,7 +43,7 @@
         :on-click-row="onClickRow"
         @click-delete-member="onClickDeleteToBeMember"
       >
-        <template v-slot:userRoleIdx_custom="{ item }">
+        <template #userRoleIdx_custom="{ item }">
           <div class="member__job-wrapper">
             <!-- <div class="member__job-text">{{ item.projectUserRole }}</div> -->
             <sp-select

@@ -19,7 +19,7 @@
       </sp-button>
 
       <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-      <template v-slot:content>
+      <template #content>
         <div class="popup-cluster__title-wrapper">
           <div class="popup-cluster__title">
             선택하신 Project를 삭제하시겠습니까?
@@ -28,7 +28,7 @@
         </div>
         <delete-cluster />
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-cluster__button-wrapper">
           <sp-button
             class="popup-cluster--button cancel"
@@ -78,9 +78,9 @@
       <br />
       <br />
       <div>slot</div>
-      - v-slot:content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
+      - #content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
       <br />
-      - v-slot:footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
+      - #footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
       <br />
     </div>
 
@@ -135,10 +135,10 @@
       </sp-button>
 
       <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-      <template v-slot:content>
+      <template #content>
         <label-form />
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-new-label__button-wrapper">
           <sp-button
             class="popup-new-label--button cancel"
@@ -181,9 +181,9 @@
       <br />
       <br />
       <div>slot</div>
-      - v-slot:content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
+      - #content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
       <br />
-      - v-slot:footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
+      - #footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
       <br />
     </div>
 
@@ -206,10 +206,10 @@
       </sp-button>
 
       <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-      <template v-slot:content>
+      <template #content>
         <end-point />
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-end-point__button-wrapper">
           <sp-button
             class="popup-end-point--button cancel"
@@ -234,9 +234,9 @@
       <br />
       <br />
       <div>slot</div>
-      - v-slot:content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
+      - #content : 모달 컨텐츠 영역 > 원하는 컴포넌트 삽입
       <br />
-      - v-slot:footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
+      - #footer : 모달 푸터 영역 > 원하는 컴포넌트 삽입
       <br />
     </div>
   </div>

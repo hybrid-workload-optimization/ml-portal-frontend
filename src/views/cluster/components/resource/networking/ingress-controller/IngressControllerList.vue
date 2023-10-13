@@ -23,7 +23,7 @@
       :search="searchValue"
       :custom-slot-info="customSlotInfo"
     >
-      <template v-slot:action_custom="slotProps">
+      <template #action_custom="slotProps">
         <sp-button
           class="table-body--button edit"
           icon
@@ -61,7 +61,7 @@
       :dialog="dialog"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <div class="new-ingress-controller-content-wrapper">
           <new-ingress-controller
             ref="modalContent"
@@ -70,7 +70,7 @@
         </div>
       </template>
 
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-new-ingress-controller__button-wrapper">
           <sp-button
             class="popup-new-ingress-controller--button cancel"

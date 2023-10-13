@@ -19,7 +19,7 @@
         @change="onProjectSearch"
         @input="onInputSearchValue"
       >
-        <template v-slot:btn-group>
+        <template #btn-group>
           <v-btn-toggle
             slot="btn-group"
             v-model="toggleIdx"

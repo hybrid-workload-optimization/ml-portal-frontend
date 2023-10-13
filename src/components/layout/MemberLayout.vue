@@ -12,7 +12,7 @@
         scroll-only
         :items-per-page="originMember.length"
       >
-        <template v-slot:job_custom="{ item }">
+        <template #job_custom="{ item }">
           {{ item.job }}
         </template>
       </member>
@@ -46,7 +46,7 @@
         scroll-only
         :items-per-page="addedMember.length"
       >
-        <template v-slot:job_custom="{ item }">
+        <template #job_custom="{ item }">
           <div class="member__job-wrapper">
             <!-- <div class="member__job-text">{{ item.job }}</div> -->
             <sp-select

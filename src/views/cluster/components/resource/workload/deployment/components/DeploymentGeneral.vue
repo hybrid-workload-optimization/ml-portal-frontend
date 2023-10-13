@@ -39,7 +39,7 @@
 
         <!-- Labels -->
         <label-with name="Labels" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip v-for="label in deploymentDetailInfo.label" :key="label">{{
               label
             }}</sp-chip>
@@ -48,7 +48,7 @@
 
         <!-- Annotations -->
         <label-with name="Annotations" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip
               v-for="annotation in deploymentDetailInfo.annotation"
               :key="annotation"
@@ -66,12 +66,12 @@
       </div>
       <div class="info-table">
         <label-with :name="'Strategy'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ deploymentDetailInfo.resourceInfo.strategy || '-' }}
           </template>
         </label-with>
         <label-with :name="'Selector'">
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip
               v-for="selector in deploymentDetailInfo.resourceInfo.selector"
               :key="selector"
@@ -89,17 +89,17 @@
       </div>
       <div class="info-table">
         <label-with :name="'Updated'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ deploymentDetailInfo.podState.updated || '-' }}
           </template>
         </label-with>
         <label-with :name="'Replicas'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ deploymentDetailInfo.podState.replicas || '-' }}
           </template>
         </label-with>
         <label-with :name="'Ready'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ deploymentDetailInfo.podState.ready || '-' }}
           </template>
         </label-with>
@@ -113,12 +113,12 @@
       </div>
       <div class="info-table">
         <label-with :name="'최대 증가율(surge)'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ deploymentDetailInfo.rollingUpdateStrategy.maxSurge || '-' }}
           </template>
         </label-with>
         <label-with :name="'최대 비가용(Max Unavilable)'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{
               deploymentDetailInfo.rollingUpdateStrategy.maxUnavailable || '-'
             }}

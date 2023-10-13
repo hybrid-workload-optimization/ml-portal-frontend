@@ -7,7 +7,7 @@
       outlined
       elevation="0"
     >
-      <template v-slot:header>
+      <template #header>
         <div class="code-mgmt-group-info__button-wrapper">
           <sp-button
             outlined

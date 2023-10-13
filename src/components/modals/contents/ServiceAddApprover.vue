@@ -24,7 +24,7 @@
         :selected-items="selectedItems"
         @get-checked-box-item="getCheckedBoxItem"
       >
-        <template v-slot:userRole_custom="{ item }">
+        <template #userRole_custom="{ item }">
           {{ item.userRole.userRoleName }}
         </template>
       </service-table>

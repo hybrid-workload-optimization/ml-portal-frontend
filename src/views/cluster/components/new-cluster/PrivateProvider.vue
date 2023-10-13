@@ -1,7 +1,7 @@
 <template>
   <div class="new-cluster-wrapper">
     <line-button-title title="Cluster Info">
-      <template v-slot:content>
+      <template #content>
         <div class="new-cluster-part">
           <label-with-text
             class="cluster-user-input"

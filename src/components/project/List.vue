@@ -18,7 +18,7 @@
         :items-per-page="5"
         isCustomBody
       >
-        <template v-slot:body="{ item }">
+        <template #body="{ item }">
           <tr class="project-list__item-wrapper" @click="onClickRow">
             <td class="project-list__name-wrapper">
               <div class="project-list__image-title-wrapper">

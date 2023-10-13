@@ -53,13 +53,13 @@
       :dialog="dialog"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <div class="new-deploy-experiments-content-wrapper">
           <new-deploy-experiments ref="modalContent" />
         </div>
       </template>
 
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-new-deploy-experiments__button-wrapper">
           <sp-button
             class="popup-new-deploy-experiments--button cancel"

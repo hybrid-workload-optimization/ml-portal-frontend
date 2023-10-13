@@ -42,7 +42,7 @@
       :search="clusterSearch"
       @change="onChangeClusterSearch"
     >
-      <template v-slot:extend>
+      <template #extend>
         <sp-button
           @click="onClickSortData"
           icon
@@ -84,7 +84,7 @@
       :search="clusterSearch"
       todo-count="10"
     >
-      <template v-slot:btn-group>
+      <template #btn-group>
         <v-btn-toggle
           slot="btn-group"
           v-model="toggleIdx"
@@ -166,17 +166,13 @@ export default {
           text: '전체',
           value: 'all',
         },
-        {
-          text: '안녕',
-          value: 'hi',
-        },
       ],
     }
   },
   methods: {
     onClickNew() {
       console.log(tag, 'onClickNew')
-      alert('onClickNew')
+      // alert('onClickNew')
     },
     onClickEdit() {
       console.log(tag, '수정 버튼 클릭')

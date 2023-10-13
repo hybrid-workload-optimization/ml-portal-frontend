@@ -9,10 +9,10 @@
       :dialog="dialog"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <change-my-info ref="myInfo" />
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <!-- <div class="my-info__button-wrapper">
           <sp-button class="edit-button" outlined @click="onClickUpdate">
             Save

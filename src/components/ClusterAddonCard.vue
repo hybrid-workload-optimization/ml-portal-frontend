@@ -52,7 +52,7 @@
       :dialog="isOpenPopup"
       @close-modal="onClickCloseModal"
     >
-      <template v-slot:content>
+      <template #content>
         <div class="description-wrapper">
           <div class="description-image-wrapper">
             <sp-image
@@ -75,12 +75,12 @@
             @update:active="checkIsOpen"
             class="package-treeview"
           >
-            <template v-slot:prepend="{ item }">
+            <template #prepend="{ item }">
               <span v-if="!item.children">-</span>
               <v-icon v-else>inventory_2</v-icon>
             </template>
 
-            <template v-slot:append="{ item }">
+            <template #append="{ item }">
               <span v-if="item.children && item.children.length"
                 >------------------------------------------------------<v-icon
                   class="expand-icon"
@@ -97,11 +97,11 @@
             dense
             :items="getRecommendedSpec(popupData.requiredSpec)"
           >
-            <template v-slot:prepend="{ item }">
+            <template #prepend="{ item }">
               <span v-if="!item.children">-</span>
               <v-icon v-else>computer</v-icon>
             </template>
-            <template v-slot:append="{ item }">
+            <template #append="{ item }">
               <span v-if="item.children && item.children.length"
                 >------------------------------------------------------<v-icon
                   class="expand-icon"

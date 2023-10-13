@@ -25,7 +25,7 @@
           @get-checked-box-item="getCheckedBoxItem"
           @click:row="onClickRow"
         >
-          <template v-slot:userRoleIdx_custom="{ item }">
+          <template #userRoleIdx_custom="{ item }">
             <slot name="userRoleIdx_custom" :item="item"></slot>
           </template>
         </service-table>

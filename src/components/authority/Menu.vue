@@ -1,7 +1,7 @@
 <template>
   <div class="sp-authority-menu">
     <sp-card headered label="권한 메뉴" outlined elevation="0">
-      <template v-slot:header>
+      <template #header>
         <sp-button
           outlined
           elevation="0"
@@ -34,7 +34,7 @@
         <v-expansion-panels accordion multiple flat v-model="panel">
           <v-expansion-panel v-for="(data, index) in authMenu" :key="index">
             <v-expansion-panel-header>
-              <template v-slot:actions>
+              <template #actions>
                 <v-icon class="expand-icon" v-show="data.subMenuList"
                   >$expand</v-icon
                 >

@@ -55,22 +55,22 @@
     @keyup.enter="onKeyUpEnter"
     @update:error="onUpdateError"
   >
-    <template v-slot:label>
+    <template #label>
       <slot name="label"></slot>
     </template>
-    <template v-slot:prepend>
+    <template #prepend>
       <slot name="prepend-content"></slot>
     </template>
-    <template v-slot:prepend-inner>
+    <template #prepend-inner>
       <slot name="prepend-inner-content"></slot>
     </template>
-    <template v-slot:append>
+    <template #append>
       <slot name="append-content"></slot>
     </template>
-    <template v-slot:append-outer>
+    <template #append-outer>
       <slot name="append-outer-content"></slot>
     </template>
-    <template v-slot:counter>
+    <template #counter>
       <slot name="counter"></slot>
     </template>
   </v-text-field>

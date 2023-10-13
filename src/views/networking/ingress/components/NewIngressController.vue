@@ -18,7 +18,7 @@
         type="number"
       ></label-with-text>
       <label-with horizontal name="Default">
-        <template v-slot:append-content>
+        <template #append-content>
           <v-checkbox
             v-model="isDefault"
             hide-details="auto"
@@ -27,7 +27,7 @@
         </template>
       </label-with>
       <label-with horizontal name="Service Type">
-        <template v-slot:append-content>
+        <template #append-content>
           <v-radio-group v-model="serviceType" row hide-details="auto">
             <v-radio label="NodePort" value="NodePort"></v-radio>
             <v-radio label="ExternalIps" value="ExternalIPs"></v-radio>

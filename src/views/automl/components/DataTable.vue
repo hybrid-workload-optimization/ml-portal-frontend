@@ -28,7 +28,7 @@
         v-slot:[`item.${el.value}`]="{ item }"
       >
         <v-tooltip :key="index" bottom :disabled="!isOpenTooltipId">
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <span
               class="list-value"
               v-on="on"
@@ -132,11 +132,11 @@
 
       <template
         v-for="info in customSlotInfo"
-        v-slot:[`item.${info.slotName}`]="{ item }"
+        #[`item.${info.slotName}`]="{ item }"
       >
         <slot :name="`${info.name}_custom`" :item="item" />
       </template>
-      <template v-if="isCustomBody" v-slot:item="{ item }">
+      <template v-if="isCustomBody" #item="{ item }">
         <slot name="body" :item="item" />
       </template>
     </v-data-table>

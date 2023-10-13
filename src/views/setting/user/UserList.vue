@@ -32,7 +32,7 @@
         New User
       </sp-button> -->
 
-    <!-- <template v-slot:content>
+    <!-- <template #content>
         <SignupForm />
       </template>
     </modal> -->

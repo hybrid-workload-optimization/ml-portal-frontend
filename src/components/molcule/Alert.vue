@@ -13,7 +13,7 @@
     >
       <slot name="alert-icon"></slot>
       {{ titleName }}
-      <template v-slot:action="{ attrs }">
+      <template #action="{ attrs }">
         <v-btn
           v-if="isClose"
           :color="'#fff'"

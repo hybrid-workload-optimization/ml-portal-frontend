@@ -6,7 +6,7 @@
         <!-- <sp-chip v-if="owner" class="project__tag Owner"> Owner </sp-chip> -->
       </div>
       <!-- <sp-menu>
-        <template v-slot:item="slotProps">
+        <template #item="slotProps">
           <div v-bind="slotProps.item.attrs" v-on="slotProps.item.on">
             <v-icon>more_horiz</v-icon>
           </div>
@@ -50,7 +50,7 @@
         </div>
 
         <v-tooltip bottom v-if="showTooltipTitle">
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <div class="project__title" v-on="on" @click="moveToDetailPage(id)">
               {{ projectName }}
             </div>
@@ -64,7 +64,7 @@
             <span v-if="!showTooltipDesc">{{ description }}</span>
           </div>
           <v-tooltip bottom v-if="showTooltipDesc">
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <div class="project__description" v-on="on">
                 <!-- {{ lessenText(description) }} -->
                 {{ description }}

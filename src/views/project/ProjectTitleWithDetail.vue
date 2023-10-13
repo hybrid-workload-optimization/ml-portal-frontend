@@ -14,7 +14,7 @@
         bottom
         v-if="detailInfo.projectName && detailInfo.projectName.length > 20"
       >
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <h2 class="card-title" v-on="on">
             {{ lessenText(detailInfo.projectName, 20) }}
           </h2>
@@ -89,7 +89,7 @@
       @close-modal="onClickCloseModal"
     > -->
     <!-- 어느 부분까지 컴포넌트로 뺼지 협의 필요 -->
-    <!-- <template v-slot:content>
+    <!-- <template #content>
         <div class="popup-cluster__title-wrapper">
           <div class="popup-cluster__title">
             선택하신 Project를 삭제하시겠습니까?
@@ -98,7 +98,7 @@
         </div>
         <delete-cluster />
       </template>
-      <template v-slot:footer>
+      <template #footer>
         <div class="popup-cluster__button-wrapper">
           <sp-button
             class="popup-cluster--button cancel"

@@ -31,14 +31,14 @@
       ></label-with-text>
 
       <label-with name="Labels" horizontal>
-        <template v-slot:append-content>
+        <template #append-content>
           <sp-chip v-for="label in metadata.labels" :key="label">{{
             label
           }}</sp-chip>
         </template>
       </label-with>
       <label-with name="Annotations" horizontal>
-        <template v-slot:append-content>
+        <template #append-content>
           <sp-chip
             v-for="annotation in metadata.annotations"
             :key="annotation"

@@ -9,10 +9,10 @@
         :dialog="lazyDialog"
         @close-modal="onClickCancelModal"
       >
-        <template v-slot:content>
+        <template #content>
           <div class="confirm-modal__title">{{ confrimTitle }}</div>
         </template>
-        <template v-slot:footer>
+        <template #footer>
           <div class="confirm-modal__button-wrapper">
             <sp-button
               class="confirm-modal--button cancel"

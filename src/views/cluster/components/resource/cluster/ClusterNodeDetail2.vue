@@ -42,7 +42,7 @@
 
         <!-- labels -->
         <label-with name="Labels" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip v-for="label in detailInfo.label" :key="label">
               {{ label }}</sp-chip
             >
@@ -51,7 +51,7 @@
 
         <!-- Annotations -->
         <label-with name="Annotations" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip
               v-for="annotation in detailInfo.annotation"
               :key="annotation"
@@ -70,7 +70,7 @@
       <div class="info-table">
         <template v-for="(head, index) in resourceInfoTitle">
           <label-with :name="head.text" :key="index">
-            <template v-slot:append-content>
+            <template #append-content>
               {{ resourceInfo[head.value] || '-' }}
             </template>
           </label-with>
@@ -85,7 +85,7 @@
       <div class="info-table">
         <template v-for="(head, index) in systemInfoTitle">
           <label-with :name="head.text" :key="index">
-            <template v-slot:append-content>
+            <template #append-content>
               {{ systemInfo[head.value] || '-' }}
             </template>
           </label-with>

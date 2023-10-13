@@ -23,7 +23,7 @@
 
         <!-- Labels -->
         <label-with name="Labels" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip v-for="label in serviceDetailInfo.labels" :key="label">{{
               label
             }}</sp-chip>
@@ -32,7 +32,7 @@
 
         <!-- Annotations -->
         <label-with name="Annotations" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip
               v-for="annotation in serviceDetailInfo.annotations"
               :key="annotation"
@@ -43,7 +43,7 @@
 
         <!-- Selectors -->
         <label-with name="Selector" horizontal>
-          <template v-slot:append-content>
+          <template #append-content>
             <sp-chip
               v-for="selector in serviceDetailInfo.selectors"
               :key="selector"
@@ -99,17 +99,17 @@
       </div>
       <div class="info-table">
         <label-with :name="'Type'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ serviceDetailInfo.resourceInfo.type || '-' }}
           </template>
         </label-with>
         <label-with :name="'Cluster IP'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ serviceDetailInfo.resourceInfo.clusterIp || '-' }}
           </template>
         </label-with>
         <label-with :name="'Session Affinity'">
-          <template v-slot:append-content>
+          <template #append-content>
             {{ serviceDetailInfo.resourceInfo.sessionAffinity || '-' }}
           </template>
         </label-with>

@@ -17,7 +17,7 @@
         @input="onInputSearchValue"
         @click="onClickButton"
       >
-        <template v-slot:new-group>
+        <template #new-group>
           <select-button
             :btnName="'New Workload'"
             @clickBtn="openYamlEditor"
@@ -31,7 +31,7 @@
           </div>
         </template>
 
-        <template v-slot:smartSearch>
+        <template #smartSearch>
           <smart-search
             width="330"
             :items="headers"
@@ -64,7 +64,7 @@
         is-linked
         @click:row="moveToDetailPage"
       >
-        <template v-slot:health_custom="slotProps">
+        <template #health_custom="slotProps">
           <!-- <sp-chip
             :color="getChipEachColor(slotProps.item.health)"
             class="status-chip"

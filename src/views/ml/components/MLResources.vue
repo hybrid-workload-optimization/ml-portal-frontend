@@ -26,7 +26,7 @@
       :dialog="isOpenDeleteResourceModal"
       @close-modal="onClickCloseLabelModal"
     >
-      <template v-slot:content>
+      <template #content>
         <clusterscale-popup :item="item" @closePopup="onClickCloseLabelModal" />
       </template>
     </modal>

@@ -39,7 +39,7 @@
             Workload
           </span>
           <v-expansion-panel-header v-if="menuName !== 'Workload'">
-            <template v-slot:actions>
+            <template #actions>
               <v-icon class="expand-icon">$expand</v-icon>
             </template>
 
