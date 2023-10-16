@@ -55,14 +55,14 @@ const resource = [
           isAuthRequired,
         },
       },
-      {
-        path: 'new',
-        name: 'projectNew',
-        component: () => import('@/views/project/ProjectNew'),
-        meta: {
-          isAuthRequired,
-        },
-      },
+      // {
+      //   path: 'new',
+      //   name: 'projectNew',
+      //   component: () => import('@/views/project/ProjectNew'),
+      //   meta: {
+      //     isAuthRequired,
+      //   },
+      // },
       {
         path: 'project',
         name: 'projectLayout',
