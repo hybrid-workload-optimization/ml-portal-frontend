@@ -134,7 +134,11 @@ const PaaSPath = {
     title: 'Dashboard',
     subTitle: ['Home', 'Dashboard'],
   },
-  Project: {
+  projectCard: {
+    title: 'Service Group',
+    subTitle: ['Home', 'Service Group'],
+  },
+  projectDetail: {
     title: 'Service Group',
     subTitle: ['Home', 'Service Group'],
   },
@@ -153,6 +157,14 @@ const PaaSPath = {
   Cluster: {
     title: 'Cluster',
     subTitle: ['Home', 'Cluster'],
+  },
+  projectClusterNew: {
+    title: 'Cluster New',
+    subTitle: ['Home', 'Cluster', 'New'],
+  },
+  ProjectClusteEdit: {
+    title: 'Cluster Edit',
+    subTitle: ['Home', 'Cluster', 'Edit'],
   },
   ClusterOverview: {
     title: 'Overview',
