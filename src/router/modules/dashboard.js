@@ -7,7 +7,7 @@ const resource = [
     children: [
       {
         path: '',
-        name: 'dashboard',
+        name: 'Dashboard',
         component: () => import('@/views/dashboard/Dashboard'),
         meta: {
           isAuthRequired,
