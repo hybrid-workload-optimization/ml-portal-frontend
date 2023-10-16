@@ -23,14 +23,14 @@ const resource = [
           isAuthRequired: !isAuthRequired,
         },
       },
-      {
-        path: '/devLogin',
-        name: 'Dev Login',
-        component: () => import('@/views/login/Login.vue'),
-        meta: {
-          isAuthRequired: !isAuthRequired,
-        },
-      },
+      // {
+      //   path: '/devLogin',
+      //   name: 'Dev Login',
+      //   component: () => import('@/views/login/Login.vue'),
+      //   meta: {
+      //     isAuthRequired: !isAuthRequired,
+      //   },
+      // },
       {
         path: '/ssoLogout',
         name: 'SSO Logout',

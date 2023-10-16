@@ -72,7 +72,8 @@
         <span>{{ titleData.description }}</span>
       </v-tooltip>
     </div>
-
+    <!-- 컴포넌트 왼쪽 부분 End,  -->
+    <!-- 컴포넌트 중간 부분 Start,  -->
     <div
       class="title-middle"
       v-if="isMiddleTitle"
@@ -98,7 +99,8 @@
         </div>
       </div>
     </div>
-
+    <!-- 컴포넌트 중간 부분 End,  -->
+    <!-- 컴포넌트 오른쪽 부분 Start,  -->
     <div class="title-right">
       <sub-header></sub-header>
       <slot name="additional-buttons"></slot>
@@ -112,6 +114,7 @@
         >
       </template>
     </div>
+    <!-- 컴포넌트 오른쪽 부분 End,  -->
   </div>
 </template>
 
@@ -138,6 +141,10 @@ export default {
     deleteButtonName: {
       type: String,
       default: 'Delete',
+    },
+    showConsole: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({}),

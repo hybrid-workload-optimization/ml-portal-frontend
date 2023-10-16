@@ -26,6 +26,7 @@
         :accessPath="accessPath"
         :useWebSocket="useWebSocket"
         :style="{ height: '60vh' }"
+        resourceType="cluster-log"
       />
     </div>
     <confirm @confirm-modal="onClickDelConfirm" />
@@ -132,7 +133,10 @@ export default {
           this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/cluster/list'), 1000)
+          setTimeout(() => {
+            // this.$router.push('/cluster/list')
+            this.$router.go(-1)
+          }, 1000)
         } else {
           // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })

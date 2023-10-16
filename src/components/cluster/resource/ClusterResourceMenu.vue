@@ -1,7 +1,11 @@
 <template>
   <div class="cluster-resource-menu" style="background: #fff">
     <div class="cluster-resource-title-wrapper">
-      <div class="cluster-resource-logo-wrapper">
+      <div
+        class="cluster-resource-logo-wrapper"
+        title="Dashboard"
+        @click="$router.push('/dashboard')"
+      >
         <sp-image
           class="sp-resource-menu__icon_resource-image"
           contain
@@ -139,7 +143,13 @@ export default {
       })
 
       // 클러스터 관련 메뉴는 메인페이지에서 삭제 처리
-      const menuNamesToRemove = ['Dashboard', 'Service Group', 'Setting']
+      const menuNamesToRemove = [
+        'Dashboard',
+        'Service Group',
+        'Setting',
+        'Machine Learning',
+        'Hyperparameter Tuning',
+      ]
       const newMenuList = menuList.filter(menu => {
         if (
           !menuNamesToRemove.includes(menu.menuName) &&
@@ -258,6 +268,7 @@ export default {
   margin: 0;
   width: 30px;
   height: 66px;
+  cursor: pointer;
 }
 .sp-resource-menu__icon_resource-image {
   /* filter: brightness(0) invert(1); */

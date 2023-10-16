@@ -3,17 +3,18 @@ import { isAuthRequired } from '@/App'
 const resource = [
   {
     path: '/cluster',
+    name: 'Cluster',
     component: () => import('@/views/Main'),
-    redirect: '/cluster/list',
+    // redirect: '/cluster/list',
     children: [
-      {
-        path: 'list',
-        name: 'clusterList',
-        component: () => import('@/views/cluster/ClusterList'),
-        meta: {
-          isAuthRequired,
-        },
-      },
+      // {
+      //   path: 'list',
+      //   name: 'clusterList',
+      //   component: () => import('@/views/cluster/ClusterList'),
+      //   meta: {
+      //     isAuthRequired,
+      //   },
+      // },
       // {
       //   path: 'detail/:id',
       //   name: 'Cluster Detail',

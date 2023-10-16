@@ -75,7 +75,7 @@ service.interceptors.request.use(
       })
       vm.$store.commit('resetState')
       vm.$store.commit('loading/closeLoading')
-      vm.$router.push('/devLogin').catch(() => {})
+      vm.$router.push('/ssoLogin').catch(() => {})
       throw new axios.Cancel('Request canceled.')
     }
 

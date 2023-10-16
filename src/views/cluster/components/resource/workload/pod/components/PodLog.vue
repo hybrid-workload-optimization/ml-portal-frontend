@@ -22,7 +22,11 @@
     </div>
 
     <div class="sp-console-layout">
-      <console :accessPath="accessPath" :console="isConsole" />
+      <console
+        :accessPath="accessPath"
+        :console="isConsole"
+        resourceType="pod-log"
+      />
     </div>
   </div>
 </template>
