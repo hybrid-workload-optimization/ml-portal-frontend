@@ -2,11 +2,10 @@
   <div class="pod-detail-page">
     <card-title
       :titleData="{ title: getTitle }"
-      :showButtons="isProjectAuth"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
     >
-      <template #additional-buttons v-if="isProjectAuth">
+      <template #additional-buttons>
         <sp-button
           outlined
           class="log-button title-button"

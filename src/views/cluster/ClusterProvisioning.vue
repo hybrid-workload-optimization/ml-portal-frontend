@@ -140,7 +140,8 @@ export default {
         )
       ) {
         setTimeout(() => {
-          this.$router.push('/cluster/list')
+          // this.$router.push('/cluster/list')
+          this.$router.go(-1)
         }, 1000)
       }
     },
@@ -170,7 +171,8 @@ export default {
     },
 
     moveToList() {
-      this.$router.push('/cluster/list')
+      // this.$router.push('/cluster/list')
+      this.$router.go(-1)
     },
 
     // [수정 버튼] 클릭 시
@@ -197,7 +199,10 @@ export default {
           this.openAlert({ title: '삭제 요청에 성공했습니다.', type: 'info' })
 
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/cluster/list'), 1000)
+          setTimeout(() => {
+            // this.$router.push('/cluster/list')
+            this.$router.go(-1)
+          }, 1000)
         } else {
           // 삭제 실패 시
           this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })

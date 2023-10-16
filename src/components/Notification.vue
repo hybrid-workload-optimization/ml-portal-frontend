@@ -177,6 +177,7 @@ export default {
     height: calc(21px + 26px);
     @include set-text(bold, 17, rgba($color: $sp-black-700, $alpha: 1));
     border-bottom: 1px solid $sp-box-border;
+    text-align: initial;
   }
   .#{$this}__contents-box {
     width: 100%;

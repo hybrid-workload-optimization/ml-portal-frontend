@@ -40,6 +40,7 @@
     <!-- 상단 오른쪽 부분 start -->
     <div class="right-nav-wrapper" v-if="userInfo.userName">
       <div class="button-wrapper">
+        <console-with-button v-if="isClusterDetail"></console-with-button>
         <v-badge
           bordered
           color="#036EB8"
@@ -74,7 +75,7 @@
       <user-avatar
         :userName="userInfo ? userInfo.userName : ''"
         :accessRoleName="userInfo ? userInfo.userRole.userRoleName : ''"
-        class="ml-12"
+        class="ml-10"
       >
         <template #badge>
           <v-badge
@@ -105,6 +106,7 @@
 <script>
 import Notification from '@/components/Notification.vue'
 import UserAvatar from '@/components/molcule/UserAvatar.vue'
+import ConsoleWithButton from '@/views/cluster/components/ConsoleWithButton.vue'
 import { createNamespacedHelpers } from 'vuex'
 import vClickOutside from 'v-click-outside'
 
@@ -119,6 +121,7 @@ export default {
   components: {
     UserAvatar,
     Notification,
+    ConsoleWithButton,
   },
   props: {
     pagePath: Object,
@@ -154,6 +157,13 @@ export default {
       isShowNotification: 'isShowNotification',
     }),
     ...notificationMapUtil.mapGetters(['newNotificationSize']),
+    isClusterDetail() {
+      console.log(
+        'route',
+        this.$route.matched.some(obj => obj.name === 'Cluster'),
+      )
+      return this.$route.matched.some(obj => obj.name === 'Cluster')
+    },
   },
   mounted() {
     this.setFavData()
@@ -257,6 +267,7 @@ export default {
       display: flex;
       justify-content: flex-end;
       min-width: 80px;
+      gap: 10px;
 
       i {
         font-size: toRem(30);

@@ -46,7 +46,6 @@
 </template>
 
 <script>
-// import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import ClusterResource from '@/views/cluster/components/ClusterResource.vue'
@@ -82,7 +81,8 @@ export default {
   async mounted() {
     const result = await this.getDataDetail({ clusterIdx: this.clusterIdx })
     if (!result) {
-      this.$router.push('/cluster/list')
+      // this.$router.push('/cluster/list')
+      this.$router.go(-1)
     }
     console.log('클러스터 데이터: ', this.dataDetail)
     this.checkProjectAuth()
@@ -166,7 +166,10 @@ export default {
             })
           }
           // 1초 후 리스트 화면으로 이동
-          setTimeout(() => this.$router.push('/cluster/list'), 1000)
+          setTimeout(() => {
+            // this.$router.push('/cluster/list')
+            this.$router.go(-1)
+          }, 1000)
         } else {
           // 삭제 실패 시
           this.openAlert({

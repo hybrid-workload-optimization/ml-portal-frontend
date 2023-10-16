@@ -15,16 +15,22 @@
       :class="{ 'mini-lnb': isMini }"
       v-show="!fullMenu"
     >
-      <card-title :titleData="getTitle" :showButtons="false"></card-title>
+      <card-title
+        :title-data="getTitle"
+        :show-buttons="false"
+        show-console
+      ></card-title>
 
       <router-view />
     </v-main>
+    <ConsoleModal v-if="consoleModal.open"></ConsoleModal>
   </div>
 </template>
 
 <script>
 import ClusterResourceMenu from '@/components/cluster/resource/ClusterResourceMenu.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
+import ConsoleModal from '@/views/cluster/components/ConsoleModal.vue'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
 import Paths from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
@@ -37,6 +43,7 @@ import { SET_MINI } from '../store/modules/sideNav'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
 const clusterMapUtils = createNamespacedHelpers('cluster')
+const consoleMapUtils = createNamespacedHelpers('console')
 
 export default {
   name: 'App',
@@ -46,8 +53,8 @@ export default {
   components: {
     ClusterResourceMenu,
     CardTitle,
+    ConsoleModal,
   },
-
   data: () => ({
     drawer: false,
     selectedName: '',
@@ -65,6 +72,7 @@ export default {
       userInfo: 'userInfo',
     }),
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
+    ...consoleMapUtils.mapGetters(['consoleModal']),
     getPagePath() {
       const path = this.$route.name?.split(' ')[0]
       return Paths[path]
@@ -98,7 +106,8 @@ export default {
 
     const result = await this.getDataDetail({ clusterIdx: this.clusterIdx })
     if (!result) {
-      this.$router.push('/cluster/list')
+      // this.$router.push('/cluster/list')
+      this.$router.go(-1)
     }
     console.log('클러스터 데이터: ', this.dataDetail)
   },
@@ -115,6 +124,7 @@ export default {
     ...loginUserMapUtil.mapActions(['getFavoriteInfo']),
     ...clusterMapUtils.mapActions(['getDataDetail']),
     ...clusterMapUtils.mapMutations(['initDataDetail']),
+
     getNotificationList() {
       this.getNotiList()
     },
