@@ -1,6 +1,6 @@
 # base api
 NODE_ENV = ml
-SWAGGER_URL=https://ml.strato.co.kr/interface/v3/api-docs
+SWAGGER_URL=https://product.strato.co.kr/interface/v3/api-docs
 VUE_APP_SERVICE_NAME = '/comp-b-svc'
 VUE_APP_BASE_API = 'https://ml.strato.co.kr/interface'
 
