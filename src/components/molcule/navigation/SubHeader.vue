@@ -40,6 +40,20 @@
     <!-- 상단 오른쪽 부분 start -->
     <div class="right-nav-wrapper" v-if="userInfo.userName">
       <div class="button-wrapper">
+        <sp-button
+          v-if="isClusterDetail"
+          class="right-nav__button--monitoring"
+          depressed
+          elevation="0"
+          @click="openMonitoringPage"
+        >
+          <sp-image
+            contain
+            src="cluster/monitor-dashboard.svg"
+            width="24"
+            height="24"
+          ></sp-image>
+        </sp-button>
         <console-with-button v-if="isClusterDetail"></console-with-button>
         <v-badge
           bordered
@@ -113,6 +127,7 @@ import vClickOutside from 'v-click-outside'
 // const tag = '[Subheader]'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
+const clusterMonitoringMapUtil = createNamespacedHelpers('clusterMonitoring')
 
 export default {
   directives: {
@@ -157,6 +172,7 @@ export default {
       isShowNotification: 'isShowNotification',
     }),
     ...notificationMapUtil.mapGetters(['newNotificationSize']),
+    ...clusterMonitoringMapUtil.mapState(['monitoringPath']),
     isClusterDetail() {
       console.log(
         'route',
@@ -183,6 +199,7 @@ export default {
     */
     ...loginUserMapUtil.mapActions(['setFavoriteData', 'deleteFavoriteData']),
     ...notificationMapUtil.mapMutations(['updateShowNotification']),
+    ...clusterMonitoringMapUtil.mapActions(['getMonitoringPath']),
     setFavData() {
       if (this.favoriteList.length) {
         this.isFav = this.favoriteList.some(
@@ -206,6 +223,13 @@ export default {
       if (this.$route.path.includes('/cluster/detail')) {
         this.isClusterNewWindow = true
       }
+    },
+    async openMonitoringPage() {
+      const clusterIdx = this.$route.params?.id
+      if (clusterIdx === null) return
+
+      await this.getMonitoringPath({ clusterIdx })
+      window.open(this.monitoringPath, '_blank')
     },
   },
 }
@@ -266,6 +290,7 @@ export default {
     .button-wrapper {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
       min-width: 80px;
       gap: 10px;
 
@@ -327,6 +352,11 @@ export default {
   .right-nav-wrapper {
     .user-name-wrapper {
       line-height: 0.7;
+    }
+
+    .right-nav__button--monitoring {
+      min-width: 35px !important;
+      padding: 0 !important;
     }
   }
 }

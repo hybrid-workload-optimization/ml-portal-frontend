@@ -47,7 +47,7 @@
                 lazySrc="Strato logo.png"
                 src="Strato logo.png"
               />
-              <span class="title-text" v-if="!mini">CoMP Portal</span>
+              <span class="title-text" v-if="!mini">ML Workload Portal</span>
             </div>
           </div>
           <div class="burger-wrapper" @click="openFullMenu">

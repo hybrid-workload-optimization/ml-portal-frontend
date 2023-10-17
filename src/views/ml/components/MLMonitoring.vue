@@ -34,7 +34,6 @@ export default {
   },
   mounted() {
     this.monitoringUrl = this.url
-    this.test()
   },
   watch: {
     url(newValue) {
@@ -43,22 +42,6 @@ export default {
   },
   methods: {
     ...clusterMapUtils.mapMutations(['setMonitoringIframeUrl']),
-    test() {
-      const obj = document.getElementById('easyPayIframe')
-
-      console.log('obj = ', obj)
-      console.log('this.monitoringUrl = ', this.monitoringUrl)
-      console.log('this.monitoringUrl typeof = ', typeof this.monitoringUrl)
-      console.log(
-        'this.monitoringUrl toString = ',
-        this.monitoringUrl.toString(),
-      )
-      console.log(
-        'this.monitoringUrl toString typeof= ',
-        typeof this.monitoringUrl.toString(),
-      )
-      return this.monitoringUrl
-    },
   },
   beforeDestroy() {
     this.setMonitoringIframeUrl()
