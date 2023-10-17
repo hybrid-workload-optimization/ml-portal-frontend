@@ -63,7 +63,7 @@ export default {
     return {
       projectIdx: null,
       tab: null,
-      tabNames: ['Cluster', 'Member', 'BackUp', 'Restore'], // 탭 명칭들
+      tabNames: ['Cluster', 'Member'], // 탭 명칭들
       clusterSearch: '',
       memberSearch: '',
     }
