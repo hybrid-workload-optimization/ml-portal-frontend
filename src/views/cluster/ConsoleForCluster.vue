@@ -67,8 +67,12 @@ export default {
     connectSocket() {
       try {
         // /ws/pod/exec/1/default/test-deployment-84bc6b85f6-wds64
+        const host = window.location.host.slice(
+          0,
+          window.location.host.length - 1,
+        )
         this.terminalSocket = new WebSocket(
-          `ws://${window.location.host}${process.env.VUE_APP_SERVICE_NAME}/ws${this.accessPath}`,
+          `ws://${host}${process.env.VUE_APP_SERVICE_NAME}/ws${this.accessPath}`,
         )
 
         this.terminalSocket.onopen = event => {
