@@ -229,7 +229,7 @@ export default {
       if (clusterIdx === null) return
 
       await this.getMonitoringPath({ clusterIdx })
-      window.open(this.monitoringPath, '_blank')
+      window.open(this.monitoringPath, '_blank', 'toolbar=no')
     },
   },
 }
