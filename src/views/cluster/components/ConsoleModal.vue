@@ -22,6 +22,7 @@ import Console from '@/components/Console.vue'
 import { createNamespacedHelpers } from 'vuex'
 
 const consoleMapUtils = createNamespacedHelpers('console')
+const clusterMapUtils = createNamespacedHelpers('cluster')
 
 export default {
   data() {
@@ -33,15 +34,21 @@ export default {
   components: { MinimizeModal, Console },
   computed: {
     ...consoleMapUtils.mapGetters(['consoleModal']),
+    ...clusterMapUtils.mapGetters(['dataDetail']),
   },
   mounted() {
-    this.clusterId = this.$route.params.id
+    this.clusterId = this.dataDetail.clusterId
     this.setAccessPath()
   },
   methods: {
     ...consoleMapUtils.mapMutations(['updateConsoleModal']),
-    setAccessPath() {
-      this.accessPath = `/kubectl/${this.clusterId}`
+    ...clusterMapUtils.mapMutations(['getDataDetail']),
+    async setAccessPath() {
+      if (!this.clusterId) {
+        await this.getDataDetail({ clusterIdx: this.$route.params.id })
+        this.clusterId = this.dataDetail.clusterId
+      }
+      this.accessPath = `/kubectl/${this.dataDetail.clusterId}`
     },
     onCloseModal() {
       this.updateConsoleModal({ open: false })
