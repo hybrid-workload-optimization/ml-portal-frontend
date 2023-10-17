@@ -17,7 +17,9 @@
             <span>Cluster</span>
           </div>
           <div class="cluster-resource-title2">
-            <span class="cluster-resource-title2-text">with CoMP Portal</span>
+            <span class="cluster-resource-title2-text"
+              >with ML Workload Portal</span
+            >
           </div>
         </span>
       </div>
