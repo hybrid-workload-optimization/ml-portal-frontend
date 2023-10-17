@@ -16,17 +16,6 @@
     </v-tabs>
     <v-tabs-items class="project-layout__tab-item" v-model="tab">
       <v-tab-item v-for="item in tabNames" :key="item">
-        <!-- <project-list
-          v-if="item === 'Cluster'"
-          searchTitle="Cluster"
-          :totalCount="clusterSize.toString()"
-          :data="getListCluster"
-          :search="clusterSearch"
-          :isAuth="isProjectAuth"
-          @input="onChangeClusterSearch"
-          @click="onClickDeleteCluster"
-        /> -->
-
         <cluster-list
           v-if="item === 'Cluster'"
           searchTitle="Cluster"
@@ -74,7 +63,7 @@ export default {
     return {
       projectIdx: null,
       tab: null,
-      tabNames: ['Cluster', 'Member'], // 탭 명칭들
+      tabNames: ['Cluster', 'Member', 'BackUp', 'Restore'], // 탭 명칭들
       clusterSearch: '',
       memberSearch: '',
     }

@@ -6,10 +6,7 @@ import vm from '@/main'
 import { cookieName } from './consts'
 
 const service = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'k8s' || process.env.NODE_ENV === 'nds'
-      ? process.env.VUE_APP_BASE_API
-      : '',
+  baseURL: process.env.VUE_APP_REQUET_BASE_URL,
   timeout: 300000,
 })
 
