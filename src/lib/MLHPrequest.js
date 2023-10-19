@@ -1,4 +1,4 @@
-import axios from '@/common/request'
+import axios from '@/common/mlRequest'
 /**
  * Api Documentation
  * @class request

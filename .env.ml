@@ -13,3 +13,4 @@ VUE_APP_PUBLIC_CONFIG_URL = 'http://172.16.10.168:9090'
 # CoMP FRONT CONFIG 파일 내의 분기처리
 VUE_APP_CONFIG_PUBLIC_PATH = '/comp/'
 VUE_APP_REQUET_BASE_URL = 'https://ml.strato.co.kr/interface'
+VUR_APP_ML_REQUEST_BASE_URL = 'https://ml.strato.co.kr'
