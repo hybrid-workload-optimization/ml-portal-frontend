@@ -6,7 +6,7 @@ import vm from '@/main'
 import { cookieName } from './consts'
 
 const service = axios.create({
-  baseURL: process.env.VUR_APP_ML_REQUEST_BASE_URL,
+  baseURL: process.env.VUE_APP_AUTOML_API,
   timeout: 300000,
 })
 
