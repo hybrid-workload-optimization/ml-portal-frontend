@@ -1,4 +1,4 @@
-import { isAuthRequired } from '@/App'
+\import { isAuthRequired } from '@/App'
 
 const resource = [
   {
