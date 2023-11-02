@@ -1,6 +1,4 @@
 import axios from 'axios'
-// import Vue from 'vue'
-// import tokenHelper from '@/lib/tokenHelper'
 import cookieHelper from '@/lib/cookieHelper'
 import vm from '@/main'
 import { cookieName } from './consts'
@@ -25,39 +23,8 @@ service.interceptors.request.use(
     */
     numberOfCallPending += 1
     const reqUrl = config.url.split('?')[0]
-    // const { method } = config
-    // 개발 환경에서 토큰 셋팅
-
-    // console.log(reqUrl)
-    // 로그인, 토큰갱신 요청시 예외
-    // if (
-    //   (reqUrl === '/api/v1/user-manage/users' && method === 'post') ||
-    //   (reqUrl.includes('/api/v1/access-manage') &&
-    //     reqUrl !== '/api/v1/access-manage/user-authority') ||
-    //   reqUrl.includes('/users/dupl')
-    // ) {
-    //   vm.$store.commit('loading/showLoading')
-    //   return config
-    // }
-    // 개발 환경에서 토큰 셋팅
-    // const reqTimestamp = new Date().getTime()
     const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
     let accessToken = cookieHelper.getCookie(cookieName.access_token)
-
-    // if (
-    //   reqUrl === '/comp-b-svc/api/v1/access-manage/user-info' ||
-    //   reqUrl.includes('/comp-b-svc/api/v1/user-manage/users/')
-    // ) {
-    //   // config.headers.Authorization = accessToken
-
-    //   // reqUrl = '/comp-b-svc/api/v2/access-manage/user-info'
-    //   return config
-    // }
-    // if (
-    //   reqUrl === '/auth/realms/strato-platform/protocosl/openid-connect/token'
-    // ) {
-    //   return config
-    // }
 
     // 로그아웃
     /*
@@ -76,54 +43,11 @@ service.interceptors.request.use(
       throw new axios.Cancel('Request canceled.')
     }
 
-    // if (reqTimestamp > vm.$store.state.loginUser.refreshTokenExpireTime) {
-    //   console.log(
-    //     'refresh token timeout!',
-    //     vm.$store.state.loginUser.refreshTokenExpireTime,
-    //   )
-    //   vm.$store.dispatch('loginUser/doLogout')
-    //   vm.$store.commit('alert/openAlert', {
-    //     title: '로그아웃 되었습니다.',
-    //     type: 'info',
-    //   })
-    //   vm.$store.commit('resetState')
-    //   // vm.$store.commit('loading/closeLoading')
-    //   vm.$router.push('/devLogin').catch(() => {})
-    //   throw new axios.Cancel('Request canceled.')
-    // }
-
     // 토큰 갱신
     /*
         1. refresh token 만료되지 않은 경우
         2. access token 이 없거나 만료된 경우
       */
-    // if (!accessToken || reqTimestamp > vm.$store.state.loginUser.expireTime) {
-    //   // 토큰 만료 상태
-    //   // TODO : 토큰 갱신 요청, 실패시 로그아웃
-    //   // vuex 에서 토큰 갱신
-    //   const refreshResut = await vm.$store.dispatch(
-    //     'loginUser/refreshToken',
-    //     refreshToken,
-    //   )
-    //   if (!refreshResut) {
-    //     vm.$store.dispatch('loginUser/doLogout')
-    //     vm.$store.commit('alert/openAlert', {
-    //       title: '로그아웃 되었습니다.',
-    //       type: 'info',
-    //     })
-    //     vm.$store.commit('resetState')
-    //     // vm.$store.commit('loading/closeLoading')
-    //     vm.$router.push('/devLogin').catch(() => {})
-    //     throw new axios.Cancel('Request canceled.')
-    //   }
-    // }
-
-    // const encryptedToken = tokenHelper.encrypt(
-    //   vm.$store.state.loginUser.accessToken,
-    //   reqUrl,
-    //   config.method,
-    //   reqTimestamp,
-    // )
 
     // accessToken 만료
     if (!accessToken && !reqUrl.includes('/refresh_token')) {
