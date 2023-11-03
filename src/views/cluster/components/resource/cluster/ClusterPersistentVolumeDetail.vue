@@ -9,12 +9,6 @@
         <template v-if="isProjectAuth">
           <sp-button
             outlined
-            class="edit-button title-button"
-            @click="onClickEdit"
-            >Edit</sp-button
-          >
-          <sp-button
-            outlined
             class="delete-button title-button"
             @click="onClickDelete"
             >Delete</sp-button
@@ -78,21 +72,6 @@
           />
         </div>
       </div>
-      <!-- Resource Info -->
-      <!-- <div class="sp-detail-metadata">
-      <div class="title-wrapper">
-        <span class="title-text">Resource Info</span>
-      </div>
-      <div class="info-table justify-space-between">
-        <template v-for="(head, index) in resourceInfoTitle">
-          <label-with :name="head.text" :key="index">
-            <template #append-content>
-              {{ resourceInfo[head.value] || '-' }}
-            </template>
-          </label-with>
-        </template>
-      </div>
-    </div> -->
 
       <div class="sp-detail-metadata">
         <!-- Source -->
@@ -131,16 +110,12 @@
       @confirm-modal="onClickDelConfirm"
       @cancel-modal="onClickDelCancel"
     />
-
-    <!-- yaml 에디터 모달 창 -->
-    <yaml-edit-modal @confirmed="onConfirmedFromEditModal" />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 import LabelWith from '@/components/molcule/LabelWith.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
@@ -157,14 +132,14 @@ const clusterMapUtils = createNamespacedHelpers('cluster')
 export default {
   components: {
     Confirm,
-    YamlEditModal,
     LabelWithText,
     LabelWith,
   },
   mixins: [checkProjectAuth],
   data() {
     return {
-      PersistentVolumeId: null,
+      uid: null,
+      name: null,
       isEncodingContent: true,
       labelWithClass: {
         titleStyle: {
@@ -208,8 +183,8 @@ export default {
   // 컴포넌트 생성 후 호출됨
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.persistentVolumeId = this.$route.params.rid
-    await this.getDetail({ id: this.persistentVolumeId })
+    this.name = this.$route.params.name
+    this.getDetailV2({ clusterIdx: this.clusterIdx, name: this.name })
     this.checkProjectAuth(this.dataDetail.projectIdx)
   },
   computed: {
@@ -227,7 +202,7 @@ export default {
   },
   methods: {
     ...persistentVolumeMapUtils.mapActions([
-      'getDetail',
+      'getDetailV2',
       'deleteClusterPersistentVolume',
       'getClusterPersistentVolumeYaml',
       'updateClusterPersistentVolume',
@@ -247,8 +222,8 @@ export default {
     async onClickEdit() {
       try {
         const response = await this.getClusterPersistentVolumeYaml({
-          id: this.persistentVolumeId,
-          name: this.detailInfo.name,
+          clusterIdx: this.clusterIdx,
+          name: this.name,
         })
         if (response.status === 200) {
           const text = response.data.result
@@ -285,17 +260,14 @@ export default {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.deleteClusterPersistentVolume({
-          id: this.persistentVolumeId,
+          clusterIdx: this.clusterIdx,
+          name: this.name,
         })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
         setTimeout(
           () =>
-            // this.$router.push({
-            //   name: this.$route.name,
-            //   hash: '#persistentVolume',
-            // }),
             this.$router.push(
               `/cluster/detail/${this.clusterIdx}/persistent-volume`,
             ),
@@ -309,23 +281,6 @@ export default {
     // [삭제 요청 확인창] 취소 클릭 시
     onClickDelCancel() {},
 
-    // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        id: this.persistentVolumeId,
-        kubeConfigId: this.detailInfo.clusterId,
-        yaml: value.encodedContent,
-      }
-      try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.updateClusterPersistentVolume(param)
-        this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.persistentVolumeId })
-        this.closeModal()
-      } catch (error) {
-        this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-      }
-    },
     movePath() {
       this.$router.push({
         name: this.$route.name,

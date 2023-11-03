@@ -2,7 +2,7 @@
   <div class="sp-cluster-namespace-detail">
     <div class="title-wrapper">
       <h2 class="title-left">{{ detailInfo.name }}</h2>
-      <div class="title-right">
+      <!-- <div class="title-right">
         <sp-button outlined class="list-button title-button" @click="moveList()"
           >List</sp-button
         >
@@ -20,7 +20,7 @@
             >Delete</sp-button
           >
         </template>
-      </div>
+      </div> -->
     </div>
 
     <div class="sp-detail-wrapper">
@@ -128,7 +128,7 @@ export default {
   mixins: [checkProjectAuth],
   data() {
     return {
-      NamespaceId: null,
+      uid: null,
       isEncodingContent: true,
       labelWithClass: {
         titleStyle: {
@@ -154,13 +154,17 @@ export default {
       ownerInfoList: [],
       options: {},
       clusterIdx: null,
+      name: '',
     }
   },
   // 컴포넌트 생성 후 호출됨
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.namespaceId = this.$route.params.rid
-    await this.getDetail({ id: this.namespaceId })
+    this.name = this.$route.params.name
+    await this.getDetailV2({
+      clusterIdx: this.clusterIdx,
+      name: this.name,
+    })
     this.checkProjectAuth()
   },
   computed: {
@@ -170,7 +174,7 @@ export default {
   },
   methods: {
     ...NamespaceMapUtils.mapActions([
-      'getDetail',
+      'getDetailV2',
       'deleteClusterNamespace',
       'getClusterNamespaceYaml',
       'updateClusterNamespace',
@@ -178,41 +182,13 @@ export default {
 
     ...yamlEditModalMapUtils.mapMutations([
       'openModal',
-      'initModalContent',
       'closeModal',
+      'initModalContent',
     ]), // yaml에디트모달창 열기(yamlEditModal.js)
 
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
-
-    // [수정 버튼] 클릭 시
-    async onClickEdit() {
-      try {
-        const response = await this.getClusterNamespaceYaml({
-          id: this.namespaceId,
-          name: this.detailInfo.name,
-        })
-        if (response.status === 200) {
-          const text = response.data.result
-
-          // editType: 에디터 타입(create/update)
-          // isEncoding: content가 인코딩 되어 있는지 여부
-          // content: 에디터에 설정할 텍스트 초기값
-          this.openModal({
-            editType: 'update',
-            isEncoding: true,
-            content: text,
-            readOnlyKeys: ['metadata.name'],
-            title: 'Edit Namespace',
-          })
-        } else {
-          console.log(response.data.message)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
 
     // [삭제 버튼] 클릭 시
     onClickDelete() {
@@ -220,10 +196,6 @@ export default {
     },
 
     moveList() {
-      // this.$router.push({
-      //   name: this.$route.name,
-      //   hash: '#Namespace',
-      // })
       this.$router.push(`/cluster/detail/${this.clusterIdx}/namespace`)
     },
 
@@ -231,16 +203,12 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteClusterNamespace({ id: this.namespaceId })
+        await this.deleteClusterNamespace({ uid: this.uid })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
         setTimeout(
           () =>
-            // this.$router.push({
-            //   name: this.$route.name,
-            //   hash: '#namespace',
-            // }),
             this.$router.push(`/cluster/detail/${this.clusterIdx}/namespace`),
           1000,
         )
@@ -255,7 +223,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        id: this.namespaceId,
+        uid: this.uid,
         kubeConfigId: this.detailInfo.clusterId,
         yaml: value.encodedContent,
       }
@@ -263,7 +231,7 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.updateClusterNamespace(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.namespaceId })
+        this.getDetail({ id: this.uid })
         this.closeModal()
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })

@@ -1,21 +1,11 @@
 <template>
   <div class="sp-list-content">
     <div class="search-wrapper workload-search">
-      <!-- <search
-        :title="'Total:'"
-        :todoCount="dataListSize.toString()"
-        :buttonText="'New Node'"
-        :isDisabled="!isProjectAuth"
-        @input="onInputSearchValue"
-        @click="onClickButton"
-      >
-      </search> -->
-
       <search
         :title="'Total:'"
         :todoCount="dataListSize.toString()"
         @input="onInputSearchValue"
-        @click="onClickButton"
+        @click="onClickSearch"
       >
         <template #new-group>
           <select-button
@@ -41,14 +31,6 @@
           />
         </template>
       </search>
-      <!-- <smart-search
-        :placeholder="0$t('instance.placeholder.search')"
-        :items="headers"
-        :datas="instanceList"
-        density="compact"
-        search-tag
-        @update:search="searchDatas"
-      ></smart-search> -->
     </div>
 
     <!-- 조회 내용이 존재할 때, 그리드 표시 -->
@@ -65,12 +47,6 @@
         @click:row="moveToDetailPage"
       >
         <template #health_custom="slotProps">
-          <!-- <sp-chip
-            :color="getChipEachColor(slotProps.item.health)"
-            class="status-chip"
-          >
-            {{ getStatusText(slotProps.item.health) }}
-          </sp-chip> -->
           <div class="workload__health-wrapper">
             <div class="workload__image-wrapper">
               <sp-image
@@ -152,22 +128,18 @@ export default {
       headers: [
         {
           text: 'Name',
-          // align: 'center',
           value: 'name',
         },
         {
           text: 'Namespace',
-          // align: 'center',
           value: 'namespace',
         },
         {
           text: 'Kind',
-          // align: 'center',
           value: 'kind',
         },
         {
           text: 'Health',
-          // align: 'center',
           value: 'health',
         },
         {
@@ -226,7 +198,7 @@ export default {
       this.smartSearchDatas = e
     },
     // 서치 박스의 버튼 클릭 시 호출됨
-    onClickButton() {
+    onClickSearch() {
       this.$router.push(`/cluster/edit/${this.$route.params.id}`)
     },
     // 서치 박스 입력값 변경 시 호출됨
@@ -249,16 +221,9 @@ export default {
       console.log('workload list item:', data)
       const kindLow = kind.charAt(0).toLowerCase() + kind.slice(1)
       if (uid) {
-        // this.$router.replace({
-        //   name: this.$route.name,
-        //   // hash: '#node',
-        //   hash: this.$route.hash,
-        //   query: { clusterNodeId: id, detail: true },
-        // })
         this.$router.push({
           path: `/cluster/detail/${this.clusterIdx}/${kindLow}/${namespace}/${name}`,
         })
-        // this.$router.push(`/cluster/detail/${this.clusterIdx}/workload/${id}`)
       }
     },
     getChipColor(statusText) {
@@ -340,9 +305,6 @@ export default {
       }
     },
   },
-  // beforeDestroy() {
-  // this.initClusterNodeDataList()
-  // },
 }
 </script>
 

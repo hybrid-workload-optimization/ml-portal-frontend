@@ -197,17 +197,10 @@ export default {
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { id } = data
-      if (id) {
-        // this.$router.push({
-        //   name: this.$route.name,
-        //   // hash: '#persistentVolume',
-        //   hash: this.$route.hash,
-        //   query: { persistentVolumeId: id, detail: true },
-        // })
-
+      const { name } = data
+      if (name) {
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/persistent-volume/${id}`,
+          `/cluster/detail/${this.clusterIdx}/persistent-volume/${name}`,
         )
       }
     },

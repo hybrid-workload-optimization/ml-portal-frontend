@@ -2,7 +2,7 @@
   <div class="sp-cluster-node-detail">
     <div class="title-wrapper">
       <h2 class="title-left">{{ detailInfo.name }}</h2>
-      <div class="title-right">
+      <!-- <div class="title-right">
         <sp-button outlined class="list-button title-button" @click="moveList()"
           >List</sp-button
         >
@@ -13,7 +13,7 @@
           @click="onClickDelete"
           >Delete</sp-button
         >
-      </div>
+      </div> -->
     </div>
     <node-chart-card></node-chart-card>
 
@@ -226,9 +226,10 @@ export default {
   // 컴포넌트 생성 후 호출됨
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.nodeId = this.$route.params.rid
+    this.nodeName = this.$route.params.nodeName
     this.getData()
     this.checkProjectAuth()
+    console.log(this.dataDetail)
   },
   computed: {
     ...clusterMapUtils.mapGetters(['dataDetail']),
@@ -249,7 +250,7 @@ export default {
   methods: {
     ...nodeMapUtils.mapMutations(['initClusterNodeListState']),
     ...nodeMapUtils.mapActions([
-      'getDetail',
+      'getDetailV2',
       'getNodeYaml',
       'deleteClusterNode',
       'getPodList',
@@ -284,15 +285,18 @@ export default {
     // 상세 정보와 파드 리스트 정보를 가져오는 메서드
     async getData() {
       try {
-        await this.getDetail({ id: this.nodeId })
+        await this.getDetailV2({
+          clusterIdx: this.clusterIdx,
+          name: this.nodeName,
+        })
         const { detailInfo } = this
-
-        const param = {
-          clusterId: detailInfo.clusterId,
-          nodeName: detailInfo.name,
-          ownerUid: detailInfo.uid,
-        }
-        this.getPodList(param)
+        console.log(detailInfo)
+        // const param = {
+        //   clusterId: detailInfo.clusterId,
+        //   nodeName: detailInfo.name,
+        //   ownerUid: detailInfo.uid,
+        // }
+        // this.getPodList(param)
       } catch (error) {
         console.log(error)
       }
@@ -344,7 +348,7 @@ export default {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
         await this.updatenode(param)
         this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.id })
+        // this.getDetail({ id: this.id })
         this.closeModal()
       } catch (error) {
         this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })

@@ -3,12 +3,8 @@ import VueRouter from 'vue-router'
 import Login from '@/router/modules/login'
 import Dashboard from '@/router/modules/dashboard'
 import Project from '@/router/modules/project'
-import Workload from '@/router/modules/workload'
-import Sample from '@/router/modules/sample'
 import Setting from '@/router/modules/setting'
 import Cluster from '@/router/modules/cluster'
-import Networking from '@/router/modules/networking'
-import Config from '@/router/modules/config'
 import store from '@/store'
 import Error from '@/router/modules/error'
 import ML from '@/router/modules/ml'
@@ -24,12 +20,8 @@ const routes = [
   ...Login,
   ...Dashboard,
   ...Project,
-  ...Sample,
-  ...Workload,
   ...Setting,
   ...Cluster,
-  ...Config,
-  ...Networking,
   ...ML,
   ...AutoML,
   ...Error,
