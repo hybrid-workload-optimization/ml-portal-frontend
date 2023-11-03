@@ -1,6 +1,6 @@
 import request from '@/lib/request'
 import moment from 'moment'
-import { api, date } from '@/utils/common'
+import { date } from '@/utils/common'
 
 const resource = {
   namespaced: true,
@@ -60,14 +60,13 @@ const resource = {
       const { data } = payload
       const { result } = data
       const dataList = []
-      result.content.forEach(e => {
+      result.forEach(e => {
         const item = {
-          id: e.id,
+          uid: e.uid,
           name: e.name,
           label: '',
-          provider: e.provider,
+          provider: e.provisioner,
           type: e.type,
-          clusterIdx: e.clusterIdx,
           createdAt: `${date.getDiffFromToday(e.createdAt)}`,
         }
         if (e.label) {
@@ -120,19 +119,12 @@ const resource = {
       // getAllData: 페이징정보를 활용하여 순차적으로 전체 데이터를 조회하는 함수 호출
       // getAllData는 옵션이다. 백엔드 API에 paging 구현이 되어있을 경우, 전체 데이터를 조회하고 싶을 경우 사용한다.
       // common.js 참고
-      const response = await api.getAllData(
-        request.getClusterStorageClassListUsingGET,
-        param,
-      )
-      // const response = await request.getClusterStorageClassListUsingGET(payload)
-      console.log('getdatalist', response)
+      const response = await request.getStorageClassListUsingGET(param)
       commit('changeDateList', response)
     },
     //  상세 정보 조회 요청
     async getDetail({ commit }, payload) {
-      const response = await request.getClusterStorageClassDetailUsingGET_1(
-        payload,
-      )
+      const response = await request.getStorageClassDetailUsingGET(payload)
       commit('changeDetailInfo', response)
     },
     //  yaml 정보 조회 요청
