@@ -45,7 +45,6 @@ const resource = {
       workerUtilization: 0,
       workloadCount: 0,
     },
-    selectItem: null,
   },
   getters: {
     nodeState(state) {
@@ -109,9 +108,6 @@ const resource = {
     },
     dashboardData(state) {
       return state.dashboardData
-    },
-    selectItem(state) {
-      return state.selectItem
     },
   },
   mutations: {
@@ -186,9 +182,6 @@ const resource = {
       const { result } = data || {}
       state.dashboardData = result
     },
-    changeSelectItem(state, payload) {
-      state.selectItem = payload
-    },
   },
   actions: {
     // 노드 상태 정보 조회 요청
@@ -206,10 +199,6 @@ const resource = {
     async getDashboardData({ commit }, payload) {
       const response = await request.getDashboardGeneralUsingGET(payload)
       commit('changeDashboardData', response)
-    },
-    // 대시보드 셀렉트 박스 값 저장
-    setSelectItem({ commit }, payload) {
-      commit('changeSelectItem', payload)
     },
   },
 }
