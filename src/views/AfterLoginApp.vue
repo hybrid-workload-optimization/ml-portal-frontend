@@ -154,15 +154,14 @@ export default {
       const newMenuList = menuList.filter(
         menu => !menuNamesToRemove.includes(menu.menuName),
       )
-
       // 즐겨찾기 (임시)
-      newMenuList.unshift({
-        icon: 'star_border',
-        menuName: 'Favorite',
-        menuIdx: 999999,
-        menuUrl: '',
-        subMenuList: this.favoriteList,
-      })
+      // newMenuList.unshift({
+      //   icon: 'star_border',
+      //   menuName: 'Favorite',
+      //   menuIdx: 999999,
+      //   menuUrl: '',
+      //   subMenuList: this.favoriteList,
+      // })
       this.menuItems = newMenuList
     },
     setMenuIcon(menuIdx) {

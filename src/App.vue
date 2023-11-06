@@ -26,6 +26,7 @@ import { createNamespacedHelpers } from 'vuex'
 import VAlert from '@/components/molcule/Alert.vue'
 import ClusterDetailNewWindow from '@/views/ClusterDetailNewWindow.vue'
 
+const serviceGroupMapUtil = createNamespacedHelpers('serviceGroup')
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const alertMapUtils = createNamespacedHelpers('alert')
 
@@ -59,9 +60,11 @@ export default {
   },
 
   created() {
+    this.initServiceGroup()
     // window.addEventListener('beforeunload', this.closeBrowserHandler)
   },
   methods: {
+    ...serviceGroupMapUtil.mapActions(['initServiceGroup']),
     ...alertMapUtils.mapMutations(['openAlert', 'closeAlert']),
     setMiniStatus(miniStatus) {
       this.isMini = miniStatus

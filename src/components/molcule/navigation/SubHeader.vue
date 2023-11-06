@@ -86,6 +86,20 @@
           </transition>
         </div>
       </div>
+
+      <!-- 전역 서비스그룹 셀렉트 박스 -->
+      <sp-select
+        class="sp-global-select"
+        :value="globalServiceGroup"
+        :items="serviceGroupList"
+        item-text="text"
+        item-value="value"
+        @input="updateGlobalServiceGroup"
+        dense
+        outlined
+        hideDetails
+      />
+
       <user-avatar
         :userName="userInfo ? userInfo.userName : ''"
         :accessRoleName="userInfo ? userInfo.userRole.userRoleName : ''"
@@ -128,6 +142,7 @@ import vClickOutside from 'v-click-outside'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
 const clusterMonitoringMapUtil = createNamespacedHelpers('clusterMonitoring')
+const serviceGroupMapUtil = createNamespacedHelpers('serviceGroup')
 
 export default {
   directives: {
@@ -158,6 +173,7 @@ export default {
     */
     // ...mapGetters(loginInfo, ["isLogin", "isUser"]),
     // ...mapState(loginInfo, ["userName", "accessRoleName", "lastLoginTime"]),
+    ...serviceGroupMapUtil.mapState(['globalServiceGroup', 'serviceGroupList']),
     getPageName() {
       // console.log(tag, 'getPageName')
       return this.pagePath?.title
@@ -197,6 +213,7 @@ export default {
       @return
       @param
     */
+    ...serviceGroupMapUtil.mapActions(['updateGlobalServiceGroup']),
     ...loginUserMapUtil.mapActions(['setFavoriteData', 'deleteFavoriteData']),
     ...notificationMapUtil.mapMutations(['updateShowNotification']),
     ...clusterMonitoringMapUtil.mapActions(['getMonitoringPath']),
@@ -339,6 +356,23 @@ export default {
   .card-wrapper {
     button {
       font-size: 0.9rem !important;
+    }
+  }
+
+  .sp-global-select {
+    max-width: 150px !important;
+
+    &.sp-select {
+      .v-field {
+        color: white;
+      }
+
+      .v-input__control .v-select__selection .v-select__selection-text {
+        color: white;
+      }
+    }
+    .v-input__slot:before {
+      display: none !important;
     }
   }
 

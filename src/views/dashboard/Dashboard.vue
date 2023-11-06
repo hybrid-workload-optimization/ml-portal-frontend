@@ -1,18 +1,8 @@
 <template>
   <div class="sp-dashboard">
     <div class="dashboard-select-wrap">
-      <div class="dashboard-select">
-        <Select
-          :value="selectItem"
-          :items="selectList"
-          @input="onChangeItem"
-          dense
-          outlined
-          hideDetails
-        />
-      </div>
       <div class="reload-wrapper">
-        <v-icon @click="getData(tempProjectIdx)" color="black"
+        <v-icon @click="getData(globalServiceGroup)" color="black"
           >mdi-refresh</v-icon
         >
         <span>마지막 업데이트 : {{ currentDateTime }}</span>
@@ -29,74 +19,45 @@
 import { createNamespacedHelpers } from 'vuex'
 import DashboardCard from '@/components/dashboard/DashboardCard.vue'
 import DashboardClusterOverview from '@/components/dashboard/DashboardClusterOverview.vue'
-import Select from '@/components/atoms/Select.vue'
-import request from '@/lib/request'
 import { getNowDate } from '@/lib/date'
-// import DashboardTable from '@/components/dashboard/DashboardTable.vue'
-// import MultiSelect from '@/components/MultiSelectForDashboard.vue'
 
 const dashboardMapUtils = createNamespacedHelpers('dashboard')
-
-const sessionKey = 'dashboard-select'
 
 export default {
   components: {
     DashboardCard,
     DashboardClusterOverview,
-    Select,
     // DashboardTable,
   },
   data() {
     return {
       selectList: [],
       currentDateTime: '',
-      tempProjectIdx: sessionStorage.getItem(sessionKey),
     }
   },
-  mounted() {
-    this.getSelectItems()
-  },
-
+  mounted() {},
   computed: {
+    globalServiceGroup() {
+      return this.$store.state.serviceGroup.globalServiceGroup
+    },
+    // ...serviceGroupMapUtil.mapState(['globalServiceGroup']),
     ...dashboardMapUtils.mapGetters(['dashboardData', 'selectItem']),
   },
 
   methods: {
-    ...dashboardMapUtils.mapActions(['getDashboardData', 'setSelectItem']),
-    async getSelectItems() {
-      // 셀렉트 박스 목록 호출
-      try {
-        this.selectList = []
-        const { data } = await request.getProjectsUsingGET()
-        this.selectList = data?.result || []
-        this.initSelectItem()
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    async onChangeItem(projectIdx) {
-      sessionStorage.setItem(sessionKey, projectIdx)
-      this.tempProjectIdx = projectIdx
-      this.setSelectItem(projectIdx)
-      await this.getData(this.selectItem)
-    },
-    async initSelectItem() {
-      if (this.tempProjectIdx === null) {
-        this.tempProjectIdx = this.selectList[0].value
-        this.setSelectItem(this.selectList[0].value)
-      } else {
-        const target = this.selectList.find(
-          item => item.value === this.tempProjectIdx,
-        )
-        if (target) this.setSelectItem(this.tempProjectIdx)
-        else this.setSelectItem(this.selectList[0].value)
-      }
-      await this.getData(this.selectItem)
-    },
+    ...dashboardMapUtils.mapActions(['getDashboardData']),
     async getData(projectIdx) {
-      const param = { projectIdx }
-      await this.getDashboardData(param)
+      await this.getDashboardData({ projectIdx })
       this.currentDateTime = getNowDate()
+    },
+  },
+  watch: {
+    globalServiceGroup: {
+      deep: true,
+      immediate: true,
+      async handler(newVal) {
+        await this.getData(newVal)
+      },
     },
   },
 }
