@@ -31,6 +31,7 @@ service.interceptors.request.use(
         1. refresh token 이 없는경우 (현재는 cookie 에 있어 만료되면 자동 삭제)
         2. refresh token 이 만료된 경우
       */
+
     if (!refreshToken) {
       vm.$store.dispatch('loginUser/doLogout')
       vm.$store.commit('alert/openAlert', {
@@ -39,7 +40,7 @@ service.interceptors.request.use(
       })
       vm.$store.commit('resetState')
       vm.$store.commit('loading/closeLoading')
-      vm.$router.push('/ssoLogin').catch(() => {})
+      vm.$router.push('/ssoLogin')
       throw new axios.Cancel('Request canceled.')
     }
 

@@ -40,7 +40,6 @@ export default {
     globalServiceGroup() {
       return this.$store.state.serviceGroup.globalServiceGroup
     },
-    // ...serviceGroupMapUtil.mapState(['globalServiceGroup']),
     ...dashboardMapUtils.mapGetters(['dashboardData', 'selectItem']),
   },
 

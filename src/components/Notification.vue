@@ -28,7 +28,9 @@
             v-if="noti.confirmYn === 'Y'"
             class="notification__check-wrapper"
           >
-            <v-icon class="notification__check-icon" contain>check</v-icon>
+            <v-icon size="48px" class="notification__check-icon" contain
+              >check</v-icon
+            >
           </div>
           <!-- TODO Delete button (임시) -->
           <div

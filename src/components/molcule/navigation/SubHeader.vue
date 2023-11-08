@@ -1,10 +1,31 @@
 <template>
   <v-row class="top-nav-container sub-container">
     <!-- 상단 왼쪽 부분 start -->
-    <div class="left-nav-wrapper" v-if="!isClusterNewWindow">
+    <div class="left-nav-wrapper">
       <slot name="side-bar"></slot>
+
       <div class="title-wrapper">
-        <sp-button icon class="fav-button" @click="toggleFav"
+        <sp-image
+          class="logo-image"
+          :width="48"
+          :height="48"
+          lazySrc="Strato logo.png"
+          src="Strato logo.png"
+        />
+        <span class="title-text">ML Workload Portal</span>
+      </div>
+      <div class="full-menu-btn">
+        <a
+          v-show="!showFullMenu"
+          class="burger-button"
+          @click="openFullMenu"
+          @keypress="openFullMenu"
+        >
+          <v-icon class="burger-icon">menu</v-icon>
+          <span class="burger-text">서비스</span>
+        </a>
+      </div>
+      <!-- <sp-button icon class="fav-button" @click="toggleFav"
           ><v-icon class="material-icons-round" v-if="!isFav"
             >star_outline</v-icon
           >
@@ -12,9 +33,17 @@
             >star</v-icon
           ></sp-button
         >
-        <span class="title-text">{{ getPageName }}</span>
-      </div>
-      <sp-breadcrumbs v-if="pagePath" :items="pagePath['subTitle']" large>
+        <span class="title-text">{{ getPageName }}</span> -->
+
+      <!--
+      <div class="title-wrapper">
+            <div class="logo-wrapper">
+
+              <span class="title-text" v-if="!mini">ML Workload Portal</span>
+            </div>
+          </div>
+       -->
+      <!-- <sp-breadcrumbs v-if="pagePath" :items="pagePath['subTitle']" large>
         <template #divider>
           <v-icon>chevron_right</v-icon>
         </template>
@@ -33,7 +62,7 @@
             >
           </v-breadcrumbs-item>
         </template>
-      </sp-breadcrumbs>
+      </sp-breadcrumbs> -->
     </div>
     <!-- 상단 왼쪽 부분 end -->
 
@@ -52,7 +81,7 @@
             src="cluster/monitor-dashboard.svg"
             width="24"
             height="24"
-          ></sp-image>
+          />
         </sp-button>
         <console-with-button v-if="isClusterDetail"></console-with-button>
         <v-badge
@@ -72,7 +101,7 @@
             class="backgroundColor"
             :className="{ transparent: true }"
           >
-            <v-icon dense color="#5B6C82">notifications_none</v-icon>
+            <v-icon dense color="#fff">notifications_none</v-icon>
           </sp-button>
         </v-badge>
 
@@ -96,14 +125,15 @@
         item-value="value"
         @input="updateGlobalServiceGroup"
         dense
+        dark
         outlined
         hideDetails
       />
 
       <user-avatar
+        class="user-avatar"
         :userName="userInfo ? userInfo.userName : ''"
         :accessRoleName="userInfo ? userInfo.userRole.userRoleName : ''"
-        class="ml-10"
       >
         <template #badge>
           <v-badge
@@ -155,6 +185,7 @@ export default {
   },
   props: {
     pagePath: Object,
+    showFullMenu: { type: Boolean, default: false },
   },
   data: () => ({
     // isShowNotification: false,
@@ -233,6 +264,9 @@ export default {
       }
       this.isFav = !this.isFav
     },
+    openFullMenu() {
+      this.$emit('open', true)
+    },
     onClickOutside() {
       this.updateShowNotification(false)
     },
@@ -255,25 +289,66 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/_mixin.scss';
 .top-nav-container {
-  max-height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12;
+  width: 100%;
+  max-height: 68px;
   margin: 0;
-  justify-content: flex-end;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  background: #1c2536 0% 0% no-repeat padding-box;
+  box-shadow: 0px 4px 5px rgba(138, 138, 138, 0.2);
+
   .left-nav-wrapper {
     display: flex;
-    flex: 0 0 60%;
-    max-width: 60%;
+    justify-content: center;
+    align-items: center;
+    width: 480px;
+
+    .full-menu-btn {
+      width: 180px;
+
+      .burger-button {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .burger-icon {
+        background: #fff;
+        border-radius: 50%;
+        font-size: 18px;
+      }
+      .burger-text {
+        color: #fff;
+        font-size: 16px;
+      }
+    }
+
     .title-wrapper {
-      max-width: 45%;
       display: flex;
+      justify-content: center;
       align-items: center;
+      gap: 8px;
+      width: 300px;
       font-weight: bold;
       font-size: 2rem;
       color: $title-color;
-      margin-right: 15px;
+
+      .logo-image {
+        max-width: 40px;
+        max-height: 40px;
+      }
 
       .title-text {
-        font-size: toRem(28);
+        color: #fff;
+        font-size: 1.15rem;
+        font-weight: bold;
+        white-space: nowrap;
       }
       .fav-button {
         margin-right: 5px;
@@ -285,6 +360,7 @@ export default {
         }
       }
     }
+
     .breadcrumbs-text {
       font-size: toRem(13);
       opacity: 0.6;
@@ -296,14 +372,14 @@ export default {
 
   .service-btn {
     background-color: $basic-button;
-    color: white;
   }
   .right-nav-wrapper {
-    height: 55px;
     display: flex;
-    flex: 0 0 40%;
     justify-content: flex-end;
     align-items: center;
+    gap: 8px;
+    height: 100%;
+
     .button-wrapper {
       display: flex;
       justify-content: flex-end;
@@ -360,30 +436,32 @@ export default {
   }
 
   .sp-global-select {
-    max-width: 150px !important;
+    max-width: 160px;
 
-    &.sp-select {
-      .v-field {
-        color: white;
-      }
-
-      .v-input__control .v-select__selection .v-select__selection-text {
-        color: white;
-      }
+    fieldset {
+      border: none !important;
     }
+
+    .theme--dark.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)
+      > .v-input__control
+      > .v-input__slot
+      fieldset {
+      color: transparent !important;
+    }
+
     .v-input__slot:before {
       display: none !important;
     }
   }
 
   &.sub-container {
-    max-height: 200px !important;
-    min-height: 60px !important;
-    margin-bottom: 25px;
+    height: 100%;
   }
   .left-nav-wrapper {
   }
   .right-nav-wrapper {
+    padding-right: 50px;
+
     .user-name-wrapper {
       line-height: 0.7;
     }
@@ -392,6 +470,9 @@ export default {
       min-width: 35px !important;
       padding: 0 !important;
     }
+  }
+  .user-avatar {
+    width: 180px;
   }
 }
 </style>

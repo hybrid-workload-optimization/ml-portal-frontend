@@ -195,13 +195,14 @@ export default {
 <style>
 .cluster-resource-menu {
   box-shadow: none !important;
-  width: 290px !important;
+  width: 300px !important;
   /* padding-right: 25px !important; */
   float: left;
   position: fixed;
   left: 0px;
   top: 0px;
   height: 100% !important;
+  padding-top: 68px;
   overflow-y: scroll;
 }
 .expand-header {
@@ -257,9 +258,7 @@ export default {
 }
 
 .cluster-resource-title-wrapper {
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 20px;
+  padding: 15px 15px 0 15px;
   height: 66px;
   margin-bottom: 25px;
 }
