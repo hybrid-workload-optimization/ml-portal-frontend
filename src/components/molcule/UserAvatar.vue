@@ -158,7 +158,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: $sp-title;
+  color: #fff;
   font-size: 1rem;
   .user-name-wrapper {
     margin-right: 15px;
