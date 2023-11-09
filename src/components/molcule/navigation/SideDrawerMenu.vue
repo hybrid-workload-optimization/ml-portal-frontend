@@ -37,29 +37,13 @@
         class="left-wrapper"
         :class="{ 'one-depth': subMenuItems && subMenuItems.length < 1 }"
       >
-        <!-- <div class="title-wrapper">
-            <div class="logo-wrapper">
-              <sp-image
-                class="logo-image"
-                contain
-                lazySrc="Strato logo.png"
-                src="Strato logo.png"
-              />
-              <span class="title-text" v-if="!mini">ML Workload Portal</span>
-            </div>
-          </div> -->
-        <!-- <div class="burger-wrapper" @click="openFullMenu">
-            <sp-button icon class="burger-button"
-              ><v-icon class="burger-icon">density_medium</v-icon></sp-button
-            >
-            <span class="burger-title" v-if="!mini">Mega Menu</span>
-          </div> -->
-
         <!-- 메뉴 시작 -->
         <div
           ref="image-wrapper"
           class="image-wrapper"
-          v-for="({ icon, menuName, menuIdx, menuUrl }, index) in menuItems"
+          v-for="(
+            { icon, menuName, menuIdx, menuUrl, subMenuList }, index
+          ) in menuItems"
           :key="menuIdx"
           :class="[
             index === 0 && 'first-box',
@@ -67,7 +51,7 @@
               isActive: isCurrentPathName(menuName),
             },
           ]"
-          @click="onClickMenu(menuIdx, menuUrl)"
+          @click="onClickMenu(menuIdx, menuUrl, subMenuList)"
         >
           <v-tooltip right v-if="mini">
             <template v-slot:activator="{ on, attrs }">
@@ -222,18 +206,12 @@ export default {
         }px`
       }
     },
-    onClickMenu(selectedName, path) {
+    onClickMenu(selectedName, path, subMenuList) {
       this.subMenuItems = []
       this.selected = selectedName
       console.log('선택된 이름 ', selectedName)
       this.onFilterList(selectedName)
-      if (
-        selectedName === 100000 ||
-        selectedName === 101000 ||
-        selectedName === 102000 ||
-        selectedName === 107000 ||
-        selectedName === 108000
-      ) {
+      if (!subMenuList?.length) {
         this.$router.push(path).catch(() => {})
       }
     },

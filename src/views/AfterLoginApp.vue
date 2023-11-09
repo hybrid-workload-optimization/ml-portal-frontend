@@ -41,7 +41,7 @@ import SideDrawer from '@/components/molcule/navigation/SideDrawerMenu.vue'
 import NewFullMenu from '@/components/molcule/navigation/NewFullMenu.vue'
 import { UserMenuItems } from '@/data/path'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
-import Paths from '@/assets/data/paths'
+import Paths, { menuPath } from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
 import { createNamespacedHelpers } from 'vuex'
 // import tokenHelper from '@/lib/tokenHelper'
@@ -104,33 +104,9 @@ export default {
       this.getNotiList()
     },
     setSseConfig() {
-      // TODO 추후 /api/v1/alert/receive 로 변경
-      // const reqUrl = '/api/v1/alert/test'
-      // const reqTimestamp = new Date().getTime()
-      // const encryptedToken = tokenHelper.encrypt(
-      //   this.$store.state.loginUser.accessToken,
-      //   reqUrl,
-      //   'get',
-      //   reqTimestamp,
-      // )
       try {
         // axios: event stream 지원x
         // eventSource: header 지원x
-        // const scope = this
-        // fetchEventSource(reqUrl, {
-        //   headers: {
-        //     'access-token': encryptedToken,
-        //     timestamp: reqTimestamp,
-        //   },
-        //   onmessage(message) {
-        //     const msg = JSON.parse(message.data)
-        //     scope.$store.commit('notification/changeNoti', msg)
-        //   },
-        //   onerror(error) {
-        //     console.error(error)
-        //     throw error
-        //   },
-        // })
         this.sse = new EventSource(
           `${process.env.VUE_APP_SERVICE_NAME}/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
         )
@@ -155,30 +131,33 @@ export default {
       }
     },
     setMenuList() {
-      const menuList = this.userMenuList.map(menu => {
+      console.log(this.userMenuList)
+      const menuList = menuPath.map(menu => {
         menu.icon = this.setMenuIcon(menu.menuIdx)
         return menu
       })
       // 클러스터 관련 메뉴는 메인페이지에서 삭제 처리
-      const menuNamesToRemove = [
-        'Cluster',
-        'Workload',
-        'Network',
-        'Config',
-        'Setting',
-      ]
-      const newMenuList = menuList.filter(
-        menu => !menuNamesToRemove.includes(menu.menuName),
-      )
-      // 즐겨찾기 (임시)
-      // newMenuList.unshift({
-      //   icon: 'star_border',
-      //   menuName: 'Favorite',
-      //   menuIdx: 999999,
-      //   menuUrl: '',
-      //   subMenuList: this.favoriteList,
-      // })
-      this.menuItems = newMenuList
+      // const menuNamesToRemove = [
+      //   'Cluster',
+      //   'Workload',
+      //   'Network',
+      //   'Config',
+      //   'Setting',
+      // ]
+      // const newMenuList = menuList.filter(
+      //   menu => !menuNamesToRemove.includes(menu.menuName),
+      // )
+      // // 즐겨찾기 (임시)
+      // // newMenuList.unshift({
+      // //   icon: 'star_border',
+      // //   menuName: 'Favorite',
+      // //   menuIdx: 999999,
+      // //   menuUrl: '',
+      // //   subMenuList: this.favoriteList,
+      // // })
+      // this.menuItems = newMenuList
+
+      this.menuItems = menuList
     },
     setMenuIcon(menuIdx) {
       let icon = 'dashboard'

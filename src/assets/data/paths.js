@@ -1,5 +1,3 @@
-const COMMON_PREFIX = 'Admin_'
-
 const UserPath = {
   Main: {
     title: 'Main',
@@ -55,64 +53,6 @@ const UserPath = {
   },
 }
 
-const AdminPath = {
-  [`${COMMON_PREFIX}Home`]: {
-    title: 'DashBoard',
-    subTitle: ['Home', 'Dashboard'],
-  },
-  [`${COMMON_PREFIX}Dashboard`]: {
-    title: 'CoMP DashBoard',
-    subTitle: ['Home', 'Dashboard'],
-  },
-  [`${COMMON_PREFIX}ResourceUsage`]: {
-    title: 'CoMP DashBoard Usage Total Viewer',
-    subTitle: [],
-  },
-  [`${COMMON_PREFIX}_Test2`]: {
-    title: '서비스 그룹 관리',
-    subTitle: ['서비스 그룹 관리1', '서비스 그룹 관리2', '서비스 그룹 관리3'],
-  },
-  [`${COMMON_PREFIX}_Test3`]: {
-    title: '서비스 그룹 관리',
-    subTitle: ['서비스 그룹 관리1', '서비스 그룹 관리2', '서비스 그룹 관리3'],
-  },
-  [`${COMMON_PREFIX}_Test4`]: {
-    title: '자원 신청 관리',
-    subTitle: ['자원 신청 관리1', '자원 신청 관리2', '자원 신청 관리3'],
-  },
-  [`${COMMON_PREFIX}_Test5`]: {
-    title: '자원 신청 관리',
-    subTitle: ['자원 신청 관리1', '자원 신청 관리2', '자원 신청 관리3'],
-  },
-  [`${COMMON_PREFIX}_Test6`]: {
-    title: '자원 신청 관리',
-    subTitle: ['자원 신청 관리1', '자원 신청 관리2', '자원 신청 관리3'],
-  },
-  [`${COMMON_PREFIX}_Test7`]: {
-    title: '자원 변경 신청 관리',
-    subTitle: [
-      '자원 변경 신청 관리1',
-      '자원 변경 신청 관리2',
-      '자원 변경 신청 관리3',
-    ],
-  },
-  [`${COMMON_PREFIX}_Test8`]: {
-    title: '자원 변경 신청 관리',
-    subTitle: [
-      '자원 변경 신청 관리1',
-      '자원 변경 신청 관리2',
-      '자원 변경 신청 관리3',
-    ],
-  },
-  [`${COMMON_PREFIX}_Test9`]: {
-    title: '자원 변경 신청 관리',
-    subTitle: [
-      '자원 변경 신청 관리1',
-      '자원 변경 신청 관리2',
-      '자원 변경 신청 관리3',
-    ],
-  },
-}
 const PaaSPath = {
   Main: {
     title: 'Main',
@@ -304,9 +244,239 @@ const PaaSPath = {
   },
 }
 
+export const menuPath = [
+  {
+    menuIdx: 100000,
+    menuName: 'Dashboard',
+    menuUrl: '/dashboard',
+    parentMenuIdx: 0,
+    menuOrder: 1,
+    menuDepth: 1,
+    role: null,
+    subMenuList: null,
+  },
+  {
+    menuIdx: 200000,
+    menuName: 'Service Group',
+    menuUrl: '/project/list',
+    parentMenuIdx: 0,
+    menuOrder: 4,
+    menuDepth: 1,
+    role: null,
+    subMenuList: null,
+  },
+  {
+    menuIdx: 206000,
+    menuName: 'Setting',
+    menuUrl: '',
+    parentMenuIdx: 0,
+    menuOrder: 9,
+    menuDepth: 1,
+    role: null,
+    subMenuList: [
+      {
+        menuIdx: 206010,
+        menuName: 'General',
+        menuUrl: '/setting/general',
+        parentMenuIdx: 206000,
+        menuOrder: 1,
+        menuDepth: 2,
+        role: null,
+        subMenuList: null,
+      },
+      {
+        menuIdx: 206020,
+        menuName: 'User',
+        menuUrl: '/setting/user/list',
+        parentMenuIdx: 206000,
+        menuOrder: 2,
+        menuDepth: 2,
+        role: null,
+        subMenuList: null,
+      },
+      {
+        menuIdx: 206030,
+        menuName: 'Authority',
+        menuUrl: '/setting/authority',
+        parentMenuIdx: 206000,
+        menuOrder: 3,
+        menuDepth: 2,
+        role: null,
+        subMenuList: null,
+      },
+      {
+        menuIdx: 206050,
+        menuName: 'Tool',
+        menuUrl: '/setting/tools/detail/kubespray',
+        parentMenuIdx: 206000,
+        menuOrder: 5,
+        menuDepth: 2,
+        role: null,
+        subMenuList: null,
+      },
+    ],
+  },
+]
+
+export const clusterMenu = [
+  {
+    menuIdx: 210000,
+    menuName: 'Cluster',
+    menuUrl: '',
+    parentMenuIdx: 200000,
+    menuOrder: 5,
+    menuDepth: 1,
+    role: null,
+    subMenuList: [
+      {
+        menuIdx: 210100,
+        menuName: 'General',
+        menuUrl: '',
+        parentMenuIdx: 210000,
+        menuOrder: 5,
+        menuDepth: 1,
+        role: null,
+        subMenuList: [
+          {
+            menuIdx: 210101,
+            menuName: 'Node',
+            menuUrl: '/cluster/detail/node',
+            parentMenuIdx: 210100,
+            menuOrder: 1,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210102,
+            menuName: 'Namespace',
+            menuUrl: '/cluster/detail/namespace',
+            parentMenuIdx: 210100,
+            menuOrder: 2,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210103,
+            menuName: 'Persistent Volume',
+            menuUrl: '/cluster/detail/persistent-volume',
+            parentMenuIdx: 210100,
+            menuOrder: 3,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210104,
+            menuName: 'Storage Class',
+            menuUrl: '/cluster/detail/storage-class',
+            parentMenuIdx: 110100,
+            menuOrder: 4,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+        ],
+      },
+      {
+        menuIdx: 210200,
+        menuName: 'Workload',
+        menuUrl: '',
+        parentMenuIdx: 0,
+        menuOrder: 6,
+        menuDepth: 1,
+        role: null,
+        subMenuList: null,
+      },
+      {
+        menuIdx: 210300,
+        menuName: 'Network',
+        menuUrl: '',
+        parentMenuIdx: 0,
+        menuOrder: 7,
+        menuDepth: 1,
+        role: null,
+        subMenuList: [
+          {
+            menuIdx: 210301,
+            menuName: 'Service',
+            menuUrl: '/cluster/detail/service',
+            parentMenuIdx: 210300,
+            menuOrder: 1,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210302,
+            menuName: 'Ingress',
+            menuUrl: '/cluster/detail/ingress',
+            parentMenuIdx: 210300,
+            menuOrder: 2,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210303,
+            menuName: 'Ingress Controller',
+            menuUrl: '/cluster/detail/ingress-controller',
+            parentMenuIdx: 210300,
+            menuOrder: 3,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+        ],
+      },
+      {
+        menuIdx: 210400,
+        menuName: 'Config',
+        menuUrl: '',
+        parentMenuIdx: 0,
+        menuOrder: 8,
+        menuDepth: 1,
+        role: null,
+        subMenuList: [
+          {
+            menuIdx: 210401,
+            menuName: 'Persistent Volume Claim',
+            menuUrl: '/cluster/detail/persistent-volume-claim',
+            parentMenuIdx: 210400,
+            menuOrder: 1,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210402,
+            menuName: 'Config Map',
+            menuUrl: '/cluster/detail/config-map',
+            parentMenuIdx: 210400,
+            menuOrder: 2,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+          {
+            menuIdx: 210403,
+            menuName: 'Secret',
+            menuUrl: '/cluster/detail/secret',
+            parentMenuIdx: 210400,
+            menuOrder: 3,
+            menuDepth: 2,
+            role: null,
+            subMenuList: null,
+          },
+        ],
+      },
+    ],
+  },
+]
+
 const Paths = {
   ...UserPath,
-  ...AdminPath,
   ...PaaSPath,
 }
 
