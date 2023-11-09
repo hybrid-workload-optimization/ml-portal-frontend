@@ -12,7 +12,7 @@
           lazySrc="Strato logo.png"
           src="Strato logo.png"
         />
-        <span class="title-text">ML Workload Portal</span>
+        <span class="title-text">CoMP Portal</span>
       </div>
       <div class="full-menu-btn">
         <a
@@ -39,7 +39,7 @@
       <div class="title-wrapper">
             <div class="logo-wrapper">
 
-              <span class="title-text" v-if="!mini">ML Workload Portal</span>
+              <span class="title-text" v-if="!mini">CoMP Portal</span>
             </div>
           </div>
        -->

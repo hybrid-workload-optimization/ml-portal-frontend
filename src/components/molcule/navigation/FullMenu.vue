@@ -15,7 +15,7 @@
             src="Strato logo.png"
           ></sp-image>
 
-          <span class="title-text">ML Workload Portal</span>
+          <span class="title-text">CoMP Portal</span>
         </div>
       </div>
 
