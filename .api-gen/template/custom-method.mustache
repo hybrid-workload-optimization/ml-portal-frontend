@@ -15,7 +15,7 @@
     {{#isES6}}let{{/isES6}}{{^isES6}}var{{/isES6}} body = {}, queryParameters = {}, headers = {}, form = {};
 
     {{#isSecure}}
-        headers = this.setAuthHeaders(headers);
+        // headers = this.setAuthHeaders(headers);
     {{/isSecure}}
     {{#headers}}
         headers['{{&name}}'] = [{{&value}}];

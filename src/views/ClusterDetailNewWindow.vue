@@ -257,10 +257,10 @@ export default {
 .new_win-main-wrapper {
   // background-color: #fff;
   background-color: #f3f6f9;
-  padding-left: 310px !important;
-  padding-right: 25px !important;
-  padding-top: 25px !important;
-  padding-bottom: 25px !important;
+  padding-left: 315px !important;
+  padding-right: 15px !important;
+  padding-top: 83px !important;
+  padding-bottom: 15px !important;
   height: 100vh;
   @include desktop-small {
     padding-left: 310px !important;

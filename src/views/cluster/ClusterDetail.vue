@@ -33,54 +33,6 @@
               tab === index && tabName === 'Catalog' && !$route.query.detail
             "
           />
-          <cluster-node
-            v-else-if="
-              tab === index && tabName === 'Node' && !$route.query.detail
-            "
-          />
-          <cluster-node-detail
-            v-else-if="
-              tab === index && tabName === 'Node' && $route.query.detail
-            "
-          />
-          <cluster-namespace
-            v-else-if="
-              tab === index && tabName === 'Namespace' && !$route.query.detail
-            "
-          />
-          <cluster-namespace-detail
-            v-else-if="
-              tab === index && tabName === 'Namespace' && $route.query.detail
-            "
-          />
-          <cluster-persistent-volume
-            v-else-if="
-              tab === index &&
-              tabName === 'Persistent Volume' &&
-              !$route.query.detail
-            "
-          />
-          <cluster-persistent-volume-detail
-            v-else-if="
-              tab === index &&
-              tabName === 'Persistent Volume' &&
-              $route.query.detail
-            "
-          />
-          <cluster-storage-class
-            v-else-if="
-              tab === index &&
-              tabName === 'Storage Class' &&
-              !$route.query.detail
-            "
-          />
-          <cluster-storage-class-detail
-            v-else-if="
-              tab === index &&
-              tabName === 'Storage Class' &&
-              $route.query.detail
-            "
-          />
         </v-tab-item>
       </v-tabs-items>
     </div>
@@ -98,16 +50,6 @@ import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
 import ClusterGeneral from '@/views/cluster/components/ClusterGeneral.vue'
-import ClusterNode from '@/views/cluster/components/ClusterNodeList.vue'
-import ClusterNodeDetail from '@/views/cluster/components/ClusterNodeDetail.vue'
-import ClusterNamespace from '@/views/cluster/components/ClusterNamespaceList.vue'
-import ClusterNamespaceDetail from '@/views/cluster/components/ClusterNamespaceDetail.vue'
-import ClusterPersistentVolume from '@/views/cluster/components/ClusterPersistentVolumeList.vue'
-import ClusterPersistentVolumeDetail from '@/views/cluster/components/ClusterPersistentVolumeDetail.vue'
-import ClusterStorageClass from '@/views/cluster/components/ClusterStorageClassList.vue'
-import ClusterStorageClassDetail from '@/views/cluster/components/ClusterStorageClassDetail.vue'
-import ClusterAddonCardList from '@/views/cluster/components/ClusterAddonCardList.vue'
-import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const clusterMapUtils = createNamespacedHelpers('cluster')
 const alertMapUtils = createNamespacedHelpers('alert')
@@ -118,17 +60,7 @@ export default {
     CardTitle,
     Confirm,
     ClusterGeneral,
-    ClusterNode,
-    ClusterNodeDetail,
-    ClusterNamespace,
-    ClusterNamespaceDetail,
-    ClusterPersistentVolume,
-    ClusterPersistentVolumeDetail,
-    ClusterStorageClass,
-    ClusterStorageClassDetail,
-    ClusterAddonCardList,
   },
-  mixins: [checkProjectAuth],
   data() {
     return {
       clusterIdx: null,
@@ -165,7 +97,6 @@ export default {
   async mounted() {
     const result = await this.getDataDetail({ clusterIdx: this.clusterIdx })
     if (!result) {
-      // this.$router.push('/cluster/list')
       this.$router.go(-1)
     }
     console.log('클러스터 데이터: ', this.dataDetail)

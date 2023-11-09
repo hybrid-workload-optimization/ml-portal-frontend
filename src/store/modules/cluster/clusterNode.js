@@ -1,5 +1,5 @@
 import request from '@/lib/request'
-import { api, date } from '@/utils/common'
+import { date } from '@/utils/common'
 import moment from 'moment'
 
 const resource = {
@@ -221,17 +221,18 @@ const resource = {
       const { data } = payload
       const { result } = data
       const dataList = []
-      result.content.forEach(e => {
+      result.forEach(e => {
         const item = {
-          id: e.id,
+          uid: e.uid,
           name: e.name,
           ip: e.ip,
           status: e.status,
           k8sVersion: e.k8sVersion,
-          allocatedCpu: e.allocatedCpu,
-          allocatedMemory: Math.round(e.allocatedMemory / 1024),
-          clusterIdx: e.clusterIdx,
-          role: e.role.length ? e.role.join(', ') : '',
+          allocatedCpu: Math.round(e.usageDto?.cpuCapacity / 1000),
+          allocatedMemory: Math.round(
+            e.usageDto?.memoryCapacity / (1024 * 1024),
+          ), // 단위: m
+          role: e.role?.length ? e.role.join(', ') : '',
         }
         dataList.push(item)
       })
@@ -398,10 +399,7 @@ const resource = {
       // getAllData는 옵션이다. 백엔드 API에 paging 구현이 되어있을 경우, 전체 데이터를 조회하고 싶을 경우 사용한다.
       // common.js 참고
       try {
-        const response = await api.getAllData(
-          request.getClusterNodeListUsingGET,
-          param,
-        )
+        const response = await request.getNodeListUsingGET_1(param)
         // const response = await request.getClusterNodeListUsingGET(payload)
         console.log('getdatalist', response)
         commit('changeDateList', response)
@@ -418,7 +416,7 @@ const resource = {
     async getDetailV2({ commit }, payload) {
       console.log(payload)
       const response = await request.getNodeDetailUsingGET(payload)
-      console.log(response)
+      console.log('getDetailV2', response)
       commit('changeDetailInfoV2', response)
       commit('changePodList', response)
     },

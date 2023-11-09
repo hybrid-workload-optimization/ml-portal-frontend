@@ -1,5 +1,5 @@
 import request from '@/lib/request'
-import { api, date } from '@/utils/common'
+import { date } from '@/utils/common'
 import moment from 'moment'
 
 const resource = {
@@ -7,7 +7,7 @@ const resource = {
   state: {
     dataList: [],
     detailInfo: {
-      id: null,
+      uid: null,
       name: '',
       size: 0,
       accessMode: '',
@@ -58,7 +58,7 @@ const resource = {
     initClusterPersistentVolumeListState(state) {
       state.dataList = []
       state.detailInfo = {
-        id: null,
+        uid: null,
         name: '',
         size: 0,
         accessMode: '',
@@ -79,17 +79,16 @@ const resource = {
       const { data } = payload
       const { result } = data
       const dataList = []
-      result.content.forEach(e => {
+      result.forEach(e => {
         const item = {
-          id: e.id,
+          uid: e.uid,
           name: e.name,
           size: e.size,
           status: e.status,
           accessMode: e.accessMode,
           reclaimPolicy: e.reclaimPolicy,
           claim: e.claim,
-          storageClassName: e.storageClassName,
-          clusterIdx: e.clusterIdx,
+          storageClassName: e.storageClass,
           createdAt: `${date.getDiffFromToday(e.createdAt)}`,
         }
 
@@ -146,10 +145,7 @@ const resource = {
       // getAllData: 페이징정보를 활용하여 순차적으로 전체 데이터를 조회하는 함수 호출
       // getAllData는 옵션이다. 백엔드 API에 paging 구현이 되어있을 경우, 전체 데이터를 조회하고 싶을 경우 사용한다.
       // common.js 참고
-      const response = await api.getAllData(
-        request.getClusterPersistentVolumeListUsingGET,
-        param,
-      )
+      const response = await request.getPersistentVolumeListUsingGET(param)
       // const response = await request.getClusterPersistentVolumeListUsingGET(payload)
       console.log('getdatalist', response)
       commit('changeDateList', response)
@@ -159,6 +155,11 @@ const resource = {
       const response = await request.getClusterPersistentVolumeDetailUsingGET_1(
         payload,
       )
+      commit('changeDetailInfo', response)
+    },
+    //  상세 정보 조회 요청
+    async getDetailV2({ commit }, payload) {
+      const response = await request.getPersistentVolumeDetailUsingGET(payload)
       commit('changeDetailInfo', response)
     },
     //  yaml 정보 조회 요청

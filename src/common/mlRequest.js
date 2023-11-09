@@ -4,7 +4,7 @@ import vm from '@/main'
 import { cookieName } from './consts'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_REQUET_BASE_URL,
+  baseURL: process.env.VUE_APP_AUTOML_API,
   timeout: 300000,
 })
 
@@ -23,9 +23,6 @@ service.interceptors.request.use(
     */
     numberOfCallPending += 1
     const reqUrl = config.url.split('?')[0]
-    // const { method } = config
-    // 개발 환경에서 토큰 셋팅
-
     const refreshToken = cookieHelper.getCookie(cookieName.refresh_token)
     let accessToken = cookieHelper.getCookie(cookieName.access_token)
 
@@ -34,6 +31,7 @@ service.interceptors.request.use(
         1. refresh token 이 없는경우 (현재는 cookie 에 있어 만료되면 자동 삭제)
         2. refresh token 이 만료된 경우
       */
+
     if (!refreshToken) {
       vm.$store.dispatch('loginUser/doLogout')
       vm.$store.commit('alert/openAlert', {
@@ -42,11 +40,15 @@ service.interceptors.request.use(
       })
       vm.$store.commit('resetState')
       vm.$store.commit('loading/closeLoading')
-      vm.$router.push('/ssoLogin').catch(err => {
-        console.error(err)
-      })
+      vm.$router.push('/ssoLogin')
       throw new axios.Cancel('Request canceled.')
     }
+
+    // 토큰 갱신
+    /*
+        1. refresh token 만료되지 않은 경우
+        2. access token 이 없거나 만료된 경우
+      */
 
     // accessToken 만료
     if (!accessToken && !reqUrl.includes('/refresh_token')) {
@@ -77,7 +79,10 @@ service.interceptors.request.use(
         }
       }
     }
+    // console.log('[headers]::', config.headers)
+    // config.headers['access-token'] = encryptedToken
     config.headers.Authorization = accessToken
+    // config.headers.timestamp = reqTimestamp
     vm.$store.commit('loading/showLoading')
 
     // 리프레쉬 토큰으로 액세스토큰 재발급 시 Authorization 값 삭제

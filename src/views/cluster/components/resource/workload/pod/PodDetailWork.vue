@@ -281,7 +281,7 @@ export default {
     ...yamlMapUtils.mapActions(['getWorklistYaml']),
     ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...podMapUtils.mapActions([
-      'getDetail',
+      'getDetailNew',
       'deletePod',
       'getPodYaml',
       'updatePod',
