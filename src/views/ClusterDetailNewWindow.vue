@@ -4,23 +4,11 @@
       :menu-items="menuItems"
       :selected-name="selectedName"
       @mini-change="setMiniStatus"
-      @open="openFullMenu"
-      v-show="!fullMenu"
       ref="lnb"
       v-click-outside="onClickOutside"
     />
-
-    <v-main
-      class="new_win-main-wrapper"
-      :class="{ 'mini-lnb': isMini }"
-      v-show="!fullMenu"
-    >
-      <card-title
-        :title-data="getTitle"
-        :show-buttons="false"
-        show-console
-      ></card-title>
-
+    <v-main class="new_win-main-wrapper" :class="{ 'mini-lnb': isMini }">
+      <card-title :title-data="getTitle" :show-buttons="false" show-console />
       <router-view />
     </v-main>
     <ConsoleModal v-if="consoleModal.open"></ConsoleModal>
@@ -31,6 +19,7 @@
 import ClusterResourceMenu from '@/components/cluster/resource/ClusterResourceMenu.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 import ConsoleModal from '@/views/cluster/components/ConsoleModal.vue'
+import { UserMenuItems } from '@/data/path'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
 import Paths from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
@@ -60,6 +49,7 @@ export default {
     selectedName: '',
     // menuItems: PaaSMenuItems,
     menuItems: [],
+    fullMenuItems: UserMenuItems,
     isMini: false,
     fullMenu: false,
     sse: null,
@@ -229,12 +219,6 @@ export default {
           isMini: miniStatus,
         },
       })
-    },
-    openFullMenu() {
-      this.fullMenu = true
-    },
-    closeFullMenu() {
-      this.fullMenu = false
     },
     onClickOutside() {
       this.$refs.lnb.subMenuItems = []
