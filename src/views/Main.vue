@@ -28,6 +28,7 @@ import Modal from '@/components/modals/Modal.vue'
 import ChangeMyInfo from '@/views/login/ChangeMyInfo.vue'
 import { createNamespacedHelpers } from 'vuex'
 
+const serviceGroupMapUtil = createNamespacedHelpers('serviceGroup')
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 
 export default {
@@ -40,7 +41,11 @@ export default {
       dialog: 'isShowEditModal',
     }),
   },
+  created() {
+    this.initServiceGroup()
+  },
   methods: {
+    ...serviceGroupMapUtil.mapActions(['initServiceGroup']),
     ...loginUserMapUtil.mapMutations(['changeShowEditModal']),
     onClickCloseModal() {
       this.changeShowEditModal(false)
