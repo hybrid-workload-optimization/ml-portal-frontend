@@ -67,6 +67,17 @@ const resource = {
     },
   },
   actions: {
+    getUserInfo: async ({ dispatch }) => {
+      try {
+        const { data } = await request.getUserInfoUsingGET()
+        const { data: userInfo } = await request.getUserDetailUsingGET(
+          data.result.user,
+        )
+        dispatch('initUserInfo', userInfo.result)
+      } catch (error) {
+        console.error(error)
+      }
+    },
     refreshTokenV2: async ({ dispatch }, payload) => {
       try {
         // get refresh
