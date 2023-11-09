@@ -39,7 +39,7 @@ body {
   background-color: $sp-body-bg-color;
   .sp-app-layout {
     // border: 1px solid red;
-    max-width: 1920px;
+    max-width: 100%;
     margin: 0 auto;
     background-color: #f5f7f8 !important;
 

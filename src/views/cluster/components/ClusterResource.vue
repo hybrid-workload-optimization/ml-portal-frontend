@@ -19,92 +19,6 @@
               v-else-if="selectResource === 'Catalog' && !$route.query.detail"
             />
 
-            <cluster-node
-              v-else-if="selectResource === 'Node' && !$route.query.detail"
-            />
-            <cluster-node-detail
-              v-else-if="selectResource === 'Node' && $route.query.detail"
-            />
-            <cluster-namespace
-              v-else-if="selectResource === 'Namespace' && !$route.query.detail"
-            />
-            <cluster-namespace-detail
-              v-else-if="selectResource === 'Namespace' && $route.query.detail"
-            />
-            <cluster-persistent-volume
-              v-else-if="
-                selectResource === 'Persistent Volume' && !$route.query.detail
-              "
-            />
-            <cluster-persistent-volume-detail
-              v-else-if="
-                selectResource === 'Persistent Volume' && $route.query.detail
-              "
-            />
-            <cluster-storage-class
-              v-else-if="
-                selectResource === 'Storage Class' && !$route.query.detail
-              "
-            />
-            <cluster-storage-class-detail
-              v-else-if="
-                selectResource === 'Storage Class' && $route.query.detail
-              "
-            />
-            <deployment-list
-              v-else-if="
-                selectResource === 'Deployment' && !$route.query.detail
-              "
-            />
-            <deployment-detail
-              v-else-if="selectResource === 'Deployment' && $route.query.detail"
-            />
-            <stateful-set-list
-              v-else-if="
-                selectResource === 'Stateful Set' && !$route.query.detail
-              "
-            />
-            <stateful-set-detail
-              v-else-if="
-                selectResource === 'Stateful Set' && $route.query.detail
-              "
-            />
-            <pod-list
-              v-else-if="selectResource === 'Pod' && !$route.query.detail"
-            />
-            <pod-detail
-              v-else-if="selectResource === 'Pod' && $route.query.detail"
-            />
-            <cron-job-list
-              v-else-if="selectResource === 'Cron Job' && !$route.query.detail"
-            />
-            <cron-job-detail
-              v-else-if="selectResource === 'Cron Job' && $route.query.detail"
-            />
-            <job-list
-              v-else-if="selectResource === 'Job' && !$route.query.detail"
-            />
-            <job-detail
-              v-else-if="selectResource === 'Job' && $route.query.detail"
-            />
-            <replica-set-list
-              v-else-if="
-                selectResource === 'Replica Set' && !$route.query.detail
-              "
-            />
-            <replica-set-detail
-              v-else-if="
-                selectResource === 'Replica Set' && $route.query.detail
-              "
-            />
-            <daemon-set-list
-              v-else-if="
-                selectResource === 'Daemon Set' && !$route.query.detail
-              "
-            />
-            <daemon-set-detail
-              v-else-if="selectResource === 'Daemon Set' && $route.query.detail"
-            />
             <service-list
               v-else-if="selectResource === 'Service' && !$route.query.detail"
             />
@@ -158,30 +72,6 @@
 import ClusterOverview from '@/views/cluster/components/ClusterOverview.vue'
 import ClusterCatalog from '@/views/cluster/components/ClusterAddonCardList.vue'
 
-import ClusterNode from '@/views/cluster/components/resource/cluster/ClusterNodeList.vue'
-import ClusterNodeDetail from '@/views/cluster/components/resource/cluster/ClusterNodeDetail.vue'
-import ClusterNamespace from '@/views/cluster/components/resource/cluster/ClusterNamespaceList.vue'
-import ClusterNamespaceDetail from '@/views/cluster/components/resource/cluster/ClusterNamespaceDetail.vue'
-import ClusterPersistentVolume from '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeList.vue'
-import ClusterPersistentVolumeDetail from '@/views/cluster/components/resource/cluster/ClusterPersistentVolumeDetail.vue'
-import ClusterStorageClass from '@/views/cluster/components/resource/cluster/ClusterStorageClassList.vue'
-import ClusterStorageClassDetail from '@/views/cluster/components/resource/cluster/ClusterStorageClassDetail.vue'
-
-import DeploymentList from '@/views/cluster/components/resource/workload/deployment/DeploymentList.vue'
-import DeploymentDetail from '@/views/cluster/components/resource/workload/deployment/DeploymentDetail.vue'
-import StatefulSetList from '@/views/cluster/components/resource/workload/stateful-set/StatefulSetList.vue'
-import StatefulSetDetail from '@/views/cluster/components/resource/workload/stateful-set/StatefulSetDetail.vue'
-import PodList from '@/views/cluster/components/resource/workload/pod/PodList.vue'
-import PodDetail from '@/views/cluster/components/resource/workload/pod/PodDetail.vue'
-import CronJobList from '@/views/cluster/components/resource/workload/cron-job/CronJobList.vue'
-import CronJobDetail from '@/views/cluster/components/resource/workload/cron-job/CronJobDetail.vue'
-import JobList from '@/views/cluster/components/resource/workload/job/JobList.vue'
-import JobDetail from '@/views/cluster/components/resource/workload/job/JobDetail.vue'
-import ReplicaSetList from '@/views/cluster/components/resource/workload/replica-set/ReplicaSetList.vue'
-import ReplicaSetDetail from '@/views/cluster/components/resource/workload/replica-set/ReplicaSetDetail.vue'
-import DaemonSetList from '@/views/cluster/components/resource/workload/daemon-set/DaemonSetList.vue'
-import DaemonSetDetail from '@/views/cluster/components/resource/workload/daemon-set/DaemonSetDetail.vue'
-
 import ServiceList from '@/views/cluster/components/resource/networking/service/ServiceList.vue'
 import ServiceDetail from '@/views/cluster/components/resource/networking/service/ServiceDetail.vue'
 import IngressList from '@/views/cluster/components/resource/networking/ingress/IngressList.vue'
@@ -207,28 +97,6 @@ export default {
     ClusterResourceNav,
     ClusterOverview,
     ClusterCatalog,
-    ClusterNode,
-    ClusterNodeDetail,
-    ClusterNamespace,
-    ClusterNamespaceDetail,
-    ClusterPersistentVolume,
-    ClusterPersistentVolumeDetail,
-    ClusterStorageClass,
-    ClusterStorageClassDetail,
-    DeploymentList,
-    DeploymentDetail,
-    StatefulSetList,
-    StatefulSetDetail,
-    PodList,
-    PodDetail,
-    CronJobList,
-    CronJobDetail,
-    JobList,
-    JobDetail,
-    ReplicaSetList,
-    ReplicaSetDetail,
-    DaemonSetList,
-    DaemonSetDetail,
     ServiceList,
     ServiceDetail,
     IngressList,

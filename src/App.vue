@@ -26,6 +26,7 @@ import { createNamespacedHelpers } from 'vuex'
 import VAlert from '@/components/molcule/Alert.vue'
 import ClusterDetailNewWindow from '@/views/ClusterDetailNewWindow.vue'
 
+const serviceGroupMapUtil = createNamespacedHelpers('serviceGroup')
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const alertMapUtils = createNamespacedHelpers('alert')
 
@@ -59,9 +60,11 @@ export default {
   },
 
   created() {
+    this.initServiceGroup()
     // window.addEventListener('beforeunload', this.closeBrowserHandler)
   },
   methods: {
+    ...serviceGroupMapUtil.mapActions(['initServiceGroup']),
     ...alertMapUtils.mapMutations(['openAlert', 'closeAlert']),
     setMiniStatus(miniStatus) {
       this.isMini = miniStatus
@@ -86,7 +89,7 @@ export default {
     /* 페이지 첫 로드 시 해상도 감지하여 1366 이하일 때는 LNB mini 상태로 시작 */
     if (window.innerWidth <= '1366') {
       this.setMiniStatus(true)
-      this.$refs.lnb.mini = true
+      if (this.$refs?.lnb?.mini) this.$refs.lnb.mini = true
     }
   },
 }

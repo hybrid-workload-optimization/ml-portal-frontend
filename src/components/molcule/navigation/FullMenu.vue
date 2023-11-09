@@ -15,7 +15,7 @@
             src="Strato logo.png"
           ></sp-image>
 
-          <span class="title-text">CoMP Portal</span>
+          <span class="title-text">ML Workload Portal</span>
         </div>
       </div>
 
@@ -87,6 +87,7 @@ export default {
   max-width: 100%;
   height: 100vh;
   max-height: 100%;
+  padding-top: 68px;
   z-index: 999;
   // background-color: $sp-primary;
   background-color: white;

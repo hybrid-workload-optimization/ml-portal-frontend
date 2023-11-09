@@ -101,11 +101,6 @@ export default {
           value: 'status',
         },
         {
-          text: 'K8S Version',
-          align: 'center',
-          value: 'k8sVersion',
-        },
-        {
           text: 'Allocated CPU',
           align: 'center',
           value: 'allocatedCpu',
@@ -182,15 +177,15 @@ export default {
     },
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { id } = data
-      if (id) {
+      const { name } = data
+      if (name) {
         // this.$router.replace({
         //   name: this.$route.name,
         //   // hash: '#node',
         //   hash: this.$route.hash,
         //   query: { clusterNodeId: id, detail: true },
         // })
-        this.$router.push(`/cluster/detail/${this.clusterIdx}/node/${id}`)
+        this.$router.push(`/cluster/detail/${this.clusterIdx}/node/${name}`)
       }
     },
     getChipColor(statusText) {

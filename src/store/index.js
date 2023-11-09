@@ -27,6 +27,7 @@ import config from '@/store/modules/config'
 import ml from '@/store/modules/ml'
 import automl from '@/store/modules/automl'
 import selectButton from '@/store/modules/selectButton'
+import serviceGroup from '@/store/modules/serviceGroup'
 import _ from 'lodash'
 
 Vue.use(Vuex)
@@ -57,6 +58,7 @@ const initialStoreModules = {
   ...config,
   ...ml,
   ...automl,
+  serviceGroup,
 }
 
 export default new Vuex.Store({
