@@ -56,8 +56,7 @@ export default {
     },
     onClikMenu(menuItem) {
       if (menuItem.menuUrl) {
-        console.log(menuItem.menuUrl)
-        // window.location.href = menuItem.menuUrl
+        window.location.href = menuItem.menuUrl
         this.closeFullMenu()
       }
     },
