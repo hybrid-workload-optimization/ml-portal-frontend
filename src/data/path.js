@@ -138,6 +138,22 @@ export const UserMenuItems = [
     menuIdx: 1200000,
     children: [],
   },
+  {
+    icon: 'md:receipt_long',
+    alt: 'Open API Management',
+    menuName: 'Open API Management',
+    menuUrl: `${process.env.VUE_APP_OPEN_API_ADMIN}`,
+    menuIdx: 1400000,
+    children: [],
+  },
+  {
+    icon: 'md:receipt_long',
+    alt: 'Open API Management User',
+    menuName: 'Open API Management User',
+    menuUrl: `${process.env.VUE_APP_OPEN_API_USER}`,
+    menuIdx: 1500000,
+    children: [],
+  },
 ]
 
 export default UserMenuItems
