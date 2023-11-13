@@ -25,7 +25,7 @@ module.exports = {
       // },
       '/comp-b-svc': {
         target: process.env.VUE_APP_BASE_API,
-        pathRewrite: { '^/comp-b-svc': '/' },
+        pathRewrite: { '^/comp-b-svc': '' },
         changeOrigin: true,
       },
       '/auth': {

@@ -11,22 +11,6 @@ const resource = [
     component: () => import('@/views/Main'),
     // redirect: '/cluster/list',
     children: [
-      // {
-      //   path: 'list',
-      //   name: 'clusterList',
-      //   component: () => import('@/views/cluster/ClusterList'),
-      //   meta: {
-      //     isAuthRequired,
-      //   },
-      // },
-      // {
-      //   path: 'detail/:id',
-      //   name: 'Cluster Detail',
-      //   component: () => import('@/views/cluster/ClusterDetail'),
-      //   meta: {
-      //     isAuthRequired,
-      //   },
-      // },
       {
         path: 'new',
         name: 'clusterNew',
@@ -59,22 +43,6 @@ const resource = [
           isAuthRequired,
         },
       },
-      // {
-      //   path: 'detail/:id/:resource',
-      //   name: 'Cluster Detail Resource',
-      //   component: () => import('@/views/cluster/ClusterDetail_v2'),
-      //   meta: {
-      //     isAuthRequired,
-      //   },
-      // },
-      // {
-      //   path: 'detail/:id',
-      //   name: 'Cluster Detail',
-      //   component: () => import('@/views/cluster/ClusterDetail_v2'),
-      //   meta: {
-      //     isAuthRequired,
-      //   },
-      // },
       ...compute,
       ...workload,
       ...network,
@@ -121,40 +89,6 @@ const resource = [
           isAuthRequired,
         },
       },
-      {
-        path: 'detail/:id/persistent-volume-claim/:rid',
-        name: '[ersistentVolumeClaimDetailRid',
-        component: () =>
-          import(
-            '@/views/cluster/components/resource/config/persistent-volume-claim/PersistentVolumeClaimDetail.vue'
-          ),
-        meta: {
-          isAuthRequired,
-        },
-      },
-      {
-        path: 'detail/:id/config-map/:rid',
-        name: 'configMapDetailRid',
-        component: () =>
-          import(
-            '@/views/cluster/components/resource/config/config-map/ConfigMapDetail.vue'
-          ),
-        meta: {
-          isAuthRequired,
-        },
-      },
-      {
-        path: 'detail/:id/secret/:rid',
-        name: 'Cluster Detail Secret Detail',
-        component: () =>
-          import(
-            '@/views/cluster/components/resource/config/secret/SecretDetail.vue'
-          ),
-        meta: {
-          isAuthRequired,
-        },
-      },
-
       // workload tab
       {
         path: 'detail/:id/workload',
@@ -162,18 +96,6 @@ const resource = [
         component: () =>
           import(
             '@/views/cluster/components/resource/workload/workload/WorkloadList.vue'
-          ),
-        meta: {
-          isAuthRequired,
-        },
-      },
-
-      {
-        path: 'detail/:id/node/:namespace/:name',
-        name: 'Cluster Detail Node Detail',
-        component: () =>
-          import(
-            '@/views/cluster/components/resource/cluster/ClusterNodeDetail.vue'
           ),
         meta: {
           isAuthRequired,

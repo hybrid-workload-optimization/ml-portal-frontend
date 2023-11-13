@@ -4,7 +4,7 @@
     <div class="left-nav-wrapper">
       <slot name="side-bar"></slot>
 
-      <div class="title-wrapper">
+      <router-link to="/" class="title-wrapper">
         <sp-image
           class="logo-image"
           :width="48"
@@ -13,10 +13,10 @@
           src="Strato logo.png"
         />
         <span class="title-text">CoMP Portal</span>
-      </div>
+      </router-link>
       <div class="full-menu-btn">
         <a
-          v-show="!showFullMenu"
+          v-show="!isFullMenu"
           class="burger-button"
           @click="openFullMenu"
           @keypress="openFullMenu"
@@ -25,6 +25,7 @@
           <span class="burger-text">서비스</span>
         </a>
       </div>
+      <!-- 즐겨찾기 주석처리 23.11.08 -->
       <!-- <sp-button icon class="fav-button" @click="toggleFav"
           ><v-icon class="material-icons-round" v-if="!isFav"
             >star_outline</v-icon
@@ -74,6 +75,7 @@
           class="right-nav__button--monitoring"
           depressed
           elevation="0"
+          text
           @click="openMonitoringPage"
         >
           <sp-image
@@ -81,6 +83,7 @@
             src="cluster/monitor-dashboard.svg"
             width="24"
             height="24"
+            alt="monitoring dashboard"
           />
         </sp-button>
         <console-with-button v-if="isClusterDetail"></console-with-button>
@@ -158,6 +161,15 @@
       <!-- 유저 아바타 부분 종료 -->
     </div>
     <!-- 상단 오른쪽 부분 end -->
+    <!-- 서비스 풀 메뉴 -->
+    <new-full-menu
+      :class="{ open: isFullMenu }"
+      @close="closeFullMenu"
+      v-show="isFullMenu"
+      :is-open="isFullMenu"
+      :menu-items="fullMenuItems"
+      :show-full-menu="isFullMenu"
+    />
   </v-row>
 </template>
 
@@ -167,6 +179,8 @@ import UserAvatar from '@/components/molcule/UserAvatar.vue'
 import ConsoleWithButton from '@/views/cluster/components/ConsoleWithButton.vue'
 import { createNamespacedHelpers } from 'vuex'
 import vClickOutside from 'v-click-outside'
+import NewFullMenu from '@/components/molcule/navigation/NewFullMenu.vue'
+import { UserMenuItems } from '@/data/path'
 
 // const tag = '[Subheader]'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
@@ -182,11 +196,9 @@ export default {
     UserAvatar,
     Notification,
     ConsoleWithButton,
+    NewFullMenu,
   },
-  props: {
-    pagePath: Object,
-    showFullMenu: { type: Boolean, default: false },
-  },
+  props: { pagePath: Object },
   data: () => ({
     // isShowNotification: false,
     isAdmin: false,
@@ -194,6 +206,8 @@ export default {
     isClusterNewWindow: false,
     userName: 'Gil-dong, Hong',
     accessRoleName: 'System Admin',
+    isFullMenu: false,
+    fullMenuItems: UserMenuItems,
   }),
   computed: {
     /*
@@ -265,7 +279,10 @@ export default {
       this.isFav = !this.isFav
     },
     openFullMenu() {
-      this.$emit('open', true)
+      this.isFullMenu = true
+    },
+    closeFullMenu() {
+      this.isFullMenu = false
     },
     onClickOutside() {
       this.updateShowNotification(false)

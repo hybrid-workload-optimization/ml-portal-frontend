@@ -146,13 +146,17 @@ export default {
         itemKey: 'secretIdx',
       },
       clusterIdx: null,
+      name: null,
+      namespace: null,
+      kind: 'Secret',
     }
   },
 
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.secretIdx = this.$route.params.rid
-    await this.getDetail({ secretIdx: this.secretIdx })
+    this.name = this.$route.params.name
+    this.namespace = this.$route.params.namespace
+    await this.getDetail(this.getParameter)
 
     // mixin
     this.checkProjectAuth(this.detailInfo.projectIdx)
@@ -165,6 +169,14 @@ export default {
     titleData() {
       return {
         title: `${this.detailInfo.name}`,
+      }
+    },
+    getParameter() {
+      return {
+        clusterIdx: this.clusterIdx,
+        name: this.name,
+        namespace: this.namespace,
+        kind: this.kind,
       }
     },
   },
@@ -185,9 +197,7 @@ export default {
       //   text = this.detailInfo.yaml
       // } else {
       try {
-        const response = await this.getYaml({
-          secretIdx: this.secretIdx,
-        })
+        const response = await this.getYaml(this.getParameter)
         text = response.data.result
       } catch (error) {
         console.log(error)
@@ -212,9 +222,7 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteSecret({
-          secretIdx: this.secretIdx,
-        })
+        const response = await this.deleteSecret(this.getParameter)
 
         if (response.status === 200) {
           // 삭제 성공 시
@@ -241,7 +249,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        secretIdx: this.secretIdx,
+        ...this.getParameter,
         yaml: value.encodedContent,
       }
 
@@ -250,7 +258,7 @@ export default {
         const response = await this.updateSecret(param)
         if (response.status === 200) {
           this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
-          this.getDetail({ secretIdx: this.secretIdx })
+          this.getDetail(this.getParameter)
           this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
