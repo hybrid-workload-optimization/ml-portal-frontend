@@ -118,7 +118,6 @@ router.beforeEach(async (to, from, next) => {
     } else {
       await store.dispatch('loginUser/getUserInfo')
       const userInfo = store.getters['loginUser/userInfo']
-      console.log(userInfo)
       if (!userInfo.userId) {
         const userInfoResult = await store.dispatch('loginUser/doLogin')
         if (!userInfoResult) {
@@ -153,11 +152,8 @@ router.beforeResolve(async (to, from, next) => {
   }
 
   function getViewablePath() {
-    console.log('[meta]', to.meta)
     if (to.meta.isAuthRequired) {
-      console.log(store.state)
       const { flatMenuList } = store.state.loginUser
-      console.log(flatMenuList)
       let menuItem = {}
       const viewablePath = flatMenuList.findIndex(item => {
         const menuSplit = item.menuUrl?.split('/')

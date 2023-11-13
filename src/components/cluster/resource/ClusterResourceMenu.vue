@@ -107,7 +107,6 @@ export default {
   computed: {
     ...loginUserMapUtil.mapState({
       userMenuList: 'menuList',
-      favoriteList: 'favoriteList',
       userInfo: 'userInfo',
     }),
     selectedMenu() {
@@ -123,11 +122,6 @@ export default {
   methods: {
     sendTabName(tabName) {
       console.log(tabName)
-      // const resourceHash = `#${tabName}`
-      // this.$router.replace({
-      //   path: `/cluster/detail/${this.$route.params.id}`,
-      //   hash: resourceHash,
-      // })
       const convertTabName = tabName.toLowerCase().replace(/\s+/g, '-')
       this.$router.push({
         path: `/cluster/detail/${this.$route.params.id}/${convertTabName}`,

@@ -75,6 +75,7 @@
           class="right-nav__button--monitoring"
           depressed
           elevation="0"
+          text
           @click="openMonitoringPage"
         >
           <sp-image
@@ -82,6 +83,7 @@
             src="cluster/monitor-dashboard.svg"
             width="24"
             height="24"
+            alt="monitoring dashboard"
           />
         </sp-button>
         <console-with-button v-if="isClusterDetail"></console-with-button>
