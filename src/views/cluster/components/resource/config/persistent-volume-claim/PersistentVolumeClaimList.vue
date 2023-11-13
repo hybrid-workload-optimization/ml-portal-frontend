@@ -184,7 +184,6 @@ export default {
     getParameter() {
       return {
         clusterIdx: this.$route.params.id,
-        namespaceIdx: this.firstValue,
       }
     },
   },
@@ -241,18 +240,10 @@ export default {
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
       console.log('data', data)
-      const { persistentVolumeClaimIdx } = data
-      if (persistentVolumeClaimIdx) {
-        // this.$router.replace({
-        //   name: this.$route.name,
-        //   hash: '#resource',
-        //   params: {
-        //     id: persistentVolumeClaimIdx,
-        //   },
-        //   query: { detail: true },
-        // })
+      const { namespace, name } = data
+      if (namespace && name) {
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/persistent-volume-claim/${persistentVolumeClaimIdx}`,
+          `/cluster/detail/${this.clusterIdx}/persistent-volume-claim//${namespace}/${name}`,
         )
       }
     },

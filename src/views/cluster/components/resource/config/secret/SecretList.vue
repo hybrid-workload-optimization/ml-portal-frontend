@@ -168,7 +168,6 @@ export default {
     getParameter() {
       return {
         clusterIdx: this.$route.params.id,
-        namespaceIdx: this.firstValue,
       }
     },
   },
@@ -224,19 +223,11 @@ export default {
 
     // 상세 페이지로 이동 요청
     moveToDetailPage(data) {
-      const { secretIdx } = data
+      const { name, namespace } = data
       console.log('secret info === ', data)
-      if (secretIdx) {
-        // this.$router.replace({
-        //   name: this.$route.name,
-        //   hash: '#resource',
-        //   params: {
-        //     id: secretIdx,
-        //   },
-        //   query: { detail: true },
-        // })
+      if (name && namespace) {
         this.$router.push(
-          `/cluster/detail/${this.clusterIdx}/secret/${secretIdx}`,
+          `/cluster/detail/${this.clusterIdx}/secret/${namespace}/${name}`,
         )
       }
     },

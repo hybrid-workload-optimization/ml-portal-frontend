@@ -68,7 +68,7 @@ export default {
   },
   async created() {
     await this.getNotificationList()
-    await this.getFavoriteInfo()
+    // await this.getFavoriteInfo()
     this.setMenuList()
   },
   watch: {
