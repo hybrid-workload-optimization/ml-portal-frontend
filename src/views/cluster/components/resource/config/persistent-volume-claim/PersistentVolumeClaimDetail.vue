@@ -160,38 +160,6 @@ export default {
         },
       },
       detail: {},
-      /* headers: [
-        {
-          text: 'Name',
-          align: 'center',
-          value: 'name',
-        },
-        {
-          text: 'Namespace',
-          align: 'center',
-          value: 'namespace',
-        },
-        {
-          text: 'Label',
-          align: 'center',
-          value: 'label',
-        },
-        {
-          text: 'Node',
-          align: 'center',
-          value: 'node',
-        },
-        {
-          text: 'Status',
-          align: 'center',
-          value: 'status',
-        },
-        {
-          text: 'Created At',
-          align: 'center',
-          value: 'createAt',
-        },
-      ], */
       options: {
         hideFooter: true,
         hideHeader: false,
@@ -205,14 +173,21 @@ export default {
         itemKey: 'persistentVolumeClaimIdx',
       },
       clusterIdx: null,
+      name: null,
+      namespace: null,
+      kind: 'PersistentVolumeClaim',
     }
   },
 
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.persistentVolumeClaimIdx = this.$route.params.rid
+    this.name = this.$route.params.name
+    this.namespace = this.$route.params.namespace
     await this.getDetail({
-      persistentVolumeClaimIdx: this.persistentVolumeClaimIdx,
+      kind: this.kind,
+      clusterIdx: this.clusterIdx,
+      name: this.name,
+      namespace: this.namespace,
     })
 
     // mixin

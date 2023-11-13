@@ -1,6 +1,6 @@
 <template>
   <sp-button depressed elevation="0" icon @click="openConsole">
-    <v-icon dense color="#5B6C82">terminal</v-icon>
+    <v-icon dense color="#fff">terminal</v-icon>
   </sp-button>
 </template>
 

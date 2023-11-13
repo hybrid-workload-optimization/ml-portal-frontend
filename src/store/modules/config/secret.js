@@ -1,5 +1,5 @@
 import request from '@/lib/request'
-import { api, date } from '@/utils/common'
+import { date } from '@/utils/common'
 import moment from 'moment'
 
 const resource = {
@@ -56,8 +56,7 @@ const resource = {
 
       const { result } = data
       const dataList = []
-      result.content.forEach(e => {
-        console.log('e', e)
+      result.forEach(e => {
         const item = {
           secretIdx: e.id,
           name: e.name,
@@ -116,28 +115,23 @@ const resource = {
     // Secret 리스트 정보 조회 요청
     async getList({ commit }, payload) {
       const param = {
-        page: 1,
-        size: 100,
-        sort: 'desc',
-        property: 'secretIdx',
         clusterIdx: payload.clusterIdx,
-        namespaceIdx: payload.namespaceIdx,
+        namespace: payload.namespace,
+        name: payload.name,
+        kind: payload.kind,
       }
 
       // getAllData: 페이징정보를 활용하여 순차적으로 전체 데이터를 조회하는 함수 호출
       // getAllData는 옵션이다. 백엔드 API에 paging 구현이 되어있을 경우, 전체 데이터를 조회하고 싶을 경우 사용한다.
       // common.js 참고
-      const response = await api.getAllData(
-        request.getSecretListUsingGET,
-        param,
-      )
+      const response = await request.getSecretListUsingGET(param)
 
       commit('changeList', response)
     },
 
     // Secret 상세 정보 조회 요청
     async getDetail({ commit }, payload) {
-      const response = await request.getSecretUsingGET(payload)
+      const response = await request.getSecretDetailUsingPOST(payload)
       commit('changeDetailInfo', response)
     },
 

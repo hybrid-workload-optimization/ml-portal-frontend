@@ -1,25 +1,12 @@
 <template>
   <div>
-    <sub-header
-      :pagePath="getPagePath"
-      @open="openFullMenu"
-      :show-full-menu="fullMenu"
-    />
+    <sub-header :pagePath="getPagePath" />
     <!-- legacy Full-Menu -->
     <!-- <full-menu
       @close="closeFullMenu"
       v-show="fullMenu"
       :menuItems="menuItems"
     /> -->
-
-    <new-full-menu
-      :class="{ open: fullMenu }"
-      @close="closeFullMenu"
-      v-show="fullMenu"
-      :is-open="fullMenu"
-      :menu-items="fullMenuItems"
-      :show-full-menu="fullMenu"
-    />
 
     <side-drawer
       :menu-items="menuItems"
@@ -38,8 +25,6 @@
 <script>
 import SubHeader from '@/components/molcule/navigation/SubHeader.vue'
 import SideDrawer from '@/components/molcule/navigation/SideDrawerMenu.vue'
-import NewFullMenu from '@/components/molcule/navigation/NewFullMenu.vue'
-import { UserMenuItems } from '@/data/path'
 // import { PaaSMenuItems } from '@/assets/data/menuItems'
 import Paths, { menuPath } from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
@@ -59,7 +44,6 @@ export default {
   },
   components: {
     SubHeader,
-    NewFullMenu,
     SideDrawer,
   },
 
@@ -68,9 +52,7 @@ export default {
     selectedName: '',
     // menuItems: PaaSMenuItems,
     menuItems: [],
-    fullMenuItems: UserMenuItems,
     isMini: false,
-    fullMenu: false,
     sse: null,
   }),
   computed: {
@@ -86,7 +68,7 @@ export default {
   },
   async created() {
     await this.getNotificationList()
-    await this.getFavoriteInfo()
+    // await this.getFavoriteInfo()
     this.setMenuList()
   },
   watch: {
@@ -131,7 +113,7 @@ export default {
       }
     },
     setMenuList() {
-      console.log(this.userMenuList)
+      // console.log(this.userMenuList)
       const menuList = menuPath.map(menu => {
         menu.icon = this.setMenuIcon(menu.menuIdx)
         return menu
@@ -193,9 +175,6 @@ export default {
           isMini: miniStatus,
         },
       })
-    },
-    openFullMenu() {
-      this.fullMenu = true
     },
     closeFullMenu() {
       this.fullMenu = false

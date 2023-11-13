@@ -4,23 +4,11 @@
       :menu-items="menuItems"
       :selected-name="selectedName"
       @mini-change="setMiniStatus"
-      @open="openFullMenu"
-      v-show="!fullMenu"
       ref="lnb"
       v-click-outside="onClickOutside"
     />
-
-    <v-main
-      class="new_win-main-wrapper"
-      :class="{ 'mini-lnb': isMini }"
-      v-show="!fullMenu"
-    >
-      <card-title
-        :title-data="getTitle"
-        :show-buttons="false"
-        show-console
-      ></card-title>
-
+    <v-main class="new_win-main-wrapper" :class="{ 'mini-lnb': isMini }">
+      <card-title :title-data="getTitle" :show-buttons="false" show-console />
       <router-view />
     </v-main>
     <ConsoleModal v-if="consoleModal.open"></ConsoleModal>
@@ -31,13 +19,10 @@
 import ClusterResourceMenu from '@/components/cluster/resource/ClusterResourceMenu.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetailResource.vue'
 import ConsoleModal from '@/views/cluster/components/ConsoleModal.vue'
-// import { PaaSMenuItems } from '@/assets/data/menuItems'
+import { UserMenuItems } from '@/data/path'
 import Paths from '@/assets/data/paths'
 import vClickOutside from 'v-click-outside' // lnb 외부에서 클릭 시 lnb 접기 위한 외부 요소 클릭 감지 라이브러리
 import { createNamespacedHelpers } from 'vuex'
-// import tokenHelper from '@/lib/tokenHelper'
-// import { fetchEventSource } from '@microsoft/fetch-event-source'
-// import request from '@/lib/request'
 import { SET_MINI } from '../store/modules/sideNav'
 
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
@@ -60,6 +45,7 @@ export default {
     selectedName: '',
     // menuItems: PaaSMenuItems,
     menuItems: [],
+    fullMenuItems: UserMenuItems,
     isMini: false,
     fullMenu: false,
     sse: null,
@@ -68,7 +54,6 @@ export default {
   computed: {
     ...loginUserMapUtil.mapState({
       userMenuList: 'menuList',
-      favoriteList: 'favoriteList',
       userInfo: 'userInfo',
     }),
     ...clusterMapUtils.mapGetters(['dataDetail']), // 상세
@@ -97,7 +82,7 @@ export default {
   },
   async created() {
     await this.getNotificationList()
-    await this.getFavoriteInfo()
+    // await this.getFavoriteInfo()
     this.setMenuList()
     // 상세 초기화
     this.initDataDetail()
@@ -121,7 +106,6 @@ export default {
   },
   methods: {
     ...notificationMapUtil.mapActions({ getNotiList: 'getDataList' }),
-    ...loginUserMapUtil.mapActions(['getFavoriteInfo']),
     ...clusterMapUtils.mapActions(['getDataDetail']),
     ...clusterMapUtils.mapMutations(['initDataDetail']),
 
@@ -129,33 +113,9 @@ export default {
       this.getNotiList()
     },
     setSseConfig() {
-      // TODO 추후 /api/v1/alert/receive 로 변경
-      // const reqUrl = '/api/v1/alert/test'
-      // const reqTimestamp = new Date().getTime()
-      // const encryptedToken = tokenHelper.encrypt(
-      //   this.$store.state.loginUser.accessToken,
-      //   reqUrl,
-      //   'get',
-      //   reqTimestamp,
-      // )
       try {
         // axios: event stream 지원x
         // eventSource: header 지원x
-        // const scope = this
-        // fetchEventSource(reqUrl, {
-        //   headers: {
-        //     'access-token': encryptedToken,
-        //     timestamp: reqTimestamp,
-        //   },
-        //   onmessage(message) {
-        //     const msg = JSON.parse(message.data)
-        //     scope.$store.commit('notification/changeNoti', msg)
-        //   },
-        //   onerror(error) {
-        //     console.error(error)
-        //     throw error
-        //   },
-        // })
         this.sse = new EventSource(
           `${process.env.VUE_APP_SERVICE_NAME}/sse/v1/alert/receive?userId=${this.userInfo.userId}`,
         )
@@ -185,14 +145,14 @@ export default {
         return menu
       })
 
-      // 즐겨찾기 (임시)
-      menuList.unshift({
-        icon: 'star_border',
-        menuName: 'Favorite',
-        menuIdx: 999999,
-        menuUrl: '',
-        subMenuList: this.favoriteList,
-      })
+      // // 즐겨찾기 (임시)
+      // menuList.unshift({
+      //   icon: 'star_border',
+      //   menuName: 'Favorite',
+      //   menuIdx: 999999,
+      //   menuUrl: '',
+      //   subMenuList: this.favoriteList,
+      // })
       this.menuItems = menuList
     },
     setMenuIcon(menuIdx) {
@@ -230,25 +190,10 @@ export default {
         },
       })
     },
-    openFullMenu() {
-      this.fullMenu = true
-    },
-    closeFullMenu() {
-      this.fullMenu = false
-    },
     onClickOutside() {
       this.$refs.lnb.subMenuItems = []
     },
   },
-  // mounted() {
-  //   // console.error('after login mounted')
-  //   /* 페이지 첫 로드 시 해상도 감지하여 1366 이하일 때는 LNB mini 상태로 시작 */
-  //   if (window.innerWidth <= '1366') {
-  //     this.setMiniStatus(true)
-  //     this.$refs.lnb.mini = true
-  //   }
-  //   this.setSseConfig()
-  // },
 }
 </script>
 

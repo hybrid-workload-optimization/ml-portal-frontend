@@ -138,13 +138,22 @@ export default {
         itemKey: 'configMapIdx',
       },
       clusterIdx: null,
+      name: null,
+      namespace: null,
+      kind: 'ConfigMap',
     }
   },
 
   async created() {
     this.clusterIdx = this.$route.params.id
-    this.configMapIdx = this.$route.params.rid
-    await this.getDetail({ configMapIdx: this.configMapIdx })
+    this.name = this.$route.params.name
+    this.namespace = this.$route.params.namespace
+    await this.getDetail({
+      kind: this.kind,
+      clusterIdx: this.clusterIdx,
+      name: this.name,
+      namespace: this.namespace,
+    })
 
     // mixin
     this.checkProjectAuth(this.detailInfo.projectIdx)
@@ -157,6 +166,14 @@ export default {
     titleData() {
       return {
         title: `${this.detailInfo.name}`,
+      }
+    },
+    parameters() {
+      return {
+        kind: this.kind,
+        clusterIdx: this.clusterIdx,
+        name: this.name,
+        namespace: this.namespace,
       }
     },
   },
@@ -177,9 +194,7 @@ export default {
       //   text = this.detailInfo.yaml
       // } else {
       try {
-        const response = await this.getYaml({
-          configMapIdx: this.configMapIdx,
-        })
+        const response = await this.getYaml(this.parameters)
         text = response.data.result
       } catch (error) {
         console.log(error)
@@ -204,9 +219,7 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.deleteConfigMap({
-          configMapIdx: this.configMapIdx,
-        })
+        const response = await this.deleteConfigMap(this.parameters)
 
         if (response.status === 200) {
           // 삭제 성공 시
@@ -235,7 +248,7 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        configMapIdx: this.configMapIdx,
+        ...this.parameters,
         yaml: value.encodedContent,
       }
 
@@ -244,7 +257,7 @@ export default {
         const response = await this.updateConfigMap(param)
         if (response.status === 200) {
           this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
-          this.getDetail({ configMapIdx: this.configMapIdx })
+          this.getDetail(this.parameters)
           this.closeModal()
         } else {
           this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
