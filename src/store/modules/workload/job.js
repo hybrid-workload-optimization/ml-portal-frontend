@@ -229,7 +229,7 @@ const resource = {
     },
     // job 수정 요청
     async updateJob(context, payload) {
-      const response = await request.putJobUsingPUT(payload)
+      const response = await request.applyUsingPOST_1(payload)
       return response
     },
     // job 삭제 요청

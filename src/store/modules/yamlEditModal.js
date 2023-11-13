@@ -1,3 +1,5 @@
+import request from '@/lib/request'
+
 const resource = {
   namespaced: true,
   state: {
@@ -124,6 +126,10 @@ const resource = {
       const { requestFunc } = payload
       const response = await requestFunc()
       commit('changeFirstSeletItems', response)
+    },
+    async applyYaml(_, payload) {
+      const { data } = await request.applyUsingPOST_2(payload)
+      return data
     },
   },
 }

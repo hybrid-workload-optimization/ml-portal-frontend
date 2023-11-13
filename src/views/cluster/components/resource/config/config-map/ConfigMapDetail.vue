@@ -184,6 +184,7 @@ export default {
     ...configMapUtils.mapActions(['deleteConfigMap']),
 
     ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
+    ...yamlEditModalMapUtils.mapActions(['applyYaml']), // yaml 에디트 업데이트 적용
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
     ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
 
@@ -248,13 +249,13 @@ export default {
     // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
     async onConfirmedFromEditModal(value) {
       const param = {
-        ...this.parameters,
+        clusterIdx: this.clusterIdx,
         yaml: value.encodedContent,
       }
 
       try {
         // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        const response = await this.updateConfigMap(param)
+        const response = await this.applyYaml(param)
         if (response.status === 200) {
           this.openAlert({ title: '리소스가 수정 되었습니다.', type: 'info' })
           this.getDetail(this.parameters)

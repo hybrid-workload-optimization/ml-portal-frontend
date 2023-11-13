@@ -2,17 +2,11 @@
   <div class="sp-cluster-namespace-detail">
     <div class="title-wrapper">
       <h2 class="title-left">{{ detailInfo.name }}</h2>
-      <!-- <div class="title-right">
+      <div class="title-right">
         <sp-button outlined class="list-button title-button" @click="moveList()"
           >List</sp-button
         >
         <template v-if="isProjectAuth">
-          <sp-button
-            outlined
-            class="edit-button title-button"
-            @click="onClickEdit"
-            >Edit</sp-button
-          >
           <sp-button
             outlined
             class="delete-button title-button"
@@ -20,7 +14,7 @@
             >Delete</sp-button
           >
         </template>
-      </div> -->
+      </div>
     </div>
 
     <div class="sp-detail-wrapper">
@@ -177,7 +171,6 @@ export default {
       'getDetailV2',
       'deleteClusterNamespace',
       'getClusterNamespaceYaml',
-      'updateClusterNamespace',
     ]),
 
     ...yamlEditModalMapUtils.mapMutations([
@@ -203,7 +196,10 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteClusterNamespace({ uid: this.uid })
+        await this.deleteClusterNamespace({
+          clusterIdx: this.clusterIdx,
+          name: this.name,
+        })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
@@ -220,23 +216,23 @@ export default {
     // [삭제 요청 확인창] 취소 클릭 시
     onClickDelCancel() {},
 
-    // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        uid: this.uid,
-        kubeConfigId: this.detailInfo.clusterId,
-        yaml: value.encodedContent,
-      }
-      try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.updateClusterNamespace(param)
-        this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        this.getDetail({ id: this.uid })
-        this.closeModal()
-      } catch (error) {
-        this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-      }
-    },
+    // // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
+    // async onConfirmedFromEditModal(value) {
+    //   const param = {
+    //     uid: this.uid,
+    //     kubeConfigId: this.detailInfo.clusterId,
+    //     yaml: value.encodedContent,
+    //   }
+    //   try {
+    //     // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
+    //     await this.updateClusterNamespace(param)
+    //     this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
+    //     this.getDetail({ id: this.uid })
+    //     this.closeModal()
+    //   } catch (error) {
+    //     this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+    //   }
+    // },
     movePath() {
       this.$router.push({
         name: this.$route.name,
