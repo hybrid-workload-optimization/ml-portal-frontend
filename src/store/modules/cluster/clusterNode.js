@@ -431,14 +431,14 @@ const resource = {
       const response = await request.registerClusterUsingPOST(payload)
       return response
     },
-    // 수정 요청
-    async updateClusterNode(context, payload) {
-      const response = await request.updateClusterNodeUsingPATCH(payload)
-      return response
-    },
+    // // 수정 요청
+    // async updateClusterNode(context, payload) {
+    //   const response = await request.updateClusterNodeUsingPATCH(payload)
+    //   return response
+    // },
     // 삭제 요청
     async deleteClusterNode(context, payload) {
-      const response = await request.deleteClusterNodeUsingDELETE(payload)
+      const response = await request.deleteNodeUsingDELETE(payload)
       return response
     },
     // podList 조회

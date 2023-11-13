@@ -2,7 +2,7 @@
   <div class="sp-cluster-node-detail">
     <div class="title-wrapper">
       <h2 class="title-left">{{ detailInfo.name }}</h2>
-      <!-- <div class="title-right">
+      <div class="title-right">
         <sp-button outlined class="list-button title-button" @click="moveList()"
           >List</sp-button
         >
@@ -13,7 +13,7 @@
           @click="onClickDelete"
           >Delete</sp-button
         >
-      </div> -->
+      </div>
     </div>
     <node-chart-card></node-chart-card>
 
@@ -131,14 +131,14 @@
     />
 
     <!-- yaml 에디터 모달 창 -->
-    <yaml-edit-modal @confirmed="onConfirmedFromEditModal" />
+    <!-- <yaml-edit-modal @confirmed="onConfirmedFromEditModal" /> -->
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Confirm from '@/components/molcule/Confirm.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
+// import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import LabelWithText from '@/components/molcule/LabelWithText.vue'
 import LabelWith from '@/components/molcule/LabelWith.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
@@ -155,7 +155,7 @@ const clusterMapUtils = createNamespacedHelpers('cluster')
 export default {
   components: {
     Confirm,
-    YamlEditModal,
+    // YamlEditModal,
     spTable,
     LabelWithText,
     LabelWith,
@@ -317,7 +317,10 @@ export default {
     async onClickDelConfirm() {
       try {
         // 삭제 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.deleteClusterNode({ id: this.nodeId })
+        await this.deleteClusterNode({
+          clusterIdx: this.clusterIdx,
+          name: this.nodeName,
+        })
         this.openAlert({ title: '삭제 성공했습니다.', type: 'info' })
 
         // 1초 후 리스트 화면으로 이동
@@ -338,22 +341,22 @@ export default {
     // [삭제 요청 확인창] 취소 클릭 시
     onClickDelCancel() {},
 
-    // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const param = {
-        id: this.id,
-        yaml: value.encodedContent,
-      }
-      try {
-        // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
-        await this.updatenode(param)
-        this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
-        // this.getDetail({ id: this.id })
-        this.closeModal()
-      } catch (error) {
-        this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-      }
-    },
+    // // 업데이트 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
+    // async onConfirmedFromEditModal(value) {
+    //   const param = {
+    //     id: this.id,
+    //     yaml: value.encodedContent,
+    //   }
+    //   try {
+    //     // 업데이트 요청 (async로 선언된 메서드는 await로 받아야 한다. 그렇지 않으면 promise가 리턴된다)
+    //     await this.updatenode(param)
+    //     this.openAlert({ title: '업데이트 성공했습니다.', type: 'info' })
+    //     // this.getDetail({ id: this.id })
+    //     this.closeModal()
+    //   } catch (error) {
+    //     this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
+    //   }
+    // },
     movePath(type) {
       this.$router.push(
         `/cluster/node/detail/${this.id}/${type}/${this.detailInfo.namespace}/${this.detailInfo.name}`,

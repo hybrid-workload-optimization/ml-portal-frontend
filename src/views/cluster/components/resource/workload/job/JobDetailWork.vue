@@ -128,6 +128,9 @@
 </template>
 
 <script>
+/**
+ * Version 2 API 적용된 페이지
+ */
 import { createNamespacedHelpers } from 'vuex'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import Confirm from '@/components/molcule/Confirm.vue'
@@ -306,7 +309,7 @@ export default {
     },
     // [수정 버튼] 클릭 시
     async onClickEdit() {
-      console.log('onClickEdit')
+      // console.log('onClickEdit')
 
       const params = {
         clusterIdx: this.clusterIdx,
