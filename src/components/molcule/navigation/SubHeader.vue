@@ -25,51 +25,14 @@
           <span class="burger-text">서비스</span>
         </a>
       </div>
-      <!-- 즐겨찾기 주석처리 23.11.08 -->
-      <!-- <sp-button icon class="fav-button" @click="toggleFav"
-          ><v-icon class="material-icons-round" v-if="!isFav"
-            >star_outline</v-icon
-          >
-          <v-icon class="material-icons-round active" v-if="isFav"
-            >star</v-icon
-          ></sp-button
-        >
-        <span class="title-text">{{ getPageName }}</span> -->
-
-      <!--
-      <div class="title-wrapper">
-            <div class="logo-wrapper">
-
-              <span class="title-text" v-if="!mini">CoMP Portal</span>
-            </div>
-          </div>
-       -->
-      <!-- <sp-breadcrumbs v-if="pagePath" :items="pagePath['subTitle']" large>
-        <template #divider>
-          <v-icon>chevron_right</v-icon>
-        </template>
-        <template #item="slotProps">
-          <v-breadcrumbs-item>
-            <v-icon
-              class="material-icons-outlined"
-              v-if="slotProps.item.toLowerCase() === 'home'"
-              >home</v-icon
-            >
-            <span
-              :style="`color: #4B5566`"
-              class="breadcrumbs-text"
-              v-if="slotProps.item.toLowerCase() != 'home'"
-              >{{ slotProps.item }}</span
-            >
-          </v-breadcrumbs-item>
-        </template>
-      </sp-breadcrumbs> -->
     </div>
     <!-- 상단 왼쪽 부분 end -->
-
     <!-- 상단 오른쪽 부분 start -->
     <div class="right-nav-wrapper" v-if="userInfo.userName">
       <div class="button-wrapper">
+        <sp-button icon>
+          <v-icon dense color="#fff">edit</v-icon>
+        </sp-button>
         <sp-button
           v-if="isClusterDetail"
           class="right-nav__button--monitoring"
@@ -132,7 +95,6 @@
         outlined
         hideDetails
       />
-
       <user-avatar
         class="user-avatar"
         :userName="userInfo ? userInfo.userName : ''"

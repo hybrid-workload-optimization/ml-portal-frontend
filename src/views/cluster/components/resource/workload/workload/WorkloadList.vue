@@ -8,13 +8,6 @@
         @click="onClickSearch"
       >
         <template #new-group>
-          <select-button
-            :btnName="'New Workload'"
-            @clickBtn="openYamlEditor"
-            @changeItem="onChangeItem"
-            style="margin-bottom: 10px"
-          />
-
           <div class="reload-wrapper">
             <v-icon @click="reloadData" color="black">mdi-refresh</v-icon>
             <span>마지막 업데이트 : {{ currentDateTime }}</span>
@@ -84,12 +77,6 @@
         title="clusterNode가 존재하지 않습니다."
         description=""
       />
-
-      <!-- yaml 에디터 모달 -->
-      <yaml-edit-modal
-        @confirmed="onConfirmedFromEditModal"
-        class="yarm-edit-modal"
-      />
     </div>
   </div>
 </template>
@@ -97,20 +84,15 @@
 <script>
 import Search from '@/components/molcule/DataTableSearch2.vue'
 import { createNamespacedHelpers } from 'vuex'
-import SelectButton from '@/components/SelectButton.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import SmartSearch from '@/components/SmartSearch.vue'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
-const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    SelectButton,
-    YamlEditModal,
     Search,
     SmartSearch,
     spTable,
@@ -190,7 +172,6 @@ export default {
   },
   methods: {
     ...workloadMapUtils.mapActions(['getDataList', 'createWorkload']),
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     searchDatas(e) {
@@ -270,40 +251,40 @@ export default {
 
       this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
     },
-    async onConfirmedFromEditModal(value) {
-      const idx = this.$route.params.id
-      const { encodedContent } = value
+    // async onConfirmedFromEditModal(value) {
+    //   const idx = this.$route.params.id
+    //   const { encodedContent } = value
 
-      try {
-        const param = {
-          clusterIdx: idx,
-          yaml: encodedContent,
-        }
+    //   try {
+    //     const param = {
+    //       clusterIdx: idx,
+    //       yaml: encodedContent,
+    //     }
 
-        const response = await this.createWorkload(param)
+    //     const response = await this.createWorkload(param)
 
-        if (
-          (response.status === 201 || response.status === 200) &&
-          response.data?.result?.success
-        ) {
-          this.openAlert({
-            title: '리소스가 생성 되었습니다.',
-            type: 'info',
-          })
-          this.closeModal()
-          this.getListData()
-        } else {
-          this.openAlert({
-            title: '생성 실패했습니다.',
-            type: 'error',
-          })
-          console.error(response.data.result.errorMessage)
-        }
-      } catch (error) {
-        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-        console.error(error)
-      }
-    },
+    //     if (
+    //       (response.status === 201 || response.status === 200) &&
+    //       response.data?.result?.success
+    //     ) {
+    //       this.openAlert({
+    //         title: '리소스가 생성 되었습니다.',
+    //         type: 'info',
+    //       })
+    //       this.closeModal()
+    //       this.getListData()
+    //     } else {
+    //       this.openAlert({
+    //         title: '생성 실패했습니다.',
+    //         type: 'error',
+    //       })
+    //       console.error(response.data.result.errorMessage)
+    //     }
+    //   } catch (error) {
+    //     this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
+    //     console.error(error)
+    //   }
+    // },
   },
 }
 </script>
