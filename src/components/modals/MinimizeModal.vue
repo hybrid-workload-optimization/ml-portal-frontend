@@ -98,7 +98,7 @@ export default {
       default: false,
       description: '모달 헤드 색깔 여부',
     },
-    isTemplateBtn: {
+    isTemplateSelect: {
       type: Boolean,
       default: false,
       description: '템플릿 버튼 표시 여부',

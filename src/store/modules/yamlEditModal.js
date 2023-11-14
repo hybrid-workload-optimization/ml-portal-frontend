@@ -12,6 +12,7 @@ const resource = {
     firstSelectItems: [],
     readOnlyKeys: [],
     resourceType: '',
+    errorMsg: '',
   },
   getters: {
     resourceType(state) {
@@ -41,6 +42,9 @@ const resource = {
     readOnlyKeys(state) {
       return state.readOnlyKeys
     },
+    errorMsg(state) {
+      return state.errorMsg
+    },
   },
   mutations: {
     initModalContent(state) {
@@ -69,6 +73,7 @@ const resource = {
       state.originContent = ''
       state.title = ''
       state.resourceType = ''
+      state.errorMsg = ''
 
       const { isEncoding } = payload
       const { content } = payload
@@ -103,6 +108,7 @@ const resource = {
       state.firstSelectItems = []
       state.readOnlyKeys = []
       state.resourceType = ''
+      state.errorMsg = ''
     },
     initFirstSelectState(state) {
       state.firstSelectItems = []
@@ -118,6 +124,9 @@ const resource = {
       })
       state.firstSelectItems = items
     },
+    setErrorMsg(state, errMsg) {
+      state.errorMsg = errMsg
+    },
   },
   actions: {
     async requestGetFirstSelectItems({ commit }, payload) {
@@ -127,9 +136,23 @@ const resource = {
       const response = await requestFunc()
       commit('changeFirstSeletItems', response)
     },
-    async applyYaml(_, payload) {
-      const { data } = await request.applyUsingPOST_2(payload)
-      return data
+    async applyYaml({ commit }, payload) {
+      console.log('applyYaml Parameters: ', payload)
+      try {
+        const { data } = await request.applyUsingPOST_2(payload)
+        console.log('apply Yaml Result: ', data)
+        // Yaml 생성 완료
+        if (data?.result?.success) {
+          commit('closeModal')
+          return true
+        }
+        if (data?.result?.errorMessage)
+          commit('setErrorMsg', data?.result?.errorMessage)
+        throw Error(data)
+      } catch (err) {
+        console.error(err)
+        return false
+      }
     },
   },
 }

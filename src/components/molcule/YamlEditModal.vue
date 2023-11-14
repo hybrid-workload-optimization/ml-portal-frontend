@@ -6,9 +6,29 @@
     body-height="1000"
     :dialog="isOpenModal"
     @close-modal="onClickCloseModal"
-    @click-template="onClickTemplate"
-    :isTemplateBtn="isTemplateBtn"
+    @change-template="onChangeTemplate"
+    :isTemplateSelect="isTemplateSelect"
   >
+    <!-- 헤더 템플릿 -->
+    <template #header>
+      <sp-select
+        v-if="isTemplateSelect"
+        dark
+        placeholder="Select Template"
+        class="template-select"
+        hide-details="auto"
+        outlined
+        single-line
+        flat
+        dense
+        :value="selectTemplate"
+        @input="onChangeTemplate"
+        item-title="title"
+        item-value="value"
+        :items="templateItems"
+      />
+    </template>
+
     <!-- 컨텐츠 -->
     <template #content>
       <editor
@@ -17,6 +37,7 @@
         class="yaml-editor"
         :height="500"
       />
+      <!-- Workload 에러메세지 -->
       <v-textarea
         v-if="errorMessage"
         filled
@@ -25,7 +46,17 @@
         readonly
         :value="errorMessage"
         hide-details
-      ></v-textarea>
+      />
+      <!-- Yaml 생성, 수정 에러메시지 -->
+      <v-textarea
+        v-if="errorMsg !== ''"
+        filled
+        background-color="red lighten-2"
+        class="mt-1"
+        readonly
+        :value="errorMsg"
+        hide-details
+      />
     </template>
 
     <!-- 하단 -->
@@ -66,8 +97,8 @@ import Modal from '@/components/modals/Modal.vue'
 import Editor from '@/components/Editor.vue'
 import { createNamespacedHelpers } from 'vuex'
 import { diff } from '@/utils/common'
+import { template, templateItems } from '@/utils/template'
 import VAlert from '@/components/molcule/Alert.vue'
-import { teamplate } from '@/utils/template'
 // import yamljs from 'yamljs'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
@@ -75,11 +106,7 @@ const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
-  components: {
-    Modal,
-    Editor,
-    VAlert,
-  },
+  components: { Modal, Editor, VAlert },
   props: {
     // title: {
     //   type: String,
@@ -99,14 +126,15 @@ export default {
   },
   data() {
     return {
-      // title: '',
+      templateItems,
       btnSave: 'Create',
+      selectTemplate: '',
     }
   },
   created() {},
   computed: {
-    ...workloadMapUtils.mapGetters(['errorMessage']),
-    ...yamlEditModalMapUtils.mapGetters(['resourceType']),
+    ...workloadMapUtils.mapGetters(['errorMessage']), // 워크로드 오류 메세지
+    ...yamlEditModalMapUtils.mapGetters(['errorMsg']), // 생성 오류 메세지
     ...yamlEditModalMapUtils.mapGetters(['title']),
     ...yamlEditModalMapUtils.mapGetters(['yamlContent']), // 저장된 content 내용 가져오기(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapGetters(['orginYamlContent']), // 모달 오픈 시 전달받은 최초 yaml content 내용
@@ -134,7 +162,7 @@ export default {
       }
       return true
     },
-    isTemplateBtn() {
+    isTemplateSelect() {
       if (this.editType === 'create') {
         return true
       }
@@ -161,6 +189,8 @@ export default {
   },
   methods: {
     ...workloadMapUtils.mapActions(['clearErrorMsg']),
+    ...yamlEditModalMapUtils.mapActions(['applyYaml']), // yaml 내용 중 수정되면 안되는 속성 키 리스트
+    ...yamlEditModalMapUtils.mapMutations(['resourceType']), // firstSelectVal 값 변경
     ...yamlEditModalMapUtils.mapMutations(['changeFirstSelectVal']), // firstSelectVal 값 변경
     ...yamlEditModalMapUtils.mapMutations(['changeContent']), // 저장된 content 내용 변경(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapMutations(['closeModal']), // yaml에디트 모달창 닫기(yamlEditModal.js)
@@ -190,24 +220,20 @@ export default {
           }
         }
       }
-
-      const encodedContent = Buffer.from(this.yamlContent, 'utf8').toString(
-        'base64',
-      )
-      const value = {
-        encodedContent,
+      const params = {
+        clusterIdx: this.$route.params?.id,
+        yaml: Buffer.from(this.yamlContent, 'utf8').toString('base64'),
       }
-      // if (this.editType === 'create') {
-      //   value.firstSelectVal = this.firstSelectVal
-      // }
-      this.$emit('confirmed', value)
-      // this.closeModal()
+      // Yaml 생성 API 호출
+      const res = await this.applyYaml(params)
+      if (res) this.openAlert({ title: '생성 성공했습니다.', type: 'info' })
+      else this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
     },
     onChangeFirstSelect(value) {
       this.changeFirstSelectVal(value)
     },
-    onClickTemplate() {
-      const content = teamplate.getK8sResourceTemplate(this.resourceType)
+    onChangeTemplate(templateType) {
+      const content = template.getK8sResourceTemplate(templateType)
       this.changeContent(content)
     },
   },
@@ -240,6 +266,10 @@ $this: 'popup';
         }
       }
     }
+  }
+  .template-select {
+    max-width: 270px;
+    margin-right: 12px !important;
   }
 }
 

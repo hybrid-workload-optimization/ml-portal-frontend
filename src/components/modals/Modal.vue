@@ -19,28 +19,14 @@
       :label="titleName"
       dark
       :className="{
-        titleStyle: {
-          paddingLeft: '10px',
-        },
-        headerStyle: {
-          backgroundColor: isWhite ? '#fff' : '#1A3350',
-        },
-        bodyStyle: {
-          height: bodyHeight ? bodyHeight : '',
-        },
+        titleStyle: { paddingLeft: '10px' },
+        headerStyle: { backgroundColor: isWhite ? '#fff' : '#1A3350' },
+        bodyStyle: { height: bodyHeight ? bodyHeight : '' },
       }"
     >
       <template #header>
         <div class="button-wrapper">
-          <sp-button
-            v-if="isTemplateBtn"
-            @click="onClickTemplate"
-            class="modal--template"
-            elevation="0"
-            dense
-          >
-            <v-icon :color="isWhite ? '#1A3350' : '#fff'">assignment</v-icon>
-          </sp-button>
+          <slot name="header" />
 
           <sp-button
             @click="onClickCloseModal"
@@ -53,8 +39,8 @@
         </div>
       </template>
 
-      <slot name="content"></slot>
-      <slot name="footer"></slot>
+      <slot name="content" />
+      <slot name="footer" />
     </sp-card>
   </v-dialog>
 </template>
@@ -89,11 +75,6 @@ export default {
       default: false,
       description: '모달 헤드 색깔 여부',
     },
-    isTemplateBtn: {
-      type: Boolean,
-      default: false,
-      description: '템플릿 버튼 표시 여부',
-    },
     bodyHeight: {
       type: String,
       default: '',
@@ -125,9 +106,6 @@ export default {
      @return
      @param
     */
-    onClickTemplate() {
-      this.$emit('click-template')
-    },
     onClickCloseModal() {
       console.log(tag, 'onClickCloseModal')
 
