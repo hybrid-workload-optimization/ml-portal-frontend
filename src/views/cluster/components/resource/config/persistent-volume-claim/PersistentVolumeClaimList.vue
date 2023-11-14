@@ -9,12 +9,6 @@
       @changeItem: 어떤 셀렉트 박스의 선택 아이템이 변경되었을 때의 이벤트(파라미터로 value 객체{firstValue, secondValue, thirdValue}가 전달된다)
       @clickBtn: 버튼을 클릭했을 때의 이벤트
     -->
-    <select-button
-      :btnName="'New Persistent Volume Claim'"
-      :firstSelectMeta="firstSelectMeta"
-      @clickBtn="openYamlEditor"
-      @changeItem="onChangeItem"
-    />
 
     <!--
           서치 박스
@@ -61,35 +55,24 @@
       title="Persistent Volume Claim 이 존재하지 않습니다."
       description=""
     />
-
-    <!-- yaml 에디터 모달 -->
-    <yaml-edit-modal
-      @confirmed="onConfirmedFromEditModal"
-      class="yarm-edit-modal"
-    />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import request from '@/lib/request'
 import Search from '@/components/molcule/DataTableSearch.vue'
 
 const pvcMapUtils = createNamespacedHelpers('persistentVolumeClaim')
 const multiSelectMapUtils = createNamespacedHelpers('selectButton')
-const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    SelectButton,
     spTable,
     Empty,
-    YamlEditModal,
     Search,
   },
   data() {
@@ -190,13 +173,10 @@ export default {
 
   methods: {
     ...multiSelectMapUtils.mapMutations(['initMultiSelectState']), // state 데이터 초기화(multiSelect.js)
-
     ...pvcMapUtils.mapActions(['getList']), // 리스트 조회 요청
     ...pvcMapUtils.mapActions(['createPersistentVolumeClaim']), // PersistentVolumeClaim 생성 요청
     ...pvcMapUtils.mapMutations(['initPersistentVolumeClaimState']), // state 데이터 초기화
     ...pvcMapUtils.mapMutations(['initPersistentVolumeClaimDataList']), // 데이터 리스트 초기화
-
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']), // yaml에디트모달창 열기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert']), // alert 오픈
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -245,36 +225,6 @@ export default {
         this.$router.push(
           `/cluster/detail/${this.clusterIdx}/persistent-volume-claim//${namespace}/${name}`,
         )
-      }
-    },
-
-    // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const { encodedContent } = value // yaml 에디터에서 받은 인코딩된 텍스트
-
-      try {
-        const param = {
-          clusterIdx: this.$route.params.id,
-          yaml: encodedContent,
-        }
-
-        const response = await this.createPersistentVolumeClaim(param)
-
-        // 생성 성공 시
-        if (response.status === 201 || response.status === 200) {
-          this.openAlert({
-            title: '리소스가 생성 되었습니다. ',
-            type: 'info',
-          })
-          this.getListData()
-          this.closeModal()
-        } else {
-          this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-          console.log(response.data.message)
-        }
-      } catch (error) {
-        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-        console.log(error)
       }
     },
 

@@ -1,12 +1,5 @@
 <template>
   <div class="sp-list-content">
-    <select-button
-      :btnName="'New Service'"
-      :firstSelectMeta="firstSelectMeta"
-      @clickBtn="openYamlEditor"
-      @changeItem="onChangeItem"
-    />
-
     <search
       v-if="serviceListSize"
       class="top-search-wrapper"
@@ -44,7 +37,6 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
@@ -58,7 +50,6 @@ const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    SelectButton,
     spTable,
     Empty,
     YamlEditModal,
@@ -164,15 +155,7 @@ export default {
     onInputSearchValue(value) {
       this.searchValue = value
     },
-    openYamlEditor() {
-      this.openModal({
-        editType: 'create',
-        isEncoding: false,
-        content: '',
-        title: 'New Service',
-        resourceType: 'service',
-      })
-    },
+
     async getListData() {
       const params = this.getParameter
       console.log('[params]::', params)

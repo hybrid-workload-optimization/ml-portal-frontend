@@ -17,7 +17,6 @@
       @clickBtn="openYamlEditor"
       @changeItem="onChangeItem"
     />
-
     <!--
           서치 박스
           @change: 인풋 박스에 입력값 변경시 발생되는 이벤트

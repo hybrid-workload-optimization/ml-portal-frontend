@@ -9,12 +9,6 @@
       @changeItem: 어떤 셀렉트 박스의 선택 아이템이 변경되었을 때의 이벤트(파라미터로 value 객체{firstValue, secondValue, thirdValue}가 전달된다)
       @clickBtn: 버튼을 클릭했을 때의 이벤트
     -->
-    <select-button
-      :btnName="'New Ingress'"
-      :firstSelectMeta="firstSelectMeta"
-      @clickBtn="openYamlEditor"
-      @changeItem="onChangeItem"
-    />
 
     <search
       v-if="dataListSize"
@@ -50,35 +44,24 @@
       title="Ingress 존재하지 않습니다."
       description=""
     />
-
-    <!-- yaml 에디터 모달 -->
-    <yaml-edit-modal
-      @confirmed="onConfirmedFromEditModal"
-      class="yarm-edit-modal"
-    />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import request from '@/lib/request'
 import Search from '@/components/molcule/DataTableSearch.vue'
 
 const ingressMapUtils = createNamespacedHelpers('ingress')
 const multiSelectMapUtils = createNamespacedHelpers('selectButton')
-const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
-    SelectButton,
     spTable,
     Empty,
-    YamlEditModal,
     Search,
   },
   data() {
@@ -165,14 +148,11 @@ export default {
 
   methods: {
     ...multiSelectMapUtils.mapMutations(['initMultiSelectState']),
-
     ...ingressMapUtils.mapActions(['getList', 'createIngress']),
     ...ingressMapUtils.mapMutations([
       'initIngressState',
       'initIngressDataList',
     ]),
-
-    ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -182,19 +162,6 @@ export default {
     // 서치 박스 입력값 변경 시 호출됨
     onInputSearchValue(value) {
       this.searchValue = value
-    },
-    // yaml 에디터 모달 오픈
-    openYamlEditor() {
-      // editType: 에디터 타입(create/update)
-      // isEncoding: content가 인코딩 되어 있는지 여부
-      // content: 에디터에 설정할 텍스트 초기값
-      this.openModal({
-        editType: 'create',
-        isEncoding: false,
-        content: '',
-        title: 'New Ingress',
-        resourceType: 'ingress',
-      })
     },
     // 리스트 조회 요청
     async getListData() {
@@ -223,29 +190,6 @@ export default {
         this.$router.push(`/cluster/detail/${this.clusterIdx}/ingress/${id}`)
       }
     },
-
-    // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const idx = this.$route.params.id // 셀렉트 박스에서 선택한 clusterIdx
-      const { encodedContent } = value // yaml 에디터에서 받은 인코딩된 텍스트
-
-      try {
-        const param = {
-          kubeConfigId: idx,
-          yaml: encodedContent,
-        }
-
-        await this.createIngress(param)
-
-        this.openAlert({ title: '리소스가 생성 되었습니다.', type: 'info' })
-        this.getListData()
-        this.closeModal()
-      } catch (error) {
-        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-        console.error(error)
-      }
-    },
-
     async onChangeItem() {
       await this.getListData()
       this.isLoading = false

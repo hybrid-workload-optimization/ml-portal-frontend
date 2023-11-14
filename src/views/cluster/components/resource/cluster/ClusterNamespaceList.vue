@@ -4,7 +4,6 @@
       class="sp-list-content__search-input"
       :title="'Total:'"
       :todoCount="dataListSize.toString()"
-      :buttonText="'New Namespace'"
       :isDisabled="!isProjectAuth"
       @input="onInputSearchValue"
       @click="openYamlEditor"
@@ -39,9 +38,6 @@
         description=""
       />
     </div>
-
-    <!-- yaml 에디터 모달 -->
-    <yaml-edit-modal ref="yamlEditor" @confirmed="onConfirmedCreateModal" />
   </div>
 </template>
 
@@ -50,12 +46,10 @@ import Search from '@/components/molcule/DataTableSearch.vue'
 import { createNamespacedHelpers } from 'vuex'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
 const clusterNamespaceMapUtils = createNamespacedHelpers('clusterNamespace')
 const clusterMapUtils = createNamespacedHelpers('cluster')
-const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
@@ -63,13 +57,11 @@ export default {
     Search,
     spTable,
     Empty,
-    YamlEditModal,
   },
   mixins: [checkProjectAuth],
   data() {
     return {
       searchValue: '',
-
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
         {
@@ -131,12 +123,6 @@ export default {
       'getList',
       'createClusterNamespace',
     ]),
-
-    ...yamlEditModalMapUtils.mapMutations([
-      'openModal',
-      'closeModal',
-      'initModalContent',
-    ]),
     ...alertMapUtils.mapMutations(['openAlert']),
 
     // 서치 박스의 버튼 클릭 시 호출됨
@@ -147,18 +133,6 @@ export default {
     onInputSearchValue(value) {
       console.log('searchValue:', value)
       this.searchValue = value
-    },
-    openYamlEditor() {
-      // editType: 에디터 타입(create/update)
-      // isEncoding: content가 인코딩 되어 있는지 여부
-      // content: 에디터에 설정할 텍스트 초기값
-      this.openModal({
-        editType: 'create',
-        isEncoding: false,
-        content: '',
-        title: 'New Namespace',
-        resourceType: 'namespace',
-      })
     },
     getParameters() {
       return {
@@ -186,23 +160,6 @@ export default {
         )
       }
     },
-
-    // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedCreateModal(item) {
-      const { clusterIdx } = this.dataDetail
-      const { encodedContent } = item
-      try {
-        const param = {
-          clusterIdx,
-          yaml: encodedContent,
-        }
-        await this.createClusterNamespace(param)
-        this.openAlert({ title: '생성 성공했습니다.', type: 'info' })
-        this.getListData()
-      } catch (error) {
-        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-      }
-    },
     getChipColor(statusText) {
       console.log('statusText:::', statusText)
       let status = ''
@@ -217,9 +174,6 @@ export default {
       }
       return STATUS[status]
     },
-  },
-  beforeDestroy() {
-    this.initModalContent()
   },
 }
 </script>

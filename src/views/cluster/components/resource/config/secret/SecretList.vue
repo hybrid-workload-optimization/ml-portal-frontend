@@ -9,12 +9,6 @@
       @changeItem: 어떤 셀렉트 박스의 선택 아이템이 변경되었을 때의 이벤트(파라미터로 value 객체{firstValue, secondValue, thirdValue}가 전달된다)
       @clickBtn: 버튼을 클릭했을 때의 이벤트
     -->
-    <select-button
-      :btnName="'New Secret'"
-      :firstSelectMeta="firstSelectMeta"
-      @clickBtn="openYamlEditor"
-      @changeItem="onChangeItem"
-    />
 
     <!--
           서치 박스
@@ -61,21 +55,13 @@
       title="Secret 이 존재하지 않습니다."
       description=""
     />
-
-    <!-- yaml 에디터 모달 -->
-    <yaml-edit-modal
-      @confirmed="onConfirmedFromEditModal"
-      class="yarm-edit-modal"
-    />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import SelectButton from '@/components/SelectButton.vue'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
-import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 import request from '@/lib/request'
 import Search from '@/components/molcule/DataTableSearch.vue'
 
@@ -85,13 +71,7 @@ const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
-  components: {
-    SelectButton,
-    spTable,
-    Empty,
-    YamlEditModal,
-    Search,
-  },
+  components: { spTable, Empty, Search },
   data() {
     return {
       searchValue: '',
@@ -194,20 +174,6 @@ export default {
       this.searchValue = value
     },
 
-    // yaml 에디터 모달 오픈
-    openYamlEditor() {
-      // editType: 에디터 타입(create/update)
-      // isEncoding: content가 인코딩 되어 있는지 여부
-      // content: 에디터에 설정할 텍스트 초기값
-      this.openModal({
-        editType: 'create',
-        isEncoding: false,
-        content: '',
-        title: 'New Secret',
-        resourceType: 'secret',
-      })
-    },
-
     // 리스트 조회 요청
     async getListData() {
       // 조회 요청에서 필요한 parameter 세팅(호출한 api 파라미터 형태에 맞춰서 커스텀하게 생성)
@@ -231,37 +197,6 @@ export default {
         )
       }
     },
-
-    // 모달 창에서 '확인' 눌렀을 때 호출되는 이벤드 메서드
-    async onConfirmedFromEditModal(value) {
-      const { encodedContent } = value // yaml 에디터에서 받은 인코딩된 텍스트
-
-      try {
-        const param = {
-          clusterIdx: this.$route.params.id,
-          yaml: encodedContent,
-        }
-
-        const response = await this.createSecret(param)
-
-        // 생성 성공 시
-        if (response.status === 201 || response.status === 200) {
-          this.openAlert({
-            title: '리소스가 생성 되었습니다.',
-            type: 'info',
-          })
-          this.getListData()
-          this.closeModal()
-        } else {
-          this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-          console.log(response.data.message)
-        }
-      } catch (error) {
-        this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-        console.log(error)
-      }
-    },
-
     // 셀렉트 박스의 선택 항목이 변결될 때마다 호출된다.
     // value 속성키 {firstVaue, secondValue, thirdValue}
     async onChangeItem(value) {
