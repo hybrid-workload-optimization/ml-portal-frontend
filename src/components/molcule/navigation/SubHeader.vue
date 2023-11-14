@@ -30,7 +30,7 @@
     <!-- 상단 오른쪽 부분 start -->
     <div class="right-nav-wrapper" v-if="userInfo.userName">
       <div class="button-wrapper">
-        <sp-button icon>
+        <sp-button v-if="isClusterDetail" icon @click="openYamlEditor">
           <v-icon dense color="#fff">edit</v-icon>
         </sp-button>
         <sp-button
@@ -132,6 +132,7 @@
       :menu-items="fullMenuItems"
       :show-full-menu="isFullMenu"
     />
+    <yaml-edit-modal ref="yamlEditor" />
   </v-row>
 </template>
 
@@ -143,12 +144,14 @@ import { createNamespacedHelpers } from 'vuex'
 import vClickOutside from 'v-click-outside'
 import NewFullMenu from '@/components/molcule/navigation/NewFullMenu.vue'
 import { UserMenuItems } from '@/data/path'
+import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
 
 // const tag = '[Subheader]'
 const loginUserMapUtil = createNamespacedHelpers('loginUser')
 const notificationMapUtil = createNamespacedHelpers('notification')
 const clusterMonitoringMapUtil = createNamespacedHelpers('clusterMonitoring')
 const serviceGroupMapUtil = createNamespacedHelpers('serviceGroup')
+const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 
 export default {
   directives: {
@@ -159,6 +162,7 @@ export default {
     Notification,
     ConsoleWithButton,
     NewFullMenu,
+    YamlEditModal,
   },
   props: { pagePath: Object },
   data: () => ({
@@ -224,6 +228,11 @@ export default {
     ...loginUserMapUtil.mapActions(['setFavoriteData', 'deleteFavoriteData']),
     ...notificationMapUtil.mapMutations(['updateShowNotification']),
     ...clusterMonitoringMapUtil.mapActions(['getMonitoringPath']),
+    ...yamlEditModalMapUtils.mapMutations([
+      'openModal',
+      'closeModal',
+      'initModalContent',
+    ]), // yaml에디트모달창 열기(yamlEditModal.js)
     setFavData() {
       if (this.favoriteList.length) {
         this.isFav = this.favoriteList.some(
@@ -253,6 +262,18 @@ export default {
       if (this.$route.path.includes('/cluster/detail')) {
         this.isClusterNewWindow = true
       }
+    },
+    openYamlEditor() {
+      // editType: 에디터 타입(create/update)
+      // isEncoding: content가 인코딩 되어 있는지 여부
+      // content: 에디터에 설정할 텍스트 초기값
+      this.openModal({
+        editType: 'create',
+        isEncoding: false,
+        content: '',
+        title: 'Yaml Editor',
+        resourceType: 'namespace',
+      })
     },
     async openMonitoringPage() {
       const clusterIdx = this.$route.params?.id

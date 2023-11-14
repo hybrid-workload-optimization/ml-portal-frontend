@@ -18,14 +18,31 @@ import statefulSet from '@/assets/data/yaml-template/statefulSet.yaml'
 import storageClass from '@/assets/data/yaml-template/storageClass.yaml'
 import pod from '@/assets/data/yaml-template/pod.yaml'
 
-export const teamplate = {
+export const templateItems = [
+  { text: 'Namespace', value: 'namespace' },
+  { text: 'Persistent Volume', value: 'persistentVolume' },
+  { text: 'Storage Class', value: 'storageClass' },
+  { text: 'Deployment', value: 'deployment' },
+  { text: 'StatefulSet', value: 'statefulSet' },
+  { text: 'ReplicaSet', value: 'replicaSet' },
+  { text: 'DaemonSet', value: 'daemonSet' },
+  { text: 'Job', value: 'job' },
+  { text: 'Pod', value: 'pod' },
+  { text: 'Service', value: 'service' },
+  { text: 'Ingress', value: 'ingress' },
+  { text: 'Persistent Volume Claim', value: 'persistentVolumeClaim' },
+  { text: 'Config Map', value: 'configMap' },
+  { text: 'Secret', value: 'secret' },
+]
+
+export const template = {
   getK8sResourceTemplate: resourceType => {
     let content = ''
     switch (resourceType) {
       case 'configMap':
         content = json2yaml.stringify(configMap)
         break
-      case 'CronJob':
+      case 'cronJob':
         content = json2yaml.stringify(cronJob)
         break
       case 'daemonSet':
