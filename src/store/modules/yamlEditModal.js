@@ -13,6 +13,8 @@ const resource = {
     readOnlyKeys: [],
     resourceType: '',
     errorMsg: '',
+    yamlHistory: [],
+    selectDate: '',
   },
   getters: {
     resourceType(state) {
@@ -45,6 +47,12 @@ const resource = {
     errorMsg(state) {
       return state.errorMsg
     },
+    selectDate(state) {
+      return state.selectDate
+    },
+    yamlHistory(state) {
+      return state.yamlHistory
+    },
   },
   mutations: {
     initModalContent(state) {
@@ -57,9 +65,6 @@ const resource = {
       state.firstSelectItems = []
       state.readOnlyKeys = []
       state.resourceType = ''
-    },
-    changeFirstSelectVal(state, payload) {
-      state.firstSelectVal = payload
     },
     changeContent(state, payload) {
       state.content = payload
@@ -109,32 +114,36 @@ const resource = {
       state.readOnlyKeys = []
       state.resourceType = ''
       state.errorMsg = ''
+      state.yamlHistory = []
+      state.selectDate = ''
     },
     initFirstSelectState(state) {
       state.firstSelectItems = []
       state.firstSelectVal = ''
     },
-    changeFirstSeletItems(state, payload) {
-      state.firstSelectItems = []
-      const { data } = payload
-      const items = []
-
-      data.result.forEach(e => {
-        items.push({ id: e.id, text: e.text, value: e.value })
-      })
-      state.firstSelectItems = items
-    },
     setErrorMsg(state, errMsg) {
       state.errorMsg = errMsg
     },
+    setHistory(state, history) {
+      state.yamlHistory = history
+      state.selectDate = history[0].createAt // 최상단 요소 날짜 설정
+    },
+    setYamlContent(state, createAt) {
+      const target = state.yamlHistory.find(yml => yml.createAt === createAt)
+      if (target) {
+        state.selectDate = createAt
+        const decodedText = Buffer.from(target.yaml, 'base64').toString('utf8')
+        state.content = decodedText
+        state.originContent = decodedText
+      } else {
+        console.error('Not Found Yaml History')
+      }
+    },
   },
   actions: {
-    async requestGetFirstSelectItems({ commit }, payload) {
-      commit('initFirstSelectState')
-
-      const { requestFunc } = payload
-      const response = await requestFunc()
-      commit('changeFirstSeletItems', response)
+    // 헤더 상단 날짜 셀렉트 박스
+    changeYaml({ commit }, createAt) {
+      commit('setYamlContent', createAt)
     },
     async applyYaml({ commit }, payload) {
       console.log('applyYaml Parameters: ', payload)
@@ -154,6 +163,39 @@ const resource = {
         return false
       }
     },
+    /**
+     * 야물조회 후 모달 열기
+     * @param {*} params
+     * {
+          "clusterIdx": 0,
+          "kind": "string",
+          "name": "string",
+          "namespace": "string"
+        }
+     */
+    async getYaml({ commit }, params) {
+      try {
+        const { data } = await request.getYamlUsingPOST_1(params)
+        // 최신 날짜 순으로 정렬
+        const yamlDatas = data.result.sort(
+          (a, b) => new Date(b.createAt) - new Date(a.createAt),
+        )
+        commit('setHistory', yamlDatas)
+        commit('openModal', {
+          editType: 'update',
+          content: yamlDatas[0]?.yaml || [],
+          isEncoding: true,
+          readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
+          title: `Edit ${
+            yamlDatas[0]?.kind?.charAt(0).toUpperCase() +
+            yamlDatas[0]?.kind?.slice(1)
+          }`,
+        })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    // async deleteYaml({ commit }, payload) {},
   },
 }
 

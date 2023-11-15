@@ -5,6 +5,7 @@
     class="sp-modal"
     @click:outside="onClickOutSide"
     @keydown="onKeyDownESC"
+    :retain-focus="false"
   >
     <template #activator="{ on }">
       <slot name="buttons" v-on="on"></slot>

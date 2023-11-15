@@ -2,10 +2,11 @@
   <div>
     <card-title
       :titleData="titleData"
-      :showButtons="isProjectAuth"
+      :showButtons="true"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
     />
+    <!-- :showButtons="isProjectAuth" -->
 
     <v-tabs v-model="tab" style="display: none">
       <v-tabs-slider></v-tabs-slider>
@@ -40,7 +41,6 @@ import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import DeploymentGeneral from '@/views/cluster/components/resource/workload/deployment/components/DeploymentGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 
-const yamlMapUtils = createNamespacedHelpers('yaml')
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const deploymentMapUtils = createNamespacedHelpers('deployment')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
@@ -68,7 +68,10 @@ export default {
     await this.getData()
     // console.log(this.deploymentDetailInfo)
     // mixin
-    this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
+    await this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
+  },
+  mounted() {
+    console.log(this.deploymentDetailInfo)
   },
   computed: {
     ...deploymentMapUtils.mapGetters(['deploymentDetailInfo']),
@@ -86,15 +89,15 @@ export default {
     },
   },
   methods: {
-    ...yamlMapUtils.mapActions(['getWorklistYaml']),
     ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...deploymentMapUtils.mapActions([
       'getDeploymentDetailNew',
-      'getDeploymentDetail',
+      // 'getDeploymentDetail',
       'getPodList',
       'deleteDeployment',
       'updateDeployment',
     ]),
+    ...yamlEditModalMapUtils.mapActions(['getYaml']),
     ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
     ...alertMapUtils.mapMutations(['openAlert']),
     ...confirmMapUtils.mapMutations(['openConfirm']),
@@ -102,6 +105,7 @@ export default {
     // 상세 정보와 파드 리스트 정보를 가져오는 메서드
     async getData() {
       try {
+        console.log('this', this)
         await this.getDeploymentDetailNew({
           clusterIdx: this.clusterIdx,
           kind: this.kind,
@@ -122,28 +126,16 @@ export default {
     },
 
     async onClickEdit() {
-      console.log('onClickEdit')
+      const { clusterIdx, kind, name, namespace } = this
+      const params = { clusterIdx, kind, name, namespace }
 
-      const params = {
-        clusterIdx: this.clusterIdx,
-        kind: this.kind,
-        name: this.name,
-        namespace: this.namespace,
-      }
+      this.getYaml(params)
 
-      try {
-        this.yamlStr = await this.getWorklistYaml(params)
-      } catch (error) {
-        console.log(error)
-      }
-
-      this.openModal({
-        editType: 'update',
-        isEncoding: true,
-        content: this.yamlStr,
-        readOnlyKeys: ['kind', 'metadata.name', 'metadata.namespace'],
-        title: 'Edit Deployment',
-      })
+      // try {
+      //   this.yamlStr = await this.getWorklistYaml(params)
+      // } catch (error) {
+      //   console.log(error)
+      // }
     },
 
     onClickDelete() {
