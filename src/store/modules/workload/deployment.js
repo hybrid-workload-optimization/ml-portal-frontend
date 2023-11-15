@@ -278,8 +278,7 @@ const resource = {
       // console.log(payload)
       // const response = await request.getDeploymentUsingGET_1(payload)
       const response = await request.getDetailUsingPOST(payload)
-      // console.log(response)
-
+      console.log('Get DetailInfo Workload', response)
       commit('changeDetailInfo', response)
       if (response.data.result === null) return
       commit('changePodList', response.data.result.replicaSets[0].pods)
