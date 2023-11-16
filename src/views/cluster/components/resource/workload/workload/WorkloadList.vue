@@ -87,19 +87,19 @@ import { createNamespacedHelpers } from 'vuex'
 import spTable from '@/components/dataTables/DataTable.vue'
 import Empty from '@/components/Empty.vue'
 import SmartSearch from '@/components/SmartSearch.vue'
+import { getNowDate } from '@/lib/date'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
+const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
 const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
-  components: {
-    Search,
-    SmartSearch,
-    spTable,
-    Empty,
-  },
-  props: {
-    clusterId: Number,
+  components: { Search, SmartSearch, spTable, Empty },
+  props: { clusterId: Number },
+  watch: {
+    applyDate() {
+      this.getListData()
+    },
   },
   data() {
     return {
@@ -108,32 +108,12 @@ export default {
       searchTag: true,
       // 그리드 헤더 설정(text: 화면에 표시할 속성명, value: 실제 조회된 속성값과 일치 시켜야 함)
       headers: [
-        {
-          text: 'Name',
-          value: 'name',
-        },
-        {
-          text: 'Namespace',
-          value: 'namespace',
-        },
-        {
-          text: 'Kind',
-          value: 'kind',
-        },
-        {
-          text: 'Health',
-          value: 'health',
-        },
-        {
-          text: 'Pods',
-          align: 'center',
-          value: 'podCountTotal',
-        },
-        {
-          text: 'Created',
-          align: 'center',
-          value: 'createAt',
-        },
+        { text: 'Name', value: 'name' },
+        { text: 'Namespace', value: 'namespace' },
+        { text: 'Kind', value: 'kind' },
+        { text: 'Health', value: 'health' },
+        { text: 'Pods', align: 'center', value: 'podCountTotal' },
+        { text: 'Created', align: 'center', value: 'createAt' },
       ],
       // 그리드 설정 값
       options: {
@@ -149,25 +129,26 @@ export default {
         itemKey: 'id',
       },
       customSlotInfo: [{ name: 'health', slotName: 'health' }],
-      clusterIdx: null,
       currentDateTime: '',
     }
   },
   async created() {
     this.isLoading = true
-    this.clusterIdx = this.$route.params.id
     await this.getListData()
     this.isLoading = false
-
     this.getDateTime()
   },
   computed: {
     ...workloadMapUtils.mapGetters(['dataList', 'dataListSize']),
+    ...yamlEditModalMapUtils.mapGetters(['applyDate']),
     getChipEachColor() {
       return status => this.getChipColor(status)
     },
     getStatusText() {
       return status => (status ? 'Power on' : 'Power off')
+    },
+    clusterIdx() {
+      return this.$route.params.id || null
     },
   },
   methods: {
@@ -221,15 +202,6 @@ export default {
       }
       return STATUS[status]
     },
-    openYamlEditor() {
-      this.openModal({
-        editType: 'create',
-        isEncoding: false,
-        content: '',
-        title: 'New Workload',
-        resourceType: 'workload',
-      })
-    },
     async onChangeItem() {
       await this.getListData()
       this.isLoading = false
@@ -237,54 +209,11 @@ export default {
     async reloadData() {
       await this.getListData()
       this.isLoading = false
-
       this.getDateTime()
     },
     getDateTime() {
-      const now = new Date()
-      const year = now.getFullYear()
-      const month = String(now.getMonth() + 1).padStart(2, '0')
-      const day = String(now.getDate()).padStart(2, '0')
-      const hours = String(now.getHours()).padStart(2, '0')
-      const minutes = String(now.getMinutes()).padStart(2, '0')
-      const seconds = String(now.getSeconds()).padStart(2, '0')
-
-      this.currentDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+      this.currentDateTime = getNowDate()
     },
-    // async onConfirmedFromEditModal(value) {
-    //   const idx = this.$route.params.id
-    //   const { encodedContent } = value
-
-    //   try {
-    //     const param = {
-    //       clusterIdx: idx,
-    //       yaml: encodedContent,
-    //     }
-
-    //     const response = await this.createWorkload(param)
-
-    //     if (
-    //       (response.status === 201 || response.status === 200) &&
-    //       response.data?.result?.success
-    //     ) {
-    //       this.openAlert({
-    //         title: '리소스가 생성 되었습니다.',
-    //         type: 'info',
-    //       })
-    //       this.closeModal()
-    //       this.getListData()
-    //     } else {
-    //       this.openAlert({
-    //         title: '생성 실패했습니다.',
-    //         type: 'error',
-    //       })
-    //       console.error(response.data.result.errorMessage)
-    //     }
-    //   } catch (error) {
-    //     this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-    //     console.error(error)
-    //   }
-    // },
   },
 }
 </script>

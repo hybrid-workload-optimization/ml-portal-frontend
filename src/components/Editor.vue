@@ -112,11 +112,17 @@ export default {
 <style lang="scss">
 .CodeMirror {
   /* height: 400px; */
+  height: 100% !important;
+  font-family: consolas !important;
 }
+
 .CodeMirror pre {
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;
+}
+.CodeMirror-code {
+  font-size: 12px;
 }
 
 .sp-card {

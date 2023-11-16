@@ -1,4 +1,5 @@
 import request from '@/lib/request'
+import { getNowDate } from '@/lib/date'
 
 const resource = {
   namespaced: true,
@@ -8,13 +9,12 @@ const resource = {
     content: '',
     originContent: '',
     isOpenModal: false,
-    firstSelectVal: '',
-    firstSelectItems: [],
     readOnlyKeys: [],
     resourceType: '',
-    errorMsg: '',
-    yamlHistory: [],
-    selectDate: '',
+    yamlHistory: [], // 이전 yaml 작성 기록
+    selectDate: '', // editType이 update일 경우 헤더 셀렉트박스에 선택된 날짜
+    errorMsg: '', // 에러 메세지
+    applyDate: '', // workload list에서 watch로 감시하다가 값 변경 시 리스트 업데이트 시킴
   },
   getters: {
     resourceType(state) {
@@ -32,12 +32,6 @@ const resource = {
     isOpenModal(state) {
       return state.isOpenModal
     },
-    firstSelectVal(state) {
-      return state.firstSelectVal
-    },
-    firstSelectItems(state) {
-      return state.firstSelectItems
-    },
     editType(state) {
       return state.editType
     },
@@ -53,6 +47,9 @@ const resource = {
     yamlHistory(state) {
       return state.yamlHistory
     },
+    applyDate(state) {
+      return state.applyDate
+    },
   },
   mutations: {
     initModalContent(state) {
@@ -61,8 +58,7 @@ const resource = {
       state.content = ''
       state.originContent = ''
       state.isOpenModal = false
-      state.firstSelectVal = ''
-      state.firstSelectItems = []
+      // state.firstSelectVal = ''
       state.readOnlyKeys = []
       state.resourceType = ''
     },
@@ -72,8 +68,6 @@ const resource = {
     openModal(state, payload) {
       state.editType = ''
       state.content = ''
-      state.firstSelectVal = ''
-      state.firstSelectItems = []
       state.readOnlyKeys = []
       state.originContent = ''
       state.title = ''
@@ -109,17 +103,11 @@ const resource = {
       state.content = ''
       state.originContent = ''
       state.isOpenModal = false
-      state.firstSelectVal = ''
-      state.firstSelectItems = []
       state.readOnlyKeys = []
       state.resourceType = ''
       state.errorMsg = ''
       state.yamlHistory = []
       state.selectDate = ''
-    },
-    initFirstSelectState(state) {
-      state.firstSelectItems = []
-      state.firstSelectVal = ''
     },
     setErrorMsg(state, errMsg) {
       state.errorMsg = errMsg
@@ -139,12 +127,19 @@ const resource = {
         console.error('Not Found Yaml History')
       }
     },
+    setApplyDate(state) {
+      console.log('update ApplyDate')
+      state.applyDate = getNowDate()
+    },
   },
   actions: {
     // 헤더 상단 날짜 셀렉트 박스
-    changeYaml({ commit }, createAt) {
+    changeYamlDate({ commit }, createAt) {
       commit('setYamlContent', createAt)
     },
+    /** Yaml 생성 수정 함수 () => boolean
+     * Boolean 타입을 리턴해줘야 성공, 실패 alert창을 보여줄 수 있음
+     * */
     async applyYaml({ commit }, payload) {
       console.log('applyYaml Parameters: ', payload)
       try {
@@ -152,28 +147,28 @@ const resource = {
         console.log('apply Yaml Result: ', data)
         // Yaml 생성 완료
         if (data?.result?.success) {
+          commit('setApplyDate') // 생성 완료 시 applyDate 초기화
           commit('closeModal')
           return true
         }
         if (data?.result?.errorMessage)
+          // HTTP 200: 응답 시 에러 메시지 표시
           commit('setErrorMsg', data?.result?.errorMessage)
         throw Error(data)
       } catch (err) {
-        console.error(err)
+        // HTTP 500: 응답 시 에러 메시지 표시
+        if (err?.response?.data?.detail)
+          commit('setErrorMsg', err?.response?.data?.detail)
+        console.error(err.response)
         return false
       }
     },
     /**
      * 야물조회 후 모달 열기
      * @param {*} params
-     * {
-          "clusterIdx": 0,
-          "kind": "string",
-          "name": "string",
-          "namespace": "string"
-        }
+     * { "clusterIdx": 0, "kind": "string", "name": "string", "namespace": "string" }
      */
-    async getYaml({ commit }, params) {
+    async openGetYaml({ commit }, params) {
       try {
         const { data } = await request.getYamlUsingPOST_1(params)
         // 최신 날짜 순으로 정렬
@@ -195,7 +190,13 @@ const resource = {
         console.error(err)
       }
     },
-    // async deleteYaml({ commit }, payload) {},
+    // async deleteYaml({ commit }, yamlIdx) {
+    //   try {
+    //     const { data } = await request.deleteYamlUsingDELETE(yamlIdx)
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // },
   },
 }
 

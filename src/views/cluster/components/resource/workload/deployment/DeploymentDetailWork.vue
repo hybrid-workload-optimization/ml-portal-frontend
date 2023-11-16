@@ -22,21 +22,15 @@
       </v-tab-item>
     </v-tabs-items>
 
-    <!-- 삭제 요청 확인 창 -->
-    <confirm
-      @confirm-modal="onClickDelConfirm"
-      @cancel-modal="onClickDelCancel"
-    />
-
-    <!-- yaml 에디터 모달 창 -->
-    <yaml-edit-modal @confirmed="onConfirmedFromEditModal" />
+    <yaml-edit-modal />
+    <confirm @confirm-modal="onClickDelConfirm" />
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Confirm from '@/components/molcule/Confirm.vue'
 import YamlEditModal from '@/components/molcule/YamlEditModal.vue'
+import Confirm from '@/components/molcule/Confirm.vue'
 import CardTitle from '@/components/molcule/CardTitleWithDetail.vue'
 import DeploymentGeneral from '@/views/cluster/components/resource/workload/deployment/components/DeploymentGeneral.vue'
 import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
@@ -44,15 +38,15 @@ import { checkProjectAuth } from '@/utils/mixins/checkProjectAuth'
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const deploymentMapUtils = createNamespacedHelpers('deployment')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
-const alertMapUtils = createNamespacedHelpers('alert')
 const confirmMapUtils = createNamespacedHelpers('confirm')
+const alertMapUtils = createNamespacedHelpers('alert')
 
 export default {
   components: {
     DeploymentGeneral,
-    Confirm,
     YamlEditModal,
     CardTitle,
+    Confirm,
   },
   mixins: [checkProjectAuth],
   data() {
@@ -66,8 +60,6 @@ export default {
   // 컴포넌트 생성 후 호출됨
   async created() {
     await this.getData()
-    // console.log(this.deploymentDetailInfo)
-    // mixin
     await this.checkProjectAuth(this.deploymentDetailInfo.projectIdx)
   },
   mounted() {
@@ -87,73 +79,44 @@ export default {
     name() {
       return this.$route.params?.name || null
     },
+    // getData & Delete API 호출 할 때 필요한 파라미터
+    params() {
+      const { name, namespace, clusterIdx, kind } = this
+      return { name, namespace, clusterIdx, kind }
+    },
   },
   methods: {
     ...workloadMapUtils.mapActions(['deleteWorkload', 'createWorkload']),
     ...deploymentMapUtils.mapActions([
       'getDeploymentDetailNew',
-      // 'getDeploymentDetail',
       'getPodList',
       'deleteDeployment',
       'updateDeployment',
     ]),
-    ...yamlEditModalMapUtils.mapActions(['getYaml']),
+    ...yamlEditModalMapUtils.mapActions(['openGetYaml']),
     ...yamlEditModalMapUtils.mapMutations(['openModal', 'closeModal']),
+    ...confirmMapUtils.mapMutations(['openConfirm']), // confirm 오픈
     ...alertMapUtils.mapMutations(['openAlert']),
-    ...confirmMapUtils.mapMutations(['openConfirm']),
-
     // 상세 정보와 파드 리스트 정보를 가져오는 메서드
     async getData() {
       try {
-        console.log('this', this)
-        await this.getDeploymentDetailNew({
-          clusterIdx: this.clusterIdx,
-          kind: this.kind,
-          name: this.name,
-          namespace: this.namespace,
-        })
-        // const { deploymentDetailInfo } = this
-
-        // const param = {
-        // clusterId: deploymentDetailInfo.clusterId,
-        // namespaceName: deploymentDetailInfo.namespace,
-        // ownerUid: deploymentDetailInfo.replicaSetUid,
-        // }
-        // this.getPodList(param)
+        await this.getDeploymentDetailNew(this.params)
       } catch (error) {
         console.log(error)
       }
     },
-
+    // Yaml 수정 버튼 이벤트
     async onClickEdit() {
-      const { clusterIdx, kind, name, namespace } = this
-      const params = { clusterIdx, kind, name, namespace }
-
-      this.getYaml(params)
-
-      // try {
-      //   this.yamlStr = await this.getWorklistYaml(params)
-      // } catch (error) {
-      //   console.log(error)
-      // }
+      this.openGetYaml(this.params)
     },
-
+    // 삭제 버튼 이벤트
     onClickDelete() {
-      console.log('onClickDelete')
-      this.openConfirm(
-        `${this.deploymentDetailInfo.name} 을(를) 삭제하시겠습니까?`,
-      )
+      this.openConfirm(`${this.name} 을(를) 삭제하시겠습니까?`)
     },
-
+    // [삭제 요청 확인창] 확인 클릭 시
     async onClickDelConfirm() {
-      const params = {
-        clusterIdx: this.clusterIdx,
-        kind: this.kind,
-        name: this.name,
-        namespace: this.namespace,
-      }
       try {
-        const response = await this.deleteWorkload(params)
+        const response = await this.deleteWorkload(this.params)
 
         if (response.status === 200) {
           this.openAlert({
@@ -172,32 +135,6 @@ export default {
       } catch (error) {
         this.openAlert({ title: '삭제 실패했습니다.', type: 'error' })
         console.log(error)
-      }
-    },
-
-    onClickDelCancel() {},
-
-    async onConfirmedFromEditModal(data) {
-      const params = {
-        clusterIdx: this.clusterIdx,
-        yaml: data.encodedContent,
-      }
-      try {
-        const { data: resData } = await this.createWorkload(params)
-        if (resData.result.success) {
-          this.openAlert({
-            title: '리소스가 수정 되었습니다.',
-            type: 'info',
-          })
-          this.closeModal()
-          this.getData()
-        } else {
-          this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-          console.error(resData)
-        }
-      } catch (error) {
-        this.openAlert({ title: '업데이트 실패했습니다.', type: 'error' })
-        console.error(error)
       }
     },
   },

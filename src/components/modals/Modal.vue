@@ -34,6 +34,7 @@
             class="modal--cancel"
             elevation="0"
             dense
+            icon
           >
             <v-icon :color="isWhite ? '#1A3350' : '#fff'">close</v-icon>
           </sp-button>
