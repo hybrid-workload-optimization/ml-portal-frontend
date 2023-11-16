@@ -36,7 +36,7 @@
         flat
         dense
         :value="selectDate"
-        @input="changeYaml"
+        @input="changeYamlDate"
         item-text="createAt"
         item-value="createAt"
         :items="yamlHistory"
@@ -102,7 +102,9 @@
       :titleName="alertTitle"
       :dialog="showAlert"
       @close-Alert="closeAlert"
-    ></v-alert>
+    />
+
+    <!-- 삭제 요청 확인 창 -->
   </modal>
 </template>
 
@@ -113,7 +115,6 @@ import { createNamespacedHelpers } from 'vuex'
 import { diff } from '@/utils/common'
 import { template, templateItems } from '@/utils/template'
 import VAlert from '@/components/molcule/Alert.vue'
-// import yamljs from 'yamljs'
 
 const workloadMapUtils = createNamespacedHelpers('clusterWorkload')
 const yamlEditModalMapUtils = createNamespacedHelpers('yamlEditModal')
@@ -192,13 +193,11 @@ export default {
   },
   methods: {
     ...workloadMapUtils.mapActions(['clearErrorMsg']),
-    ...yamlEditModalMapUtils.mapActions(['applyYaml', 'changeYaml']), // yaml 내용 중 수정되면 안되는 속성 키 리스트
-    ...yamlEditModalMapUtils.mapMutations(['resourceType']), // firstSelectVal 값 변경
-    ...yamlEditModalMapUtils.mapMutations(['changeFirstSelectVal']), // firstSelectVal 값 변경
+    ...yamlEditModalMapUtils.mapActions(['applyYaml', 'changeYamlDate']), // yaml 내용 중 수정되면 안되는 속성 키 리스트
+    ...yamlEditModalMapUtils.mapMutations(['resourceType']),
     ...yamlEditModalMapUtils.mapMutations(['changeContent']), // 저장된 content 내용 변경(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapMutations(['closeModal']), // yaml에디트 모달창 닫기(yamlEditModal.js)
     ...alertMapUtils.mapMutations(['openAlert', 'closeAlert']), // alert 오픈
-
     setContent(value) {
       this.changeContent(value)
     },
@@ -230,9 +229,6 @@ export default {
       const res = await this.applyYaml(params)
       if (res) this.openAlert({ title: '생성 성공했습니다.', type: 'info' })
       else this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
-    },
-    onChangeFirstSelect(value) {
-      this.changeFirstSelectVal(value)
     },
     onChangeTemplate(templateType) {
       const content = template.getK8sResourceTemplate(templateType)
@@ -294,9 +290,6 @@ $this: 'popup';
     margin-left: 10px;
     border-radius: 5px;
   }
-}
-.CodeMirror {
-  height: 100% !important;
 }
 
 // .CodeMirror-sizer {

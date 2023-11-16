@@ -275,8 +275,6 @@ const resource = {
     },
 
     async getDeploymentDetailNew({ commit }, payload) {
-      // console.log(payload)
-      // const response = await request.getDeploymentUsingGET_1(payload)
       const response = await request.getDetailUsingPOST(payload)
       console.log('Get DetailInfo Workload', response)
       commit('changeDetailInfo', response)
