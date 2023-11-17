@@ -193,7 +193,11 @@ export default {
   },
   methods: {
     ...workloadMapUtils.mapActions(['clearErrorMsg']),
-    ...yamlEditModalMapUtils.mapActions(['applyYaml', 'changeYamlDate']), // yaml 내용 중 수정되면 안되는 속성 키 리스트
+    ...yamlEditModalMapUtils.mapActions([
+      'applyYaml',
+      'changeYamlDate',
+      'setError',
+    ]), // yaml 내용 중 수정되면 안되는 속성 키 리스트
     ...yamlEditModalMapUtils.mapMutations(['resourceType']),
     ...yamlEditModalMapUtils.mapMutations(['changeContent']), // 저장된 content 내용 변경(yamlEditModal.js)
     ...yamlEditModalMapUtils.mapMutations(['closeModal']), // yaml에디트 모달창 닫기(yamlEditModal.js)
@@ -205,27 +209,39 @@ export default {
       this.clearErrorMsg()
       this.closeModal()
     },
+    // 저장 및 업데이트 이벤트 함수
     async onClickSaveModal() {
-      if (this.editType === 'update') {
-        if (this.readOnlyKeys && this.readOnlyKeys.length > 0) {
-          const isDiff = diff.yamlDiffData(
-            this.readOnlyKeys,
-            this.yamlContent,
-            this.orginYamlContent,
-          )
-          if (isDiff) {
-            this.openAlert(
-              `[${this.readOnlyKeys}] 해당 정보는 변경할 수 없습니다.`,
+      try {
+        if (this.editType === 'update') {
+          if (this.readOnlyKeys && this.readOnlyKeys.length > 0) {
+            const isDiff = diff.yamlDiffData(
+              this.readOnlyKeys,
+              this.yamlContent,
+              this.orginYamlContent,
             )
-            return
+            if (isDiff) {
+              this.openAlert(
+                `[${this.readOnlyKeys}] 해당 정보는 변경할 수 없습니다.`,
+              )
+              return
+            }
           }
         }
+      } catch (err) {
+        // Parse Error
+        if (err?.message && err?.snippet) {
+          this.setError(`${err.message}(parsedLine: ${err?.parsedLine})
+"${err?.snippet}"
+          `)
+        }
+        console.error(err)
+        return
       }
       const params = {
         clusterIdx: this.$route.params?.id,
         yaml: Buffer.from(this.yamlContent, 'utf8').toString('base64'),
       }
-      // Yaml 생성 및 수정 API 호출(생성 수정 통합됌)
+      // Yaml 생성 및 수정 API 호출(생성 수정 API 통합)
       const res = await this.applyYaml(params)
       if (res) this.openAlert({ title: '생성 성공했습니다.', type: 'info' })
       else this.openAlert({ title: '생성 실패했습니다.', type: 'error' })
