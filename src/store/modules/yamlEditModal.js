@@ -137,6 +137,9 @@ const resource = {
     changeYamlDate({ commit }, createAt) {
       commit('setYamlContent', createAt)
     },
+    setError({ commit }, errMsg) {
+      commit('setErrorMsg', errMsg)
+    },
     /** Yaml 생성 수정 함수 () => boolean
      * Boolean 타입을 리턴해줘야 성공, 실패 alert창을 보여줄 수 있음
      * */
