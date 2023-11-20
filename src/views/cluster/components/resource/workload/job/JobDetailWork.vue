@@ -2,7 +2,7 @@
   <div>
     <card-title
       :titleData="{ title: getTitle }"
-      :showButtons="true"
+      :showButtons="isProjectAuth"
       @click-edit="onClickEdit"
       @click-delete="onClickDelete"
     >
