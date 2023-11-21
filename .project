@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>portal-frontend-ml</name>
-	<comment>portal-frontend-ml</comment>
+	<name>portal-frontend</name>
+	<comment>Project portal-frontend created by Buildship.</comment>
 	<projects>
 	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
 </projectDescription>
